@@ -1,0 +1,3061 @@
+{
+  "_meta": {
+    "dataset": "LaCaDaNang Curated MVP Seed",
+    "version": "2.1.0-phase2a.2-hardened",
+    "curatedAt": "2026-10-01T08:08:51.801Z",
+    "totalPlaces": 86,
+    "counts": {
+      "EAT": 50,
+      "GO": 6,
+      "STAY": 30
+    },
+    "rulesApplied": [
+      "Phase 2A.2 Curation Evidence Hardening",
+      "distanceFromCenter <= 15km",
+      "strictly exclude Hội An / Quảng Nam / Điện Bàn",
+      "exclude travel agencies / service providers / irrelevant golf & beach clubs outside Da Nang",
+      "deduplicate chain branches",
+      "strictly 5 safe auto-derived tags (POPULAR, CAFE, SEAFOOD, CENTRAL, NEAR_BEACH)",
+      "remove all unverified CHEAP tags (priceLevel is null)",
+      "remove all unverified NIGHT tags (no opening hours data)",
+      "subjective tags moved to manualReviewTags queue for human review",
+      "timeTags and bestTimeOfDay set to empty []",
+      "typicalDurationMinutes set to null",
+      "reasons contain purely factual statements (rating, location, category, photos)",
+      "imageUrl set to null pending licensed photography"
+    ],
+    "notes": "Curation evidence hardened. Subjective tags are in manual review queue. GO gap documented in docs/GO_DATA_GAPS.md."
+  },
+  "places": [
+    {
+      "id": "ChIJx6-KGnIXQjER7x-T0zeOlBw",
+      "name": "Mộc quán Seafood Đà Nẵng",
+      "section": "EAT",
+      "primaryType": "establishment",
+      "address": "26 Tô Hiến Thành, An Hải, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "An Hải",
+      "lat": 16.063997,
+      "lng": 108.2415015,
+      "googleMapsUrl": "https://maps.google.com/?cid=2059427300039139311",
+      "rating": 4.8,
+      "reviewCount": 29261,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "SEAFOOD",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "GROUP",
+        "FAMILY"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.8⭐ từ 29.261 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại An Hải (cách trung tâm khoảng 4.3 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": true,
+      "distanceFromCenter": 4.3,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJ-UgnY_QXQjERJTTHpNvcFNw",
+      "name": "Bếp Cuốn Đà Nẵng - Michelin Selected 2025-2026",
+      "section": "EAT",
+      "primaryType": "establishment",
+      "address": "31-33 Trần Bạch Đằng, An Hải, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "An Hải",
+      "lat": 16.0579628,
+      "lng": 108.2451505,
+      "googleMapsUrl": "https://maps.google.com/?cid=15858543023798826021",
+      "rating": 4.9,
+      "reviewCount": 17886,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "DATE",
+        "FAMILY"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.9⭐ từ 17.886 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại An Hải (cách trung tâm khoảng 4.6 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": true,
+      "distanceFromCenter": 4.6,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJYytdRW4ZQjER6149Azrswq8",
+      "name": "Nhà hàng Nhà Gỗ Việt Đà Nẵng",
+      "section": "EAT",
+      "primaryType": "establishment",
+      "address": "49 Nguyễn Thái Học, Hải Châu, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Hải Châu",
+      "lat": 16.0679495,
+      "lng": 108.2232911,
+      "googleMapsUrl": "https://maps.google.com/?cid=12664944836025868011",
+      "rating": 4.9,
+      "reviewCount": 6710,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "CENTRAL"
+      ],
+      "manualReviewTags": [
+        "FAMILY"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.9⭐ từ 6.710 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Hải Châu (cách trung tâm khoảng 2.7 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": true,
+      "distanceFromCenter": 2.7,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJQYGTw4MZQjER9-WZcXZUfAM",
+      "name": "Cô Ba Phở bò",
+      "section": "EAT",
+      "primaryType": "establishment",
+      "address": "154 Bạch Đằng, Hải Châu, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Hải Châu",
+      "lat": 16.0669705,
+      "lng": 108.2247188,
+      "googleMapsUrl": "https://maps.google.com/?cid=251168546914690551",
+      "rating": 4.8,
+      "reviewCount": 8484,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "CENTRAL"
+      ],
+      "manualReviewTags": [
+        "LOCAL_FOOD",
+        "SPECIALTY",
+        "FAMILY"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.8⭐ từ 8.484 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Hải Châu (cách trung tâm khoảng 2.8 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": true,
+      "distanceFromCenter": 2.8,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJkf2tQIAZQjERG_-hbl_EKv4",
+      "name": "Burger House Da Nang(햄버거)",
+      "section": "EAT",
+      "primaryType": "establishment",
+      "address": "253 D. Đình Nghệ, An Hải, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "An Hải",
+      "lat": 16.0695016,
+      "lng": 108.2358996,
+      "googleMapsUrl": "https://maps.google.com/?cid=18314666748812590875",
+      "rating": 4.8,
+      "reviewCount": 7716,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR"
+      ],
+      "manualReviewTags": [
+        "FAMILY"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.8⭐ từ 7.716 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại An Hải (cách trung tâm khoảng 4.0 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": true,
+      "distanceFromCenter": 4,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJ2eFWbrcXQjERkMR0z_5VhM0",
+      "name": "Trình cà phê",
+      "section": "EAT",
+      "primaryType": "cafe",
+      "address": "25 Phạm Hồng Thái, Hải Châu, Đà Nẵng 55000, Việt Nam",
+      "shortAddress": "Hải Châu",
+      "lat": 16.0673825,
+      "lng": 108.2217327,
+      "googleMapsUrl": "https://maps.google.com/?cid=14809056027591623824",
+      "rating": 4.8,
+      "reviewCount": 7439,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "CAFE",
+        "CENTRAL"
+      ],
+      "manualReviewTags": [
+        "QUIET",
+        "FAMILY"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.8⭐ từ 7.439 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Hải Châu (cách trung tâm khoảng 2.5 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": true,
+      "distanceFromCenter": 2.5,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJP1Uz6i0ZQjERfy-rpM1cGWc",
+      "name": "Nhà hàng NHÀ BẾP CHỢ HÀN",
+      "section": "EAT",
+      "primaryType": "establishment",
+      "address": "22 Hùng Vương, Hải Châu, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Hải Châu",
+      "lat": 16.0687376,
+      "lng": 108.2243375,
+      "googleMapsUrl": "https://maps.google.com/?cid=7429071098625077119",
+      "rating": 4.8,
+      "reviewCount": 6692,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "CENTRAL"
+      ],
+      "manualReviewTags": [
+        "FAMILY"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.8⭐ từ 6.692 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Hải Châu (cách trung tâm khoảng 2.9 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": true,
+      "distanceFromCenter": 2.9,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJvXHUrV0ZQjERoXiEbJBkSoc",
+      "name": "Bánh mì Cô Tiên",
+      "section": "EAT",
+      "primaryType": "establishment",
+      "address": "Kiệt 80/10 Trần Phú, Hải Châu, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Hải Châu",
+      "lat": 16.0696404,
+      "lng": 108.223545,
+      "googleMapsUrl": "https://maps.google.com/?cid=9748714914855549089",
+      "rating": 4.8,
+      "reviewCount": 6598,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "CENTRAL"
+      ],
+      "manualReviewTags": [
+        "LOCAL_FOOD",
+        "SPECIALTY",
+        "FAMILY"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.8⭐ từ 6.598 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Hải Châu (cách trung tâm khoảng 2.8 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": true,
+      "distanceFromCenter": 2.8,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJaR-hw_oZQjERlHJ4pA4wxMQ",
+      "name": "GOYUHAN-Tiệm nướng Hàn Quốc cơ sở Phan Đăng Lưu",
+      "section": "EAT",
+      "primaryType": "restaurant",
+      "address": "11 Phan Đăng Lưu, Hòa Cường, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Hòa Cường",
+      "lat": 16.037516,
+      "lng": 108.22307579999999,
+      "googleMapsUrl": "https://maps.google.com/?cid=14178510366316196500&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 5,
+      "reviewCount": 3423,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "SEAFOOD",
+        "CENTRAL"
+      ],
+      "manualReviewTags": [
+        "GROUP",
+        "FAMILY"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 5.0⭐ từ 3.423 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Hòa Cường (cách trung tâm khoảng 2.9 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": true,
+      "distanceFromCenter": 2.9,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJNRSpo9EZQjERliMnRlTXtFc",
+      "name": "Nhà hàng Làn Gió",
+      "section": "EAT",
+      "primaryType": "establishment",
+      "address": "169 Trần Phú, Hải Châu, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Hải Châu",
+      "lat": 16.0666296,
+      "lng": 108.2238222,
+      "googleMapsUrl": "https://maps.google.com/?cid=6319912934061843350",
+      "rating": 4.9,
+      "reviewCount": 4585,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "CENTRAL"
+      ],
+      "manualReviewTags": [
+        "FAMILY"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.9⭐ từ 4.585 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Hải Châu (cách trung tâm khoảng 2.7 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": true,
+      "distanceFromCenter": 2.7,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJXxVH5G8XQjERZdSJFSODaZw",
+      "name": "Bikini Bottom Express",
+      "section": "EAT",
+      "primaryType": "establishment",
+      "address": "45-47 An Thượng 2, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Ngũ Hành Sơn",
+      "lat": 16.0487632,
+      "lng": 108.2475435,
+      "googleMapsUrl": "https://maps.google.com/?cid=11270683729179825253",
+      "rating": 4.7,
+      "reviewCount": 8430,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "FAMILY"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.7⭐ từ 8.430 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Ngũ Hành Sơn (cách trung tâm khoảng 4.9 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 4.9,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJudsANu4XQjERbLKxjXDLHtU",
+      "name": "Hải sản My Hanh Seafood",
+      "section": "EAT",
+      "primaryType": "establishment",
+      "address": "03-05 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "An Hải",
+      "lat": 16.0654025,
+      "lng": 108.2461698,
+      "googleMapsUrl": "https://maps.google.com/?cid=15356935463653978732",
+      "rating": 4.7,
+      "reviewCount": 7233,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "SEAFOOD",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "GROUP",
+        "FAMILY"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.7⭐ từ 7.233 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại An Hải (cách trung tâm khoảng 4.9 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 4.9,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJtz9HNHoXQjERvfNM9mKz--c",
+      "name": "Adobo Mexican Grill",
+      "section": "EAT",
+      "primaryType": "establishment",
+      "address": "23 An Thượng 2, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Ngũ Hành Sơn",
+      "lat": 16.0493189,
+      "lng": 108.2473065,
+      "googleMapsUrl": "https://maps.google.com/?cid=16716151679536133053",
+      "rating": 4.8,
+      "reviewCount": 4989,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "FAMILY"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.8⭐ từ 4.989 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Ngũ Hành Sơn (cách trung tâm khoảng 4.9 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": true,
+      "distanceFromCenter": 4.9,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJP-VRM2YXQjERbEUrtG6wq9Q",
+      "name": "Nhà Hàng Nhà Bếp Khuê Mỹ",
+      "section": "EAT",
+      "primaryType": "vietnamese_restaurant",
+      "address": "416 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Ngũ Hành Sơn",
+      "lat": 16.0419366,
+      "lng": 108.2482737,
+      "googleMapsUrl": "https://maps.google.com/?cid=15324536146573870444&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.7,
+      "reviewCount": 6016,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "LOCAL_FOOD",
+        "SPECIALTY",
+        "FAMILY"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.7⭐ từ 6.016 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Ngũ Hành Sơn (cách trung tâm khoảng 5.1 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 5.1,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJ7xQxgxgZQjER9pYz4UOV0EY",
+      "name": "Devis bakery",
+      "section": "EAT",
+      "primaryType": "bakery",
+      "address": "60 Nguyễn Thái Học, Hải Châu, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Hải Châu",
+      "lat": 16.0682244,
+      "lng": 108.223091,
+      "googleMapsUrl": "https://maps.google.com/?cid=5102742496584374006",
+      "rating": 5,
+      "reviewCount": 2384,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "CENTRAL"
+      ],
+      "manualReviewTags": [],
+      "curationStatus": "AUTO_VERIFIED",
+      "reasons": [
+        "Đánh giá 5.0⭐ từ 2.384 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Hải Châu (cách trung tâm khoảng 2.7 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 2.7,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJQwork9IXQjERVcF8a6VWq5I",
+      "name": "Maia Beach Bar",
+      "section": "EAT",
+      "primaryType": "bar",
+      "address": "284 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Ngũ Hành Sơn",
+      "lat": 16.0516973,
+      "lng": 108.2486229,
+      "googleMapsUrl": "https://maps.google.com/?cid=10568636219027931477",
+      "rating": 4.7,
+      "reviewCount": 5162,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "FAMILY"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.7⭐ từ 5.162 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Ngũ Hành Sơn (cách trung tâm khoảng 5.0 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 5,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJRaHks2wXQjERVMrWhffmRXw",
+      "name": "Korea BBQ House",
+      "section": "EAT",
+      "primaryType": "steak_house",
+      "address": "170 - 172 Trần Bạch Đằng, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Ngũ Hành Sơn",
+      "lat": 16.0534615,
+      "lng": 108.2463835,
+      "googleMapsUrl": "https://maps.google.com/?cid=8954817384872856148&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.8,
+      "reviewCount": 3686,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "GROUP",
+        "FAMILY"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.8⭐ từ 3.686 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Ngũ Hành Sơn (cách trung tâm khoảng 4.7 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": true,
+      "distanceFromCenter": 4.7,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJiTPLkNoXQjERaADArcRiqlU",
+      "name": "B&B",
+      "section": "EAT",
+      "primaryType": "bakery",
+      "address": "192 Nguyễn Văn Thoại, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Ngũ Hành Sơn",
+      "lat": 16.0559868,
+      "lng": 108.2459152,
+      "googleMapsUrl": "https://maps.google.com/?cid=6172854836132839528",
+      "rating": 4.7,
+      "reviewCount": 4934,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "FAMILY"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.7⭐ từ 4.934 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Ngũ Hành Sơn (cách trung tâm khoảng 4.7 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 4.7,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJs1xKLCoXQjERlcOwlkLPbnI",
+      "name": "Gujarat Indian Restaurant",
+      "section": "EAT",
+      "primaryType": "Nhà hàng Ấn Độ",
+      "address": "Gujarat Indian Restaurant, 39-41 Đỗ Bá, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Đà Nẵng",
+      "lat": 16.051482699999998,
+      "lng": 108.2457235,
+      "googleMapsUrl": "https://www.google.com/maps/place/data=!3m1!4b1!4m2!3m1!1s0x3142172a2c4a5cb3:0x726ecf4296b0c395",
+      "rating": 4.7,
+      "reviewCount": 4845,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "FAMILY"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.7⭐ từ 4.845 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Đà Nẵng (cách trung tâm khoảng 4.7 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 4.7,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJb83EHVcZQjERKBFsg5I5Lm0",
+      "name": "BUZZ BBQ & BEER - Nhà hàng Bia tươi",
+      "section": "EAT",
+      "primaryType": "establishment",
+      "address": "35 Núi Thành, Hòa Cường, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Hòa Cường",
+      "lat": 16.0519514,
+      "lng": 108.2205681,
+      "googleMapsUrl": "https://maps.google.com/?cid=7867288900495741224",
+      "rating": 4.9,
+      "reviewCount": 2579,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "CENTRAL"
+      ],
+      "manualReviewTags": [
+        "GROUP",
+        "FAMILY"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.9⭐ từ 2.579 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Hòa Cường (cách trung tâm khoảng 2.0 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 2,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJhRHxyd4XQjERPVL2Kw_eqdw",
+      "name": "The Cups Coffee Roastery",
+      "section": "EAT",
+      "primaryType": "cafe",
+      "address": "192 Nguyễn Văn Thoại, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Ngũ Hành Sơn",
+      "lat": 16.0560206,
+      "lng": 108.2460604,
+      "googleMapsUrl": "https://maps.google.com/?cid=15900484116151685693",
+      "rating": 4.7,
+      "reviewCount": 4660,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "CAFE",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "QUIET",
+        "FAMILY"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.7⭐ từ 4.660 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Ngũ Hành Sơn (cách trung tâm khoảng 4.7 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 4.7,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJ77QHGmQXQjERb5DuD0z9jOA",
+      "name": "EMO'S HOMECOOKED VIETNAMESE CUISINE",
+      "section": "EAT",
+      "primaryType": "establishment",
+      "address": "16, Đường Mỹ Khê 4, An Hải, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "An Hải",
+      "lat": 16.0581755,
+      "lng": 108.2454735,
+      "googleMapsUrl": "https://maps.google.com/?cid=16180586064361984111",
+      "rating": 4.8,
+      "reviewCount": 3238,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "FAMILY"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.8⭐ từ 3.238 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại An Hải (cách trung tâm khoảng 4.6 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": true,
+      "distanceFromCenter": 4.6,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJT2YLRbb3QTERCWRWcCqqPGI",
+      "name": "Starbucks Ba Na Main Gate",
+      "section": "EAT",
+      "primaryType": "cafe",
+      "address": "Tầng 2, Cổng Thành, thuộc quần thể khu Du lịch Sinh thái, Bà Nà - Suối Mơ, Hòa Khánh, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Hòa Khánh",
+      "lat": 16.0475836,
+      "lng": 108.1423073,
+      "googleMapsUrl": "https://maps.google.com/?cid=7078719813569635337",
+      "rating": 5,
+      "reviewCount": 1726,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "CAFE"
+      ],
+      "manualReviewTags": [
+        "QUIET"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 5.0⭐ từ 1.726 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Hòa Khánh (cách trung tâm khoảng 6.4 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 6.4,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJFWX8xoYXQjER2TToP1ZRQPE",
+      "name": "Maharaja Indian Restaurant",
+      "section": "EAT",
+      "primaryType": "indian_restaurant",
+      "address": "09 An Thượng 2, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Ngũ Hành Sơn",
+      "lat": 16.0495376,
+      "lng": 108.24724409999999,
+      "googleMapsUrl": "https://maps.google.com/?cid=17383983992531334361&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.7,
+      "reviewCount": 4321,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "FAMILY"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.7⭐ từ 4.321 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Ngũ Hành Sơn (cách trung tâm khoảng 4.8 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 4.8,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJ9wE3S7MXQjER4MsHGo-UrJo",
+      "name": "Banh mi & Coffee NHÀ VIỆT (반미&커피)",
+      "section": "EAT",
+      "primaryType": "cafe",
+      "address": "04 Hà Chương, An Hải, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "An Hải",
+      "lat": 16.065419,
+      "lng": 108.244652,
+      "googleMapsUrl": "https://maps.google.com/?cid=11145446520173087712",
+      "rating": 4.8,
+      "reviewCount": 3114,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "CAFE",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "QUIET",
+        "FAMILY"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.8⭐ từ 3.114 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại An Hải (cách trung tâm khoảng 4.7 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": true,
+      "distanceFromCenter": 4.7,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJNcPfRBYZQjERUk2d0LOhtrk",
+      "name": "CHÚ BI quán nướng",
+      "section": "EAT",
+      "primaryType": "bar",
+      "address": "48 Nguyễn Chí Thanh, Hải Châu, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Hải Châu",
+      "lat": 16.0752869,
+      "lng": 108.2204866,
+      "googleMapsUrl": "https://maps.google.com/?cid=13382061136449195346",
+      "rating": 4.8,
+      "reviewCount": 3070,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "CENTRAL"
+      ],
+      "manualReviewTags": [
+        "GROUP",
+        "FAMILY"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.8⭐ từ 3.070 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Hải Châu (cách trung tâm khoảng 3.0 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": true,
+      "distanceFromCenter": 3,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJD5txTgAXQjERonn-svuZ0sY",
+      "name": "Hoang’s Kitchen Đà Nẵng- Vietnamese & Vegan Food",
+      "section": "EAT",
+      "primaryType": "establishment",
+      "address": "40 Hà Bổng, Sơn Trà, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Sơn Trà",
+      "lat": 16.0669036,
+      "lng": 108.2442227,
+      "googleMapsUrl": "https://maps.google.com/?cid=14326682670937831842",
+      "rating": 4.9,
+      "reviewCount": 2218,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [],
+      "curationStatus": "AUTO_VERIFIED",
+      "reasons": [
+        "Đánh giá 4.9⭐ từ 2.218 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Sơn Trà (cách trung tâm khoảng 4.7 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 4.7,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJB32gNm0NQjERunGsEVIB8ko",
+      "name": "Bikini Bottom Express Warehouse",
+      "section": "EAT",
+      "primaryType": "american_restaurant",
+      "address": "116-118 Mai Thúc Lân, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Ngũ Hành Sơn",
+      "lat": 16.0510858,
+      "lng": 108.2424776,
+      "googleMapsUrl": "https://maps.google.com/?cid=5400380355166106042&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.8,
+      "reviewCount": 2996,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "FAMILY"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.8⭐ từ 2.996 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Ngũ Hành Sơn (cách trung tâm khoảng 4.3 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 4.3,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJtariQQAZQjERP8ZyGNIu2b0",
+      "name": "Texas Chicken Indochina Mall",
+      "section": "EAT",
+      "primaryType": "establishment",
+      "address": "Tầng Trệt, 74 Bạch Đằng, Hải Châu, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Hải Châu",
+      "lat": 16.0699534,
+      "lng": 108.224824,
+      "googleMapsUrl": "https://maps.google.com/?cid=13680016823002777151",
+      "rating": 4.9,
+      "reviewCount": 2196,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "CENTRAL"
+      ],
+      "manualReviewTags": [],
+      "curationStatus": "AUTO_VERIFIED",
+      "reasons": [
+        "Đánh giá 4.9⭐ từ 2.196 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Hải Châu (cách trung tâm khoảng 3.0 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 3,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJO3VMPgARQjERzoOU8ZWX4eE",
+      "name": "Hùng 68 Restaurant - Food and Drink",
+      "section": "EAT",
+      "primaryType": "establishment",
+      "address": "110 Trường Sa, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Ngũ Hành Sơn",
+      "lat": 16.0019307,
+      "lng": 108.2669745,
+      "googleMapsUrl": "https://maps.google.com/?cid=16276457198552646606",
+      "rating": 4.9,
+      "reviewCount": 2126,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [],
+      "curationStatus": "AUTO_VERIFIED",
+      "reasons": [
+        "Đánh giá 4.9⭐ từ 2.126 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Ngũ Hành Sơn (cách trung tâm khoảng 9.1 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 9.1,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJ47gOej0ZQjER9xhSAiNHpXg",
+      "name": "Nhà Hàng Hàn Quốc Gogubnam Đà Nẵng",
+      "section": "EAT",
+      "primaryType": "establishment",
+      "address": "98 D. Đình Nghệ, An Hải, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "An Hải",
+      "lat": 16.0693526,
+      "lng": 108.2369325,
+      "googleMapsUrl": "https://maps.google.com/?cid=8693432871396972791",
+      "rating": 4.9,
+      "reviewCount": 2104,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "SEAFOOD"
+      ],
+      "manualReviewTags": [],
+      "curationStatus": "AUTO_VERIFIED",
+      "reasons": [
+        "Đánh giá 4.9⭐ từ 2.104 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại An Hải (cách trung tâm khoảng 4.1 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 4.1,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJ4UuIQXgXQjERz192UgYuxMU",
+      "name": "Koko House - Nhà Hàng Thịt Nướng Hàn Quốc",
+      "section": "EAT",
+      "primaryType": "establishment",
+      "address": "268 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Ngũ Hành Sơn",
+      "lat": 16.0562055,
+      "lng": 108.2467734,
+      "googleMapsUrl": "https://maps.google.com/?cid=14250565725595262927",
+      "rating": 4.9,
+      "reviewCount": 2082,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "SEAFOOD",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "GROUP"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.9⭐ từ 2.082 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Ngũ Hành Sơn (cách trung tâm khoảng 4.8 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 4.8,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJG4HnuRYZQjERuQym_FHKXQ0",
+      "name": "Sushi Time",
+      "section": "EAT",
+      "primaryType": "establishment",
+      "address": "768 Tôn Đức Thắng, P, Hòa Khánh, Đà Nẵng 50000, Việt Nam",
+      "shortAddress": "Hòa Khánh",
+      "lat": 16.0670988,
+      "lng": 108.1529199,
+      "googleMapsUrl": "https://maps.google.com/?cid=963148348807056569",
+      "rating": 4.9,
+      "reviewCount": 2037,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR"
+      ],
+      "manualReviewTags": [],
+      "curationStatus": "AUTO_VERIFIED",
+      "reasons": [
+        "Đánh giá 4.9⭐ từ 2.037 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Hòa Khánh (cách trung tâm khoảng 5.5 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 5.5,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJEz5DuMUXQjERrMmxUdLWec0",
+      "name": "Butcher Steak Danang | Le Quang Dao",
+      "section": "EAT",
+      "primaryType": "bar",
+      "address": "64 Lê Quang Đạo, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Ngũ Hành Sơn",
+      "lat": 16.050876,
+      "lng": 108.2451972,
+      "googleMapsUrl": "https://maps.google.com/?cid=14806101448759298476",
+      "rating": 4.8,
+      "reviewCount": 2740,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "DATE",
+        "FAMILY"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.8⭐ từ 2.740 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Ngũ Hành Sơn (cách trung tâm khoảng 4.6 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 4.6,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJKU0NPvYXQjERSWJh7wrcDf8",
+      "name": "NHÀ HÀNG ĐẢO XANH 岘港绿岛美缘新鲜海鲜餐厅",
+      "section": "EAT",
+      "primaryType": "establishment",
+      "address": "124 Nguyễn Văn Thoại, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Ngũ Hành Sơn",
+      "lat": 16.0555403,
+      "lng": 108.2441662,
+      "googleMapsUrl": "https://maps.google.com/?cid=18378587593892782665",
+      "rating": 4.8,
+      "reviewCount": 2590,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "FAMILY"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.8⭐ từ 2.590 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Ngũ Hành Sơn (cách trung tâm khoảng 4.5 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 4.5,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJL-NZxvoXQjERr1rvtRaqMoI",
+      "name": "Ocean Pot - Buffet Lẩu Hấp Thuỷ Nhiệt",
+      "section": "EAT",
+      "primaryType": "establishment",
+      "address": "268 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Ngũ Hành Sơn",
+      "lat": 16.0561923,
+      "lng": 108.2468746,
+      "googleMapsUrl": "https://maps.google.com/?cid=9381747988284529327",
+      "rating": 4.9,
+      "reviewCount": 1905,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "GROUP"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.9⭐ từ 1.905 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Ngũ Hành Sơn (cách trung tâm khoảng 4.8 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 4.8,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJs3SIgSQXQjERqoWK-tOFryY",
+      "name": "Ari Sushi - Nhà Hàng Sushi Nhật",
+      "section": "EAT",
+      "primaryType": "establishment",
+      "address": "268 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Ngũ Hành Sơn",
+      "lat": 16.0561702,
+      "lng": 108.2466896,
+      "googleMapsUrl": "https://maps.google.com/?cid=2787593839853602218",
+      "rating": 4.8,
+      "reviewCount": 2589,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "FAMILY"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.8⭐ từ 2.589 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Ngũ Hành Sơn (cách trung tâm khoảng 4.8 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 4.8,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJqV9FZtgXQjERsH-EF2geJk8",
+      "name": "Hàng Gánh",
+      "section": "EAT",
+      "primaryType": "establishment",
+      "address": "51 Trần Bạch Đằng, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Ngũ Hành Sơn",
+      "lat": 16.0554844,
+      "lng": 108.2459271,
+      "googleMapsUrl": "https://maps.google.com/?cid=5703279410531303344",
+      "rating": 4.8,
+      "reviewCount": 2580,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "FAMILY"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.8⭐ từ 2.580 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Ngũ Hành Sơn (cách trung tâm khoảng 4.7 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 4.7,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJYyr_6ogXQjERoXAq8cGEzcI",
+      "name": "Rose Da Nang Coffee Workshop",
+      "section": "EAT",
+      "primaryType": "cafe",
+      "address": "07 Hoàng Sĩ Khải, An Hải, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "An Hải",
+      "lat": 16.0764987,
+      "lng": 108.2323759,
+      "googleMapsUrl": "https://maps.google.com/?cid=14037021582093349025",
+      "rating": 5,
+      "reviewCount": 1321,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "CAFE"
+      ],
+      "manualReviewTags": [
+        "QUIET"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 5.0⭐ từ 1.321 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại An Hải (cách trung tâm khoảng 4.1 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 4.1,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJG1WCi2UXQjER9CxEvEOoEpw",
+      "name": "Malibu Beach Club - Seaside Chill & Cocktails",
+      "section": "EAT",
+      "primaryType": "bar",
+      "address": "Bãi tắm, 3 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "An Hải",
+      "lat": 16.0738647,
+      "lng": 108.2461281,
+      "googleMapsUrl": "https://maps.google.com/?cid=11246236228372409588",
+      "rating": 4.8,
+      "reviewCount": 2397,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [],
+      "curationStatus": "AUTO_VERIFIED",
+      "reasons": [
+        "Đánh giá 4.8⭐ từ 2.397 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại An Hải (cách trung tâm khoảng 5.2 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 5.2,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJzwosANEZQjER7wHnBCoT1_s",
+      "name": "Pizza Hut",
+      "section": "EAT",
+      "primaryType": "establishment",
+      "address": "239 Núi Thành, Hòa Cường, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Hòa Cường",
+      "lat": 16.0443506,
+      "lng": 108.2214642,
+      "googleMapsUrl": "https://maps.google.com/?cid=18146994294704505327",
+      "rating": 4.8,
+      "reviewCount": 2329,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "CENTRAL"
+      ],
+      "manualReviewTags": [],
+      "curationStatus": "AUTO_VERIFIED",
+      "reasons": [
+        "Đánh giá 4.8⭐ từ 2.329 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Hòa Cường (cách trung tâm khoảng 2.3 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 2.3,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJPf29WAAZQjER-BRtE4l1wAg",
+      "name": "Bali Spa•Cafe | Da Nang Massage & Facial • 다낭 마사지",
+      "section": "EAT",
+      "primaryType": "establishment",
+      "address": "485 Đ. Trần Hưng Đạo, An Hải, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "An Hải",
+      "lat": 16.0635059,
+      "lng": 108.2301938,
+      "googleMapsUrl": "https://maps.google.com/?cid=630633179428754680",
+      "rating": 4.9,
+      "reviewCount": 1669,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "CAFE"
+      ],
+      "manualReviewTags": [
+        "QUIET"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.9⭐ từ 1.669 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại An Hải (cách trung tâm khoảng 3.2 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 3.2,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJh3XZqZgZQjERm2fg63ZDaRI",
+      "name": "Kết High",
+      "section": "EAT",
+      "primaryType": "bar",
+      "address": "3rd Floor, 200 Bạch Đằng, Hải Châu, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Hải Châu",
+      "lat": 16.0654566,
+      "lng": 108.2241352,
+      "googleMapsUrl": "https://maps.google.com/?cid=1326665743279875995",
+      "rating": 4.9,
+      "reviewCount": 1639,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "CENTRAL"
+      ],
+      "manualReviewTags": [],
+      "curationStatus": "AUTO_VERIFIED",
+      "reasons": [
+        "Đánh giá 4.9⭐ từ 1.639 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Hải Châu (cách trung tâm khoảng 2.6 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 2.6,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJufW45nUXQjERO5FWe0IgW9s",
+      "name": "Le Four Steak & Pizza - Nhà Hàng Âu",
+      "section": "EAT",
+      "primaryType": "establishment",
+      "address": "268 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Ngũ Hành Sơn",
+      "lat": 16.0561802,
+      "lng": 108.2468298,
+      "googleMapsUrl": "https://maps.google.com/?cid=15806262787096088891",
+      "rating": 4.8,
+      "reviewCount": 2217,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "DATE"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.8⭐ từ 2.217 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Ngũ Hành Sơn (cách trung tâm khoảng 4.8 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 4.8,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJ0StZHnMXQjER_lRXOuoD1Mw",
+      "name": "Cơm Nhà Vui",
+      "section": "EAT",
+      "primaryType": "establishment",
+      "address": "133 Hà Bổng, An Hải, Đà Nẵng 10000, Việt Nam",
+      "shortAddress": "An Hải",
+      "lat": 16.0659232,
+      "lng": 108.2445434,
+      "googleMapsUrl": "https://maps.google.com/?cid=14759426183335990526",
+      "rating": 4.7,
+      "reviewCount": 2907,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "LOCAL_FOOD",
+        "SPECIALTY",
+        "FAMILY"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.7⭐ từ 2.907 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại An Hải (cách trung tâm khoảng 4.7 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 4.7,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJJUh90s0XQjERlFHyk531H1M",
+      "name": "KURUMI",
+      "section": "EAT",
+      "primaryType": "vegan_restaurant",
+      "address": "17/22 Mỹ Đa Đông 12, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Ngũ Hành Sơn",
+      "lat": 16.0456987,
+      "lng": 108.24785709999999,
+      "googleMapsUrl": "https://maps.google.com/?cid=5989776086566850964&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.8,
+      "reviewCount": 2107,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [],
+      "curationStatus": "AUTO_VERIFIED",
+      "reasons": [
+        "Đánh giá 4.8⭐ từ 2.107 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Ngũ Hành Sơn (cách trung tâm khoảng 5.0 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 5,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJwX-lhoARQjERHzmrwtbKRns",
+      "name": "Kaldi And More",
+      "section": "EAT",
+      "primaryType": "cafe",
+      "address": "29-31 Hùng Vương, Hải Châu, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Hải Châu",
+      "lat": 16.068498,
+      "lng": 108.223168,
+      "googleMapsUrl": "https://maps.google.com/?cid=8883010338772695327",
+      "rating": 4.7,
+      "reviewCount": 2842,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "CAFE",
+        "CENTRAL"
+      ],
+      "manualReviewTags": [
+        "QUIET",
+        "FAMILY"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.7⭐ từ 2.842 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Hải Châu (cách trung tâm khoảng 2.7 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 2.7,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJfWjE_ZIZQjERy1lr5VLcwxA",
+      "name": "Rasoi Indian pure vegetarian restaurant",
+      "section": "EAT",
+      "primaryType": "Nhà hàng Ấn Độ",
+      "address": "Rasoi Indian pure vegetarian restaurant, 201 Lê Quang Đạo, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Đà Nẵng",
+      "lat": 16.0484972,
+      "lng": 108.2461956,
+      "googleMapsUrl": "https://www.google.com/maps/place/data=!3m1!4b1!4m2!3m1!1s0x31421992fdc4687d:0x10c3dc52e56b59cb",
+      "rating": 4.7,
+      "reviewCount": 2810,
+      "photoCount": 9,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "FAMILY"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.7⭐ từ 2.810 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Đà Nẵng (cách trung tâm khoảng 4.7 km)",
+        "Hơn 9 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 4.7,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJC6HOAwARQjERS-C8y232YXY",
+      "name": "Truong Sa Restaurant",
+      "section": "EAT",
+      "primaryType": "establishment",
+      "address": "108 Trường Sa, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Ngũ Hành Sơn",
+      "lat": 16.0019769,
+      "lng": 108.2669577,
+      "googleMapsUrl": "https://maps.google.com/?cid=8530370120646451275",
+      "rating": 4.9,
+      "reviewCount": 1465,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [],
+      "curationStatus": "AUTO_VERIFIED",
+      "reasons": [
+        "Đánh giá 4.9⭐ từ 1.465 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Ngũ Hành Sơn (cách trung tâm khoảng 9.0 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 9,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJXSf-vzUXQjERsqQ3CyoF9gU",
+      "name": "Loving Vegan",
+      "section": "EAT",
+      "primaryType": "establishment",
+      "address": "61 Lê Quang Đạo, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Ngũ Hành Sơn",
+      "lat": 16.0538197,
+      "lng": 108.2445011,
+      "googleMapsUrl": "https://maps.google.com/?cid=429536492595422386",
+      "rating": 4.8,
+      "reviewCount": 1916,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [],
+      "curationStatus": "AUTO_VERIFIED",
+      "reasons": [
+        "Đánh giá 4.8⭐ từ 1.916 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Ngũ Hành Sơn (cách trung tâm khoảng 4.5 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 4.5,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJZcoBpJEZQjERtUL4NUvNGK4",
+      "name": "Công Viên Nước Mikazuki 365",
+      "section": "GO",
+      "primaryType": "water_park",
+      "address": "Khu du lịch Xuân Thiều, Nguyễn Tất Thành, Hải Vân, Đà Nẵng 55000, Việt Nam",
+      "shortAddress": "Hải Vân",
+      "lat": 16.092181099999998,
+      "lng": 108.1441576,
+      "googleMapsUrl": "https://maps.google.com/?cid=12545002484952220341&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.2,
+      "reviewCount": 3389,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "PHOTO",
+        "SCENIC"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.2⭐ từ 3.389 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Hải Vân (cách trung tâm khoảng 7.5 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 7.5,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJ08DIzjY9QjER4ldy4JXZBLA",
+      "name": "Nhà Vọng Cảnh",
+      "section": "GO",
+      "primaryType": "tourist_attraction",
+      "address": "Nhà Vọng Cảnh, Sơn Trà, Đà Nẵng, Việt Nam",
+      "shortAddress": "Sơn Trà",
+      "lat": 16.1351089,
+      "lng": 108.24537579999999,
+      "googleMapsUrl": "https://maps.google.com/?cid=12683501688321103842&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.5,
+      "reviewCount": 1118,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "SCENIC",
+        "NATURE",
+        "PHOTO"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.5⭐ từ 1.118 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Sơn Trà (cách trung tâm khoảng 10.1 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 10.1,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJuzvMeE4ZQjERE-pQycR-Mjo",
+      "name": "Cầu vượt đi bộ Mikazuki",
+      "section": "GO",
+      "primaryType": "tourist_attraction",
+      "address": "Nguyễn Tất Thành, Hải Vân, Đà Nẵng, Việt Nam",
+      "shortAddress": "Hải Vân",
+      "lat": 16.0946471,
+      "lng": 108.14656989999999,
+      "googleMapsUrl": "https://maps.google.com/?cid=4193553586691566099&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.6,
+      "reviewCount": 349,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "PHOTO",
+        "SCENIC"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.6⭐ từ 349 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Hải Vân (cách trung tâm khoảng 7.4 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 7.4,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJPXCajvseQjERtBibVbWw_qE",
+      "name": "Nhà Thờ Giáo Xứ An Ngãi",
+      "section": "GO",
+      "primaryType": "tourist_attraction",
+      "address": "Thôn An Ngãi Tây 2, Huyện Hòa Vang, Đà Nẵng, Việt Nam",
+      "shortAddress": "Huyện Hòa Vang",
+      "lat": 16.068077499999998,
+      "lng": 108.1035333,
+      "googleMapsUrl": "https://maps.google.com/?cid=11672961577062701236&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.6,
+      "reviewCount": 153,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [],
+      "manualReviewTags": [
+        "PHOTO"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.6⭐ từ 153 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Huyện Hòa Vang (cách trung tâm khoảng 10.7 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 10.7,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJqS3Smv4dQjERbQiU8p1HHVA",
+      "name": "Nhà Cổ Tích Thiện Đường",
+      "section": "GO",
+      "primaryType": "tourist_attraction",
+      "address": "Nhà cổ Tích Thiện Đường, Bà Nà, Đà Nẵng 59000, Việt Nam",
+      "shortAddress": "Bà Nà",
+      "lat": 16.0041279,
+      "lng": 108.12566319999999,
+      "googleMapsUrl": "https://maps.google.com/?cid=5772849041064069229&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.3,
+      "reviewCount": 46,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [],
+      "manualReviewTags": [
+        "PHOTO"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.3⭐ từ 46 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Bà Nà (cách trung tâm khoảng 9.9 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 9.9,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJZSAyL0YfQjERMP2R9yBDRwY",
+      "name": "KDL Sinh thái Nam Ô",
+      "section": "GO",
+      "primaryType": "park",
+      "address": "446J+CQ6, Nam Ô 1, Hải Vân, Đà Nẵng, Việt Nam",
+      "shortAddress": "Hải Vân",
+      "lat": 16.111033499999998,
+      "lng": 108.1318981,
+      "googleMapsUrl": "https://maps.google.com/?cid=452404096445578544&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.9,
+      "reviewCount": 22,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [],
+      "manualReviewTags": [
+        "NATURE",
+        "SCENIC"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.9⭐ từ 22 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Hải Vân (cách trung tâm khoảng 9.8 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 9.8,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJbeO3ddMZQjERzeIxy-6JpYc",
+      "name": "Meliá Vinpearl Danang Riverfront",
+      "section": "STAY",
+      "primaryType": "hotel",
+      "address": "341 Đ. Trần Hưng Đạo, Phường, An Hải, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "An Hải",
+      "lat": 16.070832199999998,
+      "lng": 108.22928259999999,
+      "googleMapsUrl": "https://maps.google.com/?cid=9774370224981795533&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.9,
+      "reviewCount": 17086,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR"
+      ],
+      "manualReviewTags": [
+        "FAMILY",
+        "GROUP"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.9⭐ từ 17.086 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại An Hải (cách trung tâm khoảng 3.4 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": true,
+      "distanceFromCenter": 3.4,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJmZHsE5U9QjERDa3a1CuK3lo",
+      "name": "InterContinental Danang Sun Peninsula Resort",
+      "section": "STAY",
+      "primaryType": "resort_hotel",
+      "address": "Bãi Bắc, Thọ Quang, Sơn Trà, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Sơn Trà",
+      "lat": 16.1208274,
+      "lng": 108.3062154,
+      "googleMapsUrl": "https://maps.google.com/?cid=6547822829102607629&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.9,
+      "reviewCount": 12500,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "DATE",
+        "QUIET"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.9⭐ từ 12.500 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Sơn Trà (cách trung tâm khoảng 13.3 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": true,
+      "distanceFromCenter": 13.3,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJQWWv4A8YQjERuqj9zjNqKAc",
+      "name": "Wyndham Danang Golden Bay Hotel",
+      "section": "STAY",
+      "primaryType": "hotel",
+      "address": "01 Lê Văn Duyệt, Sơn Trà, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Sơn Trà",
+      "lat": 16.0980636,
+      "lng": 108.224177,
+      "googleMapsUrl": "https://maps.google.com/?cid=515778928082528442&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.7,
+      "reviewCount": 11358,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR"
+      ],
+      "manualReviewTags": [
+        "FAMILY",
+        "GROUP"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.7⭐ từ 11.358 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Sơn Trà (cách trung tâm khoảng 5.4 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 5.4,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJN75cdYQXQjERTFPrr_KfIPQ",
+      "name": "Khách Sạn Parosand",
+      "section": "STAY",
+      "primaryType": "hotel",
+      "address": "216 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "An Hải",
+      "lat": 16.0675871,
+      "lng": 108.2448052,
+      "googleMapsUrl": "https://maps.google.com/?cid=17591236009191494476&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.8,
+      "reviewCount": 5201,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "FAMILY",
+        "GROUP"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.8⭐ từ 5.201 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại An Hải (cách trung tâm khoảng 4.8 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": true,
+      "distanceFromCenter": 4.8,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJiZEC47QXQjER7Gf4-w_RhCE",
+      "name": "Santa Luxury Hotel",
+      "section": "STAY",
+      "primaryType": "hotel",
+      "address": "362W+PP6, 09 Đỗ Bá, Bắc Mỹ Phú, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Ngũ Hành Sơn",
+      "lat": 16.0517799,
+      "lng": 108.2467562,
+      "googleMapsUrl": "https://maps.google.com/?cid=2415285166759503852&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.9,
+      "reviewCount": 3596,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "FAMILY",
+        "GROUP"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.9⭐ từ 3.596 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Ngũ Hành Sơn (cách trung tâm khoảng 4.8 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": true,
+      "distanceFromCenter": 4.8,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJD-G94HoXQjERP5wOpAgwixs",
+      "name": "Cicilia Hotels & Spa Danang",
+      "section": "STAY",
+      "primaryType": "hotel",
+      "address": "6-8-10, Đỗ Bá, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Ngũ Hành Sơn",
+      "lat": 16.0520376,
+      "lng": 108.24659059999999,
+      "googleMapsUrl": "https://maps.google.com/?cid=1984732874457127999&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.7,
+      "reviewCount": 6471,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "DATE",
+        "QUIET"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.7⭐ từ 6.471 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Ngũ Hành Sơn (cách trung tâm khoảng 4.8 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 4.8,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJLaS0-joYQjERNTjoKJ6-LdU",
+      "name": "Khách sạn Novotel Đà Nẵng",
+      "section": "STAY",
+      "primaryType": "hotel",
+      "address": "36 Bạch Đằng, Street, Hải Châu, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Hải Châu",
+      "lat": 16.077411899999998,
+      "lng": 108.2236307,
+      "googleMapsUrl": "https://maps.google.com/?cid=15361143490531047477&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.6,
+      "reviewCount": 8628,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "CENTRAL"
+      ],
+      "manualReviewTags": [
+        "FAMILY",
+        "GROUP"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.6⭐ từ 8.628 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Hải Châu (cách trung tâm khoảng 3.4 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 3.4,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJDZsVkg4ZQjER7u0k8Siz7SE",
+      "name": "Da Nang Mikazuki Japanese Resorts & Spa",
+      "section": "STAY",
+      "primaryType": "hotel",
+      "address": "Nguyễn Tất Thành, Hải Vân, Đà Nẵng 55000, Việt Nam",
+      "shortAddress": "Hải Vân",
+      "lat": 16.0934007,
+      "lng": 108.14468749999999,
+      "googleMapsUrl": "https://maps.google.com/?cid=2444807161157840366&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.7,
+      "reviewCount": 5321,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "DATE",
+        "QUIET"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.7⭐ từ 5.321 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Hải Vân (cách trung tâm khoảng 7.5 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 7.5,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJg75J__8QQjERpbr4bqBkwk0",
+      "name": "Naman Retreat",
+      "section": "STAY",
+      "primaryType": "resort_hotel",
+      "address": "Trường Sa, Road, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Ngũ Hành Sơn",
+      "lat": 15.9697155,
+      "lng": 108.2842484,
+      "googleMapsUrl": "https://maps.google.com/?cid=5603151526621657765&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.7,
+      "reviewCount": 5238,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "FAMILY",
+        "GROUP"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.7⭐ từ 5.238 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Ngũ Hành Sơn (cách trung tâm khoảng 12.9 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 12.9,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJs5LFlIMXQjERkJpsGt6n484",
+      "name": "Canvas Danang Beach Hotel",
+      "section": "STAY",
+      "primaryType": "hotel",
+      "address": "234 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "An Hải",
+      "lat": 16.0663932,
+      "lng": 108.2450757,
+      "googleMapsUrl": "https://maps.google.com/?cid=14907943763894377104&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.8,
+      "reviewCount": 3718,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "FAMILY",
+        "GROUP"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.8⭐ từ 3.718 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại An Hải (cách trung tâm khoảng 4.8 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": true,
+      "distanceFromCenter": 4.8,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJKfL8bWgXQjERWPZKseMae6E",
+      "name": "Pullman Danang Beach Resort",
+      "section": "STAY",
+      "primaryType": "resort_hotel",
+      "address": "101 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Ngũ Hành Sơn",
+      "lat": 16.0405647,
+      "lng": 108.2500872,
+      "googleMapsUrl": "https://maps.google.com/?cid=11635923627476186712&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.7,
+      "reviewCount": 4430,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "DATE",
+        "QUIET"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.7⭐ từ 4.430 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Ngũ Hành Sơn (cách trung tâm khoảng 5.3 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 5.3,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJN75cdYQXQjERBUnemtIubGM",
+      "name": "NALOD ĐÀ NẴNG - KHÁCH SẠN & TRUNG TÂM HỘI NGHỊ",
+      "section": "STAY",
+      "primaryType": "resort_hotel",
+      "address": "192 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "An Hải",
+      "lat": 16.0721006,
+      "lng": 108.2446562,
+      "googleMapsUrl": "https://maps.google.com/?cid=7164152589315885317&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.7,
+      "reviewCount": 4347,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "FAMILY",
+        "GROUP"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.7⭐ từ 4.347 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại An Hải (cách trung tâm khoảng 4.9 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 4.9,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJ1f2ueH0XQjERNvf4PYABMDw",
+      "name": "Golden Lotus Hotel Da Nang",
+      "section": "STAY",
+      "primaryType": "establishment",
+      "address": "200 Trần Bạch Đằng, Ngũ Hành Sơn, Đà Nẵng 50000, Việt Nam",
+      "shortAddress": "Ngũ Hành Sơn",
+      "lat": 16.0510382,
+      "lng": 108.2469549,
+      "googleMapsUrl": "https://maps.google.com/?cid=4336968091464955702",
+      "rating": 4.8,
+      "reviewCount": 3000,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "FAMILY",
+        "GROUP"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.8⭐ từ 3.000 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Ngũ Hành Sơn (cách trung tâm khoảng 4.8 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": true,
+      "distanceFromCenter": 4.8,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJg9GXf2gXQjERMCQm7jjvSe4",
+      "name": "Premier Village Đà Nẵng",
+      "section": "STAY",
+      "primaryType": "hotel",
+      "address": "99 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Ngũ Hành Sơn",
+      "lat": 16.0420899,
+      "lng": 108.2507504,
+      "googleMapsUrl": "https://maps.google.com/?cid=17170518082119410736&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.7,
+      "reviewCount": 4026,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "DATE",
+        "QUIET"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.7⭐ từ 4.026 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Ngũ Hành Sơn (cách trung tâm khoảng 5.4 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 5.4,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJJxW4ysUQQjER_NC7GzE1W_0",
+      "name": "Meliá Danang Beach Resort",
+      "section": "STAY",
+      "primaryType": "hotel",
+      "address": "19 Trường Sa, Ngũ Hành Sơn, Đà Nẵng 50000, Việt Nam",
+      "shortAddress": "Ngũ Hành Sơn",
+      "lat": 16.0002912,
+      "lng": 108.2690161,
+      "googleMapsUrl": "https://maps.google.com/?cid=18256243999511400700&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.6,
+      "reviewCount": 5339,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "DATE",
+        "QUIET"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.6⭐ từ 5.339 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Ngũ Hành Sơn (cách trung tâm khoảng 9.3 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 9.3,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJowDc5iUXQjERq0JS82QvKnM",
+      "name": "TMS Hotel Da Nang Beach",
+      "section": "STAY",
+      "primaryType": "hotel",
+      "address": "292 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Ngũ Hành Sơn",
+      "lat": 16.0511516,
+      "lng": 108.24828629999999,
+      "googleMapsUrl": "https://maps.google.com/?cid=8298497374009049771&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.7,
+      "reviewCount": 3898,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "FAMILY",
+        "GROUP"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.7⭐ từ 3.898 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Ngũ Hành Sơn (cách trung tâm khoảng 4.9 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 4.9,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJp0AYSgAXQjERv6spuLWlHWI",
+      "name": "M Hotel Da Nang",
+      "section": "STAY",
+      "primaryType": "hotel",
+      "address": "286 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Ngũ Hành Sơn",
+      "lat": 16.05165,
+      "lng": 108.24803399999999,
+      "googleMapsUrl": "https://maps.google.com/?cid=7069989189938949055&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.8,
+      "reviewCount": 2786,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "FAMILY",
+        "GROUP"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.8⭐ từ 2.786 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Ngũ Hành Sơn (cách trung tâm khoảng 4.9 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 4.9,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJMeyhoXgXQjERqCs6CuNR5yI",
+      "name": "Sala Danang Beach Hotel",
+      "section": "STAY",
+      "primaryType": "hotel",
+      "address": "36-38 Lâm Hoành, An Hải, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "An Hải",
+      "lat": 16.062224300000004,
+      "lng": 108.24518139999999,
+      "googleMapsUrl": "https://maps.google.com/?cid=2515068952480721832&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.7,
+      "reviewCount": 3751,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "FAMILY",
+        "GROUP"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.7⭐ từ 3.751 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại An Hải (cách trung tâm khoảng 4.7 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 4.7,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJ8YytBwwXQjERJQIQYf4qyqM",
+      "name": "Minh Toan SAFI Ocean Hotel",
+      "section": "STAY",
+      "primaryType": "hotel",
+      "address": "224 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "An Hải",
+      "lat": 16.0669592,
+      "lng": 108.2449362,
+      "googleMapsUrl": "https://maps.google.com/?cid=11802293045516304933&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.7,
+      "reviewCount": 3704,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "FAMILY",
+        "GROUP"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.7⭐ từ 3.704 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại An Hải (cách trung tâm khoảng 4.8 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 4.8,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJQ-_7No0XQjERrR5A4J2fB9s",
+      "name": "Monarque Hotel",
+      "section": "STAY",
+      "primaryType": "hotel",
+      "address": "238 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "An Hải",
+      "lat": 16.0662467,
+      "lng": 108.24483930000001,
+      "googleMapsUrl": "https://maps.google.com/?cid=15782758919564172973&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.8,
+      "reviewCount": 2666,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "FAMILY",
+        "GROUP"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.8⭐ từ 2.666 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại An Hải (cách trung tâm khoảng 4.7 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 4.7,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJ7zjMyNsPQjER0iUSEjE-apo",
+      "name": "Furama Resort Danang",
+      "section": "STAY",
+      "primaryType": "resort_hotel",
+      "address": "105 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Ngũ Hành Sơn",
+      "lat": 16.0399456,
+      "lng": 108.2510681,
+      "googleMapsUrl": "https://maps.google.com/?cid=11126774209849730514&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.5,
+      "reviewCount": 6456,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "DATE",
+        "QUIET"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.5⭐ từ 6.456 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Ngũ Hành Sơn (cách trung tâm khoảng 5.5 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 5.5,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJf-vU7IMXQjERK86X1l0OACg",
+      "name": "BlueSun Danang Beach Hotel",
+      "section": "STAY",
+      "primaryType": "hotel",
+      "address": "230 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "An Hải",
+      "lat": 16.0668018,
+      "lng": 108.2449448,
+      "googleMapsUrl": "https://maps.google.com/?cid=2882319557712137771&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.8,
+      "reviewCount": 2487,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "FAMILY",
+        "GROUP"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.8⭐ từ 2.487 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại An Hải (cách trung tâm khoảng 4.8 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 4.8,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJWcFCas8QQjERQGJzK8w1ta4",
+      "name": "Hyatt Regency Danang Resort and Spa",
+      "section": "STAY",
+      "primaryType": "hotel",
+      "address": "5 Truong Sa Street, Ngu Hanh Son Ward, Đà Nẵng, 550000, Việt Nam",
+      "shortAddress": "Ngũ Hành Sơn",
+      "lat": 16.0130143,
+      "lng": 108.26419790000001,
+      "googleMapsUrl": "https://maps.google.com/?cid=12589027484402672192&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.5,
+      "reviewCount": 5683,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "DATE",
+        "QUIET"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.5⭐ từ 5.683 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Ngũ Hành Sơn (cách trung tâm khoảng 8.1 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 8.1,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJW7iIXnoXQjERwzVF2LpQ_m4",
+      "name": "HAIAN Beach Hotel & Spa",
+      "section": "STAY",
+      "primaryType": "hotel",
+      "address": "278 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Ngũ Hành Sơn",
+      "lat": 16.0530442,
+      "lng": 108.24752819999999,
+      "googleMapsUrl": "https://maps.google.com/?cid=7997918751679133123&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.6,
+      "reviewCount": 4037,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "DATE",
+        "QUIET"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.6⭐ từ 4.037 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Ngũ Hành Sơn (cách trung tâm khoảng 4.8 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 4.8,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJu954vu8XQjERQNvn5_8eBE8",
+      "name": "Grand Gold Hotel",
+      "section": "STAY",
+      "primaryType": "hotel",
+      "address": "Lô1- A2.2, Hoàng Sa, Sơn Trà, Đà Nẵng, Việt Nam",
+      "shortAddress": "Sơn Trà",
+      "lat": 16.093667,
+      "lng": 108.25149139999999,
+      "googleMapsUrl": "https://maps.google.com/?cid=5693709913359375168&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.7,
+      "reviewCount": 2843,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "FAMILY",
+        "GROUP"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.7⭐ từ 2.843 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Sơn Trà (cách trung tâm khoảng 6.8 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 6.8,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJHYZOdA4XQjERJcoVQ4t1a-0",
+      "name": "Golden Lotus Luxury",
+      "section": "STAY",
+      "primaryType": "hotel",
+      "address": "198B Trần Bạch Đằng, Ngũ Hành Sơn, Đà Nẵng 50000, Việt Nam",
+      "shortAddress": "Ngũ Hành Sơn",
+      "lat": 16.0523169,
+      "lng": 108.24667459999999,
+      "googleMapsUrl": "https://maps.google.com/?cid=17107896850483366437&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.8,
+      "reviewCount": 2066,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "FAMILY",
+        "GROUP"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.8⭐ từ 2.066 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Ngũ Hành Sơn (cách trung tâm khoảng 4.8 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 4.8,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJrxxvlNsXQjERy-eJcpABRJA",
+      "name": "Nhu Minh Plaza Danang Hotel",
+      "section": "STAY",
+      "primaryType": "hotel",
+      "address": "41 Phạm Văn Đồng, Phường, An Hải, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "An Hải",
+      "lat": 16.0698375,
+      "lng": 108.23865289999999,
+      "googleMapsUrl": "https://maps.google.com/?cid=10395435559786506187&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.7,
+      "reviewCount": 2692,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR"
+      ],
+      "manualReviewTags": [
+        "FAMILY",
+        "GROUP"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.7⭐ từ 2.692 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại An Hải (cách trung tâm khoảng 4.3 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 4.3,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJJU7MEwcZQjERGT-1n4zkLL8",
+      "name": "M Village Hotel Đà Nẵng Centre, a brand of Modern Village Lifestyle",
+      "section": "STAY",
+      "primaryType": "establishment",
+      "address": "177 Trần Phú, Hải Châu, Đà Nẵng 50000, Việt Nam",
+      "shortAddress": "Hải Châu",
+      "lat": 16.066422,
+      "lng": 108.2238567,
+      "googleMapsUrl": "https://maps.google.com/?cid=13775636652845514521",
+      "rating": 4.9,
+      "reviewCount": 1419,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "CENTRAL"
+      ],
+      "manualReviewTags": [
+        "DATE",
+        "QUIET"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.9⭐ từ 1.419 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Hải Châu (cách trung tâm khoảng 2.7 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 2.7,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJz-LSXAARQjERhdvmlZnPs_Y",
+      "name": "Fusion Resort & Villas Da Nang – Wellness Inclusive",
+      "section": "STAY",
+      "primaryType": "hotel",
+      "address": "Trường Sa, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "Ngũ Hành Sơn",
+      "lat": 15.972489200000002,
+      "lng": 108.28239339999999,
+      "googleMapsUrl": "https://maps.google.com/?cid=17776780412713360261&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.8,
+      "reviewCount": 1928,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "DATE",
+        "QUIET"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.8⭐ từ 1.928 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại Ngũ Hành Sơn (cách trung tâm khoảng 12.5 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 12.5,
+      "iconicException": false
+    },
+    {
+      "id": "ChIJ2fuKT0YXQjERmIj-JEeaWPo",
+      "name": "Voco Ma Belle Danang",
+      "section": "STAY",
+      "primaryType": "hotel",
+      "address": "168 Võ Nguyên Giáp, Street, An Hải, Đà Nẵng 550000, Việt Nam",
+      "shortAddress": "An Hải",
+      "lat": 16.0741364,
+      "lng": 108.24464289999999,
+      "googleMapsUrl": "https://maps.google.com/?cid=18039337937786538136&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYASAA",
+      "rating": 4.7,
+      "reviewCount": 2563,
+      "photoCount": 10,
+      "imageUrl": null,
+      "priceLevel": null,
+      "curatedTags": [
+        "POPULAR",
+        "NEAR_BEACH"
+      ],
+      "manualReviewTags": [
+        "FAMILY",
+        "GROUP"
+      ],
+      "curationStatus": "NEEDS_REVIEW",
+      "reasons": [
+        "Đánh giá 4.7⭐ từ 2.563 lượt đánh giá trên Google Maps",
+        "Tọa lạc tại An Hải (cách trung tâm khoảng 5.0 km)",
+        "Hơn 10 hình ảnh được xác nhận trong dữ liệu nguồn"
+      ],
+      "timeTags": [],
+      "typicalDurationMinutes": null,
+      "bestTimeOfDay": [],
+      "featured": false,
+      "distanceFromCenter": 5,
+      "iconicException": false
+    }
+  ]
+}

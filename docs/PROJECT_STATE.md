@@ -1,10 +1,10 @@
 # PROJECT_STATE.md
 
 ## Current phase
-Phase 1 implementation completed
+Phase 2A Data Curation completed
 
 ## Status
-WAITING FOR USER VISUAL REVIEW
+WAITING FOR USER DATA REVIEW
 
 ## Locked product decisions
 - Mobile-first web/PWA.
@@ -21,11 +21,19 @@ WAITING FOR USER VISUAL REVIEW
 - shadcn/ui is limited to primitives, not the main travel cards/chips.
 
 ## Data status
-- Raw/filtered source exists but is NOT suitable for direct application use.
-- Claude review identified heavy Hội An contamination and weak GO coverage.
-- Revised candidate file should enforce default radius <=15km and exclude Hội An from the Da Nang MVP.
-- Iconic Da Nang destinations outside the radius may later be curated as explicit exceptions with clear distance labels.
-- Coding agent must consume only the final curated seed, not the large candidate/raw files.
+- Raw candidate source audited (300 candidates: 180 EAT, 115 STAY, 5 GO + 1 Mikazuki water park).
+- Geofence enforced: strictly within Da Nang (radius <= 15km), excluded 6 non-Da Nang / Quảng Nam records.
+- Deduplication enforced: removed duplicate chain branches (kept 1 flagship each).
+- Phase 2A.2 Curation Evidence Hardening applied:
+  - 5 Safe Auto-Derived Tags only: `POPULAR`, `CAFE`, `SEAFOOD`, `CENTRAL`, `NEAR_BEACH` (documented in `docs/DATA_TAG_RULES.md`).
+  - All unverified subjective tags moved to `manualReviewTags` (74 places queued in `docs/MANUAL_CURATION_QUEUE.md`).
+  - Unverified `CHEAP` tags removed 100% (due to `priceLevel = null`).
+  - Unverified `NIGHT` tags removed 100% (due to lack of verified opening hours).
+  - `timeTags = []`, `bestTimeOfDay = []`, `typicalDurationMinutes = null` set to prevent false assumptions.
+  - Reasons rewritten to be 100% factual (rating, review count, location, distance, verified type, photo count).
+- Curated seed generated: `src/data/curated/curated-places.json` (86 places: 50 EAT, 6 GO, 30 STAY).
+- 100% validated via Zod schema (`PlaceSchema`).
+- Audit reports: `docs/DATA_CURATION_REPORT.md`, `docs/DATA_TAG_RULES.md`, `docs/MANUAL_CURATION_QUEUE.md`, `docs/GO_DATA_GAPS.md`.
 
 ## Image strategy — locked for MVP
 - Phase 1 uses a small number of approved local demo images or legally reusable/owned travel images under `public/images/demo/`.
@@ -35,13 +43,9 @@ WAITING FOR USER VISUAL REVIEW
 - Branded category fallback is allowed only when no approved real image is available.
 
 ## Manual pre-work still required by user
-1. Review the revised candidate JSON and manually curate the final ~100 places.
-2. Manually add enough real GO destinations to cover the enabled GO preference chips; the filtered source is insufficient.
-3. Assign curated tags/reasons/time tags to final places.
-4. Add `typicalDurationMinutes` and `bestTimeOfDay` for places eligible for mini itineraries.
-5. Provide/approve one legally usable image per final curated place, or accept branded fallback.
-6. Connect/authorize Vercel during Phase 0 when Gemini reaches deployment.
-7. Test Phase 1 preview on a real phone and approve the visual direction before Phase 2.
+1. Review curated seed `src/data/curated/curated-places.json` (86 places).
+2. Review GO gaps in `docs/GO_DATA_GAPS.md` and approve/verify ~15-20 iconic GO destinations.
+3. Review and approve before Phase 2B (frontend integration).
 
 ## Analytics strategy
 - Basic Vercel Analytics begins in Phase 3.
@@ -49,12 +53,10 @@ WAITING FOR USER VISUAL REVIEW
 - Full funnel/100-user experiment occurs in Phase 8.
 
 ## Known blockers / risks
-- GO source coverage remains too small after geographic cleanup; manual curation is required.
+- GO source coverage remains limited (6 places); manual verification/addition of iconic places is required.
 - Image licensing cannot be solved automatically by the coding agent.
-- Real-device visual approval and Vercel account authorization require the user.
 
 ## Next action
-- User visual test of Phase 1 on real mobile phone (360px, 390px, 430px).
-- User tests all 4 intent flows and mini itinerary.
-- User visual approval required before Phase 2 begins.
-- Phase 2: DO NOT START.
+- User review of Phase 2A curated dataset and gap reports.
+- User approves curated seed and GO addition list.
+- DO NOT start Phase 2B until user approval.
