@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="helioNight" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#18181B"/>
+      <stop offset="50%" stop-color="#311042"/>
+      <stop offset="100%" stop-color="#4C1D95"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#helioNight)"/>
+  <!-- Ferris Wheel Silhouette in Distance -->
+  <circle cx="480" cy="180" r="100" fill="none" stroke="#F43F5E" stroke-width="4" opacity="0.6"/>
+  <circle cx="480" cy="180" r="12" fill="#F43F5E"/>
+  <line x1="480" y1="80" x2="480" y2="280" stroke="#F43F5E" stroke-width="2" opacity="0.5"/>
+  <line x1="380" y1="180" x2="580" y2="180" stroke="#F43F5E" stroke-width="2" opacity="0.5"/>
+  <line x1="409" y1="109" x2="551" y2="251" stroke="#F43F5E" stroke-width="2" opacity="0.5"/>
+  <line x1="409" y1="251" x2="551" y2="109" stroke="#F43F5E" stroke-width="2" opacity="0.5"/>
+  <!-- Festive Lantern Garland -->
+  <path d="M0,80 Q150,150 300,100 Q450,150 600,90" fill="none" stroke="#71717A" stroke-width="2"/>
+  <circle cx="100" cy="120" r="14" fill="#FBBF24"/>
+  <circle cx="180" cy="130" r="14" fill="#F43F5E"/>
+  <circle cx="260" cy="115" r="14" fill="#38BDF8"/>
+  <circle cx="340" cy="125" r="14" fill="#A855F7"/>
+  <circle cx="420" cy="135" r="14" fill="#FBBF24"/>
+  <circle cx="500" cy="115" r="14" fill="#F43F5E"/>
+  <!-- Night Market Stalls Silhouette -->
+  <rect y="270" width="600" height="130" fill="#09090B"/>
+  <path d="M40,270 L100,230 L160,270 Z" fill="#F59E0B" opacity="0.8"/>
+  <path d="M180,270 L240,235 L300,270 Z" fill="#EF4444" opacity="0.8"/>
+  <path d="M320,270 L380,230 L440,270 Z" fill="#06B6D4" opacity="0.8"/>
+  <!-- Ground Warm Glow Reflection -->
+  <ellipse cx="300" cy="380" rx="280" ry="25" fill="#F59E0B" opacity="0.2"/>
+  <!-- Tag badge text -->
+  <rect x="24" y="24" width="130" height="32" rx="16" fill="rgba(15, 23, 42, 0.6)" backdrop-filter="blur(4px)"/>
+  <text x="89" y="45" fill="#FFFFFF" font-family="system-ui, sans-serif" font-size="13" font-weight="600" text-anchor="middle">🎡 Chợ đêm Helio</text>
+</svg>

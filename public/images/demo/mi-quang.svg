@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="tableGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="soupGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#tableGrad)"/>
+  <!-- Bowl Outer -->
+  <circle cx="300" cy="220" r="150" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="8"/>
+  <circle cx="300" cy="220" r="135" fill="url(#soupGrad)"/>
+  <!-- Turmeric Noodles -->
+  <path d="M220,180 Q270,160 320,190 T380,210" fill="none" stroke="#FBBF24" stroke-width="12" stroke-linecap="round"/>
+  <path d="M200,210 Q280,240 350,190 T390,230" fill="none" stroke="#FDE047" stroke-width="10" stroke-linecap="round"/>
+  <!-- Shrimp & Meat -->
+  <ellipse cx="270" cy="200" rx="28" ry="18" fill="#EA580C"/>
+  <circle cx="330" cy="230" r="14" fill="#FFFFFF"/>
+  <circle cx="330" cy="230" r="8" fill="#F59E0B"/>
+  <!-- Green Herbs -->
+  <circle cx="250" cy="235" r="10" fill="#16A34A"/>
+  <circle cx="262" cy="242" r="8" fill="#22C55E"/>
+  <circle cx="320" cy="180" r="9" fill="#16A34A"/>
+  <!-- Peanuts -->
+  <ellipse cx="290" cy="215" rx="6" ry="4" fill="#B45309"/>
+  <ellipse cx="305" cy="225" rx="5" ry="4" fill="#92400E"/>
+  <!-- Rice Cracker (Bánh tráng) -->
+  <path d="M380,140 L440,110 L410,180 Z" fill="#FEF3C7" stroke="#D97706" stroke-width="2"/>
+  <circle cx="410" cy="140" r="2" fill="#000000" opacity="0.6"/>
+  <circle cx="420" cy="130" r="1.5" fill="#000000" opacity="0.6"/>
+  <!-- Tag badge text -->
+  <rect x="24" y="24" width="130" height="32" rx="16" fill="rgba(15, 23, 42, 0.6)" backdrop-filter="blur(4px)"/>
+  <text x="89" y="45" fill="#FFFFFF" font-family="system-ui, sans-serif" font-size="13" font-weight="600" text-anchor="middle">🍜 Mì Quảng</text>
+</svg>

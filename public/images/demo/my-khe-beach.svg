@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0284C7"/>
+      <stop offset="50%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#FDE047"/>
+    </linearGradient>
+    <linearGradient id="seaGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0284C7"/>
+      <stop offset="100%" stop-color="#0F766E"/>
+    </linearGradient>
+    <linearGradient id="sandGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FCD34D"/>
+      <stop offset="100%" stop-color="#F59E0B"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#skyGrad)"/>
+  <!-- Sun -->
+  <circle cx="480" cy="180" r="50" fill="#FEF08A" opacity="0.9"/>
+  <circle cx="480" cy="180" r="70" fill="#FEF08A" opacity="0.4"/>
+  <!-- Sea -->
+  <path d="M0,230 Q150,220 300,230 T600,225 L600,320 L0,320 Z" fill="url(#seaGrad)"/>
+  <!-- Waves -->
+  <path d="M0,270 Q120,260 250,270 T550,268 L600,275 L600,285 L0,285 Z" fill="#E0F2FE" opacity="0.6"/>
+  <!-- Beach Sand -->
+  <path d="M0,290 Q200,280 400,295 T600,300 L600,400 L0,400 Z" fill="url(#sandGrad)"/>
+  <!-- Palm Silhouette -->
+  <path d="M80,400 Q100,280 150,200 Q140,200 90,220 M150,200 Q200,190 230,220 M150,200 Q180,160 210,165 M150,200 Q130,150 110,170" stroke="#064E3B" stroke-width="8" stroke-linecap="round" fill="none"/>
+  <!-- Tag badge text -->
+  <rect x="24" y="24" width="130" height="32" rx="16" fill="rgba(15, 23, 42, 0.6)" backdrop-filter="blur(4px)"/>
+  <text x="89" y="45" fill="#FFFFFF" font-family="system-ui, sans-serif" font-size="13" font-weight="600" text-anchor="middle">🌊 Biển Mỹ Khê</text>
+</svg>

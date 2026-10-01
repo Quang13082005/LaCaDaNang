@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="stSky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0284C7"/>
+      <stop offset="70%" stop-color="#BAE6FD"/>
+      <stop offset="100%" stop-color="#F0FDF4"/>
+    </linearGradient>
+    <linearGradient id="mountainGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#047857"/>
+      <stop offset="100%" stop-color="#064E3B"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#stSky)"/>
+  <!-- Distant Mountain -->
+  <path d="M100,240 Q250,120 400,240 T600,240 L600,400 L0,400 L0,240 Z" fill="#0D9488" opacity="0.5"/>
+  <!-- Son Tra Mountain Ridge -->
+  <path d="M0,280 Q200,140 380,260 Q480,200 600,310 L600,400 L0,400 Z" fill="url(#mountainGrad)"/>
+  <!-- Turquoise Bay -->
+  <path d="M0,330 Q220,310 420,335 T600,320 L600,400 L0,400 Z" fill="#0284C7" opacity="0.85"/>
+  <!-- Coastline Curve -->
+  <path d="M0,370 Q280,350 600,365" stroke="#FDE68A" stroke-width="8"/>
+  <!-- Lady Buddha Silhouette on the cliff -->
+  <path d="M380,240 L383,210 L388,210 L391,240 Z" fill="#FFFFFF"/>
+  <circle cx="385.5" cy="207" r="3.5" fill="#FFFFFF"/>
+  <!-- Tag badge text -->
+  <rect x="24" y="24" width="140" height="32" rx="16" fill="rgba(15, 23, 42, 0.6)" backdrop-filter="blur(4px)"/>
+  <text x="94" y="45" fill="#FFFFFF" font-family="system-ui, sans-serif" font-size="13" font-weight="600" text-anchor="middle">🏔️ Bán đảo Sơn Trà</text>
+</svg>

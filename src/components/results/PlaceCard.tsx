@@ -1,0 +1,113 @@
+import React from "react";
+import Image from "next/image";
+import { MapPin, Star, Navigation, CheckCircle2 } from "lucide-react";
+import type { DemoPlace } from "@/data/demo-places";
+
+interface PlaceCardProps {
+  place: DemoPlace;
+  rank?: number;
+}
+
+export const PlaceCard: React.FC<PlaceCardProps> = ({ place, rank }) => {
+  // Show the 2 strongest reasons for clean, rapid 2-3s scanability
+  const topReasons = place.reasons.slice(0, 2);
+
+  return (
+    <article className="group relative w-full rounded-[16px] bg-white border border-slate-200/90 overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.05)] hover:shadow-[0_6px_18px_rgba(0,0,0,0.09)] transition-all duration-200 flex flex-col justify-between">
+      {/* Visual Image Banner with Fixed 16:10 Aspect Ratio */}
+      <div>
+        <div className="relative w-full aspect-[16/10] bg-slate-100 overflow-hidden">
+          <Image
+            src={place.imageUrl}
+            alt={place.name}
+            fill
+            sizes="(max-width: 640px) 100vw, 420px"
+            className="object-cover group-hover:scale-[1.02] transition-transform duration-300"
+            priority={rank === 1}
+          />
+
+          {/* Gradient Scrim for Contrast */}
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent pointer-events-none" />
+
+          {/* Rank Badge */}
+          {rank && (
+            <div className="absolute top-3 left-3 px-2.5 py-1 rounded-[10px] bg-slate-900/80 backdrop-blur-md text-white text-xs font-bold tracking-wide flex items-center gap-1 shadow-sm">
+              <span>#{rank}</span>
+              <span className="text-[11px] font-normal text-slate-300">gợi ý</span>
+            </div>
+          )}
+
+          {/* Primary Type & Area Overlay */}
+          <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-white text-xs">
+            <span className="font-semibold bg-black/50 backdrop-blur-sm px-2.5 py-0.5 rounded-md">
+              {place.primaryType}
+            </span>
+            <span className="flex items-center gap-1 bg-black/50 backdrop-blur-sm px-2.5 py-0.5 rounded-md text-slate-200 font-medium">
+              <MapPin className="w-3 h-3 text-sky-400" />
+              {place.area}
+            </span>
+          </div>
+        </div>
+
+        {/* Card Body */}
+        <div className="p-4 sm:p-5 space-y-2.5">
+          {/* 1. Place Name */}
+          <h3 className="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight leading-snug group-hover:text-sky-600 transition-colors">
+            {place.name}
+          </h3>
+
+          {/* 2. Metadata Row: Rating, Area, Price Note */}
+          <div className="flex items-center flex-wrap gap-2 text-xs text-slate-500">
+            <span className="inline-flex items-center gap-1 font-bold text-amber-500">
+              <Star className="w-3.5 h-3.5 fill-amber-400 stroke-amber-400" />
+              <span className="text-slate-800">{place.rating.toFixed(1)}</span>
+              <span className="text-slate-400 font-normal">
+                ({place.reviewCount.toLocaleString("vi-VN")})
+              </span>
+            </span>
+
+            {place.priceNote && (
+              <>
+                <span className="text-slate-300">·</span>
+                <span className="text-slate-600 font-medium">
+                  {place.priceNote}
+                </span>
+              </>
+            )}
+          </div>
+
+          {/* 3. Curated Reasons (2 strongest reasons) */}
+          <div className="rounded-[12px] bg-slate-50/80 border border-slate-100 p-2.5 sm:p-3 space-y-1">
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+              Phù hợp vì:
+            </span>
+            <ul className="space-y-1">
+              {topReasons.map((reason, idx) => (
+                <li
+                  key={idx}
+                  className="flex items-start gap-1.5 text-xs text-slate-700 leading-relaxed"
+                >
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
+                  <span>{reason}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      {/* 4. Action CTA Button */}
+      <div className="px-4 pb-4 sm:px-5 sm:pb-5 pt-0">
+        <a
+          href={place.googleMapsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-full min-h-[44px] rounded-[12px] bg-sky-500 hover:bg-sky-600 active:bg-sky-700 text-white font-semibold text-sm transition-all duration-150 flex items-center justify-center gap-2 shadow-[0_2px_8px_rgba(14,165,233,0.25)] focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2"
+        >
+          <Navigation className="w-4 h-4 fill-white" />
+          <span>Đi ngay trên Google Maps</span>
+        </a>
+      </div>
+    </article>
+  );
+};

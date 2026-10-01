@@ -1,10 +1,10 @@
 # PROJECT_STATE.md
 
 ## Current phase
-Phase 0 implementation completed
+Phase 1 implementation completed
 
 ## Status
-WAITING FOR USER REVIEW
+WAITING FOR USER VISUAL REVIEW
 
 ## Locked product decisions
 - Mobile-first web/PWA.
@@ -54,6 +54,7 @@ WAITING FOR USER REVIEW
 - Real-device visual approval and Vercel account authorization require the user.
 
 ## Next action
-- User review of Phase 0 base shell, quality gates, and responsive checks.
-- User authorization / connection for Vercel deployment preview.
-- STOP and await user explicit approval before Phase 1 begins.
+- User visual test of Phase 1 on real mobile phone (360px, 390px, 430px).
+- User tests all 4 intent flows and mini itinerary.
+- User visual approval required before Phase 2 begins.
+- Phase 2: DO NOT START.
