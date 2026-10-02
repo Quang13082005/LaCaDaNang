@@ -29,7 +29,7 @@ export const MoodChip: React.FC<MoodChipProps> = ({
       <span className="text-base shrink-0 leading-none" role="img" aria-hidden="true">
         {emoji}
       </span>
-      <span className="whitespace-nowrap font-medium text-xs sm:text-sm">
+      <span className="font-medium text-xs sm:text-sm leading-snug text-left sm:text-center break-words">
         {label}
       </span>
     </button>

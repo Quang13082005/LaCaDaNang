@@ -7,7 +7,7 @@ interface IntentCardProps {
   intent: IntentConfig;
   isSelected: boolean;
   onClick: () => void;
-  layoutMode?: "featured" | "grid";
+  layoutMode?: "featured" | "grid" | "compact";
 }
 
 export const IntentCard: React.FC<IntentCardProps> = ({
@@ -16,6 +16,40 @@ export const IntentCard: React.FC<IntentCardProps> = ({
   onClick,
   layoutMode = "grid",
 }) => {
+  // Compact mode for State B/C when intent is unselected or compacted
+  if (layoutMode === "compact") {
+    return (
+      <button
+        type="button"
+        onClick={onClick}
+        aria-pressed={isSelected}
+        className={`group relative w-full text-left rounded-[14px] min-h-[44px] px-3.5 py-2.5 transition-all duration-150 cursor-pointer select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 flex items-center justify-between gap-2.5 ${
+          isSelected
+            ? "bg-sky-50 border-2 border-sky-500 text-sky-900 shadow-sm"
+            : "bg-white border border-slate-200/90 hover:border-slate-300 text-slate-700 hover:text-slate-900 shadow-[0_1px_3px_rgba(0,0,0,0.03)]"
+        }`}
+      >
+        <div className="flex items-center gap-2.5 min-w-0">
+          <span className="text-lg shrink-0" role="img" aria-hidden="true">
+            {intent.emoji}
+          </span>
+          <span className={`font-bold text-sm truncate ${isSelected ? "text-sky-600" : "text-slate-800"}`}>
+            {intent.label}
+          </span>
+        </div>
+        <div
+          className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 transition-transform duration-200 ${
+            isSelected
+              ? "bg-sky-500 text-white rotate-180 shadow-xs"
+              : "bg-slate-100 text-slate-400 group-hover:text-slate-600"
+          }`}
+        >
+          <ChevronDown className="w-3.5 h-3.5" />
+        </div>
+      </button>
+    );
+  }
+
   const isNow = intent.id === "NOW" || layoutMode === "featured";
 
   // Featured "BÂY GIỜ LÀM GÌ?" card treatment
@@ -35,10 +69,7 @@ export const IntentCard: React.FC<IntentCardProps> = ({
         <div className="flex items-center justify-between gap-2 mb-2">
           <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/10 border border-amber-300/60 text-amber-800 text-[11px] font-bold tracking-wide uppercase">
             <Sparkles className="w-3 h-3 text-amber-600" />
-            Lịch trình tức thì
-          </span>
-          <span className="text-[11px] font-medium text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">
-            Gợi ý theo giờ
+            Lịch trình mẫu
           </span>
         </div>
 

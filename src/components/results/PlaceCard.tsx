@@ -29,14 +29,6 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({ place, rank }) => {
           {/* Gradient Scrim for Contrast */}
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent pointer-events-none" />
 
-          {/* Rank Badge */}
-          {rank && (
-            <div className="absolute top-3 left-3 px-2.5 py-1 rounded-[10px] bg-slate-900/80 backdrop-blur-md text-white text-xs font-bold tracking-wide flex items-center gap-1 shadow-sm">
-              <span>#{rank}</span>
-              <span className="text-[11px] font-normal text-slate-300">gợi ý</span>
-            </div>
-          )}
-
           {/* Primary Type & Area Overlay */}
           <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-white text-xs">
             <span className="font-semibold bg-black/50 backdrop-blur-sm px-2.5 py-0.5 rounded-md">
@@ -56,7 +48,7 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({ place, rank }) => {
             {place.name}
           </h3>
 
-          {/* 2. Metadata Row: Rating, Area, Price Note */}
+          {/* 2. Metadata Row: Verified Rating & Area */}
           <div className="flex items-center flex-wrap gap-2 text-xs text-slate-500">
             <span className="inline-flex items-center gap-1 font-bold text-amber-500">
               <Star className="w-3.5 h-3.5 fill-amber-400 stroke-amber-400" />
@@ -65,15 +57,6 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({ place, rank }) => {
                 ({place.reviewCount.toLocaleString("vi-VN")})
               </span>
             </span>
-
-            {place.priceNote && (
-              <>
-                <span className="text-slate-300">·</span>
-                <span className="text-slate-600 font-medium">
-                  {place.priceNote}
-                </span>
-              </>
-            )}
           </div>
 
           {/* 3. Curated Reasons (2 strongest reasons) */}
@@ -96,18 +79,20 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({ place, rank }) => {
         </div>
       </div>
 
-      {/* 4. Action CTA Button */}
-      <div className="px-4 pb-4 sm:px-5 sm:pb-5 pt-0">
-        <a
-          href={place.googleMapsUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-full min-h-[44px] rounded-[12px] bg-sky-500 hover:bg-sky-600 active:bg-sky-700 text-white font-semibold text-sm transition-all duration-150 flex items-center justify-center gap-2 shadow-[0_2px_8px_rgba(14,165,233,0.25)] focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2"
-        >
-          <Navigation className="w-4 h-4 fill-white" />
-          <span>Đi ngay trên Google Maps</span>
-        </a>
-      </div>
+      {/* 4. Action CTA Button (rendered only when verified Maps URL exists) */}
+      {Boolean(place.googleMapsUrl) && (
+        <div className="px-4 pb-4 sm:px-5 sm:pb-5 pt-0">
+          <a
+            href={place.googleMapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full min-h-[44px] rounded-[12px] bg-sky-500 hover:bg-sky-600 active:bg-sky-700 text-white font-semibold text-sm transition-all duration-150 flex items-center justify-center gap-2 shadow-[0_2px_8px_rgba(14,165,233,0.25)] focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2"
+          >
+            <Navigation className="w-4 h-4 fill-white" />
+            <span>Xem trên Google Maps</span>
+          </a>
+        </div>
+      )}
     </article>
   );
 };

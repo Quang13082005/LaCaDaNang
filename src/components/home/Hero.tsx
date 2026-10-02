@@ -1,6 +1,5 @@
 import React from "react";
 import Image from "next/image";
-import { Sparkles, MapPin } from "lucide-react";
 
 export const Hero: React.FC = () => {
   return (
@@ -21,23 +20,14 @@ export const Hero: React.FC = () => {
 
         {/* Content Container */}
         <div className="absolute inset-0 p-4 sm:p-5 flex flex-col justify-end text-left">
-          {/* City Badge */}
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-white text-[11px] font-semibold tracking-wide w-fit mb-1.5 border border-white/30 shadow-sm">
-            <Sparkles className="w-3 h-3 text-amber-300" />
-            <span className="flex items-center gap-1">
-              <MapPin className="w-3 h-3 text-sky-300" />
-              Đà Nẵng · Gợi ý nhanh
-            </span>
-          </div>
-
           {/* Brand Name */}
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight leading-tight drop-shadow-sm">
             LA CÀ ĐÀ NẴNG
           </h1>
 
-          {/* Tagline */}
-          <p className="text-xs sm:text-sm font-medium text-sky-100 mt-1 max-w-md line-clamp-1 drop-shadow-sm">
-            Đà Nẵng hôm nay, đi đâu nhỉ? Gợi ý nhanh trong 2 chạm.
+          {/* Tagline: Clean, truthful, no line-clamp ellipsis truncation */}
+          <p className="text-xs sm:text-sm font-medium text-sky-100 mt-1 max-w-md drop-shadow-sm leading-relaxed">
+            Tìm chỗ ăn, chơi và nghỉ ở Đà Nẵng.
           </p>
         </div>
       </div>

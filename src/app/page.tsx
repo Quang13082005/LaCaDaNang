@@ -9,6 +9,7 @@ import {
   getPlacesForSelection,
   getItineraryForPreference,
   PREFERENCES_BY_INTENT,
+  PRIMARY_INTENTS,
 } from "@/data/demo-places";
 
 export default function HomePage() {
@@ -38,6 +39,15 @@ export default function HomePage() {
 
   const handleResetPreference = () => {
     setSelectedPreference(null);
+    // P1.3: Smoothly return to the active preference panel without losing orientation or jumping to top
+    setTimeout(() => {
+      const panel = document.getElementById("preference-panel-active") || document.getElementById("preference-panel-active-desktop");
+      if (panel) {
+        const yOffset = -24;
+        const y = panel.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
+      }
+    }, 50);
   };
 
   // Smooth scroll to results on preference selection for mobile comfort
@@ -61,6 +71,11 @@ export default function HomePage() {
     selectedIntent === "NOW" && selectedPreference
       ? getItineraryForPreference(selectedPreference)
       : null;
+
+  const currentIntentLabel =
+    selectedIntent
+      ? PRIMARY_INTENTS.find((i) => i.id === selectedIntent)?.label
+      : undefined;
 
   const currentPreferenceLabel =
     selectedIntent && selectedPreference
@@ -94,6 +109,7 @@ export default function HomePage() {
             selectedPreference && (
               <ResultList
                 places={currentPlaces}
+                intentLabel={currentIntentLabel}
                 preferenceLabel={currentPreferenceLabel}
                 onResetPreference={handleResetPreference}
               />
@@ -115,7 +131,7 @@ export default function HomePage() {
           LA CÀ ĐÀ NẴNG
         </p>
         <p className="text-[11px] text-slate-400 mt-1">
-          Gợi ý địa điểm &amp; lịch trình tức thì trong tối đa 3 lần chạm · Đà Nẵng 2026
+          Khám phá ẩm thực, điểm đến và lịch trình Đà Nẵng
         </p>
       </footer>
     </div>

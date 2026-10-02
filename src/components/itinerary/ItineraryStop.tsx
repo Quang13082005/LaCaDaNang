@@ -56,18 +56,20 @@ export const ItineraryStop: React.FC<ItineraryStopProps> = ({
           {stop.reason}
         </p>
 
-        {/* Action Button: "Đi ngay chặng này" (>=44px touch target) */}
-        <div className="pt-3">
-          <a
-            href={stop.googleMapsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full min-h-[44px] rounded-[12px] bg-sky-500 hover:bg-sky-600 active:bg-sky-700 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-1.5 shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
-          >
-            <Navigation className="w-3.5 h-3.5 fill-white" />
-            <span>Đi ngay chặng này</span>
-          </a>
-        </div>
+        {/* Action Button: "Xem trên Google Maps" (rendered only when verified Maps URL exists, >=44px touch target) */}
+        {Boolean(stop.googleMapsUrl) && (
+          <div className="pt-3">
+            <a
+              href={stop.googleMapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full min-h-[44px] rounded-[12px] bg-sky-500 hover:bg-sky-600 active:bg-sky-700 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-1.5 shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+            >
+              <Navigation className="w-3.5 h-3.5 fill-white" />
+              <span>Xem trên Google Maps</span>
+            </a>
+          </div>
+        )}
       </div>
     </div>
   );

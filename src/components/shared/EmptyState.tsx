@@ -7,8 +7,8 @@ interface EmptyStateProps {
 }
 
 export const EmptyState: React.FC<EmptyStateProps> = ({
-  title = "Chưa tìm thấy địa điểm",
-  message = "Hãy thử chọn một tiêu chí khác để nhận gợi ý phù hợp.",
+  title = "Chưa có gợi ý phù hợp tiêu chí này.",
+  message = "Hãy thử chọn một lựa chọn khác để nhận gợi ý phù hợp.",
   onReset,
 }) => {
   return (
@@ -22,9 +22,9 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
         <button
           type="button"
           onClick={onReset}
-          className="min-h-[44px] px-4 py-2 rounded-[12px] bg-sky-500 text-white font-medium text-sm hover:bg-sky-600 transition-colors cursor-pointer"
+          className="min-h-[44px] px-5 py-2.5 rounded-[12px] bg-sky-500 text-white font-medium text-sm hover:bg-sky-600 active:bg-sky-700 transition-colors cursor-pointer shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
         >
-          Chọn lại tiêu chí
+          Đổi lựa chọn
         </button>
       )}
     </div>

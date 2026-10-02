@@ -21,60 +21,67 @@ export const IntentGrid: React.FC<IntentGridProps> = ({
     (i) => i.id !== "NOW"
   ) as IntentConfig[];
 
-  const isStandardIntentSelected =
-    selectedIntent !== null && selectedIntent !== "NOW";
+  const isAnyIntentSelected = selectedIntent !== null;
 
   return (
-    <section className="w-full space-y-4" aria-label="Mục đích khám phá">
-      {/* 1. Featured Intent: "BÂY GIỜ LÀM GÌ?" (Full-Width Banner) */}
+    <section className="w-full space-y-3" aria-label="Mục đích khám phá">
+      {/* 1. Featured Intent: "BÂY GIỜ LÀM GÌ?" */}
       <div className="w-full">
         <IntentCard
           intent={nowIntent}
           isSelected={selectedIntent === "NOW"}
           onClick={() => onSelectIntent("NOW")}
-          layoutMode="featured"
+          layoutMode={
+            isAnyIntentSelected && selectedIntent !== "NOW"
+              ? "compact"
+              : "featured"
+          }
         />
-        {selectedIntent === "NOW" && (
-          <PreferencePanel
-            intentId="NOW"
-            selectedPreferenceId={selectedPreference}
-            onSelectPreference={onSelectPreference}
-          />
+        {selectedIntent === "NOW" && !selectedPreference && (
+          <div id="preference-panel-active" className="mt-2">
+            <PreferencePanel
+              intentId="NOW"
+              selectedPreferenceId={selectedPreference}
+              onSelectPreference={onSelectPreference}
+            />
+          </div>
         )}
       </div>
 
-      {/* 2. Standard Discovery Intents Header Divider */}
-      <div className="flex items-center gap-2 pt-1 pb-0 px-1">
-        <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-          Hoặc khám phá theo nhu cầu:
-        </span>
-        <div className="flex-1 h-[1px] bg-slate-200/80" />
-      </div>
-
-      {/* 3. Responsive Grid: 1 column on mobile (< md), 3 columns on tablet/desktop (>= md) */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
+      {/* 2. Standard Discovery Intents (EAT, GO, STAY) */}
+      <div
+        className={
+          isAnyIntentSelected
+            ? "space-y-3"
+            : "grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4"
+        }
+      >
         {standardIntents.map((intent) => {
           const isSelected = selectedIntent === intent.id;
+          const isCompact = isAnyIntentSelected && !isSelected;
+
           return (
-            <IntentCard
-              key={intent.id}
-              intent={intent}
-              isSelected={isSelected}
-              onClick={() => onSelectIntent(intent.id)}
-              layoutMode="grid"
-            />
+            <div key={intent.id} className="w-full">
+              <IntentCard
+                intent={intent}
+                isSelected={isSelected}
+                onClick={() => onSelectIntent(intent.id)}
+                layoutMode={isCompact ? "compact" : "grid"}
+              />
+              {/* P1.1: Preference panel renders directly after the active card in DOM order */}
+              {isSelected && !selectedPreference && (
+                <div id="preference-panel-active" className="mt-2">
+                  <PreferencePanel
+                    intentId={intent.id}
+                    selectedPreferenceId={selectedPreference}
+                    onSelectPreference={onSelectPreference}
+                  />
+                </div>
+              )}
+            </div>
           );
         })}
       </div>
-
-      {/* 4. Preference Panel for Standard Discovery Intents */}
-      {isStandardIntentSelected && selectedIntent && (
-        <PreferencePanel
-          intentId={selectedIntent}
-          selectedPreferenceId={selectedPreference}
-          onSelectPreference={onSelectPreference}
-        />
-      )}
     </section>
   );
 };

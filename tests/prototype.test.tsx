@@ -2,12 +2,13 @@ import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import HomePage from "@/app/page";
+import { getPlacesForSelection } from "@/data/demo-places";
 
 // Mock window.scrollTo
 window.scrollTo = vi.fn();
 
-describe("Phase 1 Visual Prototype <= 3-Tap UX Flow", () => {
-  it("completes ĂN GÌ? flow in exactly 2 taps to see 3 recommendation cards", () => {
+describe("UX Hardening <= 3-Tap Flow & Truthful Recommendations", () => {
+  it("completes ĂN GÌ? flow in exactly 2 taps with truthful 2 matches and no fallback padding", () => {
     render(<HomePage />);
 
     // Initial state: no results visible
@@ -25,17 +26,28 @@ describe("Phase 1 Visual Prototype <= 3-Tap UX Flow", () => {
     const dateChip = screen.getByText("Hẹn hò");
     fireEvent.click(dateChip);
 
-    // Results appear IMMEDIATELY after Tap 2
-    expect(screen.getByText(/Gợi ý theo "Hẹn hò"/i)).toBeInTheDocument();
+    // Results appear IMMEDIATELY after Tap 2 with context header
+    expect(screen.getByText(/ĂN GÌ\? · Hẹn hò/i)).toBeInTheDocument();
+    expect(screen.getByText("Có 2 gợi ý cho lựa chọn này.")).toBeInTheDocument();
     expect(screen.getByText("Bếp Cuốn Đà Nẵng")).toBeInTheDocument();
     expect(screen.getByText("Cà Phê Trình — Bơ Cà Phê")).toBeInTheDocument();
 
-    // 3 recommendation cards have CTAs to navigate (Tap 3 optional)
-    const ctas = screen.getAllByRole("link", { name: /Đi ngay trên Google Maps/i });
-    expect(ctas.length).toBe(3);
+    // P0.1: No fallback padding! Exactly 2 places are shown, NOT 3
+    expect(screen.queryByText("Mì Quảng Bà Mua")).not.toBeInTheDocument();
+
+    // P0.3: No #1, #2 rank badges
+    expect(screen.queryByText(/#1/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/#2/i)).not.toBeInTheDocument();
+
+    // P0.5: Verified Google Maps CTA label
+    const verifiedCta = screen.getByRole("link", { name: /Xem trên Google Maps/i });
+    expect(verifiedCta).toHaveAttribute(
+      "href",
+      "https://maps.google.com/?cid=15858543023798826021"
+    );
   });
 
-  it("completes BÂY GIỜ LÀM GÌ? flow in exactly 2 taps to see a mini itinerary", () => {
+  it("completes BÂY GIỜ LÀM GÌ? flow with truthful 'Lịch trình mẫu' wording", () => {
     render(<HomePage />);
 
     // Tap 1: Select "BÂY GIỜ LÀM GÌ?"
@@ -43,32 +55,58 @@ describe("Phase 1 Visual Prototype <= 3-Tap UX Flow", () => {
     fireEvent.click(nowCard);
 
     // Preference chips expand
-    expect(screen.getByText("Người yêu")).toBeInTheDocument();
-    expect(screen.getByText("Bạn bè")).toBeInTheDocument();
+    expect(screen.getByText("Đi cùng người yêu")).toBeInTheDocument();
+    expect(screen.getByText("Đi cùng bạn bè")).toBeInTheDocument();
 
-    // Tap 2: Select "Người yêu"
-    const loverChip = screen.getByText("Người yêu");
+    // Tap 2: Select "Đi cùng người yêu"
+    const loverChip = screen.getByText("Đi cùng người yêu");
     fireEvent.click(loverChip);
 
     // Mini itinerary appears immediately after Tap 2
-    expect(screen.getAllByText("Lịch trình tức thì").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText("Lịch trình mẫu").length).toBeGreaterThanOrEqual(1);
     expect(
-      screen.getByText(/Buổi tối hẹn hò lãng mạn/i)
+      screen.getByText(/Lịch trình mẫu: Hẹn hò lãng mạn/i)
     ).toBeInTheDocument();
 
-    // Verify stops rendered in vertical timeline
-    expect(screen.getByText("18:45")).toBeInTheDocument();
-    expect(screen.getByText("20:00")).toBeInTheDocument();
-    expect(screen.getByText("21:15")).toBeInTheDocument();
+    // P0.4: No realtime false claims
+    expect(screen.queryByText(/Gợi ý theo giờ/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/từ thời gian hiện tại/i)).not.toBeInTheDocument();
 
-    // Per-stop "Đi ngay" CTAs
-    const stopCtas = screen.getAllByRole("link", {
-      name: /Đi ngay chặng này/i,
+    // Verify stops rendered with neutral time markers
+    expect(screen.getByText("Chặng 1")).toBeInTheDocument();
+    expect(screen.getByText("Chặng 2")).toBeInTheDocument();
+    expect(screen.getByText("Chặng 3")).toBeInTheDocument();
+
+    // Verified Maps CTA on Stop 1 (Bếp Cuốn)
+    const stopCta = screen.getByRole("link", {
+      name: /Xem trên Google Maps/i,
     });
-    expect(stopCtas.length).toBe(3);
+    expect(stopCta).toHaveAttribute(
+      "href",
+      "https://maps.google.com/?cid=15858543023798826021"
+    );
   });
 
-  it("allows switching intent and resetting preferences", () => {
+  it("handles 0, 1, 2, and 3+ match counts truthfully in getPlacesForSelection", () => {
+    // 0 matches
+    const zeroMatch = getPlacesForSelection("EAT", "non_existent_tag");
+    expect(zeroMatch.length).toBe(0);
+
+    // 1 match
+    const oneMatch = getPlacesForSelection("STAY", "gan_trung_tam");
+    expect(oneMatch.length).toBe(1);
+    expect(oneMatch[0].name).toBe("Haian Riverfront Hotel");
+
+    // 2 matches
+    const twoMatches = getPlacesForSelection("EAT", "dac_san");
+    expect(twoMatches.length).toBe(2);
+
+    // 3+ matches (capped at 3)
+    const threeMatches = getPlacesForSelection("EAT", "an_ngon");
+    expect(threeMatches.length).toBe(3);
+  });
+
+  it("allows resetting preferences via 'Đổi lựa chọn'", () => {
     render(<HomePage />);
 
     // Tap 1: Select "ĐI ĐÂU?"
@@ -79,12 +117,47 @@ describe("Phase 1 Visual Prototype <= 3-Tap UX Flow", () => {
     fireEvent.click(screen.getByText("Biển / ngắm cảnh"));
     expect(screen.getByText("Bãi Biển Mỹ Khê")).toBeInTheDocument();
 
-    // Reset via "Đổi tiêu chí"
-    const resetBtn = screen.getByRole("button", { name: /Đổi tiêu chí/i });
+    // Reset via "Đổi lựa chọn"
+    const resetBtn = screen.getByRole("button", { name: /Đổi lựa chọn/i });
     fireEvent.click(resetBtn);
 
     // Results close, preference chips remain ready for another selection
     expect(screen.queryByText("Bãi Biển Mỹ Khê")).not.toBeInTheDocument();
+    expect(screen.getByText("Biển / ngắm cảnh")).toBeInTheDocument();
+  });
+
+  it("renders truthful 1 match message for STAY 'Gần trung tâm'", () => {
+    render(<HomePage />);
+
+    // Select Ở ĐÂU?
+    fireEvent.click(screen.getByText("Ở ĐÂU?"));
+    expect(screen.getByText("Gần trung tâm")).toBeInTheDocument();
+
+    // Select "Gần trung tâm" (1 match: Haian Riverfront Hotel)
+    fireEvent.click(screen.getByText("Gần trung tâm"));
+
+    expect(screen.getByText(/Ở ĐÂU\? · Gần trung tâm/i)).toBeInTheDocument();
+    expect(screen.getByText("Có 1 gợi ý cho lựa chọn này.")).toBeInTheDocument();
+    expect(screen.getByText("Haian Riverfront Hotel")).toBeInTheDocument();
+
+    // No unsupported fake price
+    expect(screen.queryByText(/950.000/i)).not.toBeInTheDocument();
+  });
+
+  it("clears previous preference and results when switching intent directly", () => {
+    render(<HomePage />);
+
+    // Select EAT -> Hẹn hò
+    fireEvent.click(screen.getByText("ĂN GÌ?"));
+    fireEvent.click(screen.getByText("Hẹn hò"));
+    expect(screen.getByText("Bếp Cuốn Đà Nẵng")).toBeInTheDocument();
+
+    // Switch directly to GO
+    fireEvent.click(screen.getByText("ĐI ĐÂU?"));
+
+    // Previous EAT results are cleared
+    expect(screen.queryByText("Bếp Cuốn Đà Nẵng")).not.toBeInTheDocument();
+    // New GO preferences are visible
     expect(screen.getByText("Biển / ngắm cảnh")).toBeInTheDocument();
   });
 });
