@@ -21,6 +21,7 @@ export default function HomePage() {
   );
 
   const resultsRef = useRef<HTMLDivElement>(null);
+  const selectionRef = useRef<HTMLDivElement>(null);
 
   const handleSelectIntent = (intent: "EAT" | "GO" | "NOW" | "STAY") => {
     if (selectedIntent === intent) {
@@ -39,27 +40,17 @@ export default function HomePage() {
 
   const handleResetPreference = () => {
     setSelectedPreference(null);
-    // P1.3: Smoothly return to the active preference panel without losing orientation or jumping to top
-    setTimeout(() => {
-      const panel = document.getElementById("preference-panel-active") || document.getElementById("preference-panel-active-desktop");
-      if (panel) {
-        const yOffset = -24;
-        const y = panel.getBoundingClientRect().top + window.pageYOffset + yOffset;
-        window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
-      }
-    }, 50);
   };
 
-  // Smooth scroll to results on preference selection for mobile comfort
+  // Orient the user after the new state has mounted, including reset and Home.
   useEffect(() => {
-    if (selectedPreference && resultsRef.current) {
-      const yOffset = -20;
-      const element = resultsRef.current;
-      const y =
-        element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-      window.scrollTo({ top: y, behavior: "smooth" });
-    }
-  }, [selectedPreference]);
+    const target = selectedPreference ? resultsRef.current : selectionRef.current;
+    const top = selectedIntent && target
+      ? Math.max(0, target.getBoundingClientRect().top + window.scrollY - 20)
+      : 0;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top, behavior: reduceMotion ? "auto" : "smooth" });
+  }, [selectedIntent, selectedPreference]);
 
   // Derived results
   const currentPlaces =
@@ -89,17 +80,17 @@ export default function HomePage() {
       {/* Centered Mobile-First & Desktop-Balanced Container */}
       <main className="w-full max-w-lg md:max-w-4xl mx-auto px-4 sm:px-6 py-5 sm:py-8 flex-1">
         {/* Hero Section */}
-        <Hero />
+        {selectedIntent === null && <Hero />}
 
         {/* 4 Primary Intents Grid & Expanding Preference Panels */}
-        <div className="mt-2">
+        {selectedPreference === null && <div ref={selectionRef} className="mt-2">
           <IntentGrid
             selectedIntent={selectedIntent}
             selectedPreference={selectedPreference}
             onSelectIntent={handleSelectIntent}
             onSelectPreference={handleSelectPreference}
           />
-        </div>
+        </div>}
 
         {/* Results Anchor */}
         <div ref={resultsRef}>
@@ -119,6 +110,7 @@ export default function HomePage() {
           {selectedIntent === "NOW" && selectedPreference && currentItinerary && (
             <ItineraryTimeline
               itinerary={currentItinerary}
+              preferenceLabel={currentPreferenceLabel}
               onResetPreference={handleResetPreference}
             />
           )}
@@ -129,9 +121,6 @@ export default function HomePage() {
       <footer className="w-full border-t border-slate-200/80 bg-white py-6 px-4 text-center mt-8">
         <p className="text-xs font-semibold text-slate-700">
           LA CÀ ĐÀ NẴNG
-        </p>
-        <p className="text-[11px] text-slate-400 mt-1">
-          Khám phá ẩm thực, điểm đến và lịch trình Đà Nẵng
         </p>
       </footer>
     </div>

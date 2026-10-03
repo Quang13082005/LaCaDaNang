@@ -1,15 +1,17 @@
 import React from "react";
-import { Sparkles, RotateCcw } from "lucide-react";
+import { RotateCcw } from "lucide-react";
 import { ItineraryStop } from "@/components/itinerary/ItineraryStop";
 import type { DemoItinerary } from "@/data/demo-places";
 
 interface ItineraryTimelineProps {
   itinerary: DemoItinerary;
+  preferenceLabel?: string;
   onResetPreference: () => void;
 }
 
 export const ItineraryTimeline: React.FC<ItineraryTimelineProps> = ({
   itinerary,
+  preferenceLabel,
   onResetPreference,
 }) => {
   return (
@@ -19,18 +21,14 @@ export const ItineraryTimeline: React.FC<ItineraryTimelineProps> = ({
     >
       {/* Header Banner */}
       <div className="rounded-[16px] bg-gradient-to-br from-sky-500 to-sky-600 text-white p-4 sm:p-5 shadow-[0_4px_16px_rgba(14,165,233,0.25)]">
-        <div className="flex items-start justify-between gap-2">
-          <div>
-            <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-sm text-white text-[11px] font-bold uppercase tracking-wider mb-2">
-              <Sparkles className="w-3 h-3 text-amber-300" />
-              <span>Lịch trình mẫu</span>
-            </div>
-            <h2 className="text-xl sm:text-2xl font-bold tracking-tight">
-              {itinerary.title}
-            </h2>
-            <p className="text-xs sm:text-sm text-sky-100 mt-1 leading-relaxed">
-              {itinerary.subtitle}
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div className="min-w-0">
+            <p className="text-sm font-medium mb-2">
+              BÂY GIỜ LÀM GÌ?{preferenceLabel ? ` · ${preferenceLabel}` : ""}
             </p>
+            <h2 className="text-xl sm:text-2xl font-bold tracking-tight">
+              Lịch trình mẫu
+            </h2>
           </div>
 
           <button

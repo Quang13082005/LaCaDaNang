@@ -60,3 +60,17 @@ WAITING FOR USER DATA REVIEW
 - User review of Phase 2A curated dataset and gap reports.
 - User approves curated seed and GO addition list.
 - DO NOT start Phase 2B until user approval.
+
+## UX optimization checkpoint — 2026-10-03
+- Scope: ASTRA 6 focused UX pass on `phase-2a-deploy`, starting at `b25bcbeda3d9e278412d5e8e7ad52f6f803aeb93`. Phase 2B remains unstarted.
+- Home now shows only brand and four intent choices. Selecting an intent hides Hero and places its compact active card directly above preferences. Selecting a preference hides the decision UI and shows results with context. Reset restores the same panel; closing the active intent restores Home.
+- Removed core helper clamps/compact-label truncation and redundant mobile category/NOW badge. Shortened only three intent helpers in demo data.
+- Zero results retain intent/preference context and reset. Itineraries use one sample heading, preference context, and numbered stops without clock/duplicate stage labels. Unverified demo ratings, reasons and stop descriptions are hidden. Decorative result images use empty alt. Footer retains brand only. Scroll respects reduced motion.
+- Visual verification: 320, 360, 375, 390, 393, 412, 430, 440, 480 CSS px; Home, all four selected intents, 1/2/3 results, itinerary, reset, isolated zero-result fixture/reset. Screenshots include scrolled lower cards. Inspected natural text wrapping and meaning as well as computed clamp/ellipsis/ancestor clipping, viewport bounds and >=44px touch targets. No core text clipping found in these cases. Additional 768/1280 Home/GO/result/reset/NOW/itinerary checks passed. Browser console had no errors during app flows.
+- Verification so far: lint, typecheck, 27/27 tests (3 suites), Next production build passed. Worker build and release checkpoint will follow below.
+- Full tests ran against an identical source/test copy outside the repository because the existing curation suite writes its generated dataset. Production curated dataset SHA256 remained `CDBC44AA0CF9EBB19B07BC3FB8DBFD11A625E1C31E082EE6B3434F5E155457BD`.
+- Evidence and full handoff: sibling workspace files `UX_VERIFICATION_2026-10-03/` and `UX_OPTIMIZATION_HANDOFF_2026-10-03.md` (not deployment assets).
+- Limits: CSS viewport checks in Codex Chromium are not physical iOS/Safari/Android device certification. Zero-result screenshots use an in-memory data override in an external test harness, not a production route. Existing illustrative assets, missing verified Maps URLs, demo data and old Vercel/realtime wording in planning docs remain future work outside this pass. Cloudflare is the explicitly requested deployment workflow for this task.
+- Files: page, IntentCard/Grid, ResultList/PlaceCard, ItineraryTimeline/Stop, three demo helper strings, prototype tests/setup, this checkpoint. No curated source/schema/report, dependencies, global tokens, public assets or Cloudflare config changes.
+- Worker build also passed using the existing `npm run build:worker` script. OpenNext emitted its existing Windows compatibility warning but produced `.open-next/worker.js` successfully. No deployment package/config changes were required.
+- Pre-commit review: all code/test diffs inspected; `git diff --check` passed. Protected Phase 2A data/code/reports, packages/lockfile, Cloudflare/OpenNext config, globals and public assets match the starting HEAD. Remote `phase-2a-deploy` still points to the starting HEAD; no concurrent remote changes.

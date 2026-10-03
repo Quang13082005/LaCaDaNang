@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { ChevronDown, Sparkles } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import type { IntentConfig } from "@/data/demo-places";
 
 interface IntentCardProps {
@@ -33,7 +33,7 @@ export const IntentCard: React.FC<IntentCardProps> = ({
           <span className="text-lg shrink-0" role="img" aria-hidden="true">
             {intent.emoji}
           </span>
-          <span className={`font-bold text-sm truncate ${isSelected ? "text-sky-600" : "text-slate-800"}`}>
+          <span className={`font-bold text-sm break-words ${isSelected ? "text-sky-600" : "text-slate-800"}`}>
             {intent.label}
           </span>
         </div>
@@ -65,17 +65,9 @@ export const IntentCard: React.FC<IntentCardProps> = ({
             : "bg-gradient-to-br from-amber-50/50 via-white to-slate-50/40 border border-slate-200/90 hover:border-amber-300/80 hover:shadow-[0_4px_16px_rgba(0,0,0,0.06)] shadow-[0_2px_8px_rgba(0,0,0,0.04)]"
         }`}
       >
-        {/* Top Badges Row */}
-        <div className="flex items-center justify-between gap-2 mb-2">
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/10 border border-amber-300/60 text-amber-800 text-[11px] font-bold tracking-wide uppercase">
-            <Sparkles className="w-3 h-3 text-amber-600" />
-            Lịch trình mẫu
-          </span>
-        </div>
-
         {/* Content Row */}
         <div className="flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3.5">
+          <div className="flex min-w-0 items-center gap-3.5">
             <div
               className={`w-11 h-11 sm:w-12 sm:h-12 rounded-[14px] flex items-center justify-center text-2xl shrink-0 transition-transform duration-200 group-hover:scale-105 shadow-sm ${
                 isSelected
@@ -88,7 +80,7 @@ export const IntentCard: React.FC<IntentCardProps> = ({
               </span>
             </div>
 
-            <div>
+            <div className="min-w-0 break-words">
               <h2
                 className={`text-lg sm:text-xl font-bold tracking-tight ${
                   isSelected ? "text-sky-600" : "text-slate-900"
@@ -156,9 +148,6 @@ export const IntentCard: React.FC<IntentCardProps> = ({
         {/* Info Content Body */}
         <div className="flex-1 min-w-0 md:p-4 flex flex-col justify-between">
           <div>
-            <span className="text-[11px] font-semibold text-sky-600 uppercase tracking-wide block md:hidden">
-              {intent.categoryBadge}
-            </span>
             <h2
               className={`text-base md:text-lg font-bold tracking-tight mt-0.5 ${
                 isSelected ? "text-sky-600" : "text-slate-900"
@@ -166,7 +155,7 @@ export const IntentCard: React.FC<IntentCardProps> = ({
             >
               {intent.label}
             </h2>
-            <p className="text-xs text-slate-500 line-clamp-1 md:line-clamp-2 mt-0.5 md:mt-1 font-normal leading-relaxed">
+            <p className="text-xs text-slate-500 mt-0.5 md:mt-1 font-normal leading-relaxed break-words">
               {intent.sublabel}
             </p>
           </div>

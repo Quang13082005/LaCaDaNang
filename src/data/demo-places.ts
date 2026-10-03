@@ -52,7 +52,7 @@ export const PRIMARY_INTENTS: IntentConfig[] = [
   {
     id: "NOW",
     label: "BÂY GIỜ LÀM GÌ?",
-    sublabel: "Xem một lịch trình mẫu nhanh",
+    sublabel: "Lịch trình mẫu nhanh",
     emoji: "⚡",
     categoryBadge: "Lịch trình mẫu",
     thumbnailUrl: "/images/demo/dragon-bridge.svg",
@@ -61,7 +61,7 @@ export const PRIMARY_INTENTS: IntentConfig[] = [
   {
     id: "EAT",
     label: "ĂN GÌ?",
-    sublabel: "Quán ngon, đặc sản & cafe chill",
+    sublabel: "Quán ăn & cafe",
     emoji: "🍜",
     categoryBadge: "Ẩm thực địa phương",
     thumbnailUrl: "/images/demo/bep-cuon.svg",
@@ -69,7 +69,7 @@ export const PRIMARY_INTENTS: IntentConfig[] = [
   {
     id: "GO",
     label: "ĐI ĐÂU?",
-    sublabel: "Check-in, ngắm cảnh & khám phá",
+    sublabel: "Điểm đến & trải nghiệm",
     emoji: "📍",
     categoryBadge: "Điểm đến & Trải nghiệm",
     thumbnailUrl: "/images/demo/my-khe-beach.svg",

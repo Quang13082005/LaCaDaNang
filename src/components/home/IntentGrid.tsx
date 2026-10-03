@@ -21,66 +21,54 @@ export const IntentGrid: React.FC<IntentGridProps> = ({
     (i) => i.id !== "NOW"
   ) as IntentConfig[];
 
-  const isAnyIntentSelected = selectedIntent !== null;
+
+  if (selectedIntent) {
+    const activeIntent = PRIMARY_INTENTS.find((intent) => intent.id === selectedIntent)!;
+    return (
+      <section className="w-full space-y-3" aria-label="Mục đích khám phá">
+        <IntentCard
+          intent={activeIntent}
+          isSelected
+          onClick={() => onSelectIntent(activeIntent.id)}
+          layoutMode="compact"
+        />
+        <div id="preference-panel-active">
+          <PreferencePanel
+            intentId={selectedIntent}
+            selectedPreferenceId={selectedPreference}
+            onSelectPreference={onSelectPreference}
+          />
+        </div>
+        {PRIMARY_INTENTS.filter((intent) => intent.id !== selectedIntent).map((intent) => (
+          <IntentCard
+            key={intent.id}
+            intent={intent}
+            isSelected={false}
+            onClick={() => onSelectIntent(intent.id)}
+            layoutMode="compact"
+          />
+        ))}
+      </section>
+    );
+  }
 
   return (
     <section className="w-full space-y-3" aria-label="Mục đích khám phá">
-      {/* 1. Featured Intent: "BÂY GIỜ LÀM GÌ?" */}
-      <div className="w-full">
-        <IntentCard
-          intent={nowIntent}
-          isSelected={selectedIntent === "NOW"}
-          onClick={() => onSelectIntent("NOW")}
-          layoutMode={
-            isAnyIntentSelected && selectedIntent !== "NOW"
-              ? "compact"
-              : "featured"
-          }
-        />
-        {selectedIntent === "NOW" && !selectedPreference && (
-          <div id="preference-panel-active" className="mt-2">
-            <PreferencePanel
-              intentId="NOW"
-              selectedPreferenceId={selectedPreference}
-              onSelectPreference={onSelectPreference}
-            />
-          </div>
-        )}
-      </div>
-
-      {/* 2. Standard Discovery Intents (EAT, GO, STAY) */}
-      <div
-        className={
-          isAnyIntentSelected
-            ? "space-y-3"
-            : "grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4"
-        }
-      >
-        {standardIntents.map((intent) => {
-          const isSelected = selectedIntent === intent.id;
-          const isCompact = isAnyIntentSelected && !isSelected;
-
-          return (
-            <div key={intent.id} className="w-full">
-              <IntentCard
-                intent={intent}
-                isSelected={isSelected}
-                onClick={() => onSelectIntent(intent.id)}
-                layoutMode={isCompact ? "compact" : "grid"}
-              />
-              {/* P1.1: Preference panel renders directly after the active card in DOM order */}
-              {isSelected && !selectedPreference && (
-                <div id="preference-panel-active" className="mt-2">
-                  <PreferencePanel
-                    intentId={intent.id}
-                    selectedPreferenceId={selectedPreference}
-                    onSelectPreference={onSelectPreference}
-                  />
-                </div>
-              )}
-            </div>
-          );
-        })}
+      <IntentCard
+        intent={nowIntent}
+        isSelected={false}
+        onClick={() => onSelectIntent("NOW")}
+        layoutMode="featured"
+      />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
+        {standardIntents.map((intent) => (
+          <IntentCard
+            key={intent.id}
+            intent={intent}
+            isSelected={false}
+            onClick={() => onSelectIntent(intent.id)}
+          />
+        ))}
       </div>
     </section>
   );

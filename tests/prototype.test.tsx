@@ -3,6 +3,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import HomePage from "@/app/page";
 import { getPlacesForSelection } from "@/data/demo-places";
+import * as demoData from "@/data/demo-places";
 
 // Mock window.scrollTo
 window.scrollTo = vi.fn();
@@ -65,17 +66,19 @@ describe("UX Hardening <= 3-Tap Flow & Truthful Recommendations", () => {
     // Mini itinerary appears immediately after Tap 2
     expect(screen.getAllByText("Lịch trình mẫu").length).toBeGreaterThanOrEqual(1);
     expect(
-      screen.getByText(/Lịch trình mẫu: Hẹn hò lãng mạn/i)
+      screen.getByText(/BÂY GIỜ LÀM GÌ\? · Đi cùng người yêu/i)
     ).toBeInTheDocument();
 
     // P0.4: No realtime false claims
     expect(screen.queryByText(/Gợi ý theo giờ/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/từ thời gian hiện tại/i)).not.toBeInTheDocument();
 
-    // Verify stops rendered with neutral time markers
-    expect(screen.getByText("Chặng 1")).toBeInTheDocument();
-    expect(screen.getByText("Chặng 2")).toBeInTheDocument();
-    expect(screen.getByText("Chặng 3")).toBeInTheDocument();
+    // Order is stated once, without suggesting a clock time.
+    expect(screen.getByText("#1")).toBeInTheDocument();
+    expect(screen.getByText("#2")).toBeInTheDocument();
+    expect(screen.getByText("#3")).toBeInTheDocument();
+    expect(screen.queryByText(/Chặng \d/)).not.toBeInTheDocument();
+    expect(screen.queryByRole("region", { name: "Mục đích khám phá" })).not.toBeInTheDocument();
 
     // Verified Maps CTA on Stop 1 (Bếp Cuốn)
     const stopCta = screen.getByRole("link", {
@@ -152,12 +155,62 @@ describe("UX Hardening <= 3-Tap Flow & Truthful Recommendations", () => {
     fireEvent.click(screen.getByText("Hẹn hò"));
     expect(screen.getByText("Bếp Cuốn Đà Nẵng")).toBeInTheDocument();
 
-    // Switch directly to GO
+    // Restore selection UI, then switch to GO.
+    fireEvent.click(screen.getByRole("button", { name: "Đổi lựa chọn" }));
     fireEvent.click(screen.getByText("ĐI ĐÂU?"));
 
     // Previous EAT results are cleared
     expect(screen.queryByText("Bếp Cuốn Đà Nẵng")).not.toBeInTheDocument();
     // New GO preferences are visible
     expect(screen.getByText("Biển / ngắm cảnh")).toBeInTheDocument();
+  });
+
+  it("shows only the current decision and returns to Home when the active intent closes", () => {
+    render(<HomePage />);
+    fireEvent.click(screen.getByText("ĂN GÌ?"));
+    expect(screen.queryByRole("heading", { name: "LA CÀ ĐÀ NẴNG" })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByText("Hẹn hò"));
+    expect(screen.queryByRole("region", { name: "Mục đích khám phá" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Hẹn hò" })).not.toBeInTheDocument();
+    expect(screen.queryByText("Phù hợp vì:")).not.toBeInTheDocument();
+    expect(screen.queryByText("4.9")).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Đổi lựa chọn" }));
+    expect(screen.getByRole("button", { name: "Hẹn hò" })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "LA CÀ ĐÀ NẴNG" })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByText("ĂN GÌ?"));
+    expect(screen.getByRole("heading", { name: "LA CÀ ĐÀ NẴNG" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Hẹn hò" })).not.toBeInTheDocument();
+  });
+
+  it("keeps intent and preference context for zero results and restores the panel", () => {
+    const selection = vi.spyOn(demoData, "getPlacesForSelection").mockReturnValue([]);
+    try {
+      render(<HomePage />);
+      fireEvent.click(screen.getByText("ĂN GÌ?"));
+      fireEvent.click(screen.getByText("Hẹn hò"));
+      expect(screen.getByRole("heading", { name: "ĂN GÌ? · Hẹn hò" })).toBeInTheDocument();
+      expect(screen.getByText("Chưa có gợi ý phù hợp tiêu chí này.")).toBeInTheDocument();
+      expect(screen.queryAllByRole("article")).toHaveLength(0);
+      expect(screen.queryByRole("region", { name: "Mục đích khám phá" })).not.toBeInTheDocument();
+      fireEvent.click(screen.getByRole("button", { name: "Đổi lựa chọn" }));
+      expect(screen.getByRole("button", { name: "Hẹn hò" })).toBeInTheDocument();
+      expect(screen.queryByRole("region", { name: "Kết quả gợi ý" })).not.toBeInTheDocument();
+    } finally {
+      selection.mockRestore();
+    }
+  });
+
+  it.each([true, false])("respects reduced motion (%s) on selection, results and reset", (reduced) => {
+    const media = vi.spyOn(window, "matchMedia").mockReturnValue({ matches: reduced } as MediaQueryList);
+    try {
+      render(<HomePage />);
+      fireEvent.click(screen.getByText("ĂN GÌ?"));
+      fireEvent.click(screen.getByText("Hẹn hò"));
+      expect(window.scrollTo).toHaveBeenLastCalledWith({ top: 0, behavior: reduced ? "auto" : "smooth" });
+      fireEvent.click(screen.getByRole("button", { name: "Đổi lựa chọn" }));
+      expect(window.scrollTo).toHaveBeenLastCalledWith({ top: 0, behavior: reduced ? "auto" : "smooth" });
+    } finally {
+      media.mockRestore();
+    }
   });
 });
