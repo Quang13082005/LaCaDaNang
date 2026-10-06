@@ -1,227 +1,106 @@
-# M0.5 / M1-A active handoff
+# Current handoff — M0.5 and M1-A
+CURRENT_AUTHORITY. Timestamp 2026-10-06T22:57:16.711450+07:00. Current Codex session. Repo D:/Dự án tìm địa điểm ăn chơi/LaCaDaNang/danang_revised_pack.
 
-Latest user authorizes selective LOCAL checkpoint and M1-A provider/import planning only. M0 is complete. Initial41 untracked classified in GIT_SAFETY_CHECKPOINT.md;35 selected,6 local evidence excluded. Targeted command `node node_modules/vitest/vitest.mjs run tests/geo.test.ts tests/i18n.test.ts`:40/40 PASS,2 suites,18.63s; curation not run.53 protected non-doc hashes unchanged. Checkpoint commit about to be created; its hash will be recorded immediately after commit (cannot embed its own hash). No push/merge/deploy. M1-A next searches provider facts; no discovery-contract until provider/schema confirmed.
-
-## Previous M0 handoff — historical snapshot
-
-# Current agent handoff
-CURRENT_AUTHORITY — follows all21 sections of the supplied AI_AGENT_HANDOFF_TEMPLATE.
-
-## 1. Session identity
-- Timestamp: 2026-10-06T22:39:04.469031+07:00
-- Agent: current Codex session; M0 documentation/protection owner only.
-- Repo: D:/Dự án tìm địa điểm ăn chơi/LaCaDaNang/danang_revised_pack
-- Branch: phase-2a-deploy
-- HEAD: a7494666e786f0b968484ea142cc221ddaf38050
-- Milestone: M0 documentation/protection completed, READY_FOR_REVIEW. STOP. M1 NOT STARTED.
-- Objective: preserve work, normalize authority, make safe cross-agent continuation possible; no Home/UI/DB implementation.
+## 1. Objective and stopping point
+M0.5 Git checkpoint DONE. M1-A provider/workbook/import audit prepared for review; final provider/schema decision BLOCKED. STOP before M1-B. No Home/UI/DB implementation. User requested this stop; do not continue based on broad master prompt.
 
 ## 2. Git state
+Branch phase-2a-deploy, HEAD/local checkpoint dd7275446e7e85cc695e52a700f3cbdd52fef5a3, message `chore: checkpoint no-image MVP handoff and foundations`.
+45 explicit files committed, not pushed. Staged none; subsequent docs/proposals intentionally uncommitted for review. No branch switch, merge, deploy, clean/reset/delete. Initial41 classified in GIT_SAFETY_CHECKPOINT; six local evidence files retained untracked. Historical backups outside repo remain protected. Current status (including this post-commit handoff):
 ```text
-git status --short -uall:
- M AGENTS.md
- M GEMINI.md
- M MANUAL_PREWORK.md
- M docs/DATA_CURATION_REPORT.md
- M docs/DATA_TAG_RULES.md
- M docs/GO_DATA_GAPS.md
- M docs/MANUAL_CURATION_QUEUE.md
- M docs/PHASES.md
- M docs/PROJECT_STATE.md
-?? GEMINI_3_8_UX_HARDENING_IMPLEMENTATION.md
-?? docs/AGENT_TASK_QUEUE.md
-?? docs/ANALYTICS.md
-?? docs/ANALYTICS_SPEC.md
-?? docs/CURRENT_STATE.md
-?? docs/DATA_CONTRACT_NO_IMAGE.md
-?? docs/DB_INTEGRATION.md
-?? docs/DECISIONS.md
-?? docs/DOCUMENT_AUTHORITY.md
-?? docs/HANDOFF_CURRENT.md
-?? docs/I18N.md
-?? docs/I18N_ARCHITECTURE.md
-?? docs/NEARBY_DISCOVERY.md
-?? docs/NEARBY_ENGINE_PREPARATION.md
-?? docs/NOTIFICATIONS.md
-?? docs/NOTIFICATION_SPEC.md
-?? docs/ONE_THUMB_UX_AUDIT.md
-?? docs/UX_ONE_THUMB.md
-?? docs/UX_PRODUCT_CHECKPOINT_2026-10-04.md
-?? docs/UX_PRODUCT_CHECKPOINT_2026-10-05.md
-?? docs/archive/README.md
-?? docs/archive/pre-M0-2026-10-06/AGENTS.md
-?? docs/archive/pre-M0-2026-10-06/GEMINI.md
-?? docs/archive/pre-M0-2026-10-06/GEMINI_3_8_UX_HARDENING_IMPLEMENTATION.md
-?? docs/archive/pre-M0-2026-10-06/MANUAL_PREWORK.md
-?? docs/archive/pre-M0-2026-10-06/docs/PHASES.md
-?? docs/archive/pre-M0-2026-10-06/docs/PROJECT_STATE.md
+ M docs/AGENT_TASK_QUEUE.md
+ M docs/CURRENT_STATE.md
+ M docs/DATA_CONTRACT_NO_IMAGE.md
+ M docs/DB_INTEGRATION.md
+ M docs/DECISIONS.md
+ M docs/DOCUMENT_AUTHORITY.md
+ M docs/GIT_SAFETY_CHECKPOINT.md
+ M docs/HANDOFF_CURRENT.md
+?? docs/DB_IMPORT_CONTRACT_PROPOSAL.md
+?? docs/DB_PROVIDER_DECISION_REQUIRED.md
 ?? docs/evidence/commands.md
 ?? docs/evidence/git-before.txt
 ?? docs/evidence/git-final.txt
 ?? docs/evidence/protection-manifest.json
 ?? docs/evidence/validation.json
 ?? docs/evidence/workbook-audit.json
-?? docs/inputs/AI_AGENT_HANDOFF_TEMPLATE.md
-?? docs/inputs/ASTRA6_MASTER_EXECUTION_PROMPT_NO_IMAGE_MVP.md
-?? src/lib/geo/distance.ts
-?? src/lib/geo/filter-nearby.ts
-?? src/lib/i18n/locales.ts
-?? src/lib/i18n/messages.ts
-?? tests/geo.test.ts
-?? tests/i18n.test.ts
-
-git diff --stat (tracked only):
- AGENTS.md                     | 580 +++---------------------------------------
- GEMINI.md                     |  40 +--
- MANUAL_PREWORK.md             |   2 +
- docs/DATA_CURATION_REPORT.md  |   2 +
- docs/DATA_TAG_RULES.md        |   2 +
- docs/GO_DATA_GAPS.md          |   2 +
- docs/MANUAL_CURATION_QUEUE.md |   2 +
- docs/PHASES.md                |   2 +
- docs/PROJECT_STATE.md         |  81 +-----
- 9 files changed, 60 insertions(+), 653 deletions(-)
-
-Latest commits:
-a749466 fix: finalize progressive mobile UX
-b25bcbe fix: harden mobile UX for mentor review
-194108c chore: fix Cloudflare OpenNext deployment config
-d274588 checkpoint: phase 2a data curation
-1658f4f feat(phase-1): visual prototype with hardcoded data
 
 ```
-Staged files: none. Uncommitted changes: yes, docs plus pre-existing untracked work. No new runtime source changes. Local checkpoint commit: none created; HEAD above unchanged.
-Safe to switch branch? NO authorization / not established. Backups verified, but switching still needs ownership/collision checks and preservation of new M0 docs. No destructive Git commands.
-Initial14 untracked protected in sibling M0_HANDOFF_2026-10-06/originals; hashes in evidence/protection-manifest.json. git diff excludes untracked, so read those directly. evidence/git-final.txt captures full final list.
+Tracked diff summary:
+```text
+ docs/AGENT_TASK_QUEUE.md       |  8 ++++----
+ docs/CURRENT_STATE.md          | 37 +++++++++++++++++--------------------
+ docs/DATA_CONTRACT_NO_IMAGE.md |  3 +++
+ docs/DB_INTEGRATION.md         | 30 +++++++++++++++++-------------
+ docs/DECISIONS.md              |  7 +++++++
+ docs/DOCUMENT_AUTHORITY.md     |  3 +++
+ docs/GIT_SAFETY_CHECKPOINT.md  |  3 +++
+ docs/HANDOFF_CURRENT.md        |  2 +-
+ 8 files changed, 55 insertions(+), 38 deletions(-)
+
+```
+Status paths are final; diff line-count totals are a snapshot before this handoff text replacement. Latest full final stat/status saved outside repo in M05_M1A_HANDOFF/git-final.txt. No self-hash commit/amend loop. Previous full M0 handoff recoverable from local checkpoint and sibling pre-checkpoint snapshot.
 
 ## 3. Source of truth
-AGENTS rewritten for no-image/M0 scope; CURRENT_STATE is sole runtime authority; DECISIONS owns decisions. DOCUMENT_AUTHORITY lists every pre-existing root/docs Markdown and other plans.
-Data: LA_CA_DB_READY_500_NO_IMAGE_FINAL.xlsx, SHA256874e7d6d9f5688af85de347051d4fc67a52f44bbd97a249d1f717056f6496bd3; original in Downloads and identical sibling backup inputs/. Master/template exact copies under docs/inputs/.
-DB schema/migration version: unknown/not present locally. API contract version: none. Workbook structure is not proof of production SQL schema.
+AGENTS -> CURRENT_STATE -> DECISIONS -> this handoff -> AGENT_TASK_QUEUE; verify actual source/Git before work. DB_PROVIDER_DECISION_REQUIRED + DB_IMPORT_CONTRACT_PROPOSAL hold current M1-A findings. XLSX source hash874e7d6d9f5688af85de347051d4fc67a52f44bbd97a249d1f717056f6496bd3. Source Downloads workbook unchanged; M0 protected copy retained. No actual DB schema or API contract version.
 
-## 4. Completed this session
-- [x] Read both supplied Markdown files in full and all cells in all15 workbook sheets before document modifications.
-- [x] Fresh Git/runtime audit; runtime still demo, no DB client/query/API, no CAFE UI, image-required PlaceCard.
-- [x] Hash-verified copies of14 initial untracked files, other original docs, all3 inputs;53 protected non-doc hashes unchanged.
-- [x] Canonical authority/specs/queue/handoff created; stale instructions marked or archived without deleting originals/evidence.
-- [x] Independent workbook core QA:500 unique internal/Google IDs, valid coords/Maps/admin references/active/tag coverage;841 unique place-tag pairs;1500 place and108 tag translations, valid FKs/locale uniqueness; flat/core mapping agrees.
-- [x] Documentation-only validation and final Git diff/check; no runtime PASS asserted.
+## 4. Completed
+Audited all41 untracked paths:4 source,2 tests,29 documents selected;6 evidence excluded. Backed up pre-checkpoint files. Read geo/i18n source/tests; safe targeted40 tests PASS. Reviewed explicit staged45-file list/diff/check; local commit created. Rechecked project/parent env filenames, process env NAMES, packages/lockfile/config/source/migration history. Inspected Miniflare D1 sqlite schema read-only (internal table only). Fresh workbook read all15 sheets and normalized six core-table types in memory; all requested structural checks passed. Authored column-by-column draft and provider options from official sources.53 protected non-doc hashes unchanged.
 
-Files created in repo:
-- docs/AGENT_TASK_QUEUE.md
-- docs/ANALYTICS.md
-- docs/CURRENT_STATE.md
-- docs/DATA_CONTRACT_NO_IMAGE.md
-- docs/DB_INTEGRATION.md
-- docs/DECISIONS.md
-- docs/DOCUMENT_AUTHORITY.md
-- docs/HANDOFF_CURRENT.md
-- docs/I18N.md
-- docs/NEARBY_DISCOVERY.md
-- docs/NOTIFICATIONS.md
-- docs/UX_ONE_THUMB.md
-- docs/archive/README.md
-- docs/archive/pre-M0-2026-10-06/AGENTS.md
-- docs/archive/pre-M0-2026-10-06/GEMINI.md
-- docs/archive/pre-M0-2026-10-06/GEMINI_3_8_UX_HARDENING_IMPLEMENTATION.md
-- docs/archive/pre-M0-2026-10-06/MANUAL_PREWORK.md
-- docs/archive/pre-M0-2026-10-06/docs/PHASES.md
-- docs/archive/pre-M0-2026-10-06/docs/PROJECT_STATE.md
-- docs/evidence/commands.md
-- docs/evidence/git-before.txt
-- docs/evidence/git-final.txt
-- docs/evidence/protection-manifest.json
-- docs/evidence/validation.json
-- docs/evidence/workbook-audit.json
-- docs/inputs/AI_AGENT_HANDOFF_TEMPLATE.md
-- docs/inputs/ASTRA6_MASTER_EXECUTION_PROMPT_NO_IMAGE_MVP.md
+## 5. In progress / incomplete
+No partly edited runtime code. M1-A audit document deliverables ready; actual provider/project/schema/ownership not established. No final schema approval or discovery-contract.ts. M1-B unstarted. Do not call DB integration or complete M1 PASS.
 
-Tracked files modified:
-- AGENTS.md
-- GEMINI.md
-- MANUAL_PREWORK.md
-- docs/DATA_CURATION_REPORT.md
-- docs/DATA_TAG_RULES.md
-- docs/GO_DATA_GAPS.md
-- docs/MANUAL_CURATION_QUEUE.md
-- docs/PHASES.md
-- docs/PROJECT_STATE.md
+## 6. Decisions
+Local selective checkpoint authorized, no push. No assumed Supabase. Neon PostgreSQL proposed if no existing DB; D1 alternative requires acceptance of0/1 physical boolean storage. Neither chosen. Six core tables only, no media. Strict numeric/null rules preserve unknown values. Timestamps normalized to naive wall time only; UTC/+07 not inferred. Metadata DB-default alternative requires owner approval and retained provenance. See DECISIONS.
 
-Existing untracked documents modified (all originals backed up):
-- GEMINI_3_8_UX_HARDENING_IMPLEMENTATION.md
-- docs/ANALYTICS_SPEC.md
-- docs/I18N_ARCHITECTURE.md
-- docs/NEARBY_ENGINE_PREPARATION.md
-- docs/NOTIFICATION_SPEC.md
-- docs/ONE_THUMB_UX_AUDIT.md
-- docs/UX_PRODUCT_CHECKPOINT_2026-10-04.md
-- docs/UX_PRODUCT_CHECKPOINT_2026-10-05.md
-
-Outside repo created: M0_HANDOFF_2026-10-06 containing originals/, inputs/, backup-manifest.json, git-before.txt and three documentation/audit support scripts. These are not app implementation or dependencies.
-
-## 5. In progress
-No implementation left half-written. Last successful step: document/protection/workbook validation. M0 awaits user review only. M1 provider/schema/contract remains unstarted, not implicitly authorized.
-
-## 6. Decisions made
-See DECISIONS.md for numbered decisions/evidence. No-image is a user decision, not inferred. Workbook500 replaces old86 seed as intended source; old dataset is preserved. Cloudflare source/config supersedes stale Vercel docs. M0 validation is doc-only; broad master continuation instructions do not override user STOP. Archive/backup makes doc normalization reversible. Provider and timestamps are unresolved, not invented.
-
-## 7. Commands executed
-See evidence/commands.md for exact Git/support-script commands, read scope and the recovered console-encoding error. All product-changing commands (npm curation/import/migrate/deploy/Git commit etc.) NOT RUN. Support scripts and input originals retained outside repo for review.
+## 7. Commands and evidence
+From repo: git with per-command `-c safe.directory="D:/Dự án tìm địa điểm ăn chơi/LaCaDaNang/danang_revised_pack"`: status --short -uall; diff --check; diff --stat; ls-files --others --exclude-standard; diff --cached --name-only/check/stat; log --all on migration/sql/provider/schema paths; rev-parse HEAD; branch --show-current. Stage via explicit Python subprocess argv from sibling stage-allowlist.json (45 exact paths), not git add .; commit -m "chore: checkpoint no-image MVP handoff and foundations".
+Targeted: `node node_modules/vitest/vitest.mjs run tests/geo.test.ts tests/i18n.test.ts` -> exit0,40/40,2 suites,18.63s.
+Bundled Python -B ran read-only provider/workbook audits and docs writers outside repo. Reproducible fresh workbook audit: `C:/Users/THINKPAD789/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe -B D:/Dự án tìm địa điểm ăn chơi/M05_M1A_HANDOFF/audit_import_contract.py` (quote paths in shell). No workbook export/save. Provider report contains names/locations only, never secret values. Official web sources cited in provider decision doc.
+Sibling M05_M1A_HANDOFF holds pre-checkpoint/,initial-inventory.json,stage-allowlist.json,provider-audit.json,workbook-qa.json and final validation/status. Do not rerun docs writers over future edits blindly. A preliminary shell invocation printed Python text without executing it; no state change. Git LF/CRLF warnings informational; no errors in tests/commit.
 
 ## 8. Validation
-- M0: backup/protected hashes, workbook structural constraints, local Markdown links, authority routing, Git diff/check. evidence/validation.json is the final machine-readable result.
-- lint/typecheck/unit/integration/build: NOT RUN in M0 (documentation-only). Latest historical lint/typecheck PASS and67 tests5 suites on05/10 in UX_PRODUCT_2026-10-04/test-copy; Next build PASS in UX_PRODUCT_2026-10-05/build-copy. No fresh runtime claim.
-- responsive/manual/API smoke/Cloudflare preview: NOT RUN in M0.
-- DB row-count/FK checks: NOT RUN against DB; workbook-only checks in evidence/workbook-audit.json.
-- Historical curation tests mutate dataset; preserve copy-only workflow.
+Fresh geo18+i18n22 tests PASS. No curation tests, full tests, lint/typecheck/build/responsive rerun: no source implementation changed. Historical67-test/build result remains05Oct only. Diff --check PASS, source/data/config hash invariance53 files PASS. Workbook PK/FK/locale/section/lat-lng/Google-ID/Maps checks PASS. No live DB/API/Cloudflare smoke. Backup filenames all preserved. Raw logs/evidence not blindly committed.
 
-## 9. Database state
-Provider/project/environment: UNCONFIRMED; earlier DB agent may own an external project. Local migrations/schema/client/query absent. Tables touched:0; rows imported/changed:0; pending migrations: no files present, external state unknown. Rollback: no DB operation to roll back. Env variable NAMES used for DB: none; no root env file or source-required DB env found, no secret values recorded.
-Blocker for M1: real provider/schema/connection/ownership handoff, including SQL type/nullability/keys and Excel date/timezone policy. Do not create a competing DB. No discovery-contract.ts created.
+## 9. Database
+Status DB_PROVIDER_DECISION_REQUIRED. Provider/project/environment/connection/migration owner UNKNOWN. No DB env names found in project or relevant process environment. Miniflare metadata not app database. No tables/rows/migrations created,changed,imported. No production DB access; no DB rollback needed. Actual SQL schema not fabricated.
 
-## 10. Runtime/API state
-No discovery endpoint or request/response contract yet. Home synchronously filters demo by intent/tag and returns up to3, empty is supported. Current code has no actual network loading/error or credentials. Future validation/server-error/empty/success distinction is required; no auth/RLS design can be asserted before provider facts.
+## 10. Workbook/schema/API contract
+Counts: administrative_units94,places500,tags36,place_tags841,tag_translations108,place_translations1500.500 unique Google IDs, valid coordinates/Maps/admin FKs/active/tagged places. Zero requested structural violations. Section EAT134/CAFE145/GO94/STAY127.47 workbook columns documented; blank Column1 excluded. Draft logical types/nullable/PK/FK/unique/index/update/delete/import policies, no executable DDL. API endpoints/request/response absent. No discovery-contract.ts.
+Rating/reviews each10 null; strict parsing489 strings+1 numeric. photo_count3 null, optional metadata only. Boolean cells actual bool.8 timestamp fields numeric serials formatGeneral; epoch1899-12-30. Example46300.34072760417 ->2026-10-05T08:10:38.865 without timezone. Keep raw serial/workbook; don't infer instant. Source verification/update meaning/timezone and metadata-replacement permission require review.
 
-## 11. UX state
-Stable positions: NOT DONE, selected intent reordered. One-thumb: NOT PASS. No-image PlaceCard: NOT DONE. Loading/error from real API: absent. Baseline360/390/430/768/1280 recorded in ONE_THUMB_UX_AUDIT; no new M0 browser run. Historical03/10 clipping screenshots do not establish physical-device or new one-thumb acceptance.
+## 11. UX
+Home/UI unchanged, demo only; selected intent still reorders, one-thumb NOT PASS, PlaceCard image dependency remains.0-result/context/reset exists. No new responsive screenshots at360/390/430/768/1280; historical evidence only.
 
-## 12. Geo/recommendation state
-Browser GPS/permissions/nearby query: not implemented. Distance/filter/stable-sort helpers implemented, unconnected.1->3->5km proposed, not runtime. Demo exact-tag filter/slice max3, no padding; real ranking/mapping not implemented. New administrative coverage invalidates automatic use of old15km seed filter. Missing rating/null policy and incomplete nearby candidate sets need future tests.
+## 12. Geo/recommendation
+Pure utilities committed unchanged; no GPS/permission/runtime nearby/query/ranking. Demo tag filter/slice3 only, no padding. Workbook geography is new authority; no old15km seed filtering.
 
-## 13. i18n state
-VI/EN/KO resolver/dictionaries27 keys and22 tests implemented. Auto/manual are pure function inputs only; browser resolution/persistence/provider/switch/html-lang updates not connected. html lang remains vi. DB translation fallback not implemented. KO native review pending. Workbook translations must be used without inventing place names.
+## 13. I18n
+Pure VI/EN/KO detection/dictionaries now tracked unchanged. UI/provider/manual persistence/html-lang/DB translation fallback not wired; KO review pending.
 
-## 14. Analytics state
-Provider none, runtime events none. Canonical ANALYTICS supersedes old8-event vocabulary with master's20 events; privacy/dedup spec remains reference. Precise GPS must not leak. No consent/SDK configured.
+## 14. Analytics
+Spec only; no provider/events/SDK added. No raw GPS in audit/report/provider credentials.
 
-## 15. Notifications state
-Permission/reminder/delivery/deep-link restoration: not implemented. Current scope proposal is explicit reminder after value, never Home prompt. Background capability/provider unconfirmed; older five-use-case plan deferred.
+## 15. Notifications
+Spec only; no permission/reminder/delivery/deep-link implementation.
 
 ## 16. DO NOT REDO
-- Do not redo completed03/10 UX commit/deploy, restart Phase0, regenerate86 seed, scrape images, or treat workbook image queues as instructions.
-- Do not rerun documentation normalization script over future agent edits. M0 is complete, runtime untouched.
-- Do not mistake successful workbook QA for imported DB or live identity verification.
+Do not repeat M0 normalization or checkpoint all files again. Do not scrape images, import media, regenerate86 curated seed, run mutating curation suite in repo, or treat workbook PASS as actual DB success. No assumption that local cache constitutes provider setup.
 
-## 17. DO NOT TOUCH YET
-During this M0 stop: Home/UI/src/tests, data/schema/pipeline, package/lockfile, Cloudflare/OpenNext config, fonts/global tokens/public assets, master branch, external DB and other agent-owned files. Original XLSX remains unchanged. No stage/commit/push/merge/deploy. New doc authority does not authorize M1 by itself.
+## 17. Files changed / DO NOT TOUCH YET
+Checkpoint preserves M0 docs + prior geo/i18n foundations. This session modified AGENTS,GEMINI,CURRENT_STATE,DECISIONS,HANDOFF_CURRENT,AGENT_TASK_QUEUE,DOCUMENT_AUTHORITY; created GIT_SAFETY_CHECKPOINT. Post-checkpoint modifications: CURRENT_STATE,DECISIONS,HANDOFF_CURRENT,AGENT_TASK_QUEUE,DB_INTEGRATION,DATA_CONTRACT_NO_IMAGE,DOCUMENT_AUTHORITY,GIT_SAFETY_CHECKPOINT. New post-checkpoint docs: DB_PROVIDER_DECISION_REQUIRED,DB_IMPORT_CONTRACT_PROPOSAL. Support audit scripts/evidence outside repo.
+Untouched bytes: Home/UI and all runtime src/tests, curated/candidate data, package/lockfile, Next/OpenNext/Wrangler config, fonts/styles/assets, original XLSX. No API/GPS/ranking/i18n runtime/analytics/notification. No DB rows,migrations,master/main,push/merge/deploy. Do not stage six local evidence files as a shortcut.
 
 ## 18. Blockers
-No unresolved M0 protection/documentation blocker. For M1: user authorization to start; actual DB provider/project/schema/ownership unknown. Numeric strings/nulls and serial timestamps require explicit import mapping. M3 before M6 image dependency ordering requires documented minimal compatibility decision when relevant, not fabricated image URLs. Local backup is not remote Git protection; untracked work must accompany handoff to another machine.
+1. No real provider/project/schema/owner verified; user must hand over existing DB or select provider.
+2. Source timestamp timezone/semantics unknown; no conversion to true instant without evidence. Metadata current-time replacement requires approval.
+3. Final provider type/nullability/ID contract cannot be claimed until1–2 resolved. M1-A plan is ready, actual schema gate blocked.
 
-## 19. Exact next step
-Only AFTER user authorizes M1, first read docs/DB_INTEGRATION.md following the startup chain, then:
-```powershell
-git -c safe.directory="D:/Dự án tìm địa điểm ăn chơi/LaCaDaNang/danang_revised_pack" status --short -uall
-```
-Inspect actual owner-supplied DB schema/connection metadata plus package.json and src/lib/data. Establish provider/project/schema/owner and six-table column mapping. If facts unavailable, stop at decision checkpoint and request them; do not invent credentials or new DB. Only after confirmation create src/lib/data/discovery-contract.ts. Expected first success is verified provider/schema/ownership, NOT a changed Home.
+## 19. EXACT M1-B NEXT STEP
+After user review and explicit M1-B instruction: read DB_PROVIDER_DECISION_REQUIRED and DB_IMPORT_CONTRACT_PROPOSAL, run Git status, obtain/inspect real provider project schema/migration ownership and timestamp decision. Success means actual provider/schema facts and mappings agreed. Only then finalize DB_SCHEMA_CONTRACT and consider src/lib/data/discovery-contract.ts. If existing DB is found, reconcile it rather than create another. Do not import or change Home under this handoff.
 
-## 20. Recovery / rollback
-No DB/runtime rollback needed. Review docs diff and copy an individual original from sibling originals/ or archive only after checking it has not received later work. Never mass restore/reset/clean. Preserve new docs and evidence before any future checkout. For missing backup, do not switch/delete; locate manifest/input copies. Backup originals are verified but M0 new files are still uncommitted.
+## 20. Recovery
+Local commit dd7275446e7e85cc695e52a700f3cbdd52fef5a3 protects durable work, not external backup/logs. Post-commit docs still uncommitted. Use selective comparison with commit/pre-checkpoint copies after checking later user edits; no reset/clean/branch switching. Preserve originals and uncommitted docs when moving machines. No DB operation to reverse.
 
-## 21. New-agent startup checklist
-- [ ] Read AGENTS -> CURRENT_STATE -> DECISIONS -> HANDOFF_CURRENT -> AGENT_TASK_QUEUE.
-- [ ] Run Git status/diff/log, reconcile current source and ownership; do not assume this snapshot remains current.
-- [ ] Preserve all untracked/new M0 docs and sibling backup if transferring machines.
-- [ ] Confirm authorized milestone; M0 request ends here.
-- [ ] On M1 authorization follow section19; no Phase0 restart.
-- [ ] Update handoff before stopping, after milestones, on blocker or low context/credit.
+## 21. Startup checklist
+Read canonical chain; verify branch/HEAD/status/source against snapshot; confirm authorized M1-B scope and provider/time decisions; protect uncommitted docs; no Phase0 restart; handoff before interruption/low context; STOP at user boundary.

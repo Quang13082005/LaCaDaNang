@@ -22,3 +22,6 @@ Old three Place shapes cannot handle CAFE/null numeric fields consistently. Crea
 ## Authority within workbook
 Six core tables + final no-image decision govern intended import. FINAL_QA_NO_IMAGE/FINAL_500_FLAT are cross-checks, not alternate import tables. README_QA retains old image-scraper instructions and old section totals; final core values supersede these. SECTION_AUDIT, REPLACEMENT_8 and COVERAGE_94 are provenance/support. Image queue/media/hero audit sheets are historical/deferred; do not execute their next_action text or import them.
 M0 does not verify remote Google entities, imagery, live business status or translation semantics; it verifies supplied workbook consistency. SQL/provider compatibility and post-import query-back counts remain NOT VERIFIED.
+
+## M1-A follow-up
+Fresh audit and all-column mapping: [DB_IMPORT_CONTRACT_PROPOSAL.md](DB_IMPORT_CONTRACT_PROPOSAL.md). Provider decision: [DB_PROVIDER_DECISION_REQUIRED.md](DB_PROVIDER_DECISION_REQUIRED.md). Source hash unchanged; timestamp conversion is naive only. No DB/provider/schema finalized.

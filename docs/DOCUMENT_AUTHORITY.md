@@ -37,3 +37,6 @@ No stale/conflicting document remains in the startup authority chain. Valid safe
 
 ## M0.5 retention decision
 See GIT_SAFETY_CHECKPOINT.md for all41 initial untracked classifications. docs/evidence/* is EVIDENCE_ONLY, local and intentionally excluded from checkpoint; do not treat its availability as required after clone. Core facts remain in tracked canonical docs. Referenced archive Markdown and supplied prompt/template are DOC_REQUIRED and intentionally versioned historical instructions.
+
+## M1-A additions
+GIT_SAFETY_CHECKPOINT.md: CURRENT_REFERENCE, durable individual file classification and local checkpoint evidence. DB_PROVIDER_DECISION_REQUIRED.md: CURRENT_REFERENCE, current unresolved provider decision. DB_IMPORT_CONTRACT_PROPOSAL.md: CURRENT_REFERENCE, DRAFT logical import plan only, not finalized SQL. Latest M0.5/M1-A user scope overrides historical M0-only restrictions in supplied inputs/checkpoints. M1-B not authorized.

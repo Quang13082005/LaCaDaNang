@@ -47,3 +47,6 @@ tests/geo.test.ts | TEST_REQUIRED | YES | Focused non-curation regression tests
 tests/i18n.test.ts | TEST_REQUIRED | YES | Focused non-curation regression tests
 
 The6 docs/evidence files stay untracked/local. Links to them are optional local evidence; durable facts are in canonical docs. Archive originals remain DOC_REQUIRED because current authority redirects to them; retained history does not authorize executing old instructions. All initial files preserved in sibling M05_M1A_HANDOFF/pre-checkpoint, independently of Git.
+
+## Completed checkpoint
+Commit `dd7275446e7e85cc695e52a700f3cbdd52fef5a3`: chore: checkpoint no-image MVP handoff and foundations.45 files explicitly staged (35 initial durable untracked +9 tracked documentation changes +this inventory).40/40 targeted geo/i18n tests passed;53 protected hashes unchanged. No push. No curation run. Git CRLF warnings on added originals/source were informational; actual workspace/protected bytes remained unchanged. Final planning/handoff updates occur after this commit and remain uncommitted; see HANDOFF_CURRENT.
