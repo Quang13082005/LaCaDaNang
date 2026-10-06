@@ -1,5 +1,3 @@
-> HISTORICAL_EVIDENCE — 2026-10-06. Old image/Vercel/86-row preparation rules are superseded; new workbook and no-image decision apply. Current authority: docs/CURRENT_STATE.md, docs/DECISIONS.md and docs/HANDOFF_CURRENT.md (paths relative to repository root). Original content retained below as evidence, not execution authorization.
-
 # MANUAL_PREWORK.md — Những việc bạn cần tự làm trước/giữa các phase
 
 Tài liệu này chỉ liệt kê những phần AI coding agent không nên tự quyết định thay bạn.

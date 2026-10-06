@@ -1,3 +1,5 @@
+> HISTORICAL_EVIDENCE — 2026-10-06. Describes the old 86-row seed, not the new 500-place workbook. Retain provenance lessons; do not import obsolete tag counts/geofence/image gates into the new contract. Current authority: docs/CURRENT_STATE.md, docs/DECISIONS.md and docs/HANDOFF_CURRENT.md (paths relative to repository root). Original content retained below as evidence, not execution authorization.
+
 # MANUAL_CURATION_QUEUE.md — Hàng Đợi Phê Duyệt Dữ Liệu Thủ Công (Phase 2A.2)
 
 Ngày lập: 01/10/2026  

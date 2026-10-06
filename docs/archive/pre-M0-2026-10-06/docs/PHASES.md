@@ -1,5 +1,3 @@
-> HISTORICAL_EVIDENCE — 2026-10-06. The old Phase 0–10 roadmap is superseded by M0–M13 in the current queue. Current authority: docs/CURRENT_STATE.md, docs/DECISIONS.md and docs/HANDOFF_CURRENT.md (paths relative to repository root). Original content retained below as evidence, not execution authorization.
-
 # PHASES.md — Da Nang 3-Tap Discovery
 
 ## Phase 0 — Repository Bootstrap + Design Tokens
