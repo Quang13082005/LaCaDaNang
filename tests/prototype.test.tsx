@@ -112,7 +112,8 @@ describe("UX Hardening <= 3-Tap Flow & Truthful Recommendations", () => {
     expect(threeMatches.length).toBe(3);
   });
 
-  it("allows resetting preferences via 'Đổi lựa chọn'", () => {
+  it("allows resetting preferences via 'Đổi lựa chọn'", async () => {
+    vi.mocked(fetch).mockResolvedValue(apiResponse(3, "bien_ngam_canh", "GO"));
     render(<HomePage />);
 
     // Tap 1: Select "ĐI ĐÂU?"
@@ -121,30 +122,30 @@ describe("UX Hardening <= 3-Tap Flow & Truthful Recommendations", () => {
 
     // Tap 2: Select "Biển / ngắm cảnh"
     fireEvent.click(screen.getByText("Biển / ngắm cảnh"));
-    expect(screen.getByText("Bãi Biển Mỹ Khê")).toBeInTheDocument();
+    expect(await screen.findByText("API fixture 1")).toBeInTheDocument();
 
     // Reset via "Đổi lựa chọn"
     const resetBtn = screen.getByRole("button", { name: /Đổi lựa chọn/i });
     fireEvent.click(resetBtn);
 
     // Results close, preference chips remain ready for another selection
-    expect(screen.queryByText("Bãi Biển Mỹ Khê")).not.toBeInTheDocument();
+    expect(screen.queryByText("API fixture 1")).not.toBeInTheDocument();
     expect(screen.getByText("Biển / ngắm cảnh")).toBeInTheDocument();
   });
 
-  it("renders truthful 1 match message for STAY 'Gần trung tâm'", () => {
+  it("renders truthful 1 API match for STAY 'Trung tâm' with the original ID", async () => {
+    vi.mocked(fetch).mockResolvedValue(apiResponse(1, "gan_trung_tam", "STAY"));
     render(<HomePage />);
 
     // Select Ở ĐÂU?
     fireEvent.click(screen.getByText("Ở ĐÂU?"));
-    expect(screen.getByText("Gần trung tâm")).toBeInTheDocument();
+    expect(screen.getByText("Trung tâm")).toBeInTheDocument();
 
-    // Select "Gần trung tâm" (1 match: Haian Riverfront Hotel)
-    fireEvent.click(screen.getByText("Gần trung tâm"));
+    fireEvent.click(screen.getByText("Trung tâm"));
 
-    expect(screen.getByText(/Ở ĐÂU\? · Gần trung tâm/i)).toBeInTheDocument();
-    expect(screen.getByText("Có 1 gợi ý cho lựa chọn này.")).toBeInTheDocument();
-    expect(screen.getByText("Haian Riverfront Hotel")).toBeInTheDocument();
+    expect(screen.getByText(/Ở ĐÂU\? · Trung tâm/i)).toBeInTheDocument();
+    expect(await screen.findByText("Có 1 gợi ý cho lựa chọn này.")).toBeInTheDocument();
+    expect(screen.getByText("API fixture 1")).toBeInTheDocument();
 
     // No unsupported fake price
     expect(screen.queryByText(/950.000/i)).not.toBeInTheDocument();

@@ -24,8 +24,8 @@ export const DISCOVERY_FALLBACK_LOCALE: DiscoveryLocale = "vi";
 /** MVP rule: at most three truthful results, never padded. */
 export const DISCOVERY_MAX_RESULTS = 3;
 
-/** Sections whose API slice is implemented and verified. Others validate but answer 501. */
-export const ENABLED_DISCOVERY_SECTIONS: readonly DiscoverySection[] = ["EAT"];
+/** Enabled API slices. CAFE validates but answers 400 INTENT_NOT_AVAILABLE. */
+export const ENABLED_DISCOVERY_SECTIONS: readonly DiscoverySection[] = ["EAT", "GO", "STAY"];
 
 /** Identifier of the ordering rule; bump when the rule changes so clients/tests can tell. */
 export const DISCOVERY_RANKING_RULE = "provisional-v1" as const;

@@ -1,5 +1,5 @@
 # Decisions
-CURRENT_AUTHORITY — 2026-10-07T12:12:54+07:00. Current scope M3-B EAT frontend + no-image PlaceCard and selective local checkpoint; STOP before M4. Earlier milestone entries are historical.
+CURRENT_AUTHORITY — 2026-10-07. M4-B GO & STAY Neon discovery verified; selective local checkpoint authorized; STOP before M5. Earlier milestone entries are historical.
 
 1. **Current authorization: M0.5 and M1-A only.** Selective local checkpoint permitted after targeted tests; audit provider and propose import/normalization contract. No Home/UI/DB implementation/import or push/merge/deploy; stop before M1-B.
 2. **No-image MVP.** Images/place_media/photoCount cannot gate integration, ranking or release. No scraping. Static branding may remain. Existing card dependency is outstanding work, not already removed.
@@ -59,3 +59,15 @@ Checkpoint completed: `38c237a2c3976f60452227f28a01f6270f6fbdb4` — `feat: add 
 44. Requests use fixed vi for this phase, not locale runtime; key by selection, abort on exit, active guard against stale responses,15-second timeout and explicit retry.0/1/2/3 valid; malformed response becomes error, never padding.
 45. Fresh lint/typecheck133tests/build/live three-preference browser smoke PASS. Live2/3 results, offline0/1/errors/null/race/timeout coverage; no fictitious live empty test. See M3B_VERIFICATION.md and saved screenshots. No full one-thumb/production deployment claim.
 46. Selective local M3-B commit13 files; preserve16 unrelated staged renames and pre-existing dirty/untracked DB/docs. No push/merge/deploy. STOP before M4; real additional-section mapping requires explicit authorization and DB evidence.
+
+## Checkpoint-only takeover — 2026-10-07T12:31:11+07:00
+Real M3-B commit: `e39c7de65fc413f6561e0069642ba58f6bb95f0e`. Verified exact13 allowlisted paths;16 pre-existing staged renames unchanged. Source/tests match validated isolated copy (41 files excluding the deliberately regenerated curated copy), so no tests/build rerun and no fresh runtime PASS claim. Existing validation evidence retained:133/133 tests, lint/typecheck/build and documented live/responsive checks. No source edits, DB operations, push/merge/deploy or M4 work. Final Git intentionally retains16 staged renames,11 inherited unstaged modifications plus4 post-commit authority updates, and7 unrelated untracked files. STOP before M4; await explicit authorization.
+
+## M4-B decisions (2026-10-07)
+47. **GO & STAY real tag mappings finalized from M4-A audit:**
+    - GO: `chup_anh_dep` -> `PHOTO` (16 eligible); `thien_nhien` -> `NATURE` (26 eligible); `vui_choi` -> `ENTERTAINMENT` (8 eligible); `bien_ngam_canh` -> `BEACH` OR `SCENIC` (20 eligible union).
+    - STAY: `gan_bien` -> `NEAR_BEACH` (19 eligible); `yen_tinh` -> `QUIET` (8 eligible); `gan_trung_tam` -> `CENTRAL` (16 eligible; label updated to "Trung tâm", ID preserved); `cap_doi` -> `DATE` (10 eligible; label updated to "Hẹn hò", ID preserved).
+    - CAFE: Remains disabled with 400 INTENT_NOT_AVAILABLE until explicit product/UI decision.
+48. **Component generalization:** `EatDiscoveryResults.tsx` generalized to `DiscoveryResults.tsx` supporting EAT, GO, STAY. Eliminates demo fallback for GO and STAY. Preserves abort-on-reset, 15s timeout, stale request protection, and no raw server error display.
+49. **Validation & Checkpoint:** Fresh validation verified: lint PASS, typecheck PASS, 169/169 tests PASS, build PASS, 8 GO/STAY + 3 EAT live smoke PASS, responsive DOM & visual screenshots PASS across 320–1280px. Selective local checkpoint authorized: `feat: connect GO and STAY to Neon discovery`. Preserve 16 staged renames and unrelated dirty work. STOP before M5.
+

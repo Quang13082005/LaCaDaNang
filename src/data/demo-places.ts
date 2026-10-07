@@ -104,8 +104,8 @@ export const PREFERENCES_BY_INTENT: Record<string, PreferenceChipConfig[]> = {
   ],
   STAY: [
     { id: "gan_bien", label: "Gần biển", emoji: "🌊" },
-    { id: "gan_trung_tam", label: "Gần trung tâm", emoji: "🏙️" },
-    { id: "cap_doi", label: "Cặp đôi", emoji: "❤️" },
+    { id: "gan_trung_tam", label: "Trung tâm", emoji: "🏙️" },
+    { id: "cap_doi", label: "Hẹn hò", emoji: "❤️" },
     { id: "yen_tinh", label: "Yên tĩnh", emoji: "🌿" },
   ],
 };

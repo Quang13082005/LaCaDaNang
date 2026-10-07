@@ -3,12 +3,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Hero } from "@/components/home/Hero";
 import { IntentGrid } from "@/components/home/IntentGrid";
-import { ResultList } from "@/components/results/ResultList";
-import { EatDiscoveryResults } from "@/components/results/EatDiscoveryResults";
-import { demoToCard } from "@/lib/data/place-card-model";
+import { DiscoveryResults } from "@/components/results/DiscoveryResults";
 import { ItineraryTimeline } from "@/components/itinerary/ItineraryTimeline";
 import {
-  getPlacesForSelection,
   getItineraryForPreference,
   PREFERENCES_BY_INTENT,
   PRIMARY_INTENTS,
@@ -54,12 +51,6 @@ export default function HomePage() {
     window.scrollTo({ top, behavior: reduceMotion ? "auto" : "smooth" });
   }, [selectedIntent, selectedPreference]);
 
-  // Derived results
-  const currentPlaces =
-    (selectedIntent === "GO" || selectedIntent === "STAY") && selectedPreference
-      ? getPlacesForSelection(selectedIntent, selectedPreference).map(demoToCard)
-      : [];
-
   const currentItinerary =
     selectedIntent === "NOW" && selectedPreference
       ? getItineraryForPreference(selectedPreference)
@@ -97,11 +88,12 @@ export default function HomePage() {
         {/* Results Anchor */}
         <div ref={resultsRef}>
           {/* Result Branch 1: Normal Places Discovery (EAT / GO / STAY) */}
-          {selectedIntent === "EAT" && selectedPreference && <EatDiscoveryResults key={selectedPreference} preference={selectedPreference} preferenceLabel={currentPreferenceLabel} onResetPreference={handleResetPreference} />}
-          {(selectedIntent === "GO" || selectedIntent === "STAY") &&
+          {(selectedIntent === "EAT" || selectedIntent === "GO" || selectedIntent === "STAY") &&
             selectedPreference && (
-              <ResultList
-                places={currentPlaces}
+              <DiscoveryResults
+                key={`${selectedIntent}:${selectedPreference}`}
+                intent={selectedIntent}
+                preference={selectedPreference}
                 intentLabel={currentIntentLabel}
                 preferenceLabel={currentPreferenceLabel}
                 onResetPreference={handleResetPreference}

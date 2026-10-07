@@ -16,7 +16,7 @@
  *             → DiscoveryResponseData
  * Constraints:
  *  - DATABASE_URL is read server-side only; never exposed to the client.
- *  - Only EAT is enabled for M3-A; others answer 400 INTENT_NOT_AVAILABLE.
+ *  - EAT / GO / STAY enabled; CAFE answers 400 INTENT_NOT_AVAILABLE.
  *  - At most DISCOVERY_MAX_RESULTS (3) rows, never padded.
  *  - No images, no travel time, no live hours.
  */

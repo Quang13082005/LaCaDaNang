@@ -37,7 +37,20 @@ const EAT_PREFERENCES: Readonly<Record<string, PreferenceMapping>> = {
 
 const PREFERENCES_BY_SECTION: Readonly<Partial<Record<DiscoverySection, Readonly<Record<string, PreferenceMapping>>>>> = {
   EAT: EAT_PREFERENCES,
-  // CAFE / GO / STAY: mapping NOT verified in M3-A — intentionally absent (see HANDOFF).
+  // M4-A live audit + explicit M4-B product decisions. Multiple codes mean OR.
+  GO: {
+    chup_anh_dep: { kind: "tags", tagCodes: ["PHOTO"], note: "Verified PHOTO association." },
+    thien_nhien: { kind: "tags", tagCodes: ["NATURE"], note: "Verified NATURE association." },
+    vui_choi: { kind: "tags", tagCodes: ["ENTERTAINMENT"], note: "Verified ENTERTAINMENT association." },
+    bien_ngam_canh: { kind: "tags", tagCodes: ["BEACH", "SCENIC"], note: "Matches either BEACH or SCENIC; not both required." },
+  },
+  STAY: {
+    gan_bien: { kind: "tags", tagCodes: ["NEAR_BEACH"], note: "Verified NEAR_BEACH association; no distance claim." },
+    yen_tinh: { kind: "tags", tagCodes: ["QUIET"], note: "Verified QUIET association." },
+    gan_trung_tam: { kind: "tags", tagCodes: ["CENTRAL"], note: "UI label Trung tâm; existing preference ID retained." },
+    cap_doi: { kind: "tags", tagCodes: ["DATE"], note: "UI label Hẹn hò; existing preference ID retained." },
+  },
+  // CAFE remains unavailable pending a separate UI/product decision.
 };
 
 export function listPreferenceIds(section: DiscoverySection): string[] {
