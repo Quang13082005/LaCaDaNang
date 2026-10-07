@@ -2,10 +2,12 @@ import React from "react";
 import { RotateCcw } from "lucide-react";
 import { PlaceCard } from "@/components/results/PlaceCard";
 import { EmptyState } from "@/components/shared/EmptyState";
-import type { DemoPlace } from "@/data/demo-places";
+import type { PlaceCardModel } from "@/lib/data/place-card-model";
 
 interface ResultListProps {
-  places: DemoPlace[];
+  places: PlaceCardModel[];
+  status?: "idle" | "loading" | "success" | "empty" | "error";
+  onRetry?: () => void;
   intentLabel?: string;
   preferenceLabel?: string;
   onResetPreference: () => void;
@@ -16,7 +18,10 @@ export const ResultList: React.FC<ResultListProps> = ({
   intentLabel,
   preferenceLabel,
   onResetPreference,
+  status = places.length ? "success" : "empty",
+  onRetry,
 }) => {
+  const pending = status === "idle" || status === "loading";
   const contextTitle = intentLabel && preferenceLabel
     ? `${intentLabel} · ${preferenceLabel}`
     : preferenceLabel || "Gợi ý địa điểm";
@@ -30,21 +35,22 @@ export const ResultList: React.FC<ResultListProps> = ({
             {contextTitle}
           </h2>
           {/* P0.1 Truthful Count Information */}
-          {places.length === 0 && (
+          {status === "empty" && (
             <p className="text-xs text-slate-500 font-medium mt-0.5">
               Chưa có gợi ý cho lựa chọn này.
             </p>
           )}
-          {places.length === 1 && (
+          {status === "success" && places.length === 1 && (
             <p className="text-xs text-slate-500 font-medium mt-0.5">
               Có 1 gợi ý cho lựa chọn này.
             </p>
           )}
-          {places.length === 2 && (
+          {status === "success" && places.length === 2 && (
             <p className="text-xs text-slate-500 font-medium mt-0.5">
               Có 2 gợi ý cho lựa chọn này.
             </p>
           )}
+          {status === "success" && places.length === 3 && <p className="text-xs text-slate-500 font-medium mt-0.5">Có 3 gợi ý cho lựa chọn này.</p>}
         </div>
 
         <button
@@ -58,11 +64,19 @@ export const ResultList: React.FC<ResultListProps> = ({
       </div>
 
       {/* Cards: Vertical Stack on Mobile (< md), 3-Column Grid on Desktop (>= md) */}
-      {places.length === 0 ? <EmptyState /> : <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div className="min-h-[320px]" aria-busy={pending}>
+      {pending ? <div role="status" className="rounded-[16px] border border-slate-200 bg-white p-6 text-slate-600">Đang tìm địa điểm…</div> : status === "error" ? (
+        <div role="alert" className="rounded-[16px] border border-slate-200 bg-white p-5 space-y-3">
+          <h3 className="font-semibold text-slate-900">Chưa tải được địa điểm.</h3>
+          <p className="text-sm text-slate-600">Hãy thử lại hoặc đổi lựa chọn.</p>
+          {onRetry && <button type="button" onClick={onRetry} className="min-h-[44px] px-5 py-3 rounded-xl bg-sky-500 text-white font-semibold focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2">Thử lại</button>}
+        </div>
+      ) : status === "empty" ? <EmptyState /> : <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {places.map((place) => (
           <PlaceCard key={place.id} place={place} />
         ))}
       </div>}
+      </div>
     </section>
   );
 };

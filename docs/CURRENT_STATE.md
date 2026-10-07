@@ -1,18 +1,18 @@
 # Current state
-CURRENT_AUTHORITY — 2026-10-07T11:53:30+07:00. Latest user scope: BUILD RECOVERY ONLY + selective local M3-A checkpoint after validation. Supersedes older milestone permissions in AGENTS and historical decisions. M3-A backend/build/live API verified; M3-B NOT_STARTED. STOP for review.
+CURRENT_AUTHORITY — 2026-10-07T12:12:54+07:00. Latest user authorizes M3-B EAT frontend + no-image PlaceCard and selective local commit, then STOP. M3-B verified complete; M4 NOT_STARTED. Supersedes earlier scope restrictions in historical docs; safety remains.
 
 ## Git
-Branch phase-2a-deploy. Pre-checkpoint HEAD388309be8540a011cecf72ad3c128186473fd9c8. Selective checkpoint prepared; consult HANDOFF_CURRENT for resulting hash. Existing16 staged cleanup renames remain outside API checkpoint. Existing curatedAt modification preserved. No branch switch/push/merge/deploy. Working tree intentionally not clean.
+Branch phase-2a-deploy; parent38c237a2c3976f60452227f28a01f6270f6fbdb4. M3-B selective13-file checkpoint ready; actual hash recorded in HANDOFF_CURRENT after commit.16 pre-existing staged renames and unrelated modified/untracked work retained. No push/merge/deploy or branch switch.
 
-## Neon and API
-Neon neondb: six core tables,3079 rows from M1-D independent verification (historical, not re-imported/recounted today). This takeover independently SELECT-verified live EAT API IDs33,167,34. Read-only HTTP driver; no writes. Workbook SHA256874e7d6d9f5688af85de347051d4fc67a52f44bbd97a249d1f717056f6496bd3. Timestamp policy naive TIMESTAMP WITHOUT TIME ZONE unchanged. Neon branch display name production remains unconfirmed; no blocker for read-only smoke.
-GET /api/discovery EAT only, up to3 results, vi/en/ko contract, provisional-v1 ordering. Other sections disabled. Credentials server-only; .env.local ignored, not staged. Source unchanged during recovery.
+## EAT runtime
+Home EAT -> existing preference -> GET /api/discovery -> Neon -> model -> ResultList/no-image PlaceCard. No EAT demo fallback. States idle/loading/success/empty/error, retry and15s timeout; selection reset/unmount abort and late-response guard.0–3 results, no padding. Only verified an_ngon/general,dac_san/SPECIALTY,hen_ho/DATE.
+Cards render actual API name/typeLabel/area/address/tags, nullable rating/reviews/description, exact Maps href. No venue images/place_media dependency. Static hero/intent artwork remains. GO/STAY data still demo; NOW unchanged. No other section DB integration or runtime scope expansion.
 
-## Fresh validation
-Lint PASS; typecheck PASS;115/115 tests PASS in isolated copy to confine curation writes. Build PASS48.261s, final repeat PASS34.068s. Local dev Ready3.3s; GET EAT/vi HTTP200,3 unique rows, independent Neon IDs match, no secret in response. Dev stopped. Details and root-cause evidence: [M3A_BUILD_RECOVERY](M3A_BUILD_RECOVERY.md).
+## Validation
+Fresh lint/typecheck PASS;133/133 tests PASS in isolated copy; build PASS23.773s. Live browser all3 EAT preferences passed (counts3/3/2), names/Maps match API, independently matched Neon SELECT. No DB writes or secret exposure;19 client files scanned. Responsive DOM320–1280 and representative visual screenshots; no text-clamp PASS shortcut. See M3B_VERIFICATION.md for precise coverage and limits.
 
-## Runtime and boundaries
-Home remains11-place demo; PlaceCard image dependency remains. No frontend wiring/redesign/GPS/nearby/runtime i18n/analytics/notifications/Cloudflare work. No production validation claim.
+## DB and boundaries
+Neon neondb six tables3079rows verified previously; not re-imported/recounted this turn. Workbook SHA256874e7d6d9f5688af85de347051d4fc67a52f44bbd97a249d1f717056f6496bd3 unchanged. M3-A backend/package/schema unchanged. No full one-thumb/i18n/GPS/analytics/notifications/deploy. Dev stopped.
 
-## Next
-STOP. Review local checkpoint; obtain explicit M3-B authorization before EAT-only frontend integration. Preserve pre-existing staged cleanup and uncommitted schema/scripts/docs. Do not restart M3-A or re-import Neon.
+## Exact next
+STOP for checkpoint review. Only after explicit M4 authorization: verify Git and inspect CAFE/GO/STAY real tag/preference coverage before proposing mappings or enabling sections. Preserve existing dirty/staged work.

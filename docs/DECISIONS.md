@@ -1,5 +1,5 @@
 # Decisions
-CURRENT_AUTHORITY — 2026-10-07T11:53:30+07:00. Latest takeover authorization is BUILD RECOVERY ONLY plus selective local M3-A checkpoint; STOP before M3-B. Numbered earlier entries are historical and superseded by later confirmed facts.
+CURRENT_AUTHORITY — 2026-10-07T12:12:54+07:00. Current scope M3-B EAT frontend + no-image PlaceCard and selective local checkpoint; STOP before M4. Earlier milestone entries are historical.
 
 1. **Current authorization: M0.5 and M1-A only.** Selective local checkpoint permitted after targeted tests; audit provider and propose import/normalization contract. No Home/UI/DB implementation/import or push/merge/deploy; stop before M1-B.
 2. **No-image MVP.** Images/place_media/photoCount cannot gate integration, ranking or release. No scraping. Static branding may remain. Existing card dependency is outstanding work, not already removed.
@@ -50,3 +50,12 @@ CURRENT_AUTHORITY — 2026-10-07T11:53:30+07:00. Latest takeover authorization i
 39. Two environment failures reproduced: sandbox network EACCES prevents next/font Google font fetch; old generated cache unlink EPERM plus installed Next cleanup retry behavior explains startup stall. Preserving old cache and fresh .next under network-enabled build succeeds twice. No route/config/font changes, no dependency upgrade. Full evidence/limits in M3A_BUILD_RECOVERY.md.
 40. Fresh lint/typecheck PASS,115/115 isolated tests PASS; build48.261s and final34.068s PASS. Live GET EAT/vi HTTP200 with3 unique IDs[33,167,34], independently matched by Neon SELECT. No DB writes or secret exposure observed. Home remains demo and M3-B unstarted.
 41. Selective local checkpoint message is feat: add Neon-backed discovery API, exact14-path allowlist. Preserve unrelated staged index entries with commit --only. Record actual hash after commit in handoff. No push/merge/deploy. STOP for user review.
+
+Checkpoint completed: `38c237a2c3976f60452227f28a01f6270f6fbdb4` — `feat: add Neon-backed discovery API`,14 exact paths.16 unrelated staged renames retained. Post-commit hash/status documentation remains unstaged. STOP before M3-B.
+
+## M3-B decisions (2026-10-07)
+42. EAT alone uses live discovery API; no demo fallback on error/empty. GO/STAY/NOW data paths remain demo. Existing three EAT preference IDs/mappings retained, no inferred tags.
+43. Shared PlaceCard is now text-first with separate no-image model. API nullable data stays nullable; demo adapter keeps unverified rating/reasons hidden. Static branding stays; no changes to legacy dataset types needed.
+44. Requests use fixed vi for this phase, not locale runtime; key by selection, abort on exit, active guard against stale responses,15-second timeout and explicit retry.0/1/2/3 valid; malformed response becomes error, never padding.
+45. Fresh lint/typecheck133tests/build/live three-preference browser smoke PASS. Live2/3 results, offline0/1/errors/null/race/timeout coverage; no fictitious live empty test. See M3B_VERIFICATION.md and saved screenshots. No full one-thumb/production deployment claim.
+46. Selective local M3-B commit13 files; preserve16 unrelated staged renames and pre-existing dirty/untracked DB/docs. No push/merge/deploy. STOP before M4; real additional-section mapping requires explicit authorization and DB evidence.

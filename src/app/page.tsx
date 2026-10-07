@@ -4,6 +4,8 @@ import React, { useState, useRef, useEffect } from "react";
 import { Hero } from "@/components/home/Hero";
 import { IntentGrid } from "@/components/home/IntentGrid";
 import { ResultList } from "@/components/results/ResultList";
+import { EatDiscoveryResults } from "@/components/results/EatDiscoveryResults";
+import { demoToCard } from "@/lib/data/place-card-model";
 import { ItineraryTimeline } from "@/components/itinerary/ItineraryTimeline";
 import {
   getPlacesForSelection,
@@ -54,8 +56,8 @@ export default function HomePage() {
 
   // Derived results
   const currentPlaces =
-    selectedIntent && selectedIntent !== "NOW" && selectedPreference
-      ? getPlacesForSelection(selectedIntent, selectedPreference)
+    (selectedIntent === "GO" || selectedIntent === "STAY") && selectedPreference
+      ? getPlacesForSelection(selectedIntent, selectedPreference).map(demoToCard)
       : [];
 
   const currentItinerary =
@@ -95,8 +97,8 @@ export default function HomePage() {
         {/* Results Anchor */}
         <div ref={resultsRef}>
           {/* Result Branch 1: Normal Places Discovery (EAT / GO / STAY) */}
-          {selectedIntent &&
-            selectedIntent !== "NOW" &&
+          {selectedIntent === "EAT" && selectedPreference && <EatDiscoveryResults key={selectedPreference} preference={selectedPreference} preferenceLabel={currentPreferenceLabel} onResetPreference={handleResetPreference} />}
+          {(selectedIntent === "GO" || selectedIntent === "STAY") &&
             selectedPreference && (
               <ResultList
                 places={currentPlaces}
