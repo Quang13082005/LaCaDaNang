@@ -23,8 +23,20 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# local env files
+# local env files (variable NAMES only belong in .env.example)
+.env
+.env.*
+!.env.example
 .env*.local
+
+# logs
+*.log
+
+# machine-local M0 evidence logs (hash-identical copies kept outside the repo)
+/docs/evidence/
+
+# source workbooks stay outside the repo; hash + provenance are recorded in docs
+*.xlsx
 
 # vercel
 .vercel

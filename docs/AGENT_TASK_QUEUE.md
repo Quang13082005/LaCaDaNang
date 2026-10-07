@@ -37,5 +37,6 @@ Report: [M4A_REAL_MAPPING_AUDIT](M4A_REAL_MAPPING_AUDIT.md). HEAD e39c7de65fc413
 
 ## M4-B GO & STAY Neon discovery completed — 2026-10-07
 Report: [M4B_VERIFICATION](M4B_VERIFICATION.md).
-M4-B connected GO and STAY to live Neon discovery with verified tag mappings; DiscoveryResults generalized; STAY chips updated; EAT preserved; CAFE disabled. All validation (lint, typecheck, 169/169 tests, build, 8 GO/STAY + 3 EAT live smoke, responsive 320–1280px) ALL PASS. Selective checkpoint authorized: `feat: connect GO and STAY to Neon discovery`. STOP before M5.
+M4-B connected GO and STAY to live Neon discovery with verified tag mappings; DiscoveryResults generalized; STAY chips updated; EAT preserved; CAFE disabled. All validation (lint, typecheck, 169/169 tests, build, 8 GO/STAY + 3 EAT live smoke, responsive 320–1280px) ALL PASS. Selective checkpoint completed: `f319ae42825eea540281c499486a43d7131f7c8f` — `feat: connect GO and STAY to Neon discovery`.
+- **Reconciliation summary**: M4-B DONE; commit `f319ae42825eea540281c499486a43d7131f7c8f`; EAT/GO/STAY use Neon; CAFE NOT_STARTED; next milestone requires explicit authorization. STOP before M5.
 

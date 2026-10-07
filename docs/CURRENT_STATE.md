@@ -34,5 +34,6 @@ Report: [M4B_VERIFICATION](M4B_VERIFICATION.md).
 - Live smoke with Neon: 8 GO/STAY + 3 EAT flows HTTP 200 matching independent SQL; 0 secret leaks; 400 for CAFE/invalid.
 - Responsive & visual: viewports 320–1280 inspected; long names wrap cleanly without clipping; >=44px CTAs; 0 venue images.
 - Unrelated 16 staged renames, modified tracked, and untracked files preserved.
-- Local selective checkpoint authorized: `feat: connect GO and STAY to Neon discovery`. STOP before M5.
+- Local selective checkpoint completed: `f319ae42825eea540281c499486a43d7131f7c8f` — `feat: connect GO and STAY to Neon discovery`.
+- **Reconciliation summary**: M4-B DONE; commit `f319ae42825eea540281c499486a43d7131f7c8f`; EAT/GO/STAY use Neon; CAFE NOT_STARTED; next milestone requires explicit authorization. STOP.
 

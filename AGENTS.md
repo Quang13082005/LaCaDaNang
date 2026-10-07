@@ -1,9 +1,9 @@
 # AGENTS — LA CÀ ĐÀ NẴNG
-CURRENT_AUTHORITY — M0 documentation normalization, 2026-10-06.
+CURRENT_AUTHORITY — repository cleanup + database preparation, updated 2026-10-06.
 
 ## Authority and startup
-The user's latest explicit scope overrides attached plans. Latest user scope authorizes M0.5 local Git checkpoint and M1-A provider/schema/import planning only; STOP before M1-B. No Home/UI/DB implementation or import. Do not execute every milestone merely because the master prompt describes it.
-Every agent reads, in order: this file; [CURRENT_STATE](docs/CURRENT_STATE.md); [DECISIONS](docs/DECISIONS.md); [HANDOFF_CURRENT](docs/HANDOFF_CURRENT.md); [AGENT_TASK_QUEUE](docs/AGENT_TASK_QUEUE.md). Then run Git status/diff/log and verify source against the handoff.
+The user's latest explicit scope overrides attached plans. Latest user scope authorizes C0 handoff verification, C1 safe repository cleanup, C2 repository normalization, C3 DB provider reconciliation/Neon preparation and C4 PostgreSQL schema + offline workbook dry-run import preparation; then STOP for user review. No real DB import without an actual Neon project/credentials supplied by the user. No Home/UI/GPS/analytics/notification/i18n runtime work, push, merge or deploy. Do not execute every milestone merely because the master prompt describes it.
+Every agent reads, in order: this file; [NON_NEGOTIABLES](docs/NON_NEGOTIABLES.md); [CURRENT_STATE](docs/CURRENT_STATE.md); [DECISIONS](docs/DECISIONS.md); [HANDOFF_CURRENT](docs/HANDOFF_CURRENT.md); [AGENT_TASK_QUEUE](docs/AGENT_TASK_QUEUE.md). All agents must strictly adhere to [NON_NEGOTIABLES](docs/NON_NEGOTIABLES.md) before any implementation. Then run Git status/diff/log and verify source against the handoff.
 Milestone specifications and the user-supplied [master prompt](docs/inputs/ASTRA6_MASTER_EXECUTION_PROMPT_NO_IMAGE_MVP.md) follow this authority chain. Historical plans/checkpoints are evidence only; see [DOCUMENT_AUTHORITY](docs/DOCUMENT_AUTHORITY.md). Never restart Phase 0 without evidence of corruption.
 
 ## Safety and ownership
@@ -18,7 +18,7 @@ Milestone specifications and the user-supplied [master prompt](docs/inputs/ASTRA
 ## Product decisions
 - MVP does not depend on venue images: no imageUrl/photoCount render requirement, place_media join, scraping or image-based ranking. Static Hero/intent artwork may remain. Runtime card still uses images until its authorized milestone fixes it.
 - New data source: LA_CA_DB_READY_500_NO_IMAGE_FINAL.xlsx, six core tables, EAT/CAFE/GO/STAY. Preserve workbook IDs and truthful coverage exceptions; do not apply the old 15km seed exclusion automatically to the new administrative coverage.
-- DB integration is the next critical path. Confirm existing provider/project/schema and owner first; never create a competing DB or invent credentials/schema.
+- DB integration is the next critical path. Confirm existing provider/project/schema and owner first; never create a competing DB or invent credentials/schema. User accepted Neon PostgreSQL as the default provider ONLY if no existing production DB is found (none found in repo/env audit). Timestamps: Excel serial -> naive TIMESTAMP WITHOUT TIME ZONE; never attach Z/+07/UTC; source timestamps are never open-now evidence.
 - Runtime NOW is a sample, not time-aware. Do not claim live hours, prices, availability, travel times or user distance without evidence.
 - At most three truthful results (0/1/2 allowed), no padding. Preserve useful results within <=3 deliberate taps, preferably two.
 - Do not infer subjective tags from venue types. Do not invent translations, Google identities or Maps URLs. Open stored valid Maps URLs only.

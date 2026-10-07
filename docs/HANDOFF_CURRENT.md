@@ -52,7 +52,7 @@ Report: [M4A_REAL_MAPPING_AUDIT](M4A_REAL_MAPPING_AUDIT.md). HEAD e39c7de65fc413
 
 ## M4-B GO & STAY Real Discovery Handoff — 2026-10-07
 1. **Objective**: Connect GO and STAY sections to Neon discovery API; generalize frontend component; preserve EAT Neon discovery; keep CAFE disabled.
-2. **Git**: Branch `phase-2a-deploy`. Selective local checkpoint: `feat: connect GO and STAY to Neon discovery`. 16 pre-existing staged renames and unrelated modified/untracked files preserved.
+2. **Git**: Branch `phase-2a-deploy`. Selective local checkpoint: `f319ae42825eea540281c499486a43d7131f7c8f` — `feat: connect GO and STAY to Neon discovery`. 16 pre-existing staged renames and unrelated modified/untracked files preserved.
 3. **Completed**:
    - GO mappings: `chup_anh_dep` -> `PHOTO`, `thien_nhien` -> `NATURE`, `vui_choi` -> `ENTERTAINMENT`, `bien_ngam_canh` -> `BEACH | SCENIC` (20 eligible).
    - STAY mappings: `gan_bien` -> `NEAR_BEACH`, `yen_tinh` -> `QUIET`, `gan_trung_tam` -> `CENTRAL` ("Trung tâm"), `cap_doi` -> `DATE` ("Hẹn hò").
@@ -75,4 +75,6 @@ Report: [M4A_REAL_MAPPING_AUDIT](M4A_REAL_MAPPING_AUDIT.md). HEAD e39c7de65fc413
    - Do not stage unrelated files or 16 pre-existing staged renames.
 6. **EXACT NEXT STEP**:
    - STOP for user review. Await explicit instructions on CAFE UI/mapping or next authorized milestone.
+7. **Reconciliation status**:
+   - M4-B DONE; commit `f319ae42825eea540281c499486a43d7131f7c8f`; EAT/GO/STAY use Neon; CAFE NOT_STARTED; next milestone requires explicit authorization. STOP.
 
