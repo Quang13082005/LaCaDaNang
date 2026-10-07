@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-10-07T10:23:50.372970",
+  "database_url_masked": "postgresql://neondb_owner:****@ep-old-tooth-b3gz7nsn.c-4.ap-southeast-1.aws.neon.tech/neondb",
+  "workbook_hash": "874e7d6d9f5688af85de347051d4fc67a52f44bbd97a249d1f717056f6496bd3",
+  "hash_match": true,
+  "verification": {
+    "administrative_units_count": 94,
+    "tags_count": 36,
+    "places_count": 500,
+    "place_tags_count": 841,
+    "tag_translations_count": 108,
+    "place_translations_count": 1500,
+    "unique_google_place_id": 500,
+    "section_CAFE": 145,
+    "section_EAT": 134,
+    "section_GO": 94,
+    "section_STAY": 127,
+    "places_missing_locales": 0,
+    "tags_missing_locales": 0,
+    "untagged_places": 0,
+    "fk_violations_place_tags": 0,
+    "fk_violations_place_translations": 0,
+    "fk_violations_tag_translations": 0
+  },
+  "all_pass": true
+}

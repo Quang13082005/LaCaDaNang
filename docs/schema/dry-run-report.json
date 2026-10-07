@@ -1,0 +1,239 @@
+{
+  "timestamp": "2026-10-07T10:21:06.134057",
+  "file": "LA_CA_DB_READY_500_NO_IMAGE_FINAL.xlsx",
+  "hash_check": {
+    "actual": "874e7d6d9f5688af85de347051d4fc67a52f44bbd97a249d1f717056f6496bd3",
+    "expected": "874e7d6d9f5688af85de347051d4fc67a52f44bbd97a249d1f717056f6496bd3",
+    "match": true
+  },
+  "schema_header_checks": {
+    "administrative_units": {
+      "actual_headers": [
+        "id",
+        "official_code",
+        "official_name",
+        "unit_type",
+        "active",
+        "created_at",
+        "updated_at"
+      ],
+      "required_headers": [
+        "id",
+        "official_code",
+        "official_name",
+        "unit_type",
+        "active",
+        "created_at",
+        "updated_at"
+      ],
+      "errors": []
+    },
+    "places": {
+      "actual_headers": [
+        "id",
+        "google_place_id",
+        "name",
+        "section",
+        "primary_type",
+        "phone",
+        "website_url",
+        "address",
+        "administrative_unit_id",
+        "latitude",
+        "longitude",
+        "google_maps_url",
+        "google_verified_at",
+        "rating",
+        "review_count",
+        "photo_count",
+        "business_status",
+        "active",
+        "featured",
+        "source_updated_at",
+        "created_at",
+        "updated_at"
+      ],
+      "required_headers": [
+        "id",
+        "google_place_id",
+        "name",
+        "section",
+        "primary_type",
+        "phone",
+        "website_url",
+        "address",
+        "administrative_unit_id",
+        "latitude",
+        "longitude",
+        "google_maps_url",
+        "google_verified_at",
+        "rating",
+        "review_count",
+        "photo_count",
+        "business_status",
+        "active",
+        "featured",
+        "source_updated_at",
+        "created_at",
+        "updated_at"
+      ],
+      "errors": []
+    },
+    "tags": {
+      "actual_headers": [
+        "id",
+        "code",
+        "display_name",
+        "domain",
+        "active"
+      ],
+      "required_headers": [
+        "id",
+        "code",
+        "display_name",
+        "domain",
+        "active"
+      ],
+      "errors": []
+    },
+    "place_tags": {
+      "actual_headers": [
+        "place_id",
+        "tag_id"
+      ],
+      "required_headers": [
+        "place_id",
+        "tag_id"
+      ],
+      "errors": []
+    },
+    "tag_translations": {
+      "actual_headers": [
+        "tag_id",
+        "locale",
+        "label"
+      ],
+      "required_headers": [
+        "tag_id",
+        "locale",
+        "label"
+      ],
+      "errors": []
+    },
+    "place_translations": {
+      "actual_headers": [
+        "place_id",
+        "locale",
+        "display_name",
+        "primary_type_label",
+        "short_description",
+        "created_at",
+        "updated_at"
+      ],
+      "required_headers": [
+        "place_id",
+        "locale",
+        "display_name",
+        "primary_type_label",
+        "short_description",
+        "created_at",
+        "updated_at"
+      ],
+      "errors": []
+    }
+  },
+  "table_validation": {
+    "administrative_units": {
+      "total": 94,
+      "valid": 94,
+      "errors": []
+    },
+    "tags": {
+      "total": 36,
+      "valid": 36,
+      "errors": []
+    },
+    "places": {
+      "total": 500,
+      "valid": 500,
+      "sections": {
+        "EAT": 134,
+        "GO": 94,
+        "STAY": 127,
+        "CAFE": 145
+      },
+      "errors": []
+    },
+    "place_tags": {
+      "total": 841,
+      "valid": 841,
+      "errors": []
+    },
+    "tag_translations": {
+      "total": 108,
+      "valid": 108,
+      "errors": []
+    },
+    "place_translations": {
+      "total": 1500,
+      "valid": 1500,
+      "errors": []
+    }
+  },
+  "row_count_checks": {
+    "expected": {
+      "administrative_units": 94,
+      "tags": 36,
+      "places": 500,
+      "place_tags": 841,
+      "tag_translations": 108,
+      "place_translations": 1500
+    },
+    "actual": {
+      "administrative_units": 94,
+      "tags": 36,
+      "places": 500,
+      "place_tags": 841,
+      "tag_translations": 108,
+      "place_translations": 1500
+    },
+    "mismatches": [],
+    "all_match": true
+  },
+  "section_count_checks": {
+    "expected": {
+      "EAT": 134,
+      "CAFE": 145,
+      "GO": 94,
+      "STAY": 127
+    },
+    "actual": {
+      "EAT": 134,
+      "GO": 94,
+      "STAY": 127,
+      "CAFE": 145
+    },
+    "mismatches": [],
+    "all_match": true
+  },
+  "cross_checks": {
+    "places_missing_locale_translations": [],
+    "tags_missing_locale_translations": [],
+    "untagged_places": [],
+    "places_missing_locale_count": 0,
+    "tags_missing_locale_count": 0,
+    "untagged_place_count": 0
+  },
+  "summary": {
+    "total_rows": 3079,
+    "total_valid": 3079,
+    "total_errors": 0,
+    "hash_pass": true,
+    "headers_pass": true,
+    "counts_pass": true,
+    "sections_pass": true,
+    "locale_completeness_pass": true,
+    "all_tagged_pass": true,
+    "all_pass": true
+  }
+}
