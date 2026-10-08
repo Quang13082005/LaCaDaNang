@@ -51,46 +51,18 @@ describe("UX Hardening <= 3-Tap Flow & Truthful Recommendations", () => {
     );
   });
 
-  it("completes BÂY GIỜ LÀM GÌ? flow with truthful 'Lịch trình mẫu' wording", () => {
+  it("starts real NOW in one tap and returns Home without a demo preference", async () => {
+    vi.mocked(fetch).mockResolvedValue({ ok: false } as Response);
     render(<HomePage />);
-
-    // Tap 1: Select "BÂY GIỜ LÀM GÌ?"
-    const nowCard = screen.getByText("BÂY GIỜ LÀM GÌ?");
-    fireEvent.click(nowCard);
-
-    // Preference chips expand
-    expect(screen.getByText("Đi cùng người yêu")).toBeInTheDocument();
-    expect(screen.getByText("Đi cùng bạn bè")).toBeInTheDocument();
-
-    // Tap 2: Select "Đi cùng người yêu"
-    const loverChip = screen.getByText("Đi cùng người yêu");
-    fireEvent.click(loverChip);
-
-    // Mini itinerary appears immediately after Tap 2
-    expect(screen.getAllByText("Lịch trình mẫu").length).toBeGreaterThanOrEqual(1);
-    expect(
-      screen.getByText(/BÂY GIỜ LÀM GÌ\? · Đi cùng người yêu/i)
-    ).toBeInTheDocument();
-
-    // P0.4: No realtime false claims
-    expect(screen.queryByText(/Gợi ý theo giờ/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/từ thời gian hiện tại/i)).not.toBeInTheDocument();
-
-    // Order is stated once, without suggesting a clock time.
-    expect(screen.getByText("#1")).toBeInTheDocument();
-    expect(screen.getByText("#2")).toBeInTheDocument();
-    expect(screen.getByText("#3")).toBeInTheDocument();
-    expect(screen.queryByText(/Chặng \d/)).not.toBeInTheDocument();
-    expect(screen.queryByRole("region", { name: "Mục đích khám phá" })).not.toBeInTheDocument();
-
-    // Verified Maps CTA on Stop 1 (Bếp Cuốn)
-    const stopCta = screen.getByRole("link", {
-      name: /Xem trên Google Maps/i,
-    });
-    expect(stopCta).toHaveAttribute(
-      "href",
-      "https://maps.google.com/?cid=15858543023798826021"
-    );
+    fireEvent.click(screen.getByText("BÂY GIỜ LÀM GÌ?"));
+    expect(fetch).toHaveBeenCalledWith("/api/now?locale=vi", expect.objectContaining({ cache: "no-store" }));
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(await screen.findByRole("alert")).toHaveTextContent("Chưa tải được địa điểm.");
+    expect(screen.queryByText("Lịch trình mẫu")).not.toBeInTheDocument();
+    expect(screen.queryAllByRole("article")).toHaveLength(0);
+    fireEvent.click(screen.getByRole("button", { name: "Đổi lựa chọn" }));
+    expect(screen.getByRole("heading", { name: "LA CÀ ĐÀ NẴNG" })).toBeInTheDocument();
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
   it("handles 0, 1, 2, and 3+ match counts truthfully in getPlacesForSelection", () => {

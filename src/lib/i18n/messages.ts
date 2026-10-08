@@ -9,11 +9,11 @@ const vi = {
   "intent.stay": "Ở ĐÂU?",
   "intent.eat.helper": "Quán ăn & cafe",
   "intent.go.helper": "Điểm đến & trải nghiệm",
-  "intent.now.helper": "Lịch trình mẫu nhanh",
+  "intent.now.helper": "Gợi ý theo thời điểm",
   "intent.stay.helper": "Tìm chỗ nghỉ",
   "intent.eat.badge": "Ẩm thực địa phương",
   "intent.go.badge": "Điểm đến & Trải nghiệm",
-  "intent.now.badge": "Lịch trình mẫu",
+  "intent.now.badge": "Theo giờ Đà Nẵng",
   "intent.stay.badge": "Lưu trú hợp gu",
 
   // Home Quick Select
@@ -91,6 +91,20 @@ const vi = {
 
   // Itinerary
   "itinerary.sample": "Lịch trình mẫu",
+  "now.MORNING": "Gợi ý cho buổi sáng",
+  "now.section.EAT": "Ăn uống",
+  "now.section.CAFE": "Cà phê",
+  "now.section.GO": "Khám phá",
+  "now.section.STAY": "Lưu trú",
+
+  "now.MIDDAY": "Gợi ý cho buổi trưa",
+  "now.AFTERNOON": "Gợi ý cho buổi chiều",
+  "now.EVENING": "Gợi ý cho buổi tối",
+  "now.NIGHT": "Gợi ý tham khảo cho tối muộn",
+  "now.basedOn": "Dựa trên thời điểm hiện tại tại Đà Nẵng.",
+  "now.hours": "Chưa xác minh giờ mở cửa. Hãy kiểm tra với địa điểm trước khi đến.",
+  "now.citywide": "Gợi ý toàn thành phố; thứ tự không tối ưu quãng đường.",
+
   "intent.region": "Mục đích khám phá",
 
     // Language Controls
@@ -139,11 +153,11 @@ export const UI_MESSAGES = {
     "intent.stay": "Where to stay?",
     "intent.eat.helper": "Food & cafés",
     "intent.go.helper": "Places & experiences",
-    "intent.now.helper": "Quick sample itinerary",
+    "intent.now.helper": "Ideas for this time of day",
     "intent.stay.helper": "Find a place to stay",
     "intent.eat.badge": "Local food",
     "intent.go.badge": "Destinations & Activities",
-    "intent.now.badge": "Sample itinerary",
+    "intent.now.badge": "Da Nang time",
     "intent.stay.badge": "Curated stays",
 
     // Home Quick Select
@@ -221,6 +235,20 @@ export const UI_MESSAGES = {
 
     // Itinerary
     "itinerary.sample": "Sample itinerary",
+  "now.MORNING": "Morning suggestions",
+  "now.section.EAT": "Food",
+  "now.section.CAFE": "Cafes",
+  "now.section.GO": "Explore",
+  "now.section.STAY": "Stays",
+
+  "now.MIDDAY": "Midday suggestions",
+  "now.AFTERNOON": "Afternoon suggestions",
+  "now.EVENING": "Evening suggestions",
+  "now.NIGHT": "Late-night ideas to consider",
+  "now.basedOn": "Based on the current time in Da Nang.",
+  "now.hours": "Opening hours are unverified. Check with each venue before visiting.",
+  "now.citywide": "Citywide suggestions; stop order is not optimized for distance.",
+
     "intent.region": "Choose what to explore",
 
     // Language Controls
@@ -263,11 +291,11 @@ export const UI_MESSAGES = {
     "intent.stay": "어디서 묵을까요?",
     "intent.eat.helper": "음식점과 카페",
     "intent.go.helper": "장소와 체험",
-    "intent.now.helper": "간단한 예시 일정",
+    "intent.now.helper": "시간대별 추천",
     "intent.stay.helper": "숙소 찾기",
     "intent.eat.badge": "현지 음식",
     "intent.go.badge": "여행지 및 체험",
-    "intent.now.badge": "예시 일정",
+    "intent.now.badge": "다낭 시간 기준",
     "intent.stay.badge": "맞춤 숙소",
 
     // Home Quick Select
@@ -345,6 +373,20 @@ export const UI_MESSAGES = {
 
     // Itinerary
     "itinerary.sample": "예시 일정",
+  "now.MORNING": "아침 추천",
+  "now.section.EAT": "음식",
+  "now.section.CAFE": "카페",
+  "now.section.GO": "명소",
+  "now.section.STAY": "숙소",
+
+  "now.MIDDAY": "점심 추천",
+  "now.AFTERNOON": "오후 추천",
+  "now.EVENING": "저녁 추천",
+  "now.NIGHT": "늦은 밤에 참고할 장소",
+  "now.basedOn": "현재 다낭 시간을 기준으로 추천합니다.",
+  "now.hours": "영업시간은 확인되지 않았습니다. 방문 전에 장소에 확인해 주세요.",
+  "now.citywide": "도시 전체 추천이며, 이동 거리에 최적화된 순서는 아닙니다.",
+
     "intent.region": "원하는 활동 선택",
 
     // Language Controls

@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Hero } from "@/components/home/Hero";
 import { IntentGrid } from "@/components/home/IntentGrid";
 import { DiscoveryResults } from "@/components/results/DiscoveryResults";
-import { ItineraryTimeline } from "@/components/itinerary/ItineraryTimeline";
+import { NowResults } from "@/components/itinerary/NowResults";
 import { LanguageSelector } from "@/components/i18n/LanguageSelector";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 import {
@@ -16,7 +16,6 @@ import {
 } from "@/lib/analytics/client";
 import type { MessageKey } from "@/lib/i18n/messages";
 import {
-  getItineraryForPreference,
   PREFERENCES_BY_INTENT,
 } from "@/data/demo-places";
 
@@ -51,7 +50,7 @@ export default function HomePage() {
     } else {
       trackIntentSelected(intent, locale, isManual ? "manual" : "auto");
       setSelectedIntent(intent);
-      setSelectedPreference(null);
+      setSelectedPreference(intent === "NOW" ? "time_slot" : null);
     }
   };
 
@@ -69,6 +68,7 @@ export default function HomePage() {
 
   const handleResetPreference = () => {
     resetJourneyId();
+    if (selectedIntent === "NOW") setSelectedIntent(null);
     setSelectedPreference(null);
   };
 
@@ -95,11 +95,6 @@ export default function HomePage() {
       window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
     }
   }, [selectedPreference, selectedIntent]);
-
-  const currentItinerary =
-    selectedIntent === "NOW" && selectedPreference
-      ? getItineraryForPreference(selectedPreference)
-      : null;
 
   const currentIntentLabel = selectedIntent
     ? t(`intent.${selectedIntent.toLowerCase()}` as MessageKey)
@@ -153,10 +148,8 @@ export default function HomePage() {
             )}
 
           {/* Result Branch 2: Mini Itinerary (NOW) */}
-          {selectedIntent === "NOW" && selectedPreference && currentItinerary && (
-            <ItineraryTimeline
-              itinerary={currentItinerary}
-              preferenceLabel={currentPreferenceLabel}
+          {selectedIntent === "NOW" && selectedPreference && (
+            <NowResults
               onResetPreference={handleResetPreference}
             />
           )}
@@ -166,7 +159,7 @@ export default function HomePage() {
       {/* Footer utility row: immediately below grid on Home, natural spacing */}
       <footer
         className={`w-full border-t border-slate-200/80 bg-white/80 py-2.5 px-4 sm:px-6 shrink-0 ${
-          selectedPreference === null ? "mt-2 sm:mt-2.5" : "mt-8"
+          selectedPreference === null ? "mt-2 sm:mt-2.5" : selectedIntent === "NOW" ? "mt-8 !pb-[calc(6rem+env(safe-area-inset-bottom,0px))]" : "mt-8"
         }`}
       >
         <div className="w-full max-w-lg md:max-w-4xl mx-auto flex items-center justify-between gap-3 flex-wrap">

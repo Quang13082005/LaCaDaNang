@@ -357,21 +357,15 @@ describe("P1 Owner Physical One-Hand UX 2x2 Grid & Bottom Sheet", () => {
     expect(screen.getByRole("button", { name: "Gần biển" })).toBeInTheDocument();
   });
 
-  it("tapping NOW opens its preference bottom sheet and preserves sample itinerary flow", () => {
+  it("tapping NOW starts time-slot discovery directly with a lower reset action", () => {
     render(<HomePage />);
     fireEvent.click(screen.getByText("BÂY GIỜ LÀM GÌ?"));
-
-    // Modal bottom sheet dialog opens with NOW preferences
-    expect(screen.getByRole("dialog")).toBeInTheDocument();
-    expect(screen.getByText(/BÂY GIỜ LÀM GÌ\? · Chọn sở thích/i)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Đi cùng bạn bè" })).toBeInTheDocument();
-
-    // Select sample preference
-    fireEvent.click(screen.getByRole("button", { name: "Đi cùng bạn bè" }));
-
-    // Sheet closes and sample itinerary is rendered
     expect(screen.queryByRole("dialog")).toBeNull();
-    expect(screen.getByText(/Lịch trình mẫu/i)).toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveTextContent("Đang tìm địa điểm…");
+    const reset = screen.getByRole("button", { name: "Đổi lựa chọn" });
+    expect(reset.className).toContain("min-h-[44px]");
+    fireEvent.click(reset);
+    expect(screen.getByRole("heading", { name: "LA CÀ ĐÀ NẴNG" })).toBeInTheDocument();
   });
 
   it("closes preference bottom sheet via close button and Escape key", () => {
