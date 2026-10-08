@@ -27,6 +27,7 @@ M8-A | Analytics Readiness Audit & Contract | DONE | Current agent | User author
 M8-A.1 | Analytics Contract Correction & Lock | DONE | Current agent | User authorization; M8-A | STOP for review; contracts locked | docs/M8A_ANALYTICS_READINESS_AUDIT.md & DECISIONS.md (96–105)
 M8-A.2 | Final Analytics Contract Patch | DONE | Current agent | User authorization; M8-A.1 | STOP for review; contracts locked | docs/M8A_ANALYTICS_READINESS_AUDIT.md & DECISIONS.md (106–112)
 M8-B | Analytics Runtime Implementation | DONE | Current agent | User authorization; M8-A.2 | STOP for review; verification report created | docs/M8B_VERIFICATION.md (34/34 tests PASS; 259 total PASS; live DB verified)
+M8-B.1 | Cloudflare Analytics Environment Fix | DONE | Current agent | Owner feedback; M8-B | STOP for review; verification report created | docs/M8B1_CLOUDFLARE_ENV_VERIFICATION.md (APP_ENV lock, wrangler envs, 262/262 tests PASS, live DB verified)
 M9 | Analytics runtime | NOT_STARTED | Unassigned | User authorization; M8 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
 M10 | Notification reminder MVP | NOT_STARTED | Unassigned | User authorization; M9 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
 M11 | Time/location-aware NOW if supported | NOT_STARTED | Unassigned | User authorization; M10 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
@@ -170,5 +171,18 @@ Report: [M8B_VERIFICATION](M8B_VERIFICATION.md).
 - Lint, typecheck, build: `npm run lint` (0 warnings, 0 errors), `npm run typecheck` (0 errors), `npm run build` (success). Dataset clean (0 diff).
 - Live Neon DB verification: API ingest tested, SELECT inspected, 5 analytical queries executed, test row deleted (0 rows), 6 content tables intact (3,079 rows).
 - Scope boundaries: Zero regressions on M6 one-hand UX or M7 i18n; CAFE inactive; NOW static itinerary preserved; no dashboard, no notifications, no deploy.
+- Next action: STOP for Owner review.
+
+## M8-B.1 Cloudflare Analytics Environment Fix Completed — 2026-10-08
+Report: [M8B1_CLOUDFLARE_ENV_VERIFICATION](M8B1_CLOUDFLARE_ENV_VERIFICATION.md).
+- Status: BLOCKED ISSUE RESOLVED — VERIFIED & COMPLETED.
+- Root Cause: Cloudflare preview & production both run in `NODE_ENV=production`. Fixed non-deterministic classification by locking canonical `APP_ENV` (`preview` | `production`).
+- Server Environment Resolver: `resolveServerEnvironment()` in `src/lib/analytics/db.ts` prioritizes `APP_ENV`. Invalid/unrecognized values fail safely to `"preview"` (never guesses production). Removed legacy `VERCEL_ENV`. Evaluates `IS_PREVIEW` before fallbacks. Dev/test safely defaults to `"preview"`.
+- Wrangler Config: Configured top-level `vars: { "APP_ENV": "production" }`, `env.preview: { "name": "la-ca-da-nang-preview", "vars": { "APP_ENV": "preview" } }`, and `env.production: { "vars": { "APP_ENV": "production" } }` in `wrangler.jsonc`.
+- Deployment Scripts: Added `npm run deploy:preview` (`opennextjs-cloudflare build && opennextjs-cloudflare deploy --env preview`). Preserved `npm run deploy` for production.
+- Environment Documentation: Added `APP_ENV=preview` (allowed: `preview | production`) to `.env.example`.
+- Automated & Live Verification: Added unit tests in `tests/analytics.test.tsx` (14 suites, 262/262 PASS). Verified live preview event ingest against Neon: stored as `environment = 'preview'`, deleted cleanly (0 rows remaining). Content tables untouched at 3,079 rows.
+- Validation: Lint PASS (0 errors), Typecheck PASS, Vitest PASS (262/262), Build PASS.
+- M8-B Ready for Final Verification: YES.
 - Next action: STOP for Owner review.
 

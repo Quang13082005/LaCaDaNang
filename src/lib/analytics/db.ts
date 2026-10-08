@@ -7,25 +7,35 @@ import type { ClientAnalyticsPayload, AnalyticsEnvironment } from "./types";
  * Client telemetry is not permitted to determine or override this.
  */
 export function resolveServerEnvironment(): AnalyticsEnvironment {
-  const env =
-    process.env.APP_ENV?.trim().toLowerCase() ||
-    process.env.VERCEL_ENV?.trim().toLowerCase() ||
-    process.env.ENVIRONMENT?.trim().toLowerCase();
+  // 1. Canonical trusted variable: APP_ENV (Cloudflare Workers / server config)
+  const appEnv = process.env.APP_ENV?.trim().toLowerCase();
+  if (appEnv) {
+    if (appEnv === "production") return "production";
+    if (appEnv === "preview") return "preview";
+    // Invalid/unrecognized explicit APP_ENV value: fail safely to preview (never guess production)
+    return "preview";
+  }
 
-  if (env === "production") return "production";
-  if (env === "preview") return "preview";
+  // 2. Secondary preview flag check (evaluated BEFORE any generic fallback)
+  if (
+    process.env.IS_PREVIEW === "true" ||
+    process.env.NEXT_PUBLIC_IS_PREVIEW === "true"
+  ) {
+    return "preview";
+  }
 
+  // 3. Generic fallback
+  const genericEnv = process.env.ENVIRONMENT?.trim().toLowerCase();
+  if (genericEnv === "production") return "production";
+  if (genericEnv === "preview") return "preview";
+
+  // 4. Default fallback:
+  // In development, test, or untagged environments, default to "preview" to protect production metrics.
+  // Production requires explicit APP_ENV=production or confirmed production runtime.
   if (process.env.NODE_ENV === "production") {
-    if (
-      process.env.IS_PREVIEW === "true" ||
-      process.env.NEXT_PUBLIC_IS_PREVIEW === "true"
-    ) {
-      return "preview";
-    }
     return "production";
   }
 
-  // Development/test fallbacks if an event reaches server:
   return "preview";
 }
 

@@ -9,5 +9,21 @@
 	"assets": {
 		"directory": ".open-next/assets",
 		"binding": "ASSETS"
+	},
+	"vars": {
+		"APP_ENV": "production"
+	},
+	"env": {
+		"preview": {
+			"name": "la-ca-da-nang-preview",
+			"vars": {
+				"APP_ENV": "preview"
+			}
+		},
+		"production": {
+			"vars": {
+				"APP_ENV": "production"
+			}
+		}
 	}
 }

@@ -214,3 +214,15 @@ Report: [M8B_VERIFICATION](M8B_VERIFICATION.md).
 - Scope Boundaries: Zero UI regressions on M6 one-hand UX or M7 i18n; CAFE inactive; NOW static itinerary preserved (excluded from places conversion); no dashboard; no notifications; no deploy.
 - Reconciliation Summary: M8-B DONE; selective local commit authorized; STOP for Owner review.
 
+## M8-B.1 Cloudflare Analytics Environment Fix Completed — 2026-10-08
+Report: [M8B1_CLOUDFLARE_ENV_VERIFICATION](M8B1_CLOUDFLARE_ENV_VERIFICATION.md).
+- Status: VERIFIED & COMPLETED — ALL PASS.
+- Root Cause Resolved: Cloudflare preview & production both execute in `NODE_ENV=production`. Fixed non-deterministic classification by locking `APP_ENV` (`preview` | `production`) as the canonical server variable.
+- Resolver Hardening: `src/lib/analytics/db.ts` `resolveServerEnvironment()` prioritizes `APP_ENV`. If explicit `APP_ENV` is unrecognized/invalid, safely falls back to `"preview"` (never guesses production). Removed legacy Vercel references. Evaluates `IS_PREVIEW` before generic fallbacks. Safely defaults to `"preview"` in dev/test.
+- Wrangler Configuration: Configured top-level `vars: { "APP_ENV": "production" }`, `env.preview: { "name": "la-ca-da-nang-preview", "vars": { "APP_ENV": "preview" } }`, and `env.production: { "vars": { "APP_ENV": "production" } }` in `wrangler.jsonc`.
+- Deployment Scripts: Added `npm run deploy:preview` (`opennextjs-cloudflare build && opennextjs-cloudflare deploy --env preview`). Preserved `npm run deploy` for production.
+- Environment Documentation: Added `APP_ENV=preview` (allowed: `preview | production`) to `.env.example`.
+- Automated & Live Verification: Added test cases in `tests/analytics.test.tsx` (14 suites, 262/262 PASS). Verified live preview event ingest against Neon: stored as `environment = 'preview'`, deleted cleanly (0 rows remaining). All 6 content tables intact at 3,079 rows.
+- Validation: Lint PASS (0 errors), Typecheck PASS, Vitest PASS (262/262), Build PASS.
+- Milestone Status: M8-B Blocker Resolved. M8-B READY FOR FINAL VERIFICATION: YES.
+

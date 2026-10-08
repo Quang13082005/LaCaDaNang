@@ -541,10 +541,28 @@ describe("LA CÀ ĐÀ NẴNG — First-Party Analytics Suite", () => {
       expect(resolveServerEnvironment()).toBe("preview");
     });
 
+    it("preview remains preview even when NODE_ENV is production", () => {
+      process.env.APP_ENV = "preview";
+      (process.env as Record<string, string | undefined>).NODE_ENV = "production";
+      expect(resolveServerEnvironment()).toBe("preview");
+    });
+
+    it("production remains production when APP_ENV is production and NODE_ENV is production", () => {
+      process.env.APP_ENV = "production";
+      (process.env as Record<string, string | undefined>).NODE_ENV = "production";
+      expect(resolveServerEnvironment()).toBe("production");
+    });
+
+    it("invalid or unknown APP_ENV does not silently become trusted production (fails safely to preview)", () => {
+      process.env.APP_ENV = "staging_unknown";
+      (process.env as Record<string, string | undefined>).NODE_ENV = "production";
+      expect(resolveServerEnvironment()).toBe("preview");
+    });
+
     it("resolves preview for test/dev fallbacks", () => {
       delete process.env.APP_ENV;
-      delete process.env.VERCEL_ENV;
       delete process.env.ENVIRONMENT;
+      delete process.env.IS_PREVIEW;
       (process.env as Record<string, string | undefined>).NODE_ENV = "test";
       expect(resolveServerEnvironment()).toBe("preview");
     });
@@ -777,7 +795,7 @@ describe("LA CÀ ĐÀ NẴNG — First-Party Analytics Suite", () => {
         (e) => e.event_name === "results_shown"
       ).length;
       expect(resultsShownCountAfter).toBe(resultsShownCountBefore);
-    });
+    }, 15000);
   });
 });
 

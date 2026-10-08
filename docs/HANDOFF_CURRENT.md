@@ -338,3 +338,29 @@ Report: [M4A_REAL_MAPPING_AUDIT](M4A_REAL_MAPPING_AUDIT.md). HEAD e39c7de65fc413
 8. **EXACT NEXT STEP**:
    - STOP — WAITING FOR OWNER REVIEW.
 
+## M8-B.1 Cloudflare Analytics Environment Fix Handoff — 2026-10-08
+1. **Objective**: Fix the non-deterministic Cloudflare/OpenNext preview environment classification blocker identified in M8-B independent verification without changing analytics schema, content tables, or event contracts.
+2. **Status**: COMPLETED & VERIFIED.
+3. **Core Deliverables**:
+   - `APP_ENV` locked as canonical server environment variable (`preview` | `production`).
+   - `src/lib/analytics/db.ts`: `resolveServerEnvironment()` deterministic priority; invalid/unrecognized `APP_ENV` safely defaults to `"preview"`; `IS_PREVIEW` checked before fallbacks; removed legacy `VERCEL_ENV`.
+   - `wrangler.jsonc`: Added top-level `vars: { "APP_ENV": "production" }`, `env.preview: { "name": "la-ca-da-nang-preview", "vars": { "APP_ENV": "preview" } }`, and `env.production: { "vars": { "APP_ENV": "production" } }`.
+   - `package.json`: Added `npm run deploy:preview` (`opennextjs-cloudflare build && opennextjs-cloudflare deploy --env preview`).
+   - `.env.example`: Documented `APP_ENV=preview` (allowed: `preview | production`).
+   - `tests/analytics.test.tsx`: Added comprehensive resolver unit tests (14 suites, 262/262 PASS).
+4. **Validation Evidence**:
+   - `npx vitest run --exclude "**/curation.test.ts"`: 14 test suites, 262 passed (262).
+   - `npm run lint`: 0 warnings, 0 errors.
+   - `npm run typecheck`: 0 errors.
+   - `npm run build`: Success.
+   - Dataset `src/data/curated/curated-places.json`: 100% clean (0 diff).
+   - Live Neon DB Verification: Tested preview event ingest with `APP_ENV=preview` and `NODE_ENV=production`; verified row stored as `environment = 'preview'`; cleaned up test event (0 rows remaining); 6 content tables intact at 3,079 rows.
+5. **DO NOT REDO / DO NOT TOUCH**:
+   - Do not mutate the 6 content tables or `analytics_events` schema.
+   - Do not re-run migrations.
+   - Do not alter 11 canonical event contracts.
+   - Do not push to remote.
+6. **M8-B Ready for Final Verification**: YES.
+7. **EXACT NEXT STEP**:
+   - STOP — WAITING FOR OWNER REVIEW.
+
