@@ -370,9 +370,9 @@ Report: [M4A_REAL_MAPPING_AUDIT](M4A_REAL_MAPPING_AUDIT.md). HEAD e39c7de65fc413
 3. **Core Findings & Contracts**:
    - `docs/M9A_NOTIFICATIONS_READINESS_AUDIT.md`: Complete audit document created.
    - Current Foundation: Zero notification API code, zero service workers, zero PWA manifests, zero push packages, zero reminder DB tables, zero Cloudflare crons.
-   - Product Gap Solved: Venue database stores zero schedule/operating time data. Explicit departure time selection UI (quick presets `+30m`, `+1h`, `+2h`, evening preset, custom time) is strictly required to establish the departure timestamp.
-   - Browser Realities: Mobile Safari on iOS does not support background Web Push or Notification API unless installed as a PWA (iOS 16.4+). Mobile browsers kill background tab timers when suspended.
-   - Recommended MVP Scope: Hybrid Option 3 (Native Calendar export `.ics` / Google Calendar with alarm `-PT30M` + in-app `localStorage` active reminder badge). Requires zero Cloudflare crons and zero Neon DB bloat.
+   - Product Gap Solved: Venue database stores zero schedule/operating time data. Explicit visit time selection UI (`scheduled_visit_at`) is strictly required.
+   - Browser Realities: Mobile Safari on iOS does not support background Web Push or Notification API without Home Screen PWA installation (iOS 16.4+). Mobile browsers kill background tab timers when suspended.
+   - Recommended Architecture: RFC 5545 `.ics` Calendar Reminder Export with 30-minute advance `VALARM`. Requires zero Cloudflare crons and zero Neon DB bloat.
    - Timezone: `Asia/Ho_Chi_Minh` (UTC+07:00, no DST) for user calculations, UTC ISO strings for storage.
    - Analytics: Preserves verified 11-event M8 schema intact; extension telemetry proposed for future review.
 4. **DO NOT REDO / DO NOT TOUCH**:
@@ -382,5 +382,28 @@ Report: [M4A_REAL_MAPPING_AUDIT](M4A_REAL_MAPPING_AUDIT.md). HEAD e39c7de65fc413
    - Do not alter the 11 canonical M8 analytics events.
    - Do not push to remote.
 5. **EXACT NEXT STEP**:
+   - STOP — WAITING FOR OWNER REVIEW.
+
+## M9-A.1 Reminder MVP Contract Lock Handoff — 2026-10-08
+1. **Objective**: Eliminate remaining architectural contradictions and lock the definitive product, technical, and testing specification for the "Nhắc tôi" Calendar Reminder Export MVP.
+2. **Status**: CONTRACT LOCK COMPLETE — ALL VERIFIED.
+3. **Locked Architectural Specifications**:
+   - Canonical Feature Identity: "Nhắc tôi" $\rightarrow$ Calendar Reminder Export (`.ics`). Never described as push/browser notification.
+   - Browser Permission Removal: M9-B does NOT invoke `Notification.requestPermission()`, `new Notification()`, or `PushManager`. Permission states (`granted`, `denied`, `default`) removed from M9-B scope and test suites.
+   - Delivery Guarantee Contract: Generates RFC 5545 `.ics` with 30-minute `VALARM`. Prohibited claiming "100% reliable" or guaranteed delivery.
+   - Visit Time Semantics: `scheduled_visit_at`. UI asks: *"Bạn muốn đến đây lúc nào?"*. Alarm triggers 30m before visit (`TRIGGER:-PT30M`).
+   - Locked Quick Presets: `1 giờ nữa (+1h)`, `2 giờ nữa (+2h)`, `4 giờ nữa (+4h)`, and `Chọn ngày & giờ`. Custom selection must be `> now + 30 minutes`.
+   - Timezone Contract: Display prominently notes *"Giờ Đà Nẵng (GMT+7)"* in `Asia/Ho_Chi_Minh`. Converted to UTC `Z` for ICS event export.
+   - Storage Contract: `localStorage` key `laca.reminders.v1` as export metadata log; no `sent`/`delivered`/`dismissed` statuses.
+   - Cancellation Policy: Prohibited "Huỷ thông báo". M9-B focuses purely on creation/export.
+   - Technical & Data Boundaries: 100% client-side frontend code. Zero Neon tables, zero Cloudflare crons, zero service workers, zero VAPID keys. Verified 11-event M8 analytics schema and 262 existing tests 100% untouched.
+4. **DO NOT REDO / DO NOT TOUCH**:
+   - Do not implement M9-B runtime before Owner review.
+   - Do not modify `src/` or `tests/`.
+   - Do not add tables or migrations to Neon.
+   - Do not touch the 11 M8 analytics events.
+   - Do not push to remote.
+5. **M9-B Readiness**: YES.
+6. **EXACT NEXT STEP**:
    - STOP — WAITING FOR OWNER REVIEW.
 

@@ -230,11 +230,25 @@ Report: [M8B1_CLOUDFLARE_ENV_VERIFICATION](M8B1_CLOUDFLARE_ENV_VERIFICATION.md).
 Report: [M9A_NOTIFICATIONS_READINESS_AUDIT](M9A_NOTIFICATIONS_READINESS_AUDIT.md).
 - Status: READ-ONLY AUDIT & ARCHITECTURE CONTRACT COMPLETE.
 - Existing Foundation: 0 notification API calls in `src/`, 0 service workers in `public/` or `src/`, 0 PWA manifests, 0 push packages in `package.json`, 0 reminder tables in Neon DB, 0 cron triggers in `wrangler.jsonc`.
-- Core Product Use Case: "Nhắc tôi trước khi đi" (opt-in reminder, 30-minute default lead time, no permission on initial load, no marketing spam).
-- Critical Data Gap Identified: Current discovery places possess zero schedule/operating time data. A minimal departure time selection UI (quick preset chips: `+30m`, `+1h`, `+2h`, evening preset, custom time) is strictly required before any reminder can be scheduled.
+- Core Product Use Case: "Nhắc tôi trước khi đi" (opt-in reminder, 30-minute lead time, zero cold prompt on load, zero marketing spam).
+- Critical Data Gap Identified: Current discovery places possess zero schedule/operating time data. A minimal visit time selection UI (`scheduled_visit_at`) is strictly required before any reminder can be scheduled.
 - Platform Constraints: Regular iOS Safari tabs DO NOT support Notification API / Web Push without installation as a Home Screen PWA (iOS 16.4+). Mobile background timers terminate when tabs are suspended.
-- Recommended MVP Architecture for M9-B: Option 3 (Hybrid: One-tap Native Calendar export `.ics` / Google Calendar with alarm `-PT30M` + client-side `localStorage` active reminder badge). Delivers 100% reliable alarms on iOS/Android while closed, requires zero Cloudflare cron infrastructure, zero Neon DB bloat, and preserves privacy.
+- Recommended MVP Architecture for M9-B: RFC 5545 `.ics` Calendar Reminder Export with 30-minute advance `VALARM`. Delivers native calendar integration across iOS and Android while closed, requires zero Cloudflare cron infrastructure, zero Neon DB bloat, and preserves privacy.
 - Analytics Safeguard: Verified 11-event M8 schema remains 100% intact; draft extension events proposed for separate future authorization.
 - Scope Boundaries: Zero modifications to `src/` or `tests/`; zero DB mutations; CAFE inactive; NOW sample timeline decoupled; no deploy.
 - Next Action: STOP for Owner review before any M9-B implementation.
+
+## M9-A.1 Reminder MVP Contract Lock Completed — 2026-10-08
+Report: [M9A_NOTIFICATIONS_READINESS_AUDIT](M9A_NOTIFICATIONS_READINESS_AUDIT.md) & [DECISIONS](DECISIONS.md) (Decisions 133–142).
+- Status: CONTRACT LOCK ONLY — COMPLETED. Zero source modifications, zero DB mutations.
+- Canonical Feature Identity: "Nhắc tôi" $\rightarrow$ Calendar Reminder Export (`.ics`). Never described as push/browser notification.
+- Browser Permission Removed: M9-B does NOT invoke `Notification.requestPermission()`, `new Notification()`, or `PushManager`. Permission states (`granted`, `denied`, `default`) removed from M9-B scope and test suites.
+- Delivery Guarantee Contract: RFC 5545 `.ics` with 30-minute `VALARM`. Prohibited claiming "100% reliable" or guaranteed delivery.
+- Visit Time Semantics: `scheduled_visit_at`. UI asks: *"Bạn muốn đến đây lúc nào?"*. Alarm triggers 30m before visit (`TRIGGER:-PT30M`).
+- Locked Presets: `1 giờ nữa (+1h)`, `2 giờ nữa (+2h)`, `4 giờ nữa (+4h)`, and `Chọn ngày & giờ`. Custom selection must be `> now + 30 minutes`.
+- Timezone: `Asia/Ho_Chi_Minh` (GMT+7) communicated in UI; converted to UTC `Z` for ICS export.
+- Storage Contract: `localStorage` key `laca.reminders.v1` as export metadata log; no `sent`/`delivered`/`dismissed` statuses.
+- Cancellation Semantics: Prohibited "Huỷ thông báo" (web apps cannot delete imported calendar events). M9-B focuses purely on export.
+- Technical & Data Boundaries: 100% client-side frontend code. Zero Neon tables, zero Cloudflare crons, zero service workers, zero VAPID keys. Verified 11-event M8 analytics schema and 262 existing tests 100% untouched.
+- M9-B Readiness: YES — Architecture and contract locked. STOP for Owner review before M9-B implementation.
 

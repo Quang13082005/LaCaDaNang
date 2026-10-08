@@ -1,338 +1,314 @@
-# M9-A Audit Report: Notifications & Reminder Runtime Readiness
+# M9-A / M9-A.1 Audit & Contract: Calendar Reminder MVP
 
-Date: 2026-10-08  
-Branch: `phase-2a-deploy`  
-Base Checkpoint (HEAD): `235944b9342f96e13150ccd020764632d817f32d`  
-Milestone: **M9-A — NOTIFICATIONS READINESS AUDIT ONLY**  
-Scope: Product & Technical Architecture Audit only. Zero modifications to `src/` or `tests/`. Zero database mutations or package installations.
-
----
-
-## 1. Executive Summary & Audit Context
-
-Following the verification of **M8-B** and **M8-B.1** (First-Party Product Analytics on Neon PostgreSQL and Cloudflare Workers), this milestone conducts the readiness audit for the **Notification & Reminder** capability.
-
-The goal of notifications in *La Cà Đà Nẵng* is strictly **utility-driven user convenience**, specifically:
-> **"Nhắc tôi trước khi đi" ("Remind me before departure/visit")**
-
-This audit establishes:
-1. The **current foundation** in the repository (confirming zero existing notification/PWA assets).
-2. The fundamental differences and browser support realities between **In-App Notifications**, **Browser Local Notifications**, and **Web Push Notifications**.
-3. The **critical product gap**: current discovery provides venues and Google Maps links, but possesses **no departure time or planned schedule**, making an explicit user time-selection step mandatory before any reminder can be scheduled.
-4. Hard platform constraints on mobile, particularly **iOS Safari's prohibition of background web notifications** unless installed as a PWA.
-5. Architectural evaluation across Cloudflare Workers, Neon PostgreSQL, and Service Workers, concluding with a concrete recommendation for **M9-B MVP Scope**.
+Date: 2026-10-08
+Branch: `phase-2a-deploy`
+Base Checkpoint (HEAD): `d2180a75b60e6d1af43643d001698e04d3d31428`
+Milestone: **M9-A.1 — REMINDER MVP CONTRACT LOCK**
+Scope: Architecture & Contract Lock only. Zero modifications to `src/` or `tests/`. Zero database mutations or package installations.
 
 ---
 
-## 2. Audit of Current Repository Foundation
+## 1. Executive Summary & Canonical Feature Identity
 
-An exhaustive audit of the codebase was conducted across configuration, source code, public assets, and database catalogs:
+Following the verification of **M8-B** and **M8-B.1** (First-Party Product Analytics on Neon PostgreSQL and Cloudflare Workers), this milestone locks the product, technical, and testing specifications for the reminder capability.
 
-| Dimension | Inspection Target | Audit Result | Evidence / Notes |
+### 1.1 Canonical Feature Name & Philosophy
+- **Feature Name**: **"Nhắc tôi" $\rightarrow$ Calendar Reminder Export** (Xuất lịch nhắc).
+- **Not a Web Push Platform**: M9 MVP is **NOT** a Web Push notification system, **NOT** an in-browser notification service, and does **NOT** run background daemon schedulers.
+- **Anti-Marketing Principle**: *La Cà Đà Nẵng* reminders are strictly utility-driven tools for user travel convenience. No promotional blasts, marketing messages, or unrequested alerts are permitted.
+- **Strict Opt-In**: The feature triggers **only** upon explicit user request on a specific discovered place.
+- **Zero Permission Prompts on Load**: The app never prompts for permissions or interrupts browsing on Home or during search.
+
+### 1.2 Truthful Delivery Contract (No False Guarantees)
+- **Canonical Delivery Statement**:
+  > *"La Cà generates an RFC 5545-compatible calendar event containing a 30-minute VALARM. Alarm delivery is ultimately controlled by the user's calendar application and operating system."*
+- The application **must never promise** "100% guaranteed delivery" or "system notification delivered" because once an event file (`.ics`) is handed off, local alarm triggering is governed entirely by the user's OS and calendar client (Apple Calendar, Google Calendar, Outlook, etc.).
+
+---
+
+## 2. Audit of Existing Repository Foundation
+
+An exhaustive audit confirms that the codebase currently contains **zero notification, push, or PWA runtime code**:
+
+| Dimension | Inspection Target | Audit Result | Evidence / Reality |
 |---|---|---|---|
 | **Notification API** | `src/` | **NOT IMPLEMENTED** | 0 calls to `Notification`, `Notification.requestPermission`, or `new Notification()`. |
-| **Service Worker** | `src/`, `public/` | **NOT IMPLEMENTED** | No `sw.js`, `service-worker.js`, or `navigator.serviceWorker.register` calls. |
-| **PWA Manifest** | `public/`, `src/app/` | **NOT IMPLEMENTED** | No `manifest.json` or `manifest.webmanifest`. `public/` contains only `images/`. |
+| **Service Worker** | `src/`, `public/` | **NOT IMPLEMENTED** | No `sw.js` in `public/`, no registration in client. |
+| **PWA Manifest** | `public/`, `src/app/` | **NOT IMPLEMENTED** | No `manifest.json` or `manifest.webmanifest`. `public/` contains only static images. |
 | **Push API Code** | `src/` | **NOT IMPLEMENTED** | 0 references to `PushManager`, `PushSubscription`, or VAPID keys. |
-| **Notification Packages** | `package.json` | **NOT IMPLEMENTED** | Dependencies are strictly: `@neondatabase/serverless`, `@opennextjs/cloudflare`, `lucide-react`, `next`, `react`, `react-dom`, `zod`. Zero notification libraries installed. |
+| **Notification Packages** | `package.json` | **NOT IMPLEMENTED** | Dependencies are strictly: `@neondatabase/serverless`, `@opennextjs/cloudflare`, `lucide-react`, `next`, `react`, `react-dom`, `zod`. Zero notification libraries. |
 | **Database Tables** | Neon PostgreSQL | **NOT IMPLEMENTED** | Exactly 7 tables exist: 6 content tables (`places`, `place_translations`, `place_tags`, `tags`, `tag_translations`, `administrative_units`) + `analytics_events`. Zero reminder or subscription tables. |
 | **Cloudflare Crons** | `wrangler.jsonc` | **NOT IMPLEMENTED** | Configuration contains `vars` and `assets`, but 0 `triggers.crons`, 0 Queues, and 0 Durable Objects. |
 
-**Conclusion**: The repository currently has **zero notification runtime infrastructure**. Everything must be designed from a clean architectural baseline.
+---
+
+## 3. Removal of Browser Notification Permission from M9-B
+
+Because M9-B adopts the **RFC 5545 Calendar Reminder Export** architecture:
+1. M9-B **does NOT invoke** `Notification.requestPermission()`.
+2. M9-B **does NOT instantiate** `new Notification()`.
+3. M9-B **does NOT register** a Service Worker or call `PushManager.subscribe()`.
+4. Browser notification permission states (`granted`, `denied`, `default`) are **explicitly removed from M9-B acceptance criteria and test suites**. They are retained in documentation strictly as reference context for a potential future PWA phase.
 
 ---
 
-## 3. Product Purpose & The "Nhắc tôi trước khi đi" Use Case
+## 4. Mobile Browser Constraints & Platform Realities
 
-### 3.1 Product Philosophy
-- **Anti-Marketing Principle**: *La Cà Đà Nẵng* notifications are **never** used for unsolicited marketing, promotional blasts, or re-engagement spam.
-- **Strict Opt-In**: Notifications are triggered **only** by an explicit, deliberate user request on a specific place or plan.
-- **Zero Prompt on Initial Load**: The application must **never** request notification permission when the user first lands on Home or browses discovery.
-- **Default Offset**: 30 minutes prior to intended departure/visit time.
-
-### 3.2 The Critical Product Gap: Absence of Time Data
-In the current application:
-1. Venue discovery flows: `Intent (EAT / GO / STAY) -> Preference -> Results (0..3 PlaceCards) -> Maps Navigation`.
-2. Places in Neon PostgreSQL store coordinates, localized names, addresses, ratings, and tag mappings, but **do not store operating hours, visit durations, or schedules**.
-3. The "BÂY GIỜ LÀM GÌ?" (NOW) feature renders a sample timeline (`ItineraryTimeline.tsx`), but its timestamps (e.g., `"07:30 - 08:30"`) are static mockup strings and are not places from the database.
-
-> [!IMPORTANT]
-> **Key Finding**: The product currently has **no departure time or planned visit time**.
-> To implement "Nhắc tôi trước khi đi", the application **cannot invent or infer a timestamp**. It must provide a lightweight UI allowing the user to select or confirm their intended time when tapping "Nhắc tôi".
-
----
-
-## 4. Architectural Comparison: 3 Types of Notifications
-
-To avoid architectural confusion, three distinct technical mechanisms must be differentiated:
-
-| Capability / Dimension | A. In-App Notification (Toast / Banner) | B. Browser Local Notification (`new Notification`) | C. Web Push Notification (Service Worker + VAPID) |
-|---|---|---|---|
-| **Works when tab is active (foreground)?** | **YES** | **YES** | **YES** |
-| **Works when tab is in background (open but minimized)?** | **YES** (sound/visual badge on return) | **YES** (if browser process is active) | **YES** |
-| **Works when browser/tab is closed?** | **NO** | **NO** (Timers die with tab process) | **YES** (Woken up by OS push service) |
-| **Requires Service Worker?** | **NO** | **NO** | **YES** |
-| **Requires Push Subscription & VAPID?** | **NO** | **NO** | **YES** |
-| **Requires Backend Scheduler / DB?** | **NO** | **NO** | **YES** (Cron/Queue + Neon DB) |
-| **Mobile Android Support** | 100% | Works while Chrome tab alive; dies when tab closed | Full support |
-| **Mobile iOS Safari Support** | 100% | **UNSUPPORTED** (Safari tabs reject `Notification`) | **UNSUPPORTED** unless added to Home Screen as PWA |
-| **Implementation Complexity** | Minimal (1 day) | Low to Moderate (1–2 days) | Very High (requires SW, VAPID, Crons, DB) |
-| **MVP Suitability** | Supplementary only | Fragile on mobile | Overkill for initial MVP; platform blockers on iOS |
-
----
-
-## 5. Mobile & Browser Support Matrix
-
-Because *La Cà Đà Nẵng* is a **mobile-first web application designed for on-the-go travelers in Da Nang**, real-world browser constraints are paramount:
+The decision to adopt Calendar Reminder Export is dictated by hard mobile web constraints:
 
 ```
-Platform Support Matrix for "Tab Closed" Reminders:
+Platform Reality for Background Web Reminders (Closed Tab):
 
-[Android Chrome] ──► Full Web Push (via SW) ─────────► [PASS]
-[Desktop Chrome] ──► Full Web Push (via SW) ─────────► [PASS]
-[iOS Safari Tab] ──► Web Push / Local Notification ──► [BLOCKED: Apple requires installed PWA]
-[iOS PWA (Home)] ──► Web Push (iOS 16.4+) ───────────► [PASS: Requires Add to Home Screen]
+[Android Chrome] ──► Requires Service Worker + Web Push Backend ────────► [High Overhead]
+[iOS Safari Tab] ──► Window.Notification is UNDEFINED on mobile tabs ───► [PHYSICALLY BLOCKED]
+[iOS PWA (Home)] ──► Web Push enabled ONLY if added to Home Screen ─────► [Requires PWA install]
+[All Devices]    ──► RFC 5545 .ics Calendar Export with VALARM ─────────► [UNIVERSAL & WORKING]
 ```
 
-### Specific Platform Findings:
-1. **Android Chrome / Edge**:
-   - `Notification` constructor works while tab is in foreground/background.
-   - However, Android aggressively suspends background web tabs after minutes of inactivity to save battery, terminating client-side JavaScript timers (`setTimeout`).
-   - Closed-tab reminders require real Web Push via Service Worker.
-2. **iPhone / iOS Safari (Crucial Constraint)**:
-   - On standard Safari browser tabs, `window.Notification` is **undefined** or throwing.
-   - Apple only enabled Web Push notifications starting in **iOS 16.4**, and **strictly limited it to Web Apps installed to the Home Screen** (`display: standalone` via Web App Manifest).
-   - If an iOS user visits `lacadanang.com` in mobile Safari without adding it to their Home Screen, **no browser-level notification can ever be shown while the tab is closed**.
-3. **Desktop (macOS / Windows / Linux)**:
-   - Chrome, Edge, Firefox, and Safari (macOS 13+) fully support Notification API and Web Push.
+### Detailed Platform Facts:
+1. **iOS Safari on iPhone**:
+   - Standard browser tabs on mobile Safari **do not support** the `Notification` constructor.
+   - Apple enabled Web Push in iOS 16.4 **exclusively for web apps added to the Home Screen** (`display: standalone`). For regular website visitors, background web push is completely blocked by the operating system.
+2. **Android Chrome**:
+   - Client-side timers (`setTimeout`) die when the user switches apps or locks their phone because Android aggressively freezes inactive background tabs.
+3. **The Calendar Solution**:
+   - Standard RFC 5545 `.ics` files are universally supported across iOS (Apple Calendar), Android (Google Calendar / Samsung Calendar), and desktop operating systems.
+   - Once added to the user's native calendar, alarms ring natively with lock-screen alerts, sound, and banner notifications according to user OS preferences, **even when the browser is closed or the device is offline**.
 
 ---
 
-## 6. Permission UX Contract
+## 5. Core Delivery Format: RFC 5545 `.ics` Specification
 
-Any implementation must strictly enforce this state machine:
+M9-B standardizes on a **downloadable / openable `.ics` calendar file** (`text/calendar;charset=utf-8`).
 
+### 5.1 Why Not Google Calendar URL as Primary?
+- A direct Google Calendar web link (`https://calendar.google.com/calendar/render?...`) does not reliably enforce a 30-minute advance alert across native mobile calendar apps without user account friction.
+- RFC 5545 `.ics` contains an explicit `VALARM` component that is honored by both Apple Calendar and Google Calendar.
+- It requires no Google account, no third-party OAuth, and no internet access to import.
+
+### 5.2 Canonical RFC 5545 Event Contract
+```ics
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//La Ca Da Nang//Calendar Reminder v1.0//VI
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:{reminder_id}@lacadanang.com
+DTSTAMP:{created_at_utc}
+DTSTART:{scheduled_visit_at_utc}
+DTEND:{scheduled_visit_end_utc}
+SUMMARY:{localized_summary}
+DESCRIPTION:{localized_description_with_maps_url}
+LOCATION:{place_address}
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT30M
+DESCRIPTION:{localized_alarm_description}
+END:VALARM
+END:VEVENT
+END:VCALENDAR
 ```
-[User browsing PlaceCard]
-         │
-         ▼ (Taps "Nhắc tôi trước khi đi")
-[Pre-Prompt Explanatory Sheet] ──(Dismisses / Cancels)──► [Returns to Card with No Prompt]
-         │ (Taps "Tiếp tục / Bật thông báo")
-         ▼
-[Browser Permission Prompt]
-    ├── 'granted'     ──► Save Reminder ──► Show Success Toast & Confirmation State
-    ├── 'denied'      ──► Respect Choice ──► Fallback: Offer Calendar Export / In-App Note
-    ├── 'default'     ──► Dismissed without decision ──► Do not re-prompt automatically
-    └── 'unsupported' ──► Device cannot receive push ──► Offer Calendar (.ics) Download
-```
 
-### Non-Negotiable Permission Rules:
-1. **No Cold Prompts**: Never call `Notification.requestPermission()` on page load, home view, or intent selection.
-2. **Pre-Prompt Context**: Always explain *why* and *when* notifications will arrive before triggering the browser modal.
-3. **Graceful Denied State**: If permission is `denied`, the app must never repeatedly nag the user. It should quietly disable the notification toggle and optionally provide a link/guide on how to re-enable in browser settings if the user taps it again.
-4. **Unsupported Fallback**: For browsers that do not support Notification API (e.g. mobile Safari tabs), offer a 1-tap **"Thêm vào Lịch" (Add to Calendar / .ics export)** fallback.
+### 5.3 Formatting & Conformance Requirements
+- **Line Endings**: Strict CRLF (`\r\n`).
+- **Character Escaping**: Commas (`,`), semicolons (`;`), and backslashes (`\`) must be escaped with a backslash (`\,`, `\;`, `\\`). Newlines within fields must be encoded as `\n`.
+- **Timestamps**: All calendar timestamps (`DTSTAMP`, `DTSTART`, `DTEND`) must be ISO UTC strings formatted as `YYYYMMDDTHHmmssZ`.
+- **Duration**: `DTEND` defaults to 1 hour after `DTSTART` (`scheduled_visit_at + 1h`).
+- **UID**: Must be a cryptographically random UUID v4 with domain suffix (e.g. `c1a2b3c4-d5e6-7890-abcd-ef1234567890@lacadanang.com`).
+- **Location**: Use `place.address` if present; if empty/null, omit the `LOCATION` line. Never invent addresses.
+- **MIME & Download**: Served/generated client-side via a UTF-8 `Blob` with MIME type `text/calendar;charset=utf-8`.
 
 ---
 
-## 7. Time & Timezone Contract
+## 6. Exact Time Semantics & Quick Presets
+
+### 6.1 Semantic Definition: `scheduled_visit_at`
+- **Concept Name**: **`scheduled_visit_at`** (NOT `scheduled_departure_at`).
+- **Rationale**: The application does not track user starting location, route duration, or transit mode, so it cannot calculate an actual departure time. Asking for visit time is truthful and unambiguous.
+- **User-Facing Question**: **"Bạn muốn đến đây lúc nào?"** (*"When do you plan to visit?"*).
+- **Alarm Rule**: Trigger alarm **30 minutes before `scheduled_visit_at`** (`TRIGGER:-PT30M`).
+
+### 6.2 Quick Presets (Elimination of Ambiguity)
+The invalid `+30m` preset is removed because an alarm set 30 minutes before an event 30 minutes away would trigger immediately.
+
+Locked Presets:
+1. **"1 giờ nữa" (+1h)**: `now + 60 minutes`. (Alarm fires in ~30 minutes).
+2. **"2 giờ nữa" (+2h)**: `now + 120 minutes`. (Alarm fires in ~90 minutes).
+3. **"4 giờ nữa" (+4h)**: `now + 240 minutes`. (Alarm fires in ~210 minutes).
+4. **"Chọn ngày & giờ" (Custom date & time)**: Native `<input type="datetime-local">` or `<input type="time">`.
+
+### 6.3 Validation Rules
+- All presets and custom selections are computed using **`Asia/Ho_Chi_Minh`** wall time.
+- Custom selections must satisfy: **`scheduled_visit_at > now + 30 minutes`**.
+- If a user selects a time $\le 30$ minutes in the future (or in the past), the UI must display a clear validation message (*"Vui lòng chọn thời gian cách hiện tại ít nhất 30 phút để đặt lời nhắc"*), disabling export.
+
+---
+
+## 7. Timezone Contract
 
 1. **Target Territory**: Da Nang, Vietnam.
-2. **Canonical Timezone**: **`Asia/Ho_Chi_Minh`** (UTC+07:00).
-   - Strictly ban `Asia/Bangkok` in code, configuration, and documentation semantics.
-   - Note: Vietnam does not observe Daylight Saving Time (DST); offset is fixed UTC+07:00 year-round.
-3. **Storage Format**: UTC timestamp stored as `TIMESTAMPTZ` in PostgreSQL (or ISO 8601 UTC string `YYYY-MM-DDTHH:mm:ss.sssZ` in client storage).
-4. **Presentation**: All reminder times displayed to the user must be formatted in local Da Nang time (`Asia/Ho_Chi_Minh`).
+2. **Canonical Timezone**: **`Asia/Ho_Chi_Minh`** (UTC+07:00, no Daylight Saving Time).
+   - Strictly prohibit `Asia/Bangkok` across all user-facing copy and code.
+3. **User Communication**: In the reminder bottom sheet, clearly state:
+   > *"Giờ Đà Nẵng (GMT+7)"*
+   This ensures foreign tourists whose device clock may be set to another timezone understand the exact local visit schedule.
+4. **Storage & ICS Export**:
+   - The selected local time is converted to an absolute UTC timestamp ending in `Z` (`YYYYMMDDTHHmmssZ`).
+   - The event instant is unambiguous regardless of the user's home timezone.
 
 ---
 
-## 8. UX Solution for the "Missing Departure Time" Gap
+## 8. Client-Side Storage & Cancellation Semantics
 
-Because places do not have inherent visit times, tapping **"Nhắc tôi"** on a `PlaceCard` must open a compact, one-thumb friendly **Reminder Sheet**:
+### 8.1 Consistent Storage Contract
+- **Storage Mechanism**: **`localStorage`** (wrapped in safe `try/catch`).
+- **Key**: **`laca.reminders.v1`**.
+- **Semantics**: The local record represents strictly:
+  > *"La Cà reminder configuration & export log"*
+- It does **NOT** represent external calendar synchronization, active device alarm status, or notification delivery.
 
-```
-┌──────────────────────────────────────────────┐
-│  🔔 Nhắc tôi trước khi đi                    │
-│  Bánh mì Bà Lan                              │
-│                                              │
-│  Bạn dự định ghé thăm khi nào?               │
-│  ┌───────────┐ ┌───────────┐ ┌───────────┐  │
-│  │ +30 phút  │ │  +1 giờ   │ │  +2 giờ   │  │
-│  └───────────┘ └───────────┘ └───────────┘  │
-│  ┌───────────────────────┐ ┌─────────────┐  │
-│  │  Tối nay (18:30)      │ │  Chọn giờ   │  │
-│  └───────────────────────┘ └─────────────┘  │
-│                                              │
-│  Thời gian nhắc: Trước 30 phút xuất phát     │
-│                                              │
-│  [  Đặt lời nhắc  ]   [ Hủy ]                │
-└──────────────────────────────────────────────┘
-```
-
-- **Quick Presets**: Provide rapid, single-tap options (`+30m`, `+1h`, `+2h`, evening preset) so the user does not have to fiddle with complex native time pickers.
-- **Custom Time**: An optional native `<input type="time">` for specific plans.
-- **Calculated Trigger**: `reminder_trigger_time = departure_time - 30_minutes`.
-
----
-
-## 9. NOW Boundary Protection
-
-- The "BÂY GIỜ LÀM GÌ?" (NOW) feature remains an **illustrative sample itinerary**.
-- Reminders must **NOT** attempt to turn NOW into a live multi-stop GPS navigation scheduler.
-- Reminders attach strictly to individual verified places (`places.id`) from **EAT**, **GO**, or **STAY**, maintaining total separation from NOW.
-
----
-
-## 10. Provider & Architecture Options for MVP
-
-### Option 1: Full Web Push Infrastructure (Cloudflare Cron + Push API + Service Worker)
-- **Mechanism**: Register Service Worker $\rightarrow$ subscribe via `pushManager` $\rightarrow$ save subscription & scheduled time to Neon $\rightarrow$ Cloudflare cron worker checks DB every minute $\rightarrow$ sends Web Push via VAPID.
-- **Pros**: Can notify when tab is closed (on Android and Desktop).
-- **Cons**: 
-  - Fails on mobile iOS Safari unless user installs PWA to Home Screen.
-  - Substantial backend complexity: requires cron workers, subscription management, encryption keys, and continuous serverless DB querying.
-  - High maintenance risk for an MVP.
-
-### Option 2: Browser Local Notification + Session Reminder (Client-Only)
-- **Mechanism**: Request browser `Notification` permission $\rightarrow$ schedule `setTimeout` in the client tab $\rightarrow$ trigger `new Notification()` when due.
-- **Pros**: Zero backend infrastructure, zero DB schema changes.
-- **Cons**: Completely unreliable on mobile. When the user locks their phone or switches apps, the browser suspends the tab, and the timer never fires. Unsupported on regular iOS Safari tabs.
-
-### Option 3: Pragmatic Native Calendar (.ics / Google Calendar) + In-App Schedule Card (RECOMMENDED FOR MVP)
-- **Mechanism**:
-  1. User selects "Nhắc tôi trước khi đi" on a place.
-  2. The app stores the active reminder in `localStorage` (`laca.reminders.v1`) for in-app badge/countdown.
-  3. The app offers a 1-tap **"Thêm vào Lịch" (Add to Calendar)** action:
-     - Generates a standard RFC 5545 `.ics` file or direct Google Calendar link with venue name, address, Google Maps link, and alarm set to `-PT30M` (30 minutes before).
-  4. In addition, if on a supported desktop or foreground session, triggers a browser Notification.
-- **Pros**:
-  - **100% Reliable**: Native mobile calendar notifications ring reliably on both **iOS (Apple Calendar)** and **Android (Google Calendar)** even when the browser is completely closed or device is locked.
-  - Zero server cron infrastructure needed on Cloudflare.
-  - Zero database bloat in Neon.
-  - Perfect privacy: no personal device push tokens stored on our servers.
-  - Works universally regardless of browser brand or PWA installation status.
-
----
-
-## 11. Cloudflare & Service Worker Considerations
-
-If the project eventually transitions to true Web Push in a later phase:
-1. **Cloudflare Cron**: Requires configuring `triggers.crons = ["*/5 * * * *"]` in `wrangler.jsonc` and handling `scheduled(event, env, ctx)` in worker code.
-2. **Neon Connection Pool**: A 5-minute cron querying Neon will continuously consume serverless compute hours.
-3. **PWA Prerequisite**: Web Push should only be built **after** a complete PWA manifest and service worker lifecycle are officially implemented. Attempting Web Push without a PWA setup leaves iOS users completely unsupported.
-
----
-
-## 12. Proposed Reminder Data Contract (Draft Specification)
-
-If stored in client storage (`localStorage`):
+### 8.2 Local Record Schema
 ```typescript
-export interface PlaceReminder {
-  id: string; // UUID
-  placeId: number;
-  placeName: string;
-  departureTime: string; // ISO 8601 UTC
-  reminderTime: string; // ISO 8601 UTC (departureTime - 30m)
-  leadTimeMinutes: number; // default: 30
+export interface LocalReminderRecord {
+  reminder_id: string; // UUID v4
+  place_id: number;
+  place_name: string;
+  scheduled_visit_at_utc: string; // ISO 8601 UTC
+  lead_time_minutes: 30; // locked to 30
   locale: "vi" | "en" | "ko";
-  createdAt: string; // ISO 8601 UTC
-  status: "scheduled" | "dismissed" | "completed";
+  created_at_utc: string; // ISO 8601 UTC
+  calendar_exported_at_utc: string; // ISO 8601 UTC
 }
 ```
+*Prohibited status fields*: Do **NOT** use `sent`, `delivered`, or `dismissed`.
 
-If eventually migrated to Neon PostgreSQL:
-```sql
--- DRAFT ONLY - DO NOT RUN IN M9-A
-CREATE TABLE IF NOT EXISTS place_reminders (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  place_id INTEGER NOT NULL REFERENCES places(id) ON DELETE CASCADE,
-  scheduled_departure_at TIMESTAMPTZ NOT NULL,
-  remind_at TIMESTAMPTZ NOT NULL,
-  locale VARCHAR(5) NOT NULL CHECK (locale IN ('vi', 'en', 'ko')),
-  status VARCHAR(15) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'sent', 'cancelled')),
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-);
+### 8.3 Cancellation Policy
+- **Platform Reality**: Web applications **cannot programmatically delete** an event from Apple Calendar or Google Calendar once imported by the user.
+- **Prohibited UI**: Do **NOT** render a button labeled "Huỷ thông báo" (Cancel notification) that falsely implies the device calendar alarm is revoked.
+- **MVP Simplification for M9-B**:
+  - M9-B focuses strictly on **creation and export**.
+  - No complex local reminder deletion or synchronization state machine.
+  - If a user exports a reminder again for the same venue, the local record for that `place_id` is updated with the new timestamp.
+
+---
+
+## 9. Mobile One-Hand UX Integration (M6-B Compliance)
+
+### 9.1 `PlaceCard` Action Row
+- Google Maps CTA remains the primary action (`min-h-[44px]`).
+- A secondary action button is added:
+  - Label: **`🔔 Nhắc tôi`**
+  - Minimum touch target: $\ge 44\text{px} \times 44\text{px}$.
+  - Styling: Visually secondary to the prominent sky-blue Maps CTA (e.g., subtle outline / neutral slate style).
+  - Clearance: Zero layout shift, no text clipping, zero horizontal overflow, and zero overlap with [`BottomActionBar.tsx`](file:///d:/D%E1%BB%B1%20%C3%A1n%20t%C3%ACm%20%C4%91%E1%BB%8Ba%20%C4%91i%E1%BB%83m%20%C4%83n%20ch%C6%A1i/LaCaDaNang/danang_revised_pack/src/components/results/BottomActionBar.tsx).
+
+### 9.2 Reminder Bottom Sheet Flow
+When the user taps `🔔 Nhắc tôi`, an accessible dialog opens in the lower one-thumb reach zone:
 ```
+┌──────────────────────────────────────────────┐
+│  🔔 Nhắc tôi ghé thăm                        │
+│  Bánh mì Bà Lan                              │
+│                                              │
+│  Bạn muốn đến đây lúc nào?                   │
+│  ┌───────────┐ ┌───────────┐ ┌───────────┐  │
+│  │ 1 giờ nữa │ │ 2 giờ nữa │ │ 4 giờ nữa │  │
+│  └───────────┘ └───────────┘ └───────────┘  │
+│  ┌────────────────────────────────────────┐  │
+│  │  Chọn ngày & giờ                       │  │
+│  └────────────────────────────────────────┘  │
+│                                              │
+│  ⏱ Nhắc trước: 30 phút (Giờ Đà Nẵng, GMT+7)   │
+│                                              │
+│  [  📅 Thêm vào lịch  ]                      │
+│  [        Đóng        ]                      │
+└──────────────────────────────────────────────┘
+```
+- Tapping **`Thêm vào lịch`** triggers immediate `.ics` download / calendar intent, stores the export metadata in `localStorage`, and displays a brief confirmation feedback toast.
+- Does **NOT** display browser notification permission popups.
 
 ---
 
-## 13. Notification Content & Localization (i18n)
+## 10. Localization (i18n) Policy
 
-### Notification Copy Templates:
-| Locale | Title | Body Template |
-|---|---|---|
-| **`vi`** | 🔔 Sắp đến giờ đi rồi! | Đã đến giờ chuẩn bị ghé thăm {placeName}. Xem đường đi trên Google Maps. |
-| **`en`** | 🔔 Time to head out! | It's almost time for your visit to {placeName}. View directions on Google Maps. |
-| **`ko`** | 🔔 출발할 시간입니다! | {placeName} 방문 예정 시간입니다. Google Maps에서 길찾기를 확인하세요. |
+All reminder UI strings and calendar descriptions must support **`vi`**, **`en`**, and **`ko`**:
 
-- **Place Name Handling**: Always use `place.name` from existing verified translations. Never fabricate machine translations for venue names.
-- **Language Policy**: Reminders default to the active locale at the time of creation.
+### UI Dictionary Keys:
+| Key | Vietnamese (`vi`) | English (`en`) | Korean (`ko`) |
+|---|---|---|---|
+| `action.remind` | Nhắc tôi | Remind me | 알림 받기 |
+| `sheet.title` | Nhắc tôi ghé thăm | Remind my visit | 방문 알림 설정 |
+| `sheet.prompt` | Bạn muốn đến đây lúc nào? | When do you plan to visit? | 언제 방문하시겠어요? |
+| `sheet.preset1h` | 1 giờ nữa | In 1 hour | 1시간 후 |
+| `sheet.preset2h` | 2 giờ nữa | In 2 hours | 2시간 후 |
+| `sheet.preset4h` | 4 giờ nữa | In 4 hours | 4시간 후 |
+| `sheet.customTime` | Chọn ngày & giờ | Choose date & time | 날짜 및 시간 선택 |
+| `sheet.leadNotice` | Nhắc trước 30 phút (Giờ Đà Nẵng, GMT+7) | Remind 30m before (Da Nang time, GMT+7) | 30분 전 알림 (다낭 시간, GMT+7) |
+| `sheet.addToCalendar` | Thêm vào lịch | Add to calendar | 캘린더에 추가 |
+| `sheet.close` | Đóng | Close | 닫기 |
+| `sheet.minTimeWarning` | Vui lòng chọn thời gian cách hiện tại ít nhất 30 phút | Please choose a time at least 30 minutes from now | 현재 시간보다 최소 30분 이후의 시간을 선택해주세요 |
 
----
-
-## 14. Analytics Interaction & Protection
-
-1. **Preserve M8 Canonical Vocabulary**:
-   - The verified 11-event M8 schema (`session_started`, `home_viewed`, `intent_selected`, `preference_selected`, `results_shown`, `nearby_requested`, `nearby_resolved`, `nearby_failed`, `citywide_selected`, `maps_clicked`, `language_changed`) must remain **100% untouched and intact**.
-2. **Draft Future Extension Events** (for future authorization, NOT added in M9-A):
-   - `reminder_prompt_shown`: User tapped reminder trigger.
-   - `reminder_created`: User successfully confirmed a reminder (payload: `place_id`, `lead_time_minutes`, `method: 'calendar' | 'browser'`).
-   - `reminder_permission_result`: `granted | denied | unsupported`.
-   - `reminder_cancelled`: User deleted an active reminder.
-
----
-
-## 15. Mobile One-Hand UX Integration (M6-B Compliance)
-
-1. **Trigger Placement**:
-   - Must be placed on [`PlaceCard.tsx`](file:///d:/D%E1%BB%B1%20%C3%A1n%20t%C3%ACm%20%C4%91%E1%BB%8Ba%20%C4%91i%E1%BB%83m%20%C4%83n%20ch%C6%A1i/LaCaDaNang/danang_revised_pack/src/components/results/PlaceCard.tsx).
-   - Google Maps CTA is the primary action (`min-h-[44px]`, full width or primary slot).
-   - "Nhắc tôi" CTA should be a secondary button (e.g. icon button `🔔 Nhắc tôi` with $\ge 44\text{px}$ touch target) placed in an action row alongside or above the Maps button.
-2. **Bottom Sheet Ergonomics**:
-   - The reminder selection sheet must open from the bottom of the viewport in the natural one-thumb reach zone, following the design system established by `LanguageSelector`.
-   - Safe-area insets (`env(safe-area-inset-bottom)`) must be respected.
+### ICS Text Generation:
+- **SUMMARY**:
+  - `vi`: `Ghé thăm {placeName} (La Cà Đà Nẵng)`
+  - `en`: `Visit {placeName} (La Ca Da Nang)`
+  - `ko`: `{placeName} 방문 (라카 다낭)`
+- **DESCRIPTION**: Includes the localized tip and verified Google Maps URL:
+  - `vi`: `Nhắc nhở ghé thăm {placeName}.\nĐịa chỉ: {address}\nXem đường đi trên Google Maps: {mapsUrl}`
+  - `en`: `Reminder to visit {placeName}.\nAddress: {address}\nOpen in Google Maps: {mapsUrl}`
+  - `ko`: `{placeName} 방문 알림.\n주소: {address}\nGoogle Maps에서 길찾기: {mapsUrl}`
+- **Venue Names**: Sourced strictly from existing verified database translations (`place.name`). Never invent or machine-translate proper names.
 
 ---
 
-## 16. Test Plan for Implementation
+## 11. Architectural Boundaries
 
-When the reminder feature is authorized for implementation, the following test matrix must be satisfied:
-
-1. **Permission State Tests**:
-   - `default` state displays explanatory pre-prompt.
-   - `granted` state executes scheduling flow cleanly.
-   - `denied` state hides/disables notification prompt and offers calendar fallback without throwing.
-   - `unsupported` browser environments cleanly fall back to calendar file export.
-2. **Lifecycle & Timing Tests**:
-   - Presets (`+30m`, `+1h`, `+2h`) calculate exact timestamps in `Asia/Ho_Chi_Minh`.
-   - Past timestamps are rejected.
-   - Cancellation removes active reminder cleanly.
-3. **i18n Tests**:
-   - Sheet labels and notification copy render accurately in `vi`, `en`, and `ko`.
-4. **Regression Safeguards**:
-   - All 262 existing tests (Discovery, Nearby, One-Hand UX, i18n, Analytics) continue to pass.
-   - No venue images reintroduced.
+1. **Zero Database Mutations**:
+   - Zero tables added to Neon PostgreSQL.
+   - Zero migrations executed.
+   - Existing 6 content tables (3,079 rows) and `analytics_events` remain 100% untouched.
+2. **Zero Cloudflare Infrastructure**:
+   - Zero cron triggers, Queues, or Durable Objects added to `wrangler.jsonc`.
+3. **NOW Boundary Decoupling**:
+   - "BÂY GIỜ LÀM GÌ?" (NOW) remains a static sample itinerary.
+   - Reminders attach strictly to individual verified places from EAT, GO, and STAY.
+4. **Analytics Safeguard**:
+   - The verified 11-event M8 schema remains strictly locked. Zero new analytics events are added in M9-B.
 
 ---
 
-## 17. Recommended MVP Scope for M9-B
+## 12. Test Plan for M9-B Implementation
 
-Based on technical facts and mobile browser realities, **Option 3 (Hybrid Calendar Integration + In-App Reminder Sheet)** is the strongly recommended MVP path for **M9-B**:
+M9-B verification must satisfy:
 
-1. **UI Component**:
-   - Add a subtle, accessible `🔔 Nhắc tôi` CTA on `PlaceCard.tsx` ($\ge 44\text{px}$).
-   - Bottom sheet for departure time selection (`+30m`, `+1h`, `+2h`, or custom time).
-2. **Delivery Mechanism**:
-   - **Primary (100% Reliable)**: One-tap **"Thêm vào Lịch" (Add to Calendar)** generating a localized `.ics` event with a 30-minute alarm and Google Maps link. Guarantees actual lock-screen ringing on iOS and Android devices even when the browser is closed.
-   - **Secondary (In-App)**: Local storage persistence (`laca.reminders.v1`) to display an active reminder chip on the card during the user's trip.
-3. **Infrastructure**:
-   - **Zero Cloudflare Cron changes** (keeps deployment lightweight and low-cost).
-   - **Zero Neon DB mutations** (avoids unnecessary database writes and connection churn).
-   - Defer full Web Push to a post-PWA milestone where Service Workers and App Manifest are properly integrated.
+1. **Zero Permission Invocations**:
+   - Verifies `Notification.requestPermission` and `new Notification` are never called.
+2. **UI & Ergonomics**:
+   - `🔔 Nhắc tôi` button touch target is $\ge 44\text{px}$.
+   - Bottom sheet renders with proper dialog semantics, safe-area clearance, and one-hand reachability.
+3. **Time Calculations & Timezone**:
+   - Presets `+1h`, `+2h`, `+4h` calculate accurate future timestamps based on `Asia/Ho_Chi_Minh`.
+   - Custom selections $\le 30$ minutes in the future trigger validation warning and block export.
+4. **RFC 5545 Conformance**:
+   - Valid `BEGIN:VCALENDAR` and `BEGIN:VEVENT`.
+   - Valid `BEGIN:VALARM` with `TRIGGER:-PT30M` and `ACTION:DISPLAY`.
+   - CRLF (`\r\n`) line endings throughout.
+   - Timestamps formatted as `YYYYMMDDTHHmmssZ`.
+   - Escaping of commas, semicolons, and newlines.
+   - Unique UID generation.
+   - Google Maps URL present in `DESCRIPTION`.
+5. **Storage Resilience**:
+   - `localStorage` export log handled within safe `try/catch` (falls back gracefully if storage is disabled/quota full).
+6. **Localization**:
+   - All UI elements and exported `.ics` text render correctly in `vi`, `en`, and `ko`.
+7. **Full Regressions**:
+   - All 262 existing tests pass.
+   - Lint, typecheck, and production build pass with 0 errors.
 
 ---
 
-## 18. Audit Sign-Off & Status
+## 13. M9-B Readiness Verdict
 
-- **M9-A Audit Status**: **COMPLETE & VERIFIED**
-- **Blockers Found**: None in the codebase. Clear browser constraints identified and documented.
-- **Action**: STOP — Awaiting Owner review and scope authorization before any implementation.
+- **M9-B Status**: **READY FOR IMPLEMENTATION**
+- **Architecture Contradictions**: **RESOLVED** (Web Push / Browser Notification ambiguity eliminated in favor of deterministic RFC 5545 Calendar Reminder Export).
+- **Exact Next Step**: STOP — Waiting for Owner review and authorization before M9-B implementation.

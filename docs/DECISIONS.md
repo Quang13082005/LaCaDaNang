@@ -170,10 +170,22 @@ Real M3-B commit: `e39c7de65fc413f6561e0069642ba58f6bb95f0e`. Verified exact13 a
 
 ## M9-A Notifications Readiness Audit Decisions (2026-10-08)
 126. **Utility-Driven Notification Purpose:** Locked product use case strictly to explicit user-requested visit reminders ("Nhắc tôi trước khi đi"). Unsolicited marketing, retention blasts, and background spam are categorically prohibited.
-127. **Zero-Permission Initial Load Rule:** Notification permissions must never be requested on initial page load, landing, or intent navigation. Pre-prompt explanatory UI must precede browser permission requests.
-128. **Missing Departure Time UX Gate:** Acknowledged that venue database entities possess no schedule or operating time data. M9-B must provide a minimal time-selection bottom sheet (e.g., presets `+30m`, `+1h`, `+2h`, evening preset, custom time) to establish the departure timestamp.
+127. **Zero-Permission Initial Load Rule:** Notification permissions must never be requested on initial page load, landing, or intent navigation. Pre-prompt explanatory UI must precede any user action.
+128. **Missing Visit Time UX Gate:** Acknowledged that venue database entities possess no schedule or operating time data. M9-B must provide a minimal visit time selection bottom sheet (`+1h`, `+2h`, `+4h`, custom time) to establish `scheduled_visit_at`.
 129. **NOW Static Itinerary Decoupling:** Reminders attach strictly to individual verified places from EAT, GO, and STAY results. The static NOW sample timeline is strictly decoupled and must not be altered into a live scheduler.
-130. **Mobile Platform Reality & iOS Safari PWA Constraint:** Acknowledged that standard iOS Safari tabs do not support Notification API or closed-tab Web Push without Home Screen PWA installation (iOS 16.4+). Recommended MVP architecture leverages native calendar (.ics) generation for 100% reliable alarms across all closed mobile devices.
+130. **Mobile Platform Reality & iOS Safari PWA Constraint:** Acknowledged that standard iOS Safari tabs do not support Notification API or closed-tab Web Push without Home Screen PWA installation (iOS 16.4+). Recommended architecture leverages native RFC 5545 calendar (.ics) generation.
 131. **Da Nang Timezone & UTC Storage:** All reminder scheduling calculations operate under `Asia/Ho_Chi_Minh` (UTC+07:00). Timestamps in memory/storage must use UTC ISO strings (`TIMESTAMPTZ`).
 132. **Preservation of 11 Canonical Analytics Events:** M8 analytics schema and vocabulary remain locked at 11 events. Future reminder analytics (e.g. `reminder_created`) are deferred to an explicit separate extension and not introduced in M9-A.
+
+## M9-A.1 Reminder MVP Contract Lock Decisions (2026-10-08)
+133. **Canonical Feature Identity & Terminology:** Locked feature name to **"Nhắc tôi" $\rightarrow$ Calendar Reminder Export**. Must not be described as "push notification", "browser notification", or "guaranteed system notification".
+134. **Complete Removal of Browser Notification Permission from M9-B:** M9-B does NOT call `Notification.requestPermission()`, `new Notification()`, or `PushManager`. Permission states (`granted`, `denied`, `default`) are removed from M9-B acceptance criteria and test scope.
+135. **Truthful Delivery Contract:** Prohibited claiming "100% reliable" or "guaranteed alert". Canonical contract states: *"La Cà generates an RFC 5545-compatible calendar event containing a 30-minute VALARM. Alarm delivery is ultimately controlled by the user's calendar application and operating system."*
+136. **Core Delivery Format:** Locked canonical delivery to downloadable RFC 5545 `.ics` file (`text/calendar;charset=utf-8`) with CRLF line endings, proper escaping, UTC `Z` formatting, and unique UID. Google Calendar URL is deferred and not part of core acceptance.
+137. **Visit Time Semantics (`scheduled_visit_at`):** Renamed concept from departure time to `scheduled_visit_at`. UI asks: *"Bạn muốn đến đây lúc nào?"*. Alarm triggers 30 minutes before visit (`TRIGGER:-PT30M`).
+138. **Quick Presets Lock:** Locked presets to **1 giờ nữa (+1h)**, **2 giờ nữa (+2h)**, **4 giờ nữa (+4h)**, and **Chọn ngày & giờ**. Removed ambiguous `+30m` and evening presets. Custom selection must be `> now + 30 minutes` (rejection if $\le 30$m).
+139. **Timezone & Tourist Communication:** Display prominently notes *"Giờ Đà Nẵng (GMT+7)"* in `Asia/Ho_Chi_Minh`. Converted to UTC `Z` for ICS event export.
+140. **Local Storage Contract:** Uses `localStorage` key `laca.reminders.v1` as a local export log only. Prohibits status terms `sent`, `delivered`, or `dismissed`. Storage calls wrapped in `try/catch`.
+141. **Cancellation Semantics:** Since web apps cannot delete events imported into device calendar apps, M9-B prohibits buttons labeled "Huỷ thông báo". M9-B focuses purely on creation/export; re-exporting updates the local record.
+142. **Zero Backend / Zero DB Boundary:** M9-B is 100% client-side frontend code. Zero Neon tables, zero migrations, zero Cloudflare crons, zero service workers, zero VAPID keys. All 262 existing tests and 11 M8 analytics events remain untouched.
 

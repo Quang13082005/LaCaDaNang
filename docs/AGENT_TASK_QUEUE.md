@@ -29,7 +29,8 @@ M8-A.2 | Final Analytics Contract Patch | DONE | Current agent | User authorizat
 M8-B | Analytics Runtime Implementation | DONE | Current agent | User authorization; M8-A.2 | STOP for review; verification report created | docs/M8B_VERIFICATION.md (34/34 tests PASS; 259 total PASS; live DB verified)
 M8-B.1 | Cloudflare Analytics Environment Fix | DONE | Current agent | Owner feedback; M8-B | STOP for review; verification report created | docs/M8B1_CLOUDFLARE_ENV_VERIFICATION.md (APP_ENV lock, wrangler envs, 262/262 tests PASS, live DB verified)
 M9-A | Notifications Readiness Audit | DONE | Current agent | User authorization; M8-B.1 | STOP for review; audit report created | docs/M9A_NOTIFICATIONS_READINESS_AUDIT.md
-M9-B | Notification reminder MVP | NOT_STARTED | Unassigned | User authorization; M9-A | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
+M9-A.1 | Reminder MVP Contract Lock | DONE | Current agent | User authorization; M9-A | STOP for review; contract locked | docs/M9A_NOTIFICATIONS_READINESS_AUDIT.md & DECISIONS.md (133–142)
+M9-B | Calendar Reminder MVP | NOT_STARTED | Unassigned | User authorization; M9-A.1 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
 M11 | Time/location-aware NOW if supported | NOT_STARTED | Unassigned | User authorization; M10 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
 M12 | Full regression + responsive/preview | NOT_STARTED | Unassigned | User authorization; M11 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
 M13 | Release report; approval before release | NOT_STARTED | Unassigned | User authorization; M12 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
@@ -191,10 +192,24 @@ Report: [M9A_NOTIFICATIONS_READINESS_AUDIT](M9A_NOTIFICATIONS_READINESS_AUDIT.md
 - Status: READ-ONLY AUDIT & ARCHITECTURE CONTRACT COMPLETE.
 - Existing Foundation: 0 notification API calls in `src/`, 0 service workers, 0 PWA manifests, 0 push packages in `package.json`, 0 reminder tables in Neon DB, 0 cron triggers in `wrangler.jsonc`.
 - Core Use Case: "Nhắc tôi trước khi đi" (opt-in reminder, 30-minute lead time, zero cold prompt on load, zero marketing spam).
-- Missing Time Gap: Places in DB store no schedule/operating times. Explicit departure time selector (`+30m`, `+1h`, `+2h`, evening preset, custom time) is strictly required to establish the departure timestamp.
+- Missing Time Gap: Places in DB store no schedule/operating times. Explicit visit time selector (`scheduled_visit_at`) is strictly required.
 - Mobile Platform Constraints: Regular iOS Safari tabs DO NOT support Notification API / Web Push without Home Screen PWA installation (iOS 16.4+). Inactive mobile browser tabs terminate client timers when suspended.
-- Recommended MVP Scope: Hybrid Option 3 (Native Calendar export `.ics` / Google Calendar with alarm `-PT30M` + in-app `localStorage` active reminder badge). Delivers 100% reliable alarms on iOS/Android while closed, requires zero Cloudflare crons, zero Neon DB bloat, and preserves privacy.
+- Recommended Architecture: RFC 5545 `.ics` Calendar Reminder Export with 30-minute advance `VALARM`. Requires zero Cloudflare crons, zero Neon DB bloat, and preserves privacy.
 - Analytics Safeguard: Verified 11-event M8 schema remains 100% intact; draft extension events proposed for separate future authorization.
 - Scope Boundaries: Zero modifications to `src/` or `tests/`; zero DB mutations; CAFE inactive; NOW sample timeline decoupled; no deploy.
 - Next action: STOP for Owner review.
+
+## M9-A.1 Reminder MVP Contract Lock Completed — 2026-10-08
+Report: [M9A_NOTIFICATIONS_READINESS_AUDIT](M9A_NOTIFICATIONS_READINESS_AUDIT.md) & [DECISIONS](DECISIONS.md) (Decisions 133–142).
+- Status: CONTRACT LOCK ONLY — COMPLETED. Zero source modifications, zero DB mutations.
+- Canonical Feature Identity: "Nhắc tôi" $\rightarrow$ Calendar Reminder Export (`.ics`). Prohibited describing as push or browser notification.
+- Permission Removed: M9-B does NOT invoke `Notification.requestPermission()`, `new Notification()`, or `PushManager`. Permission states removed from M9-B scope and test suites.
+- Delivery Guarantee Contract: RFC 5545 `.ics` with 30-minute `VALARM`. Prohibited claiming "100% reliable" or guaranteed delivery.
+- Visit Time Semantics: `scheduled_visit_at`. UI asks: *"Bạn muốn đến đây lúc nào?"*. Alarm triggers 30m before visit (`TRIGGER:-PT30M`).
+- Locked Presets: `1 giờ nữa (+1h)`, `2 giờ nữa (+2h)`, `4 giờ nữa (+4h)`, and `Chọn ngày & giờ`. Custom selection must be `> now + 30 minutes`.
+- Timezone: `Asia/Ho_Chi_Minh` (GMT+7) communicated in UI; converted to UTC `Z` for ICS export.
+- Storage Contract: `localStorage` key `laca.reminders.v1` as export metadata log; no `sent`/`delivered`/`dismissed` statuses.
+- Cancellation Semantics: Prohibited "Huỷ thông báo". M9-B focuses purely on creation/export.
+- Technical & Data Boundaries: 100% client-side frontend code. Zero Neon tables, zero Cloudflare crons, zero service workers, zero VAPID keys. Verified 11-event M8 analytics schema and 262 existing tests 100% untouched.
+- M9-B Readiness: YES — Architecture and contract locked. STOP for Owner review before M9-B implementation.
 
