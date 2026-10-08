@@ -289,3 +289,8 @@ Report: [P1_OWNER_ONE_HAND_UX_VERIFICATION](P1_OWNER_ONE_HAND_UX_VERIFICATION.md
 - Next step: STOP — Waiting for Owner review and physical mobile testing.
 
 
+
+## Hero / NOW / CAFE continuation — 2026-10-09
+Latest user scope: sequential A Hero, B real NOW time slots, C CAFE, D regression; no push/deploy/DB mutations. Initial branch phase-2a-deploy, HEAD 8dde44ed4a4f99b87f76002575711b73b24719cd, working tree CLEAN. Historical status above is superseded for this scope.
+Phase A implementation + focused verification complete: local text-free derivative of owner Dragon Bridge artwork, existing VI/EN/KO UI overlay, P1.2 composition unchanged. User corrected earlier accidental choice: multilingual Hero REQUIRED. See HERO_ARTWORK_VERIFICATION.md. Phase B NOT_STARTED; next audit real tags, then implement deterministic Asia/Ho_Chi_Minh NOW with existing repository/adapter. No fake open-now claims. CAFE NOT_STARTED. Analytics enum currently excludes CAFE; resolve the explicit CAFE contract stop gate before Phase C implementation.
+Calendar physical delivery: KNOWN FAILED PHYSICAL ACCEPTANCE — DEFERRED per user. Nearby sparsity: deferred, radius 1→3→5 unchanged. Physical one-hand acceptance remains owner retest, not browser certification. Evidence/backups: sibling CONTINUATION_2026-10-09.

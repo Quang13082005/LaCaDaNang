@@ -55,7 +55,7 @@ const vi = {
 
   // Hero
   "hero.description": "Tìm chỗ ăn, chơi và nghỉ ở Đà Nẵng.",
-  "hero.imageAlt": "Toàn cảnh thành phố và biển Đà Nẵng",
+  "hero.imageAlt": "Cầu Rồng và sông Hàn lúc hoàng hôn ở Đà Nẵng",
 
   // Results & Counts
   "results.title": "Gợi ý địa điểm",
@@ -185,7 +185,7 @@ export const UI_MESSAGES = {
 
     // Hero
     "hero.description": "Find food, activities and places to stay in Da Nang.",
-    "hero.imageAlt": "Panoramic view of Da Nang and the coast",
+    "hero.imageAlt": "Dragon Bridge and the Han River at sunset in Da Nang",
 
     // Results & Counts
     "results.title": "Suggested places",
@@ -309,7 +309,7 @@ export const UI_MESSAGES = {
 
     // Hero
     "hero.description": "다낭의 맛집, 즐길 거리와 숙소를 찾아보세요.",
-    "hero.imageAlt": "다낭 시내와 해안의 전경",
+    "hero.imageAlt": "다낭의 석양 속 용다리와 한강",
 
     // Results & Counts
     "results.title": "추천 장소",
