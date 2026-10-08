@@ -1,8 +1,10 @@
-import React from "react";
-import { MapPin, Navigation } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { MapPin, Navigation, Bell } from "lucide-react";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 import { trackMapsClicked } from "@/lib/analytics/client";
 import type { PlaceCardModel } from "@/lib/data/place-card-model";
+import { getReminderForPlace } from "@/lib/reminders/storage";
+import { ReminderSheet } from "@/components/reminders/ReminderSheet";
 
 export interface PlaceCardProps {
   place: PlaceCardModel;
@@ -22,6 +24,20 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({
   radiusKm,
 }) => {
   const { t, formatNumber, locale, isManual } = useLocale();
+  const [isReminderOpen, setIsReminderOpen] = useState(false);
+  const [hasReminder, setHasReminder] = useState(false);
+
+  // Check client-side reminder status on mount
+  useEffect(() => {
+    if (place.id) {
+      const existing = getReminderForPlace(Number(place.id));
+      if (existing) {
+        setHasReminder(true);
+      }
+    }
+  }, [place.id]);
+
+  const showReminder = intent !== "NOW" && Boolean(place.id);
 
   const handleMapsClick = () => {
     try {
@@ -81,18 +97,48 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({
         )}
         {place.description && <p className="text-sm leading-relaxed text-slate-600">{place.description}</p>}
       </div>
-      {place.googleMapsUrl && (
-        <a
-          href={place.googleMapsUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={handleMapsClick}
-          className="mt-auto w-full min-h-[44px] rounded-[12px] px-3 py-3 bg-sky-500 hover:bg-sky-600 text-white font-semibold text-sm flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2"
-        >
-          <Navigation aria-hidden="true" className="w-4 h-4 shrink-0" /><span>{t("action.maps")}</span>
-        </a>
+
+      <div className="mt-auto flex flex-col gap-2 w-full pt-1">
+        {place.googleMapsUrl && (
+          <a
+            href={place.googleMapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={handleMapsClick}
+            className="w-full min-h-[44px] rounded-[12px] px-3 py-2.5 bg-sky-500 hover:bg-sky-600 active:bg-sky-700 text-white font-semibold text-sm flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 transition-colors"
+          >
+            <Navigation aria-hidden="true" className="w-4 h-4 shrink-0" /><span>{t("action.maps")}</span>
+          </a>
+        )}
+
+        {showReminder && (
+          <button
+            type="button"
+            onClick={() => setIsReminderOpen(true)}
+            aria-haspopup="dialog"
+            aria-expanded={isReminderOpen}
+            aria-label={`${t("action.remind")}: ${place.name}`}
+            className="w-full min-h-[44px] rounded-[12px] px-3 py-2.5 bg-slate-50 hover:bg-slate-100 active:bg-slate-200 border border-slate-200/90 text-slate-700 hover:text-slate-900 font-semibold text-sm flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 transition-colors cursor-pointer select-none"
+          >
+            <Bell aria-hidden="true" className="w-4 h-4 shrink-0 text-slate-500" />
+            <span>{t("action.remind")}</span>
+            {hasReminder && (
+              <span className="ml-1 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                {t("reminder.badge")}
+              </span>
+            )}
+          </button>
+        )}
+      </div>
+
+      {showReminder && (
+        <ReminderSheet
+          place={place}
+          isOpen={isReminderOpen}
+          onClose={() => setIsReminderOpen(false)}
+          onSuccess={() => setHasReminder(true)}
+        />
       )}
     </article>
   );
 };
-

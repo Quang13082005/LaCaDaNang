@@ -407,3 +407,44 @@ Report: [M4A_REAL_MAPPING_AUDIT](M4A_REAL_MAPPING_AUDIT.md). HEAD e39c7de65fc413
 6. **EXACT NEXT STEP**:
    - STOP — WAITING FOR OWNER REVIEW.
 
+## M9-B Calendar Reminder MVP Implementation Handoff — 2026-10-08
+1. **Objective**: Implement the "Nhắc tôi" Calendar Reminder Export MVP strictly per M9-A/M9-A.1 contract:
+   - Secondary `🔔 Nhắc tôi` button on PlaceCard ($\ge 44$px).
+   - Accessible bottom sheet dialog in lower one-thumb reach zone.
+   - Quick presets (`+1h`, `+2h`, `+4h`) and custom date/time picker.
+   - Deterministic `Asia/Ho_Chi_Minh` (GMT+7) wall-clock interpretation $\rightarrow$ UTC `Z`.
+   - RFC 5545 `.ics` generator with 30-minute advance `VALARM` (`TRIGGER:-PT30M`, `ACTION:DISPLAY`).
+   - UTF-8 Blob calendar download (`la-ca-reminder-<place-id>.ics`).
+   - Safe `localStorage` log (`laca.reminders.v1`).
+2. **Status**: COMPLETED & VERIFIED — ALL PASS.
+3. **Files Created / Modified**:
+   - `src/lib/reminders/types.ts`: Local reminder record & preset interfaces.
+   - `src/lib/reminders/time.ts`: Asia/Ho_Chi_Minh timezone math, presets, wall-clock parsing & validation.
+   - `src/lib/reminders/ics.ts`: RFC 5545 `.ics` generator, VALARM, escaping, download & URL revoke.
+   - `src/lib/reminders/storage.ts`: Safe `try/catch` `localStorage` operations on `laca.reminders.v1`.
+   - `src/components/reminders/ReminderSheet.tsx`: Accessible bottom sheet dialog with safe-area clearance.
+   - `src/components/results/PlaceCard.tsx`: Secondary `🔔 Nhắc tôi` CTA and `ReminderSheet` integration.
+   - `src/lib/i18n/messages.ts`: Reminder strings in `vi`, `en`, and `ko`.
+   - `tests/reminders.test.tsx`: 24 dedicated automated unit and integration tests.
+   - `docs/M9B_VERIFICATION.md`: Verification report.
+   - Authority documents updated: `CURRENT_STATE.md`, `DECISIONS.md`, `AGENT_TASK_QUEUE.md`, `HANDOFF_CURRENT.md`.
+4. **Validation Evidence**:
+   - `npx vitest run --exclude "**/curation.test.ts"`: 15 suites, **286 passed (286)**.
+   - `npm run lint`: 0 warnings, 0 errors.
+   - `npm run typecheck`: 0 errors.
+   - `npm run build`: Production build succeeded in 16.0s.
+   - `git diff --check`: Clean (0 whitespace errors).
+   - Dataset `src/data/curated/curated-places.json`: 100% clean (0 diff).
+   - Grep verification: 0 occurrences of `Notification.requestPermission`, `new Notification`, `PushManager`, `serviceWorker.register`, or `VAPID`.
+   - Analytics verification: Exactly 11 canonical events intact; 0 reminder events added.
+   - Live browser verification: Inspected at 320px, 390px, 393px, 430px; 0 horizontal overflow; $\ge 44$px touch targets.
+   - Physical Calendar Import: NOT VERIFIED (requires physical mobile phone).
+5. **DO NOT REDO / DO NOT TOUCH**:
+   - Do not mutate Neon DB tables or schemas.
+   - Do not alter the 11 M8 analytics events.
+   - Do not add Web Push, Service Worker, or Notification API calls.
+   - Do not push to remote repository (`origin`).
+6. **M9-B Readiness**: DONE — READY FOR OWNER REVIEW.
+7. **EXACT NEXT STEP**:
+   - STOP — WAITING FOR OWNER REVIEW.
+

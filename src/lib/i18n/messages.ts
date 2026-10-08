@@ -87,7 +87,7 @@ const vi = {
   "itinerary.sample": "Lịch trình mẫu",
   "intent.region": "Mục đích khám phá",
 
-  // Language Controls
+    // Language Controls
   "language.label": "Ngôn ngữ",
   "language.auto": "Theo thiết bị",
   "language.selectTitle": "Chọn ngôn ngữ",
@@ -96,6 +96,28 @@ const vi = {
   "language.en": "English",
   "language.ko": "한국어",
   "language.autoDesc": "Tự động theo ngôn ngữ thiết bị",
+
+  // Reminder (Calendar Export)
+  "action.remind": "Nhắc tôi",
+  "action.remindAria": "Đặt nhắc nhở ghé thăm {name}",
+  "reminder.title": "Nhắc tôi ghé thăm",
+  "reminder.prompt": "Bạn muốn đến đây lúc nào?",
+  "reminder.preset1h": "1 giờ nữa",
+  "reminder.preset2h": "2 giờ nữa",
+  "reminder.preset4h": "4 giờ nữa",
+  "reminder.customTime": "Chọn ngày & giờ",
+  "reminder.leadNotice": "⏱ Nhắc trước 30 phút (Giờ Đà Nẵng, GMT+7)",
+  "reminder.addToCalendar": "📅 Thêm vào lịch",
+  "reminder.close": "Đóng",
+  "reminder.minTimeWarning": "Vui lòng chọn thời gian cách hiện tại ít nhất 30 phút.",
+  "reminder.exportSuccess": "Đã tạo lịch nhắc. Hãy lưu sự kiện trong ứng dụng Lịch của bạn.",
+  "reminder.exportError": "Không thể tạo file lịch. Vui lòng thử lại.",
+  "reminder.badge": "Đã lên lịch",
+  "reminder.icsSummary": "Ghé thăm {name} (La Cà Đà Nẵng)",
+  "reminder.icsDescPrefix": "Nhắc nhở ghé thăm {name}.",
+  "reminder.icsAddress": "Địa chỉ: {address}",
+  "reminder.icsMaps": "Xem đường đi trên Google Maps: {mapsUrl}",
+  "reminder.icsAlarmDesc": "Sắp đến giờ ghé thăm {name}! Hãy chuẩn bị xuất phát.",
 } as const;
 
 export type MessageKey = keyof typeof vi;
@@ -198,6 +220,28 @@ export const UI_MESSAGES = {
     "language.en": "English",
     "language.ko": "한국어",
     "language.autoDesc": "Match device language automatically",
+
+    // Reminder (Calendar Export)
+    "action.remind": "Remind me",
+    "action.remindAria": "Set visit reminder for {name}",
+    "reminder.title": "Remind my visit",
+    "reminder.prompt": "When do you plan to visit?",
+    "reminder.preset1h": "In 1 hour",
+    "reminder.preset2h": "In 2 hours",
+    "reminder.preset4h": "In 4 hours",
+    "reminder.customTime": "Choose date & time",
+    "reminder.leadNotice": "⏱ Remind 30m before (Da Nang time, GMT+7)",
+    "reminder.addToCalendar": "📅 Add to calendar",
+    "reminder.close": "Close",
+    "reminder.minTimeWarning": "Please choose a time at least 30 minutes from now.",
+    "reminder.exportSuccess": "Reminder created. Please save the event in your Calendar app.",
+    "reminder.exportError": "Could not create calendar event. Please try again.",
+    "reminder.badge": "Scheduled",
+    "reminder.icsSummary": "Visit {name} (La Ca Da Nang)",
+    "reminder.icsDescPrefix": "Reminder to visit {name}.",
+    "reminder.icsAddress": "Address: {address}",
+    "reminder.icsMaps": "Open in Google Maps: {mapsUrl}",
+    "reminder.icsAlarmDesc": "Time to visit {name}! Get ready to head out.",
   },
   ko: {
     // Intents
@@ -294,6 +338,28 @@ export const UI_MESSAGES = {
     "language.en": "English",
     "language.ko": "한국어",
     "language.autoDesc": "기기 언어 설정에 맞추기",
+
+    // Reminder (Calendar Export)
+    "action.remind": "알림 받기",
+    "action.remindAria": "{name} 방문 알림 설정",
+    "reminder.title": "방문 알림 설정",
+    "reminder.prompt": "언제 방문하시겠어요?",
+    "reminder.preset1h": "1시간 후",
+    "reminder.preset2h": "2시간 후",
+    "reminder.preset4h": "4시간 후",
+    "reminder.customTime": "날짜 및 시간 선택",
+    "reminder.leadNotice": "⏱ 30분 전 알림 (다낭 시간, GMT+7)",
+    "reminder.addToCalendar": "📅 캘린더에 추가",
+    "reminder.close": "닫기",
+    "reminder.minTimeWarning": "현재 시간보다 최소 30분 이후의 시간을 선택해주세요.",
+    "reminder.exportSuccess": "알림 일정이 생성되었습니다. 캘린더 앱에 일정을 저장해 주세요.",
+    "reminder.exportError": "캘린더 일정을 생성할 수 없습니다. 다시 시도해 주세요.",
+    "reminder.badge": "예약됨",
+    "reminder.icsSummary": "{name} 방문 (라카 다낭)",
+    "reminder.icsDescPrefix": "{name} 방문 알림.",
+    "reminder.icsAddress": "주소: {address}",
+    "reminder.icsMaps": "Google Maps에서 길찾기: {mapsUrl}",
+    "reminder.icsAlarmDesc": "{name} 방문 시간이 다가왔습니다! 출발 준비를 하세요.",
   },
 } as const satisfies Record<SupportedLocale, Dictionary>;
 

@@ -252,3 +252,43 @@ Report: [M9A_NOTIFICATIONS_READINESS_AUDIT](M9A_NOTIFICATIONS_READINESS_AUDIT.md
 - Technical & Data Boundaries: 100% client-side frontend code. Zero Neon tables, zero Cloudflare crons, zero service workers, zero VAPID keys. Verified 11-event M8 analytics schema and 262 existing tests 100% untouched.
 - M9-B Readiness: YES — Architecture and contract locked. STOP for Owner review before M9-B implementation.
 
+## M9-B Calendar Reminder MVP Implementation Completed — 2026-10-08
+Report: [M9B_VERIFICATION](M9B_VERIFICATION.md).
+- Status: COMPLETED & VERIFIED — ALL PASS.
+- Hard Scope Implemented:
+  - Client-side reminder module in `src/lib/reminders/` (`types.ts`, `time.ts`, `ics.ts`, `storage.ts`).
+  - Mobile bottom sheet dialog in `src/components/reminders/ReminderSheet.tsx`.
+  - Secondary `🔔 Nhắc tôi` button in `src/components/results/PlaceCard.tsx` (`min-h-[44px]`).
+- Hard Scope Prohibitions Enforced:
+  - 0 calls to `Notification.requestPermission()` or `new Notification()`.
+  - 0 Service Workers, Push API, or VAPID keys.
+  - 0 Neon database mutations (content tables remain at 3,079 rows).
+  - 0 Cloudflare crons, queues, or durable objects.
+  - 0 new analytics events (11 canonical events 100% locked).
+  - Static NOW itinerary excluded from reminder CTAs.
+- Ergonomics & Timezone:
+  - Accessible dialog in lower thumb zone (`role="dialog" aria-modal="true"`, safe-area clearance).
+  - Presets: `+1h`, `+2h`, `+4h`, and custom date/time.
+  - Timezone: `Asia/Ho_Chi_Minh` (GMT+7); custom wall-clock input parsed deterministically to UTC independent of user device timezone.
+  - Validation: rejects visit time $\le \text{now} + 30\text{m}$.
+- RFC 5545 Conformance:
+  - Strict CRLF `\r\n`, UTF-8, UTC Z timestamps (`YYYYMMDDTHHmmssZ`).
+  - Unique UID: `${crypto.randomUUID()}@laca-danang`.
+  - `VALARM`: `TRIGGER:-PT30M`, `ACTION:DISPLAY`.
+  - Text escaping for `\`, `;`, `,`, `\n`.
+  - Exact Google Maps link in `DESCRIPTION`; `LOCATION` emitted only if valid address is present.
+- Storage & Download:
+  - Saved to `localStorage` under `laca.reminders.v1` only upon actual export. Safe try/catch.
+  - Generates `Blob` (`text/calendar;charset=utf-8`) as `la-ca-reminder-<place-id>.ics`, triggers download, revokes object URL.
+- Quality Gates & Automated Tests:
+  - 286/286 vitest tests PASS across 15 suites (24 new dedicated reminder tests, 262 existing tests pass).
+  - `npm run lint`: PASS (0 warnings, 0 errors).
+  - `npm run typecheck`: PASS (0 errors).
+  - `npm run build`: PASS (production build succeeds).
+  - `git diff --check`: PASS (clean).
+  - `curated-places.json`: 0 diff.
+- Responsive & Browser Verification:
+  - Live browser verified at 320px, 390px, 393px, 430px: 0 horizontal overflow, >=44px touch targets.
+  - Physical Calendar Import: NOT VERIFIED (requires physical mobile device).
+- Exact Next Step: STOP — Waiting for Owner review.
+
