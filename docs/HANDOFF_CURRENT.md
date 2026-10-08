@@ -117,4 +117,17 @@ Report: [M4A_REAL_MAPPING_AUDIT](M4A_REAL_MAPPING_AUDIT.md). HEAD e39c7de65fc413
 6. **EXACT NEXT STEP**:
    - STOP for user review. Await explicit instructions on next authorized milestone.
 7. **Reconciliation status**:
-   - M5-B DONE; selective local commit authorized; STOP before M6.
+   - M5-B DONE; selective local commit completed and pushed to remote; M6-A audit completed.
+
+## M6-A Mentor Mobile UX / One-Hand Audit Handoff — 2026-10-08
+1. **Objective**: Conduct comprehensive one-hand reachability and mobile ergonomics audit across entire user journey and viewports (320, 390, 393, 430, 768px).
+2. **Status**: AUDIT ONLY — COMPLETED. Zero modifications to `src/` or `tests/`. Report at `docs/M6A_MENTOR_ONE_HAND_UX_AUDIT.md`.
+3. **Verdict**: FAIL (one-hand ergonomics not met).
+   - Primary actions ("Gần tôi", "Đổi lựa chọn") anchored at the very top of the screen ($y \approx 24\text{px}$), outside natural thumb reach.
+   - Dynamic reordering of intent cards on tap and Hero unmount causes jarring position jumps.
+   - Absence of fixed/sticky bottom action zone forces user to backtrack and scroll all the way back up to the top.
+4. **DO NOT REDO**:
+   - Do not re-audit M6-A.
+   - Do not modify application source or tests until M6-B is explicitly authorized.
+5. **EXACT NEXT STEP**:
+   - STOP for user review. Await explicit authorization to implement M6-B (One-Hand Ergonomics & Bottom Action Bar).

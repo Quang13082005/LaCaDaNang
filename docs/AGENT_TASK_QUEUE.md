@@ -17,7 +17,8 @@ M4-B | GO & STAY Neon discovery | DONE | Current agent | M4-A + user authorizati
 M4-C | CAFE UI & mapping | NOT_STARTED | Unassigned | Explicit user authorization | Product decision on CAFE UI & mapping | Await scope authorization
 M5-A | GPS / Nearby readiness audit | DONE | Current agent | User authorization; M4-B | STOP for review; audit report created | docs/M5A_NEARBY_READINESS_AUDIT.md
 M5-B | GPS + nearby/server ranking runtime | DONE | Current agent | User authorization; M5-A | STOP for review | lint/typecheck/183 tests/build/live smoke PASS; M5B_VERIFICATION.md
-M6 | Broader card review | NOT_STARTED | Unassigned | User authorization | Basic shared no-image card completed in M3-B; do not recreate image removal; review remaining milestone scope only | M3B_VERIFICATION.md
+M6-A | Mentor Mobile UX / One-Hand Audit | DONE | Current agent | M5-B | STOP for review | Audit report created; M6A_MENTOR_ONE_HAND_UX_AUDIT.md
+M6-B | One-Hand Ergonomics & Bottom Action Bar | NOT_STARTED | Unassigned | User authorization; M6-A | Follow M6-A P0 proposals | Await scope authorization
 M7 | Stable one-thumb UX | NOT_STARTED | Unassigned | User authorization; M6 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
 M8 | VI/EN/KO runtime + Auto | NOT_STARTED | Unassigned | User authorization; M7 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
 M9 | Analytics runtime | NOT_STARTED | Unassigned | User authorization; M8 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
@@ -58,4 +59,11 @@ Report: [M5A_NEARBY_READINESS_AUDIT](M5A_NEARBY_READINESS_AUDIT.md).
 Report: [M5B_VERIFICATION](M5B_VERIFICATION.md).
 M5-B implemented Nearby Discovery for EAT, GO, and STAY intents connected to live Neon PostgreSQL data; dual-path API routing with coupled lat/lng validation; candidate retrieval bypassing pre-geo LIMIT 3; pure TS geo engine with strict 1 -> 3 -> 5 km radius expansion, full float precision, tie-breaking, 1-decimal display formatting; user-driven Geolocation UX with >=44px "Gần tôi" action, 8s timeout, accuracy <= 1000m guard, fallback messages, retry action, empty 5 km state with CTA "Xem trên toàn Đà Nẵng"; PlaceCard distance badge; citywide discovery regression 100% preserved. All validation (lint PASS, typecheck PASS, 183/183 non-mutating tests PASS, build PASS, live Neon API smoke PASS across all test scenarios, responsive checks 320–768px PASS) ALL PASS.
 - **Reconciliation summary**: M5-B DONE; selective local commit authorized; STOP before M6.
+
+## M6-A Mentor Mobile UX / One-Hand Audit Completed — 2026-10-08
+Report: [M6A_MENTOR_ONE_HAND_UX_AUDIT](M6A_MENTOR_ONE_HAND_UX_AUDIT.md).
+- One-hand ergonomics verdict: FAIL.
+- Issues documented: Primary controls ("Gần tôi", "Đổi lựa chọn") anchored at the very top of the mobile viewport ($y \approx 24\text{px}$) in the Hard Reach Zone; reordering intent cards on tap causes severe layout shift; lack of a fixed/sticky bottom action bar forces users to scroll all the way back up to the top.
+- Proposed M6-B repairs: Sticky bottom action bar for primary actions, intent position stabilization, safe-area padding. Zero source modifications in M6-A.
+- STOP for user review before M6-B.
 

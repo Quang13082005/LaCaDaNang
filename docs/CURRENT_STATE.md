@@ -60,3 +60,11 @@ Report: [M5B_VERIFICATION](M5B_VERIFICATION.md).
 - PlaceCard: Renders distance badge (`0,8 km`) when `distanceKm` is present; omitted when citywide. Text-first layout, exact Maps URL, and no venue images preserved.
 - Validation: Lint PASS (`0 warnings, 0 errors`), typecheck PASS (`tsc --noEmit` code 0), 183/183 non-mutating tests PASS across 10 suites, build PASS (Next.js 15.5.27 compiled in 21.5s), live Neon API smoke PASS (Hải Châu EAT an_ngon R=1, EAT dac_san R=5 1 result, GO thien_nhien R=5 0 results, STAY gan_trung_tam R=1, Mỹ Khê STAY gan_bien R=3; citywide regression 200; invalid 400), responsive checks across 320, 390, 430, 768px PASS.
 - Reconciliation summary: M5-B DONE; selective local commit authorized; STOP for user review.
+
+## M6-A Mentor Mobile UX / One-Hand Audit Completed — 2026-10-08
+Report: [M6A_MENTOR_ONE_HAND_UX_AUDIT](M6A_MENTOR_ONE_HAND_UX_AUDIT.md).
+- One-hand ergonomics verdict: FAIL.
+- Audit across 320, 390, 393, 430, 768px: Primary action buttons ("Gần tôi", "Đổi lựa chọn") sit in the Hard Reach Zone at the top ($y \approx 24\text{px}$); reordering intents on tap causes disorienting ~180px jump; missing sticky/fixed bottom action zone forces scrolling back up.
+- Touch targets $\ge 44\text{px}$, target spacing $\ge 8\text{px}$, and no-clipping text layout: PASS.
+- M6-B proposal prepared: persistent bottom action bar + stable in-place intent expansion.
+- Zero source/test modifications. STOP for user review before M6-B.
