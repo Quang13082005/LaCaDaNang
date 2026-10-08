@@ -6,9 +6,9 @@ export const Hero: React.FC = () => {
   const { t } = useLocale();
 
   return (
-    <header className="relative w-full rounded-[18px] overflow-hidden shadow-[0_4px_16px_rgba(2,132,199,0.10)] border border-sky-100/80 mb-3.5 sm:mb-4.5 bg-slate-900">
+    <header className="relative w-full rounded-[22px] overflow-hidden shadow-[0_4px_20px_rgba(2,132,199,0.12)] border border-sky-100/80 bg-slate-900 flex-1 min-h-[190px] max-h-[460px] md:max-h-[360px] flex flex-col">
       {/* Scenic Da Nang Vector Banner Background */}
-      <div className="relative w-full h-[125px] sm:h-[155px] md:h-[175px]">
+      <div className="relative w-full flex-1 min-h-[190px]">
         <Image
           src="/images/demo/danang-hero.svg"
           alt={t("hero.imageAlt")}
@@ -22,15 +22,15 @@ export const Hero: React.FC = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-slate-950/60 via-transparent to-slate-950/20 pointer-events-none" />
 
         {/* Content Container */}
-        <div className="absolute inset-0 p-3.5 sm:p-5 flex flex-col justify-end text-left">
+        <div className="absolute inset-0 p-4 sm:p-5 flex flex-col justify-end text-left">
           {/* Brand Name - authentic and prominent */}
-          <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-tight leading-tight drop-shadow-sm mb-0.5">
-            <span className="text-[10px] sm:text-[11px] font-bold text-amber-300 tracking-[0.2em] uppercase block drop-shadow-xs">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-tight leading-tight drop-shadow-sm mb-1">
+            <span className="text-[11px] sm:text-xs font-bold text-amber-300 tracking-[0.22em] uppercase block drop-shadow-xs mb-0.5">
               LA CÀ
             </span>
             <span className="flex flex-col items-start">
               <span>ĐÀ NẴNG</span>
-              <span className="w-8 sm:w-10 h-1 bg-amber-400 rounded-full mt-0.5 mb-1" aria-hidden="true" />
+              <span className="w-10 sm:w-12 h-1 bg-amber-400 rounded-full mt-0.5 mb-1.5" aria-hidden="true" />
             </span>
           </h1>
 

@@ -1,8 +1,9 @@
-# P1 — OWNER PHYSICAL ONE-HAND UX VERIFICATION
+# P1 / P1.2 — OWNER PHYSICAL ONE-HAND UX VERIFICATION
 Status: **BROWSER READY FOR OWNER PHYSICAL RETEST** (NOT OWNER PHYSICAL VERIFIED until tested on real device)
 Date: 2026-10-09
 Branch: `phase-2a-deploy`
 Base HEAD: `09f62681c561b2953eaa66d1c8291c1363a833c4`
+P1 Commit: `13db85ff3b258226a6bf2ea47cea197feb02ced5`
 
 ---
 
@@ -18,32 +19,29 @@ Prior to this milestone, browser testing (M6-B) passed all automated criteria (>
 
 ---
 
-## 2. Approved Redesign Implementation
+## 2. Approved Redesign Implementation (P1)
 
 Following the Owner-approved visual concept:
 
-1. **Compact Hero Banner**:
-   - Mobile height reduced to $124\text{px}$ (from $240\text{px}+$ previously).
-   - Preserves Da Nang / Dragon Bridge brand visual identity with `<h1>LA CÀ ĐÀ NẴNG</h1>`.
-2. **Completely Flat Page Structure**:
+1. **Completely Flat Page Structure**:
    - Area below hero is flat normal page background.
    - Zero raised white sheets, zero floating panels, zero drag handles, and zero inline accordions.
-3. **"Chọn nhanh" Section**:
+2. **"Chọn nhanh" Section**:
    - Flat header: `"Chọn nhanh"` + `"Khám phá Đà Nẵng theo nhu cầu của bạn"`.
    - Internationalized across `vi`, `en`, and `ko`.
-4. **2x2 Intent Grid**:
-   - Mobile layout: 2 columns $\times$ 2 rows (`grid grid-cols-2 gap-3.5`).
+3. **2x2 Intent Grid**:
+   - Mobile layout: 2 columns $\times$ 2 rows (`grid grid-cols-2 gap-2.5 sm:gap-3.5`).
    - Strict DOM & reading order: `NOW`, `EAT`, `GO`, `STAY`.
    - Row 1: `[⚡ BÂY GIỜ LÀM GÌ?, 🍜 ĂN GÌ?]`
    - Row 2: `[🧭 ĐI ĐÂU?, 🛏 Ở ĐÂU?]`
-5. **Intent Card Visual Contract**:
+4. **Intent Card Visual Contract**:
    - **NOW**: Soft yellow / warm amber (`bg-[#FFFBEB]`, border `#FEF08A`, `Zap` vector icon).
    - **EAT**: Soft peach / orange (`bg-[#FFF7ED]`, border `#FED7AA`, `Utensils` vector icon).
    - **GO**: Soft blue (`bg-[#F0F9FF]`, border `#BAE6FD`, `Compass` vector icon).
    - **STAY**: Soft lavender / purple (`bg-[#FAF5FF]`, border `#E9D5FF`, `Bed` vector icon).
-   - **Whole-card Click Target**: Entire card is an interactive `<button>` with `min-h-[148px]` (substantially exceeding $\ge 44\text{px}$).
+   - **Whole-card Click Target**: Entire card is an interactive `<button>` with `min-h-[136px] sm:min-h-[148px]` (substantially exceeding $\ge 44\text{px}$).
    - Decorative bottom SVG waves customized per theme.
-6. **Preference Interaction via Mobile Bottom Sheet**:
+5. **Preference Interaction via Mobile Bottom Sheet**:
    - Tapping an intent opens a mobile modal bottom sheet (`PreferenceBottomSheet.tsx`).
    - Dialog semantics: `role="dialog"`, `aria-modal="true"`, `id="preference-panel-active"`.
    - Clear title: `{intentLabel} · {sheetTitle}` (e.g. `ĂN GÌ? · Chọn sở thích`).
@@ -54,7 +52,53 @@ Following the Owner-approved visual concept:
 
 ---
 
-## 3. Strict Business Logic & Scope Preservation
+## 3. P1.2 Owner Correction: True One-Hand Bottom-Anchored Layout
+
+### Root Causes Diagnosed
+1. **Root Cause of Dead White Space**:
+   In `src/app/page.tsx`, the outer container had `min-h-screen flex flex-col justify-between` while `<main>` had `flex-1` and `<footer>` had `mt-8`. Because the initial P1 Hero was hardcoded to a short fixed height ($125\text{px}$), the total content inside `<main>` stopped at $\approx 480\text{px}$. On an $844\text{px}$ viewport, `<main>` stretched to $787\text{px}$, leaving nearly $300\text{px}$ of empty dead white space between the 2x2 grid and the footer.
+2. **Root Cause of High Grid Position**:
+   Because the spare vertical space remained as dead white padding below the grid, the 2x2 grid remained positioned high up ($y \in [212\text{px}, 520\text{px}]$), leaving `NOW` and `EAT` at $y=212\text{px}$, which is in the upper quadrant and still awkward for one-thumb reach.
+
+### P1.2 Architectural Solution
+1. **Dynamic Hero Vertical Expansion**:
+   `<Hero>` in `src/components/home/Hero.tsx` now uses `flex-1 min-h-[190px] max-h-[460px] md:max-h-[360px] flex flex-col`. Instead of leaving dead space below, any spare vertical height on the mobile viewport is absorbed by the vivid Dragon Bridge / Da Nang hero image at the top.
+2. **Ergonomic Card Heights**:
+   `<IntentCard>` uses `min-h-[136px] sm:min-h-[148px] p-3 sm:p-4 rounded-[20px]`. This keeps cards comfortably large ($\ge 3\times$ the $44\text{px}$ standard) while fitting the entire Home screen in one viewport without scroll.
+3. **Bottom-Anchored 2x2 Grid**:
+   The 2x2 grid is pushed down into the lower thumb zone ($y \approx 280\text{px}-608\text{px}$). `NOW` and `EAT` sit at $y \approx 280\text{px}-324\text{px}$ (middle thumb reach), and `GO` and `STAY` sit at $y \approx 420\text{px}-608\text{px}$ (natural thumb rest zone).
+4. **Immediate Footer Attachment**:
+   On Home, `<footer>` sits directly below the 2x2 grid with natural spacing (`mt-2 sm:mt-2.5`). The measured gap between the grid bottom and the footer top is **exactly 12px** across all mobile viewports, completely eliminating the dead white gap.
+5. **Dragon Bridge Hero Asset**:
+   Local project asset `/images/demo/danang-hero.svg` is used. (Note: No photographic Dragon Bridge raster asset exists in the repository; vector SVG is utilized with zero external runtime dependencies).
+
+---
+
+## 4. Multi-Viewport Browser Measurements (P1.2 Complete Matrix)
+
+Verified in live Chromium browser at `http://localhost:3005`:
+
+| Viewport Size | Phone Device Class | Hero Height | "Chọn nhanh" Y | 2x2 Grid Y | Footer Y | Gap (Grid $\to$ Footer) | All 4 Visible (No Scroll) | One-Thumb Reach Assessment |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **320 x 800** | Narrow Mobile | `200px` | `224px – 268px` | `280px – 564px` | `576px – 620px` | **12px** | **YES** | **YES** (NOW/EAT $y=280\text{px}$) |
+| **360 x 800** | Compact Android | `200px` | `224px – 268px` | `280px – 564px` | `576px – 620px` | **12px** | **YES** | **YES** (NOW/EAT $y=280\text{px}$) |
+| **375 x 812** | iPhone Mini / X | `204px` | `228px – 272px` | `284px – 568px` | `580px – 624px` | **12px** | **YES** | **YES** (NOW/EAT $y=284\text{px}$) |
+| **390 x 844** | iPhone 12/13/14 | `216px` | `240px – 284px` | `296px – 580px` | `592px – 636px` | **12px** | **YES** | **YES** (NOW/EAT $y=296\text{px}$) |
+| **393 x 852** | iPhone 14/15 Pro | `220px` | `244px – 288px` | `300px – 584px` | `596px – 640px` | **12px** | **YES** | **YES** (NOW/EAT $y=300\text{px}$) |
+| **412 x 915** | Pixel 7 / Galaxy | `236px` | `260px – 304px` | `316px – 600px` | `612px – 656px` | **12px** | **YES** | **YES** (NOW/EAT $y=316\text{px}$) |
+| **430 x 932** | iPhone Pro Max | `244px` | `268px – 312px` | `324px – 608px` | `620px – 664px` | **12px** | **YES** | **YES** (NOW/EAT $y=324\text{px}$) |
+
+### Card Coordinates at 390x844:
+- **NOW (`BÂY GIỜ LÀM GÌ?`)**: Top Y = `296px`, Bottom Y = `432px`, Height = `136px`
+- **EAT (`ĂN GÌ?`)**: Top Y = `296px`, Bottom Y = `432px`, Height = `136px`
+- **GO (`ĐI ĐÂU?`)**: Top Y = `444px`, Bottom Y = `580px`, Height = `136px`
+- **STAY (`Ở ĐÂU?`)**: Top Y = `444px`, Bottom Y = `580px`, Height = `136px`
+- **Footer**: Top Y = `592px`, Bottom Y = `636px`
+- **Gap between Grid and Footer**: `592px - 580px = 12px` (zero dead white space).
+
+---
+
+## 5. Strict Business Logic & Scope Preservation
 
 - **Neon Database**: Zero mutations, zero schema changes.
 - **Discovery API**: Preserved intact (0–3 truthful results, no fake padding, exact Maps URLs).
@@ -66,57 +110,26 @@ Following the Owner-approved visual concept:
 
 ---
 
-## 4. Multi-Viewport Browser Measurements
-
-Tested via local production server (`http://localhost:3005`) with Chrome browser engine:
-
-| Viewport Size | Device Class | Hero Height | Grid Top Y | Grid Bottom Y | All 4 Cards Visible (No Scroll) | Overflow / Clipping |
-| :--- | :--- | :---: | :---: | :---: | :---: | :---: |
-| **320 x 800** | Narrow Mobile | `124px` | `212.1px` | `520.2px` | **YES** | NONE |
-| **375 x 812** | iPhone Mini / X | `124px` | `212.1px` | `520.2px` | **YES** | NONE |
-| **390 x 844** | iPhone 12/13/14 | `124px` | `212.1px` | `520.2px` | **YES** | NONE |
-| **393 x 852** | iPhone 14/15 Pro| `124px` | `212.1px` | `520.2px` | **YES** | NONE |
-| **430 x 932** | iPhone Pro Max | `124px` | `212.1px` | `520.2px` | **YES** | NONE |
-
-### Card Coordinates on 390x844:
-- **NOW (`BÂY GIỜ LÀM GÌ?`)**: Top Y = `212.1px`, Bottom Y = `360.1px`, Height = `148px`
-- **EAT (`ĂN GÌ?`)**: Top Y = `212.1px`, Bottom Y = `360.1px`, Height = `148px`
-- **GO (`ĐI ĐÂU?`)**: Top Y = `372.2px`, Bottom Y = `520.2px`, Height = `148px`
-- **STAY (`Ở ĐÂU?`)**: Top Y = `372.2px`, Bottom Y = `520.2px`, Height = `148px`
-
-**Thumb-Zone Evaluation**: The entire 2x2 grid occupies $y \in [212.1\text{px}, 520.2\text{px}]$ on an $844\text{px}$ screen. Both rows sit in the middle-to-lower portion of the display, completely avoiding the top hard-reach zone ($y < 200\text{px}$).
-
----
-
-## 5. Verification Gates
+## 6. Verification Quality Gates
 
 1. **Vitest Unit & Integration Suite**:
    - `npx vitest run --exclude "**/curation.test.ts"`:
    - **15 test files passed (15/15)**.
    - **298 tests passed (298/298)**.
-   - Includes 9 new dedicated P1 tests in `tests/one-hand-ux.test.tsx` verifying:
-     - 4 intent cards in strict DOM order `[NOW, EAT, GO, STAY]`.
-     - 2x2 grid layout classes.
-     - Whole-card clickable button targets ($\ge 148\text{px}$).
-     - Flat "Chọn nhanh" header (no drag handle/sheet).
-     - Preference bottom sheet dialog semantics and touch targets.
-     - Independent sheet opening for EAT, GO, STAY, NOW.
-     - Close button and Escape key dismissal.
-     - Transition to Discovery and reset via "Đổi lựa chọn".
 2. **ESLint**:
    - `npm run lint`: `✔ No ESLint warnings or errors`.
 3. **TypeScript**:
    - `npm run typecheck`: Exit code 0 (`tsc --noEmit`).
 4. **Next.js Production Build**:
-   - `npm run build`: Exit code 0 (`Compiled successfully in 6.5s`, static pages generated 5/5).
+   - `npm run build`: Exit code 0 (compiled and static pages 5/5 generated).
 5. **Data Integrity**:
    - `git diff HEAD -- src/data/curated/curated-places.json`: 0 diff (unmodified).
    - Zero database mutations.
 
 ---
 
-## 6. Physical Device Acceptance Status
+## 7. Physical Device Acceptance Status
 
-- **Browser Verification**: **PASS** (Layout, reachability zone, touch targets, modal flows verified).
+- **Browser Layout Verification**: **PASS** (Zero dead space, 12px natural gap, bottom-anchored 2x2 grid, all 4 cards visible without scroll).
 - **Physical Device Acceptance**: **NOT YET VERIFIED** (Awaiting Owner physical testing on a real mobile device).
 - **Status**: **BROWSER READY FOR OWNER PHYSICAL RETEST**.

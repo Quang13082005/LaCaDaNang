@@ -29,18 +29,18 @@ export const IntentGrid: React.FC<IntentGridProps> = ({
   return (
     <div className="w-full">
       {/* 1. Flat "Chọn nhanh" Header — no floating/raised container */}
-      <div className="mb-3 px-0.5">
-        <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+      <div className="mb-2 sm:mb-2.5 px-0.5">
+        <h2 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight leading-snug">
           {t("home.quickSelect.title")}
         </h2>
-        <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
+        <p className="text-xs text-slate-500 font-medium mt-0.5 leading-snug">
           {t("home.quickSelect.subtitle")}
         </p>
       </div>
 
       {/* 2. 2x2 Intent Grid — strictly maintains DOM order: NOW, EAT, GO, STAY */}
       <section className="w-full" aria-label={t("intent.region")}>
-        <div className="grid grid-cols-2 gap-3 sm:gap-4 w-full">
+        <div className="grid grid-cols-2 gap-2.5 sm:gap-3.5 w-full">
           {/* Slot 1: NOW */}
           <IntentCard
             intent={nowIntent}

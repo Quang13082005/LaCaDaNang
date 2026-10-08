@@ -209,4 +209,10 @@ Real M3-B commit: `e39c7de65fc413f6561e0069642ba58f6bb95f0e`. Verified exact13 a
 157. **Preference Bottom Sheet Accessibility & Interaction:** Sheet uses `role="dialog"`, `aria-modal="true"`, `id="preference-panel-active"`, $\ge 44\text{px}$ close button, Escape key, and backdrop dismiss. Home 2x2 grid behind it remains fully stable.
 158. **Physical Acceptance Status Distinction:** Explicitly documented that browser-verified layout is NOT physical device acceptance. Current status is strictly *BROWSER READY FOR OWNER PHYSICAL RETEST* until Owner physically confirms on device.
 
+## P1.2 Owner True One-Hand Bottom-Anchored Layout Decisions (2026-10-09)
+159. **Dynamic Hero Expansion & Elimination of Dead Space:** Prohibited dead white gaps between the 2x2 grid and footer caused by `flex-1` on `<main>` with fixed hero height. Any spare vertical space on mobile is absorbed by expanding `<Hero>` (`flex-1 min-h-[190px] max-h-[460px] md:max-h-[360px] flex flex-col`) rather than leaving empty white space.
+160. **Ergonomic Card Heights & Low-Anchor Thumb Zone:** Standardized intent card height to `min-h-[136px] sm:min-h-[148px]` with `p-3 sm:p-4 rounded-[20px]`. This keeps cards comfortably large ($\ge 3\times$ the $44\text{px}$ minimum) while anchoring the 2x2 grid low in the middle-to-lower thumb reach zone ($y \in [280\text{px}, 608\text{px}]$ across all mobile viewports).
+161. **Immediate Footer Attachment:** Anchored `<footer>` directly below the 2x2 grid with natural spacing (`mt-2 sm:mt-2.5`), ensuring exactly a 12px gap between the grid bottom and footer top on Home across all mobile screen sizes.
+
+
 

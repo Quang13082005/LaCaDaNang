@@ -148,7 +148,7 @@ export const IntentCard: React.FC<IntentCardProps> = ({
       type="button"
       onClick={onClick}
       aria-pressed={isSelected}
-      className={`group relative w-full text-left rounded-[22px] min-h-[148px] sm:min-h-[160px] p-3.5 sm:p-4.5 transition-all duration-200 cursor-pointer select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 overflow-hidden flex flex-col justify-between ${
+      className={`group relative w-full text-left rounded-[20px] min-h-[136px] sm:min-h-[148px] p-3 sm:p-4 transition-all duration-200 cursor-pointer select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 overflow-hidden flex flex-col justify-between ${
         theme.cardBg
       } border ${theme.cardBorder} ${
         isSelected
@@ -162,9 +162,9 @@ export const IntentCard: React.FC<IntentCardProps> = ({
       {/* Top Row: Icon Badge (left) & Subtle Chevron Pill (right) */}
       <div className="relative z-10 flex items-center justify-between w-full">
         <div
-          className={`w-10 h-10 sm:w-11 sm:h-11 rounded-full flex items-center justify-center shrink-0 transition-transform duration-200 group-hover:scale-105 ${theme.iconBg}`}
+          className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shrink-0 transition-transform duration-200 group-hover:scale-105 ${theme.iconBg}`}
         >
-          <Icon className={`w-5 h-5 sm:w-5.5 sm:h-5.5 ${theme.iconColor}`} aria-hidden="true" />
+          <Icon className={`w-4.5 h-4.5 sm:w-5 sm:h-5 ${theme.iconColor}`} aria-hidden="true" />
         </div>
 
         <div

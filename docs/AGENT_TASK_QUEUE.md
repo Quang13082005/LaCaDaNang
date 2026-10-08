@@ -32,7 +32,7 @@ M9-A | Notifications Readiness Audit | DONE | Current agent | User authorization
 M9-A.1 | Reminder MVP Contract Lock | DONE | Current agent | User authorization; M9-A | STOP for review; contract locked | docs/M9A_NOTIFICATIONS_READINESS_AUDIT.md & DECISIONS.md (133–142)
 M9-B | Calendar Reminder MVP | DONE | Current agent | User authorization; M9-A.1 | STOP for review | docs/M9B_VERIFICATION.md (24/24 tests PASS; 286 total PASS; lint/typecheck/build PASS)
 M9-B.1 | Calendar Reminder Semantic Fix | DONE | Current agent | Owner feedback; M9-B | STOP for review | docs/M9B_VERIFICATION.md (27/27 tests PASS; 289 total PASS; lint/typecheck/build PASS)
-P1 | Owner Physical One-Hand UX Fix | READY_FOR_REVIEW | Current agent | Owner feedback; M6-B | STOP for Owner review | 298/298 tests PASS; lint/typecheck/build PASS; docs/P1_OWNER_ONE_HAND_UX_VERIFICATION.md
+P1 / P1.2 | True One-Hand Bottom-Anchored Layout | READY_FOR_REVIEW | Current agent | Owner feedback; P1 | STOP for Owner review | 298/298 tests PASS; lint/typecheck/build PASS; docs/P1_OWNER_ONE_HAND_UX_VERIFICATION.md
 M11 | Time/location-aware NOW if supported | NOT_STARTED | Unassigned | User authorization; M10 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
 M12 | Full regression + responsive/preview | NOT_STARTED | Unassigned | User authorization; M11 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
 M13 | Release report; approval before release | NOT_STARTED | Unassigned | User authorization; M12 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
@@ -268,22 +268,23 @@ Report: [M9B_VERIFICATION](M9B_VERIFICATION.md) & [DECISIONS](DECISIONS.md) (Dec
   - Lint PASS, typecheck PASS, build PASS, dataset clean.
 - Next step: STOP — Waiting for Owner review.
 
-## P1 Owner Physical One-Hand UX Fix Completed — 2026-10-09
-Report: [P1_OWNER_ONE_HAND_UX_VERIFICATION](P1_OWNER_ONE_HAND_UX_VERIFICATION.md) & [DECISIONS](DECISIONS.md) (Decisions 152–158).
+## P1 / P1.2 Owner Physical One-Hand UX Fix Completed — 2026-10-09
+Report: [P1_OWNER_ONE_HAND_UX_VERIFICATION](P1_OWNER_ONE_HAND_UX_VERIFICATION.md) & [DECISIONS](DECISIONS.md) (Decisions 152–161).
 - Status: **BROWSER READY FOR OWNER PHYSICAL RETEST** (NOT OWNER PHYSICAL VERIFIED until Owner tests on real phone).
 - Deliverables:
-  - Compact Hero: mobile height $124\text{px}$, Da Nang brand identity with `<h1>LA CÀ ĐÀ NẴNG</h1>`.
+  - Dynamic Hero Expansion: `<Hero>` dynamically expands via `flex-1 min-h-[190px] max-h-[460px] md:max-h-[360px]` to absorb spare vertical screen space with vibrant Da Nang branding.
   - Completely flat page structure; zero raised panels, zero draggable sheets, zero inline accordions.
   - Flat "Chọn nhanh" header with localized subtitle (`vi`, `en`, `ko`).
   - 2x2 Intent Grid (`grid-cols-2`) with DOM order `[NOW, EAT, GO, STAY]`.
-  - Whole-card clickable buttons (`min-h-[148px]`, decorative vector wave accents, pastel color themes).
+  - Whole-card clickable buttons (`min-h-[136px] sm:min-h-[148px]`, decorative vector wave accents, pastel color themes).
   - Modal mobile bottom sheet (`PreferenceBottomSheet.tsx`, `role="dialog"`, `aria-modal="true"`, $\ge 44\text{px}$ close button, Escape key, backdrop dismiss, $\ge 44\text{px}$ mood chips).
+  - Immediate Footer Attachment: `<footer>` sits directly below 2x2 grid with natural spacing (`mt-2 sm:mt-2.5`). Gap between grid bottom and footer top is **exactly 12px** across all 7 mobile viewports (zero dead white space).
   - Preserved all business logic, Neon queries, Discovery API, 11-event analytics, Nearby 1-3-5km engine, and Calendar Reminder export.
 - Quality Gates:
-  - 298/298 vitest tests PASS across 15 suites (9 new dedicated P1 tests).
+  - 298/298 vitest tests PASS across 15 suites.
   - Lint PASS (0 warnings, 0 errors).
   - Typecheck PASS (0 errors).
-  - Build PASS (production build succeeds in 6.5s).
+  - Build PASS (production build succeeds in 5.4s).
   - Curated dataset 0 diff; zero DB mutations.
 - Next step: STOP — Waiting for Owner review and physical mobile testing.
 

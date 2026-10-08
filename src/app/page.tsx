@@ -121,13 +121,13 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-slate-50/50 flex flex-col justify-between">
       {/* Centered Mobile-First & Desktop-Balanced Container */}
-      <main className="w-full max-w-lg md:max-w-4xl mx-auto px-4 sm:px-6 py-3.5 sm:py-6 flex-1">
+      <main className="w-full max-w-lg md:max-w-4xl mx-auto px-4 sm:px-6 pt-2.5 sm:pt-4 pb-1 flex-1 flex flex-col justify-between min-h-0">
         {/* Hero Section: stays stable in selection state to prevent upward layout shift */}
         {selectedPreference === null && <Hero />}
 
         {/* 4 Primary Intents Grid & Preference Bottom Sheet */}
         {selectedPreference === null && (
-          <div ref={selectionRef} className="mt-1">
+          <div ref={selectionRef} className="mt-2.5 sm:mt-3 shrink-0">
             <IntentGrid
               selectedIntent={selectedIntent}
               selectedPreference={selectedPreference}
@@ -163,8 +163,12 @@ export default function HomePage() {
         </div>
       </main>
 
-      {/* Footer utility row */}
-      <footer className="w-full border-t border-slate-200/80 bg-white py-4 px-4 sm:px-6 mt-8">
+      {/* Footer utility row: immediately below grid on Home, natural spacing */}
+      <footer
+        className={`w-full border-t border-slate-200/80 bg-white/80 py-2.5 px-4 sm:px-6 shrink-0 ${
+          selectedPreference === null ? "mt-2 sm:mt-2.5" : "mt-8"
+        }`}
+      >
         <div className="w-full max-w-lg md:max-w-4xl mx-auto flex items-center justify-between gap-3 flex-wrap">
           <span className="text-xs sm:text-sm font-bold text-slate-800 tracking-wider uppercase select-none">
             LA CÀ ĐÀ NẴNG

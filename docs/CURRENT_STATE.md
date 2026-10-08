@@ -319,25 +319,18 @@ Report: [M9B_VERIFICATION](M9B_VERIFICATION.md) & [DECISIONS](DECISIONS.md) (Dec
 - Physical Calendar Import: NOT VERIFIED (requires physical mobile device).
 - Exact Next Step: STOP — Waiting for Owner review.
 
-## P1 Owner Physical One-Hand UX Fix Completed — 2026-10-09
+## P1 / P1.2 Owner Physical One-Hand UX Fix Completed — 2026-10-09
 Report: [P1_OWNER_ONE_HAND_UX_VERIFICATION](P1_OWNER_ONE_HAND_UX_VERIFICATION.md).
 - Status: **BROWSER READY FOR OWNER PHYSICAL RETEST** (Physical acceptance strictly NOT VERIFIED until Owner tests on real phone).
-- Problem Solved: Owner physical test on real phone failed one-thumb reachability because previous vertical stack placed NOW ($y \approx 180-276\text{px}$) and EAT ($y \approx 276-384\text{px}$) in the upper Hard Reach Zone under an oversized hero.
-- Implementation:
-  - Compact Hero: reduced mobile height to $124\text{px}$, keeping brand Da Nang / Dragon Bridge identity with `<h1>LA CÀ ĐÀ NẴNG</h1>`.
-  - Completely Flat Page Background: zero raised panels, zero floating sheets, zero drag handles, zero inline accordions.
-  - Flat "Chọn nhanh" Section: flat header with subtitle translated across `vi`, `en`, and `ko`.
-  - 2x2 Intent Grid: 2 columns $\times$ 2 rows (`grid grid-cols-2 gap-3.5`) in strict DOM order `[NOW, EAT, GO, STAY]`.
-    - NOW: soft amber/yellow (`Zap` icon, `#FEF08A`).
-    - EAT: soft peach/orange (`Utensils` icon, `#FED7AA`).
-    - GO: soft blue (`Compass` icon, `#BAE6FD`).
-    - STAY: soft lavender/purple (`Bed` icon, `#E9D5FF`).
-    - Whole-card clickable targets: interactive `<button>` with `min-h-[148px]`, meeting/exceeding $\ge 44\text{px}$.
-  - Mobile Preference Bottom Sheet (`PreferenceBottomSheet.tsx`):
-    - Tapping an intent opens modal sheet with `role="dialog"`, `aria-modal="true"`, `id="preference-panel-active"`.
-    - Clear title (`{intentLabel} · {sheetTitle}`), close button $\ge 44\text{px}$, Escape key & backdrop dismiss.
-    - Preference chips meet $\ge 44\text{px}$ touch targets.
-    - Home 2x2 grid behind sheet remains completely stable (no accordion shifting).
+- Problem Solved:
+  - Initial M6-B layout failed physical reachability on real phone due to vertical stack forcing NOW and EAT above $y=400\text{px}$.
+  - Initial P1 layout left large dead white space ($\approx 300\text{px}$) between 2x2 grid and footer because Hero was fixed to $125\text{px}$ while `main` stretched via `flex-1`.
+- P1.2 Root Cause Fix & Implementation:
+  - Dynamic Hero Expansion: `<Hero>` uses `flex-1 min-h-[190px] max-h-[460px] md:max-h-[360px] flex flex-col`. Spare vertical space on phones is absorbed by the Dragon Bridge / Da Nang hero image at the top rather than empty white space.
+  - Ergonomic Card Sizing: `<IntentCard>` uses `min-h-[136px] sm:min-h-[148px] p-3 sm:p-4 rounded-[20px]`.
+  - Bottom-Anchored 2x2 Grid: 2 columns $\times$ 2 rows (`grid grid-cols-2 gap-2.5 sm:gap-3.5`) in strict DOM order `[NOW, EAT, GO, STAY]`. Grid is pushed down into the lower thumb zone ($y \approx 280\text{px}-608\text{px}$).
+  - Immediate Footer Attachment: `<footer>` sits directly below 2x2 grid with natural spacing (`mt-2 sm:mt-2.5`). The gap between grid bottom and footer top is **exactly 12px** across all phones (zero dead white space).
+  - Mobile Preference Bottom Sheet (`PreferenceBottomSheet.tsx`): modal dialog with `role="dialog"`, `aria-modal="true"`, `id="preference-panel-active"`, $\ge 44\text{px}$ close, Escape key, $\ge 44\text{px}$ chips.
 - Preserved Contracts:
   - 0 Neon DB mutations, 0 schema changes.
   - Discovery API and 0–3 truthful results preserved.
@@ -347,17 +340,20 @@ Report: [P1_OWNER_ONE_HAND_UX_VERIFICATION](P1_OWNER_ONE_HAND_UX_VERIFICATION.md
   - NOW flow preserves static sample itinerary ("Lịch trình mẫu nhanh").
   - CAFE remains disabled.
 - Quality Gates & Validation:
-  - 298/298 vitest tests PASS across 15 suites (9 new dedicated P1 tests in `tests/one-hand-ux.test.tsx`).
+  - 298/298 vitest tests PASS across 15 suites.
   - `npm run lint`: PASS (0 warnings, 0 errors).
   - `npm run typecheck`: PASS (0 errors).
-  - `npm run build`: PASS (production build succeeds in 6.5s).
+  - `npm run build`: PASS (production build succeeds in 5.4s).
   - `git diff --check`: PASS (clean).
   - `src/data/curated/curated-places.json`: 0 diff.
-- Multi-Viewport Browser Measurements:
-  - 320x800, 375x812, 390x844, 393x852, 430x932 verified.
-  - Hero height: 124px. Grid Y-range: `[212.1px, 520.2px]`.
-  - All 4 intents visible without scroll across all mobile viewports.
-  - 0 horizontal overflow.
+- Multi-Viewport Browser Measurements (P1.2 Full Matrix):
+  - 320x800: Hero 200px, Grid 280-564px, Footer 576-620px, Gap 12px, Visible: YES, Reachable: YES
+  - 360x800: Hero 200px, Grid 280-564px, Footer 576-620px, Gap 12px, Visible: YES, Reachable: YES
+  - 375x812: Hero 204px, Grid 284-568px, Footer 580-624px, Gap 12px, Visible: YES, Reachable: YES
+  - 390x844: Hero 216px, Grid 296-580px, Footer 592-636px, Gap 12px, Visible: YES, Reachable: YES
+  - 393x852: Hero 220px, Grid 300-584px, Footer 596-640px, Gap 12px, Visible: YES, Reachable: YES
+  - 412x915: Hero 236px, Grid 316-600px, Footer 612-656px, Gap 12px, Visible: YES, Reachable: YES
+  - 430x932: Hero 244px, Grid 324-608px, Footer 620-664px, Gap 12px, Visible: YES, Reachable: YES
 - Exact Next Step: STOP — Waiting for Owner review and physical device testing.
 
 
