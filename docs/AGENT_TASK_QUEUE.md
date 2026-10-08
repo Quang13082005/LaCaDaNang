@@ -26,7 +26,7 @@ M7-C | Intent Visuals & Language Placement Hotfix | DONE | Current agent | Owner
 M8-A | Analytics Readiness Audit & Contract | DONE | Current agent | User authorization; M7-C | STOP for review; audit report created | docs/M8A_ANALYTICS_READINESS_AUDIT.md
 M8-A.1 | Analytics Contract Correction & Lock | DONE | Current agent | User authorization; M8-A | STOP for review; contracts locked | docs/M8A_ANALYTICS_READINESS_AUDIT.md & DECISIONS.md (96–105)
 M8-A.2 | Final Analytics Contract Patch | DONE | Current agent | User authorization; M8-A.1 | STOP for review; contracts locked | docs/M8A_ANALYTICS_READINESS_AUDIT.md & DECISIONS.md (106–112)
-M8-B | Analytics Runtime Implementation | NOT_STARTED | Unassigned | User authorization; M8-A.2 | Follow M8-A.2 contract; await explicit scope | Layer tests + lint/typecheck/build
+M8-B | Analytics Runtime Implementation | DONE | Current agent | User authorization; M8-A.2 | STOP for review; verification report created | docs/M8B_VERIFICATION.md (34/34 tests PASS; 259 total PASS; live DB verified)
 M9 | Analytics runtime | NOT_STARTED | Unassigned | User authorization; M8 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
 M10 | Notification reminder MVP | NOT_STARTED | Unassigned | User authorization; M9 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
 M11 | Time/location-aware NOW if supported | NOT_STARTED | Unassigned | User authorization; M10 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
@@ -157,3 +157,18 @@ Report: [M8A_ANALYTICS_READINESS_AUDIT](M8A_ANALYTICS_READINESS_AUDIT.md) & [DEC
 - Final canonical DDL locked with TIMESTAMPTZ, defaults, and 4 indexes.
 - M8-B readiness: YES.
 - Next action: STOP for Owner review.
+
+## M8-B First-Party Product Analytics Implementation Completed — 2026-10-08
+Report: [M8B_VERIFICATION](M8B_VERIFICATION.md).
+- Status: RUNTIME IMPLEMENTATION & LIMITED NEON MIGRATION — COMPLETED & VERIFIED.
+- Migration applied: `docs/schema/002_analytics_events.sql` created table `analytics_events` and 4 indexes (`occurred_at`, `session_id`, `journey_id`, `name_env`).
+- Database safety: 6 existing content tables verified at 3,079 total rows before and after migration. Initial `analytics_events` count = 0.
+- Timezone contract: UTC storage with `TIMESTAMPTZ NOT NULL DEFAULT NOW()`; presentation queries use `AT TIME ZONE 'Asia/Ho_Chi_Minh'`.
+- Telemetry modules: `types.ts`, `validator.ts` (Zod `.strict()`, rejecting unknown/server-owned/raw GPS keys), `db.ts` (server environment derivation, parameterized SQL), `route.ts` (Edge handler, 2 KB limit, HTTP 202/400/413), `client.ts` (non-blocking `sendBeacon`/`fetch`, dev/test no-op, session & journey stores, meaningful tap counter).
+- Telemetry wired: `page.tsx` (`session_started`, `home_viewed`, `intent_selected`, `preference_selected`, journey reset), `DiscoveryResults.tsx` (`results_shown` locale-deduped, `nearby_requested`, `nearby_resolved`, `nearby_failed`, `citywide_selected`), `PlaceCard.tsx` (`maps_clicked`), `LanguageSelector.tsx` (`language_changed`).
+- Automated tests: 14 test suites, 259 total tests ALL PASS (`tests/analytics.test.tsx`: 34/34 PASS).
+- Lint, typecheck, build: `npm run lint` (0 warnings, 0 errors), `npm run typecheck` (0 errors), `npm run build` (success). Dataset clean (0 diff).
+- Live Neon DB verification: API ingest tested, SELECT inspected, 5 analytical queries executed, test row deleted (0 rows), 6 content tables intact (3,079 rows).
+- Scope boundaries: Zero regressions on M6 one-hand UX or M7 i18n; CAFE inactive; NOW static itinerary preserved; no dashboard, no notifications, no deploy.
+- Next action: STOP for Owner review.
+

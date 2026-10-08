@@ -303,3 +303,38 @@ Report: [M4A_REAL_MAPPING_AUDIT](M4A_REAL_MAPPING_AUDIT.md). HEAD e39c7de65fc413
 5. **M8-B Readiness**: YES.
 6. **EXACT NEXT STEP**:
    - STOP for Owner review. Await explicit authorization before proceeding to M8-B (Analytics Runtime Implementation).
+
+## M8-B First-Party Product Analytics Implementation Handoff — 2026-10-08
+1. **Objective**: Implement first-party analytics runtime and execute limited Neon database migration creating strictly `analytics_events` and its 4 indexes. Preserve existing 6 content tables intact. Preserve M6 one-hand UX, M7 i18n, Nearby discovery, and EAT/GO/STAY results.
+2. **Status**: COMPLETED & VERIFIED.
+3. **Database Migration Artifact & Live Database Verification**:
+   - Tracked migration artifact: `docs/schema/002_analytics_events.sql`.
+   - Migration applied to live Neon PostgreSQL: created table `analytics_events` (17 columns) and 4 indexes (`idx_analytics_events_occurred_at`, `idx_analytics_events_session_id`, `idx_analytics_events_journey_id`, `idx_analytics_events_name_env`).
+   - Existing content table safety: verified 500 places, 1500 place_translations, 841 place_tags, 36 tags, 108 tag_translations, 94 administrative_units = 3,079 total rows before and after migration (100% untouched).
+   - Live DB verification: ingested preview test event via API logic, inspected row via SELECT, ran 5 analytical queries, cleanly deleted test row (initial and final row count = 0).
+4. **Runtime Implementation**:
+   - `src/lib/analytics/types.ts`: 11 event vocabulary, allowed client fields vs server-owned fields.
+   - `src/lib/analytics/validator.ts`: Zod `.strict()` validation, rejection of server-owned fields (`id`, `occurred_at`, `environment`), and privacy scanner rejecting raw GPS/PII (`lat`, `lng`, `accuracy`, `ip`, etc.).
+   - `src/lib/analytics/db.ts`: Server-side environment derivation (`production` | `preview`), parameterized SQL INSERT via Neon driver.
+   - `src/app/api/analytics/route.ts`: Edge handler, $\le 2\text{ KB}$ body limit, status codes 202, 400, 413, 500.
+   - `src/lib/analytics/client.ts`: Non-blocking dispatcher (`sendBeacon` / `fetch keepalive`), dev/test no-op, ephemeral session (`laca.analytics-session.v1`), journey store (`laca.analytics-journey.v1`), meaningful tap counter (+1 on intent, +1 on preference, +1 on nearby toggle).
+   - Component telemetry wired in `page.tsx`, `DiscoveryResults.tsx`, `PlaceCard.tsx`, and `LanguageSelector.tsx`.
+5. **Validation Evidence**:
+   - `npx vitest run --exclude "**/curation.test.ts"`: 14 test suites, 259 total tests ALL PASS (`tests/analytics.test.tsx`: 34/34 PASS).
+   - `npm run lint`: 0 warnings, 0 errors.
+   - `npm run typecheck`: 0 errors.
+   - `npm run build`: Production build succeeded.
+   - Dataset `src/data/curated/curated-places.json`: 100% clean, 0 diff.
+6. **Retention Policy**:
+   - 60-day target documented; automated purge NOT implemented in M8-B (no background cron jobs).
+7. **DO NOT REDO / DO NOT TOUCH**:
+   - Do not re-run migration `002_analytics_events.sql` (already applied).
+   - Do not mutate the 6 content tables.
+   - Do not install third-party analytics SDKs.
+   - Do not build an analytics dashboard in M8-B.
+   - Do not modify NOW static sample behavior.
+   - Do not activate CAFE.
+   - Do not push to remote.
+8. **EXACT NEXT STEP**:
+   - STOP — WAITING FOR OWNER REVIEW.
+

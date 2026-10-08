@@ -1,10 +1,46 @@
 import React from "react";
 import { MapPin, Navigation } from "lucide-react";
 import { useLocale } from "@/components/i18n/LocaleProvider";
+import { trackMapsClicked } from "@/lib/analytics/client";
 import type { PlaceCardModel } from "@/lib/data/place-card-model";
 
-export const PlaceCard: React.FC<{ place: PlaceCardModel }> = ({ place }) => {
-  const { t, formatNumber } = useLocale();
+export interface PlaceCardProps {
+  place: PlaceCardModel;
+  position?: 1 | 2 | 3;
+  intent?: "NOW" | "EAT" | "GO" | "STAY";
+  preference?: string;
+  isNearby?: boolean;
+  radiusKm?: 1 | 3 | 5;
+}
+
+export const PlaceCard: React.FC<PlaceCardProps> = ({
+  place,
+  position = 1,
+  intent,
+  preference,
+  isNearby,
+  radiusKm,
+}) => {
+  const { t, formatNumber, locale, isManual } = useLocale();
+
+  const handleMapsClick = () => {
+    try {
+      if (place.id && intent && preference) {
+        trackMapsClicked(
+          Number(place.id),
+          (position || 1) as 1 | 2 | 3,
+          intent,
+          preference,
+          locale,
+          isManual ? "manual" : "auto",
+          isNearby,
+          radiusKm
+        );
+      }
+    } catch {
+      // Tracking failure must NEVER block Google Maps navigation
+    }
+  };
 
   return (
     <article className="w-full min-w-0 rounded-[16px] bg-white border border-slate-200/90 shadow-sm flex flex-col p-4 sm:p-5 gap-3 break-words [overflow-wrap:anywhere]">
@@ -46,7 +82,13 @@ export const PlaceCard: React.FC<{ place: PlaceCardModel }> = ({ place }) => {
         {place.description && <p className="text-sm leading-relaxed text-slate-600">{place.description}</p>}
       </div>
       {place.googleMapsUrl && (
-        <a href={place.googleMapsUrl} target="_blank" rel="noopener noreferrer" className="mt-auto w-full min-h-[44px] rounded-[12px] px-3 py-3 bg-sky-500 hover:bg-sky-600 text-white font-semibold text-sm flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2">
+        <a
+          href={place.googleMapsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={handleMapsClick}
+          className="mt-auto w-full min-h-[44px] rounded-[12px] px-3 py-3 bg-sky-500 hover:bg-sky-600 text-white font-semibold text-sm flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2"
+        >
           <Navigation aria-hidden="true" className="w-4 h-4 shrink-0" /><span>{t("action.maps")}</span>
         </a>
       )}

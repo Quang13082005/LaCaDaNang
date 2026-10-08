@@ -183,3 +183,34 @@ Report: [M8A_ANALYTICS_READINESS_AUDIT](M8A_ANALYTICS_READINESS_AUDIT.md) & [DEC
 - Canonical GPS Privacy & Cost Wording: Locked non-absolute GPS privacy wording and factual Neon infrastructure cost rationale.
 - Final Canonical Schema: Locked DDL with TIMESTAMPTZ, boolean defaults, CHECK constraints, and 4 indexes.
 - M8-B Readiness: YES — All contracts locked and reconciled. STOP for Owner review before M8-B implementation.
+
+## M8-B First-Party Product Analytics Implementation Completed — 2026-10-08
+Report: [M8B_VERIFICATION](M8B_VERIFICATION.md).
+- Status: RUNTIME IMPLEMENTATION & LIMITED NEON MIGRATION — COMPLETED & VERIFIED.
+- Database Migration: Created `docs/schema/002_analytics_events.sql` and applied to live Neon PostgreSQL.
+  - Table `analytics_events` created with 17 typed columns and 4 indexes (`idx_analytics_events_occurred_at`, `idx_analytics_events_session_id`, `idx_analytics_events_journey_id`, `idx_analytics_events_name_env`).
+  - Content table safety verified: exactly 6 content tables and 3,079 total rows remained 100% intact before and after migration.
+  - Initial `analytics_events` count: 0 rows.
+- Timezone Storage & Display: UTC storage via `TIMESTAMPTZ NOT NULL DEFAULT NOW()`. Display queries strictly use `'Asia/Ho_Chi_Minh'` (never `'Asia/Bangkok'`).
+- Analytics Modules:
+  - `src/lib/analytics/types.ts`: 11 canonical events, typed client/server models.
+  - `src/lib/analytics/validator.ts`: Zod discriminated union with `.strict()`, rejecting unknown keys, server-owned keys, and raw GPS/PII.
+  - `src/lib/analytics/db.ts`: Server-side environment derivation (`production` vs `preview`), parameterized SQL INSERT.
+  - `src/app/api/analytics/route.ts`: Edge handler, $\le 2\text{ KB}$ body limit, status codes 202/400/413/500.
+  - `src/lib/analytics/client.ts`: Non-blocking dispatcher (`sendBeacon` / `fetch keepalive`), dev/test no-op, ephemeral session (`laca.analytics-session.v1`), journey store (`laca.analytics-journey.v1`), meaningful tap counter (intent +1, preference +1, toggle +1).
+- Telemetry Integration:
+  - `src/app/page.tsx`: Session started, home viewed (deduped per journey), intent & preference selected, journey reset on "Đổi lựa chọn".
+  - `src/components/results/DiscoveryResults.tsx`: Results shown (locale re-fetch deduped), nearby requested, nearby resolved, nearby failed, citywide selected.
+  - `src/components/results/PlaceCard.tsx`: Maps clicked (debounced 1s, non-blocking navigation).
+  - `src/components/i18n/LanguageSelector.tsx`: Language changed tracking.
+- Automated Test Suite & Validation:
+  - 14 test suites, 259 total tests ALL PASS (`tests/analytics.test.tsx`: 34/34 PASS).
+  - `npm run lint`: 0 warnings, 0 errors.
+  - `npm run typecheck`: 0 errors.
+  - `npm run build`: Production build successful (Edge analytics route compiled cleanly).
+  - Dataset `src/data/curated/curated-places.json`: 100% clean, 0 diff.
+- Live Neon DB Verification: Tested preview event ingest via API handler, verified via SELECT, ran 5 analytical queries, cleanly deleted test row (returned to 0 rows), verified 6 content tables intact (3,079 rows).
+- Retention Policy: 60-day target documented; automated purge NOT implemented in M8-B.
+- Scope Boundaries: Zero UI regressions on M6 one-hand UX or M7 i18n; CAFE inactive; NOW static itinerary preserved (excluded from places conversion); no dashboard; no notifications; no deploy.
+- Reconciliation Summary: M8-B DONE; selective local commit authorized; STOP for Owner review.
+

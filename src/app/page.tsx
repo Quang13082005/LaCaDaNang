@@ -7,6 +7,13 @@ import { DiscoveryResults } from "@/components/results/DiscoveryResults";
 import { ItineraryTimeline } from "@/components/itinerary/ItineraryTimeline";
 import { LanguageSelector } from "@/components/i18n/LanguageSelector";
 import { useLocale } from "@/components/i18n/LocaleProvider";
+import {
+  trackSessionStarted,
+  trackHomeViewed,
+  trackIntentSelected,
+  trackPreferenceSelected,
+  resetJourneyId,
+} from "@/lib/analytics/client";
 import type { MessageKey } from "@/lib/i18n/messages";
 import {
   getItineraryForPreference,
@@ -14,7 +21,7 @@ import {
 } from "@/data/demo-places";
 
 export default function HomePage() {
-  const { t } = useLocale();
+  const { t, locale, isManual } = useLocale();
   const [selectedIntent, setSelectedIntent] = useState<
     "EAT" | "GO" | "NOW" | "STAY" | null
   >(null);
@@ -26,22 +33,42 @@ export default function HomePage() {
   const selectionRef = useRef<HTMLDivElement>(null);
   const prevPreferenceRef = useRef<string | null>(null);
 
+  useEffect(() => {
+    trackSessionStarted(locale, isManual ? "manual" : "auto");
+  }, [locale, isManual]);
+
+  useEffect(() => {
+    if (selectedPreference === null) {
+      trackHomeViewed(locale, isManual ? "manual" : "auto");
+    }
+  }, [selectedPreference, locale, isManual]);
+
   const handleSelectIntent = (intent: "EAT" | "GO" | "NOW" | "STAY") => {
     if (selectedIntent === intent) {
       // Toggle off if tapping same intent
       setSelectedIntent(null);
       setSelectedPreference(null);
     } else {
+      trackIntentSelected(intent, locale, isManual ? "manual" : "auto");
       setSelectedIntent(intent);
       setSelectedPreference(null);
     }
   };
 
   const handleSelectPreference = (preferenceId: string) => {
+    if (selectedIntent) {
+      trackPreferenceSelected(
+        selectedIntent,
+        preferenceId,
+        locale,
+        isManual ? "manual" : "auto"
+      );
+    }
     setSelectedPreference(preferenceId);
   };
 
   const handleResetPreference = () => {
+    resetJourneyId();
     setSelectedPreference(null);
   };
 

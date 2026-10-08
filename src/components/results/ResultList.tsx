@@ -18,6 +18,8 @@ interface ResultListProps {
   places: PlaceCardModel[];
   status?: "idle" | "loading" | "success" | "empty" | "error";
   onRetry?: () => void;
+  intent?: "NOW" | "EAT" | "GO" | "STAY";
+  preference?: string;
   intentLabel?: string;
   preferenceLabel?: string;
   onResetPreference: () => void;
@@ -30,6 +32,8 @@ interface ResultListProps {
 
 export const ResultList: React.FC<ResultListProps> = ({
   places,
+  intent,
+  preference,
   intentLabel,
   preferenceLabel,
   onResetPreference,
@@ -154,8 +158,16 @@ export const ResultList: React.FC<ResultListProps> = ({
           )
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {places.map((place) => (
-              <PlaceCard key={place.id} place={place} />
+            {places.map((place, index) => (
+              <PlaceCard
+                key={place.id}
+                place={place}
+                position={(index + 1) as 1 | 2 | 3}
+                intent={intent}
+                preference={preference}
+                isNearby={isNearbyActive}
+                radiusKm={radiusKm}
+              />
             ))}
           </div>
         )}

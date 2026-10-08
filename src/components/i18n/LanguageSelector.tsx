@@ -3,7 +3,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Globe, X, Check } from "lucide-react";
 import { useLocale } from "./LocaleProvider";
-import type { SupportedLocale } from "@/lib/i18n/locales";
+import { trackLanguageChanged } from "@/lib/analytics/client";
+import { resolveLocale, type SupportedLocale } from "@/lib/i18n/locales";
 
 interface LanguageOption {
   id: SupportedLocale | "auto";
@@ -42,11 +43,31 @@ export const LanguageSelector: React.FC<{ className?: string }> = ({
     locale === "vi" ? "Tiếng Việt" : locale === "en" ? "English" : "한국어";
 
   const handleSelect = (id: SupportedLocale | "auto") => {
+    let nextLocale: SupportedLocale;
+    let nextMode: "auto" | "manual";
+
     if (id === "auto") {
       setAuto();
+      nextMode = "auto";
+      const languages =
+        typeof navigator !== "undefined" && Array.isArray(navigator.languages)
+          ? navigator.languages
+          : [];
+      const language =
+        typeof navigator !== "undefined" ? navigator.language : undefined;
+      nextLocale = resolveLocale({ manual: null, languages, language });
     } else {
       setLocale(id);
+      nextMode = "manual";
+      nextLocale = id;
     }
+
+    try {
+      trackLanguageChanged(nextLocale, nextMode);
+    } catch {
+      // non-blocking
+    }
+
     setIsOpen(false);
     triggerRef.current?.focus();
   };
