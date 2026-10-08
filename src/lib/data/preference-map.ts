@@ -39,6 +39,7 @@ const PREFERENCES_BY_SECTION: Readonly<Partial<Record<DiscoverySection, Readonly
   EAT: EAT_PREFERENCES,
   // M4-A live audit + explicit M4-B product decisions. Multiple codes mean OR.
   GO: {
+    cafe: { kind: "general", note: "Owner-approved GO product preference routes to the separate CAFE database catalog." },
     chup_anh_dep: { kind: "tags", tagCodes: ["PHOTO"], note: "Verified PHOTO association." },
     thien_nhien: { kind: "tags", tagCodes: ["NATURE"], note: "Verified NATURE association." },
     vui_choi: { kind: "tags", tagCodes: ["ENTERTAINMENT"], note: "Verified ENTERTAINMENT association." },
@@ -71,4 +72,9 @@ export function resolvePreference(section: DiscoverySection, preference: string 
   return mapping.kind === "tags"
     ? { ok: true, kind: "tags", tagCodes: mapping.tagCodes }
     : { ok: true, kind: "general", tagCodes: null };
+}
+
+/** Product intent and database taxonomy are deliberately distinct. */
+export function discoverySectionFor(intent: DiscoverySection, preference: string | null): DiscoverySection {
+  return intent === "GO" && preference === "cafe" ? "CAFE" : intent;
 }

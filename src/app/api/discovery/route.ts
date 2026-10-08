@@ -34,7 +34,7 @@ import {
 import { DatabaseConfigError, DatabaseQueryError, getNeonExecutor } from "@/lib/db/neon";
 import { adaptRows } from "@/lib/data/place-adapter";
 import { clampLimit, createPlaceRepository } from "@/lib/data/place-repository";
-import { resolvePreference } from "@/lib/data/preference-map";
+import { resolvePreference, discoverySectionFor } from "@/lib/data/preference-map";
 import { evaluateNearbyDiscovery } from "@/lib/geo/nearby-engine";
 
 // Disable Next.js body parsing (GET has none); opt out of data cache to ensure fresh reads.
@@ -80,7 +80,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<DiscoveryA
     if (location !== null) {
       // Nearby mode: Retrieve all eligible candidates without pre-geo LIMIT 3
       const candidateRows = await repo.findNearbyCandidateRows({
-        section: intent,
+        section: discoverySectionFor(intent, preference),
         locale,
         tagCodes: resolved.tagCodes ?? null,
       });
@@ -101,7 +101,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<DiscoveryA
       // Standard non-location discovery: Keep existing query and LIMIT 3
       const limit = clampLimit(DISCOVERY_MAX_RESULTS);
       const rows = await repo.findDiscoveryRows({
-        section: intent,
+        section: discoverySectionFor(intent, preference),
         locale,
         tagCodes: resolved.tagCodes ?? null,
         limit,

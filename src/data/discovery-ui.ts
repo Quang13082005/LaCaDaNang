@@ -28,7 +28,7 @@ export const PRIMARY_INTENTS: IntentConfig[] = [
   {
     id: "EAT",
     label: "ĂN GÌ?",
-    sublabel: "Quán ăn & cafe",
+    sublabel: "Quán ăn & món ngon",
     emoji: "🍜",
     categoryBadge: "Ẩm thực địa phương",
     thumbnailUrl: "/images/demo/bep-cuon.svg",
@@ -62,6 +62,7 @@ export const PREFERENCES_BY_INTENT: Record<string, PreferenceChipConfig[]> = {
     { id: "chup_anh_dep", label: "Chụp ảnh đẹp", emoji: "📸" },
     { id: "thien_nhien", label: "Thiên nhiên", emoji: "🌿" },
     { id: "vui_choi", label: "Vui chơi", emoji: "🎡" },
+    { id: "cafe", label: "Đi cafe", emoji: "☕" },
   ],
   NOW: [
     { id: "nguoi_yeu", label: "Đi cùng người yêu", emoji: "❤️" },

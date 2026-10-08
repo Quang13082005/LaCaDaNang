@@ -1,0 +1,8 @@
+# GO + CAFE product routing — 2026-10-09
+Phase2 focused verification PASS; full intermediate gates follow. Request `intent=GO&preference=cafe`; response intentGO/preferencecafe, places retain sectionCAFE. Shared discoverySectionFor resolves CAFE server/client validation. Citywide generalCAFE uses existing SQL/ranking; Nearby uses allCAFE candidates with unchanged Haversine1/3/5. Direct intentCAFE remains unavailable. DB taxonomy/data unchanged. Home4primarycards; GO existing chips plus cafe; EAT localized helper removes cafe, GO short subtitle retained to protect fit. Productmetadata independent from demos.
+
+Analytics events11 and primaryenumNOW/EAT/GO/STAY unchanged. Existing preference validator accepts bounded strings, so cafe requires no analytics code/schema change. Events remain intentGO,preferencecafe. No events written during test/dev. Focused3suites47testsPASS: citywideVI/EN/KO, fixtureNearby1/3/5, truthfulzero, UI4cards/cafe/alllocales/exactMaps/GOtracking, lockedvalidator regression.
+
+Live HTTP200 allVI/EN/KO: citywideIDs214/188/66; synthetic publicpoint16.06,108.2 NearbyIDs22/21/16 at3km;0,0 gives0at5km. IndependentSELECT confirms everyreturnedID,section,active,OPERATIONAL,exactMapsURL. ExistingEAT/GO/STAY API smoke also200. Actual browser EnglishGOsheetandcafecards393pxverified. Evidence live-api.json,phase2-tests.log,go_cafe_sheet_en_393.png,go_cafe_en_393.png in MASTER_CONTINUATION_2026-10-09. Fullbrowsermatrix deferredfinal verification; no physicalclaim.
+
+Previous CAFE_ACTIVATION_VERIFICATION.md is historical blocker evidence superseded by latest owner decision; no fifthanalyticsintent or telemetryomission chosen. No DBwrites/push/deploy.

@@ -9,6 +9,7 @@ import {
   trackNearbyFailed,
   trackCitywideSelected,
 } from "@/lib/analytics/client";
+import { discoverySectionFor } from "@/lib/data/preference-map";
 import type { DiscoveryApiBody } from "@/lib/data/discovery-contract";
 import { discoveryToCard, type PlaceCardModel } from "@/lib/data/place-card-model";
 import { ResultList, type GeolocationUiState } from "./ResultList";
@@ -139,7 +140,7 @@ export function DiscoveryResults({ intent, intentLabel, preference, preferenceLa
           !body.ok || body.data.intent !== intent || body.data.locale !== locale ||
           body.data.preference !== preference || !Array.isArray(body.data.places) ||
           body.data.count !== body.data.places.length || body.data.count > 3 ||
-          body.data.places.some((place) => place.section !== intent) ||
+          body.data.places.some((place) => place.section !== discoverySectionFor(intent, preference)) ||
           new Set(body.data.places.map((place) => place.id)).size !== body.data.count
         ) {
           throw new Error("Invalid discovery response");
