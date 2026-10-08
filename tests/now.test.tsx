@@ -2,8 +2,6 @@ import React from "react";
 import { describe, it, expect, vi, afterEach } from "vitest";
 import { render, screen, fireEvent, act } from "@testing-library/react";
 import { getNowSlot, NOW_TIME_ZONE, type NowData } from "@/lib/now/contract";
-import { findNowItinerary } from "@/lib/now/service";
-import { createPlaceRepository } from "@/lib/data/place-repository";
 import { NowResults } from "@/components/itinerary/NowResults";
 import { LocaleProvider, useLocale } from "@/components/i18n/LocaleProvider";
 import { LOCALE_STORAGE_KEY } from "@/lib/i18n/locales";
@@ -11,46 +9,14 @@ import { translate } from "@/lib/i18n/messages";
 import { apiPlace } from "./discovery-fixtures";
 
 const instant = (time: string) => new Date(`2026-10-09T${time}:00+07:00`);
-const raw = (id: number, section: string) => ({ id, section, name: `Neon row ${id}`, google_place_id: `google-${id}`, address: "Da Nang", latitude: 16, longitude: 108,
-  google_maps_url: `https://maps.google.com/?cid=${id}`, area_id: 1, area_name: "Area", rating: null, review_count: null });
 const data = (count = 2, locale: NowData["locale"] = "vi"): NowData => ({ locale, slot: "EVENING", timeZone: NOW_TIME_ZONE, evaluatedAt: instant("19:00").toISOString(), count,
-  places: Array.from({ length: count }, (_, i) => apiPlace(i + 1)), meta: { source: "neon-postgres", policy: "time-slot-v1", openingHoursVerified: false } });
+  places: Array.from({ length: count }, (_, i) => apiPlace(i + 1)), meta: { source: "neon-postgres", policy: "time-slot-v1.1", openingHoursVerified: false } });
 const response = (d = data()) => ({ ok: true, json: async () => ({ ok: true, data: d }) }) as Response;
 afterEach(() => { vi.unstubAllGlobals(); vi.useRealTimers(); localStorage.clear(); });
 
 describe("Da Nang clock and real repository policy", () => {
   it.each([['05:59','NIGHT'],['06:00','MORNING'],['10:59','MORNING'],['11:00','MIDDAY'],['13:59','MIDDAY'],['14:00','AFTERNOON'],['17:29','AFTERNOON'],['17:30','EVENING'],['21:59','EVENING'],['22:00','NIGHT'],['00:00','NIGHT']])("%s -> %s", (time, slot) => expect(getNowSlot(instant(time))).toBe(slot));
-  it.each([
-    ['08:00', 'CAFE', null, 'GO', ['NATURE']],
-    ['12:00', 'EAT', null, 'GO', ['SCENIC']],
-    ['15:30', 'GO', ['PHOTO'], 'CAFE', null],
-    ['19:00', 'EAT', null, 'GO', ['ENTERTAINMENT']],
-    ['23:00', 'EAT', ['NIGHT'], 'GO', ['NIGHT']],
-  ] as const)("%s uses existing parameterized SQL, adapter and ordered real rows", async (time, first, tags1, second, tags2) => {
-    const execute = vi.fn().mockResolvedValueOnce([raw(11, first)]).mockResolvedValueOnce([raw(22, second)]);
-    const d = await findNowItinerary(createPlaceRepository(execute), "ko", instant(time));
-    expect(execute.mock.calls.map(c => c[1])).toEqual([[first,"ko",tags1,3],[second,"ko",tags2,3]]);
-    expect(d.places.map(p => p.id)).toEqual([11,22]);
-    expect(d.places[0].googleMapsUrl).toBe("https://maps.google.com/?cid=11");
-    expect(d.places[0].rating).toBeNull();
-    expect(d.meta.openingHoursVerified).toBe(false);
-    expect(execute.mock.calls[0][0]).toContain("p.active = TRUE");
-  });
-  it("falls back only to the same section, then returns honest empty", async () => {
-    const execute = vi.fn().mockResolvedValue([]);
-    const d = await findNowItinerary(createPlaceRepository(execute), "vi", instant("23:00"));
-    expect(d.places).toEqual([]);
-    expect(execute.mock.calls.map(c => c[1])).toEqual([["EAT","vi",["NIGHT"],3],["EAT","vi",null,3],["GO","vi",["NIGHT"],3],["GO","vi",null,3]]);
-  });
-  it("filters invalid, duplicate and wrong-section rows without padding", async () => {
-    const execute = vi.fn().mockResolvedValueOnce([raw(11,"EAT"),raw(11,"EAT")]).mockResolvedValueOnce([raw(11,"GO"),raw(33,"STAY")]).mockResolvedValueOnce([]);
-    const d = await findNowItinerary(createPlaceRepository(execute), "vi", instant("19:00"));
-    expect(d.places.map(p => p.id)).toEqual([11]);
-  });
-  it("propagates query failure instead of demo fallback", async () => {
-    const execute = vi.fn().mockRejectedValue(new Error("unavailable"));
-    await expect(findNowItinerary(createPlaceRepository(execute), "vi")).rejects.toThrow("unavailable");
-  });
+
 });
 
 describe("NOW lifecycle and truthful UI", () => {

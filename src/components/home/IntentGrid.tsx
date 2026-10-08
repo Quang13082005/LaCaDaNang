@@ -4,7 +4,7 @@ import React from "react";
 import { IntentCard } from "@/components/home/IntentCard";
 import { PreferenceBottomSheet } from "@/components/home/PreferenceBottomSheet";
 import { useLocale } from "@/components/i18n/LocaleProvider";
-import { PRIMARY_INTENTS, type IntentConfig } from "@/data/demo-places";
+import { PRIMARY_INTENTS, type IntentConfig } from "@/data/discovery-ui";
 
 export interface IntentGridProps {
   selectedIntent: "EAT" | "GO" | "NOW" | "STAY" | null;

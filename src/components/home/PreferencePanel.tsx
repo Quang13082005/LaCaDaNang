@@ -3,7 +3,7 @@ import { Sparkles } from "lucide-react";
 import { MoodChip } from "@/components/shared/MoodChip";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 import type { MessageKey } from "@/lib/i18n/messages";
-import { PREFERENCES_BY_INTENT } from "@/data/demo-places";
+import { PREFERENCES_BY_INTENT } from "@/data/discovery-ui";
 
 interface PreferencePanelProps {
   intentId: "EAT" | "GO" | "NOW" | "STAY";

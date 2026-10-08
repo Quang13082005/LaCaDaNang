@@ -5,7 +5,7 @@ import { X, Utensils, Compass, Bed, Zap } from "lucide-react";
 import { MoodChip } from "@/components/shared/MoodChip";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 import type { MessageKey } from "@/lib/i18n/messages";
-import { PREFERENCES_BY_INTENT } from "@/data/demo-places";
+import { PREFERENCES_BY_INTENT } from "@/data/discovery-ui";
 
 const INTENT_THEMES = {
   NOW: {

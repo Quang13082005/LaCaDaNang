@@ -4,7 +4,7 @@ import React from "react";
 import { ChevronRight, Utensils, Compass, Bed, Zap } from "lucide-react";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 import type { MessageKey } from "@/lib/i18n/messages";
-import type { IntentConfig } from "@/data/demo-places";
+import type { IntentConfig } from "@/data/discovery-ui";
 
 interface IntentTheme {
   icon: React.ElementType;

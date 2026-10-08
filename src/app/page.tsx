@@ -17,7 +17,7 @@ import {
 import type { MessageKey } from "@/lib/i18n/messages";
 import {
   PREFERENCES_BY_INTENT,
-} from "@/data/demo-places";
+} from "@/data/discovery-ui";
 
 export default function HomePage() {
   const { t, locale, isManual } = useLocale();
