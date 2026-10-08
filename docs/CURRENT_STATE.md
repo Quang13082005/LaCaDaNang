@@ -146,3 +146,29 @@ Report: [M8A_ANALYTICS_READINESS_AUDIT](M8A_ANALYTICS_READINESS_AUDIT.md).
 - Session Identity: Ephemeral session ID in `sessionStorage` (auto-cleared on tab close). Zero persistent device fingerprinting.
 - Recommended Provider: Option A (Internal Neon Analytics via Next.js `/api/analytics` route) recommended for MVP ($0 cost, 100% first-party sovereign, ad-blocker immune, custom SQL funnel queries).
 - Reconciliation summary: M8-A DONE; selective docs-only commit authorized; STOP for user review before M8-B.
+
+## M8-A.1 Analytics Contract Correction & Lock Completed — 2026-10-08
+Report: [M8A_ANALYTICS_READINESS_AUDIT](M8A_ANALYTICS_READINESS_AUDIT.md) & [DECISIONS](DECISIONS.md) (Decisions 96–105).
+- Status: READ-ONLY AUDIT & CONTRACT LOCK ONLY — COMPLETED. Zero modifications to `src/` or `tests/`. Zero DB mutations (NO `CREATE TABLE`, NO `INSERT/UPDATE/DELETE`), zero migrations run, zero package installations.
+- Live Neon Catalog Ground Truth: Queried Neon PostgreSQL directly via read-only catalog query. Verified exactly 6 tables and 3,079 total rows:
+  - `places`: 500 rows
+  - `place_translations`: 1,500 rows
+  - `place_tags`: 841 rows
+  - `tags`: 36 rows
+  - `tag_translations`: 108 rows
+  - `administrative_units`: 94 rows
+  - Total: 3,079 rows.
+- DOC/DB Drift Discovered & Resolved: Previous M8-A draft documentation mistakenly reported non-existent tables (`place_coordinates`, `place_operational` - these are columns on `places`), undercounted `place_tags` as 43 (real: 841), and omitted `tags` (36) and `administrative_units` (94). Corrected in M8-A.1.
+- Canonical Property Naming Locked: Unified across client telemetry and DB schema (17 typed fields): `id`, `event_name`, `session_id`, `journey_id`, `occurred_at`, `environment`, `locale`, `language_mode`, `intent`, `preference`, `place_id`, `result_position`, `result_count`, `is_nearby`, `radius_km`, `failure_reason`, `meaningful_tap_count`.
+- Metadata Policy: `metadata JSONB` completely removed for M8-B to eliminate arbitrary nested data and preserve strict privacy allowlist.
+- Session & Journey Lifecycle Locked:
+  - Session: One tab lifetime = one session stored in `sessionStorage` (ephemeral, zero cross-session persistence).
+  - Journey: One distinct discovery flow within a session. Generated on Home; preserved across intent changes before preference, locale switches, and nearby toggles; reset to new UUID upon "Đổi lựa chọn" or returning to Home.
+- Results Shown Deduplication: Re-fetching discovery on locale change (`language_changed`) emits `language_changed` but MUST NOT emit `results_shown`. Retry only emits if state previously had no successful render.
+- NOW Intent Boundary: Tracked for `intent_selected` and `preference_selected` (if any); excluded from place conversion funnels.
+- Place ID & FK Policy: Positive integer snapshot; no foreign key constraint to decouple analytics retention from venue catalog mutations.
+- Public Endpoint Validation: Strict Zod validation, 2 KB payload limit, parameterized SQL, unknown keys rejected, indicative product telemetry disclaimer.
+- GPS Privacy & Environment: Zero raw coordinates, IP, PII, or fingerprints persisted. Categorized radius (1, 3, 5 km) and boolean `is_nearby` only. Environment isolation (`development`/`test` no-op, `preview` tagged, `production` default dashboard filter).
+- Retention & DB Strategy: 60-day target documented; automated purge NOT implemented in M8-B. Tracked reproducible SQL migration artifact `docs/schema/002_analytics_events.sql` specified for M8-B.
+- Final Event Matrix & Funnel Semantics: 10 allowed events; conversion funnels calculated via `COUNT(DISTINCT journey_id)`.
+- Reconciliation summary: M8-A.1 DONE; selective docs-only commit authorized; STOP for user review before M8-B.

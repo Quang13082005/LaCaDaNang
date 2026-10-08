@@ -1,146 +1,205 @@
-# M8-A Analytics Readiness Audit & Contract
+# M8-A.1 Analytics Readiness Audit & Contract Lock
 
 Date: 2026-10-08
 Branch: `phase-2a-deploy`
-Base Checkpoint: `dc57c15102e82b0a9124facd4e0ebc90898ffbe7`
-Scope: Audit & Contract Design ONLY. Zero runtime implementation, zero application source/test modifications, zero database mutations, zero package installations.
+Base Checkpoint: `7d228b60d24bd1dea3f73021cc5d5c8a14ae4848`
+Scope: Audit & Contract Correction & Lock ONLY. Zero runtime implementation, zero application source/test modifications, zero database mutations, zero package installations.
 
 ---
 
-## 1. Existing Analytics Foundation Audit
+## 1. Actual Neon Database Catalog & DOC/DB Drift Reconciliation
 
-An exhaustive audit across the entire repository revealed:
-- **Runtime Analytics in `src/`**: Completely absent (0 lines of tracking code).
-- **Existing Helpers / Wrappers**: None. No tracking hooks, no telemetry dispatchers.
-- **Dependencies in `package.json`**: 0 analytics packages installed (no `@posthog/js`, no `gtag`, no `@vercel/analytics`, no telemetry libraries).
-- **Database Tables in Neon**: 0 analytics tables. Neon PostgreSQL currently hosts exactly 6 core content tables (3,079 total rows): `places` (500), `place_translations` (1500), `place_coordinates` (500), `place_operational` (500), `place_tags` (43), `tag_translations` (108).
-- **Existing Specifications**:
-  - `docs/ANALYTICS.md`: Canonical reference outlining milestone M9 vocabulary and provider abstraction.
-  - `docs/reference/ANALYTICS_SPEC.md`: Provider-neutral baseline defining a common envelope, forbidden properties, and legacy event draft.
+An independent, read-only inspection was executed directly against Neon PostgreSQL via `information_schema`:
 
----
+### Actual Public Tables & Row Counts (Direct SQL Verification)
+| Table Name | Actual Row Count | Key Columns & Characteristics |
+|---|---|---|
+| `places` | **500** | Primary table (22 cols: `id`, `name`, `section`, `primary_type`, `latitude`, `longitude`, `google_maps_url`, `business_status`, `active`, `featured`...) |
+| `place_translations` | **1,500** | Multilingual place text (7 cols: `place_id`, `locale`, `display_name`, `primary_type_label`, `short_description` across `vi`, `en`, `ko`) |
+| `place_tags` | **841** | Many-to-many junction table (2 cols: `place_id`, `tag_id`) linking places to catalog tags |
+| `tags` | **36** | Master catalog of curated tags (5 cols: `id`, `code`, `display_name`, `domain`, `active`) across `EAT`, `CAFE`, `GO`, `STAY`, `COMMON` |
+| `tag_translations` | **108** | Multilingual tag labels (3 cols: `tag_id`, `locale`, `label` across `vi`, `en`, `ko` for 36 tags) |
+| `administrative_units` | **94** | Da Nang administrative geography (7 cols: `id`, `official_name`, `unit_type`, `active`...) |
+| **TOTAL** | **3,079** | **Exactly 3,079 total rows across all 6 core tables** |
 
-## 2. Core Product Questions Answered
-
-Analytics for La Cà Đà Nẵng must strictly serve product understanding for the Owner without vanity metrics:
-1. **Intent Popularity**: Which intent do users engage with most? (`NOW` vs `EAT` vs `GO` vs `STAY`).
-2. **Preference Demand**: Which specific preference chips are most requested? (`an_ngon`, `dac_san`, `chup_anh_dep`, `gan_bien`...).
-3. **Funnel Conversion Rate**: What percentage of visitors complete the journey from Home view to Results displayed?
-4. **Tap Efficiency Goal**: Do users successfully reach useful results within $\le 2\text{--}3$ meaningful taps?
-5. **Nearby Adoption**: What percentage of sessions activate the "Gần tôi" action?
-6. **Nearby Radius Resolution**: In which radius bucket does Nearby resolve most frequently? (1 km vs 3 km vs 5 km).
-7. **Nearby Zero-Result Rate**: How often does Nearby fail to find matching venues within 5 km?
-8. **Fallback Behavior**: How many users utilize the "Xem trên toàn Đà Nẵng" fallback CTA when Nearby yields 0 results?
-9. **Venue Engagement**: Which specific venues receive the most Google Maps navigation clicks?
-10. **Result Position CTR**: Does position #1 receive the vast majority of clicks, or do positions #2 and #3 perform well?
-11. **Language Distribution**: What is the traffic split among Vietnamese (`vi`), English (`en`), and Korean (`ko`)?
-12. **Language Selection Mode**: What percentage of users rely on automatic device detection vs manual selection?
+### DOC/DB Drift Findings
+- **Drift Detected**: Early draft documents and initial M8-A notes described the database as having:
+  `places (500), place_translations (1500), place_coordinates (500), place_operational (500), place_tags (43), tag_translations (108)`.
+- **Root Cause & Correction**:
+  1. `place_coordinates` and `place_operational` were draft conceptual categories during the workbook import planning phase, but in PostgreSQL they exist as columns directly on `places` (`latitude`, `longitude`, `business_status`, `active`, `featured`), NOT separate tables.
+  2. `place_tags` contains **841** junction rows, not 43.
+  3. `tags` (**36** rows) and `administrative_units` (**94** rows) are the true 5th and 6th tables.
+  4. $500 + 1500 + 841 + 36 + 108 + 94 = \mathbf{3,079}$ rows.
+- **Resolution**: All authoritative documentation is updated to reflect the true schema defined in `docs/schema/001_initial_schema.sql`.
 
 ---
 
-## 3. Proposed MVP Events
+## 2. Canonical Analytics Property Contract
 
-We propose a minimal, high-signal event vocabulary consisting of 11 distinct events:
+All analytics properties are locked into a single canonical naming standard. Discrepancies such as `tap_count` vs `tap_count_total` or `is_manual` vs `language_mode` are resolved as follows:
 
-| Event Name | Precise Trigger | Key Properties | Product Value | Privacy Impact |
-|---|---|---|---|---|
-| `session_started` | Client initializes session post-hydration | `session_id`, `locale`, `is_manual`, `entry_source` | Session denominator, initial locale baseline | Safe, anonymous |
-| `home_viewed` | Home screen becomes visible and interactive | `session_id`, `locale` | Discovery funnel top of funnel | Safe |
-| `intent_selected` | User deliberately taps an intent card (`NOW`, `EAT`, `GO`, `STAY`) | `session_id`, `intent`, `tap_index` | Measures intent interest; first decision | Safe |
-| `preference_selected` | User taps a preference chip in the accordion | `session_id`, `intent`, `preference`, `tap_index` | Measures demand; second decision | Safe |
-| `results_shown` | Discovery API succeeds and places/itinerary render | `session_id`, `intent`, `preference`, `result_count`, `is_nearby`, `radius_km`, `tap_count_total` | Funnel completion; proves $\le 3$-tap goal; empty rate | Safe |
-| `nearby_requested` | User taps "Gần tôi" in `BottomActionBar` | `session_id`, `intent`, `preference` | Measures GPS discovery demand | Safe (no GPS data) |
-| `nearby_resolved` | GPS resolves $\le 1000\text{m}$ and nearby results render | `session_id`, `intent`, `preference`, `radius_km` (1\|3\|5), `result_count` (0..3) | Radius efficiency; proves escalation logic | Safe (only radius/count) |
-| `nearby_failed` | Geolocation error or accuracy $> 1000\text{m}$ | `session_id`, `intent`, `preference`, `failure_reason` (`denied`\|`timeout`\|`unavailable`\|`inaccurate`) | Diagnoses GPS drop-off | Safe |
-| `citywide_selected` | User switches to citywide from Nearby or empty CTA | `session_id`, `intent`, `preference`, `source` (`empty_cta`\|`action_bar`) | Measures recovery from localized zero-results | Safe |
-| `maps_clicked` | User activates external Google Maps link | `session_id`, `place_id`, `intent`, `preference`, `result_position` (1\|2\|3), `is_nearby`, `radius_km` | Ultimate conversion; venue popularity; position CTR | Safe (internal place ID only) |
-| `language_changed` | User changes language in `LanguageSelector` | `session_id`, `selected_locale`, `resolved_locale`, `is_manual` | Language preference & auto vs manual adoption | Safe |
-
----
-
-## 4. Property Contract & Strict Privacy Boundary
-
-### Allowlisted Properties
-- `session_id`: UUID string (ephemeral session token)
-- `intent`: `"NOW"` | `"EAT"` | `"GO"` | `"STAY"`
-- `preference`: string (stable enum, e.g. `"an_ngon"`, `"dac_san"`, `"chup_anh_dep"`)
-- `result_count`: integer ($0 \le n \le 3$)
-- `is_nearby`: boolean
-- `radius_km`: integer ($1 \mid 3 \mid 5$) or null
-- `result_position`: integer ($1 \mid 2 \mid 3$)
-- `place_id`: integer (internal Neon place ID, e.g. 1..500)
-- `locale`: `"vi"` | `"en"` | `"ko"`
-- `is_manual`: boolean
-- `failure_reason`: `"denied"` | `"timeout"` | `"unavailable"` | `"inaccurate"`
-- `tap_count_total`: integer ($1, 2, 3, \dots$)
-- `timestamp`: ISO-8601 UTC string
-
-### Strictly Forbidden Properties (Zero Tolerance)
-- ❌ **NO Raw Latitude or Longitude**: Never transmitted or logged under any circumstances.
-- ❌ **NO Raw GPS Accuracy in Meters**: Only categorized as valid ($\le 1000\text{m}$) or `inaccurate`.
-- ❌ **NO PII**: Zero personal names, email addresses, phone numbers, home addresses.
-- ❌ **NO IP Storage**: IP addresses must not be written to analytics records or used for geolocation enrichment.
-- ❌ **NO Fingerprinting**: No canvas fingerprinting, WebGL hashes, or device fingerprinting.
-- ❌ **NO URL GPS Leakage**: No Maps URLs containing user coordinates.
-- ❌ **NO Secrets**: Never log `DATABASE_URL` or configuration tokens.
+| Property Name | Data Type | Permitted Values / Constraints | Description |
+|---|---|---|---|
+| `event_name` | `VARCHAR(50)` | Exact 10-event vocabulary enum | Canonical event identifier |
+| `session_id` | `UUID` | RFC-4122 v4 UUID string | Browser session identifier (one tab lifetime) |
+| `journey_id` | `UUID` | RFC-4122 v4 UUID string | Specific discovery journey identifier |
+| `occurred_at` | `TIMESTAMP` | UTC timestamp without time zone | Event creation time |
+| `environment` | `VARCHAR(15)` | `'production'` \| `'preview'` | Isolation flag for telemetry |
+| `locale` | `VARCHAR(5)` | `'vi'` \| `'en'` \| `'ko'` | Active language at time of event |
+| `language_mode`| `VARCHAR(10)` | `'auto'` \| `'manual'` | Whether language was auto-detected or manually selected |
+| `intent` | `VARCHAR(10)` | `'EAT'` \| `'GO'` \| `'STAY'` \| `'NOW'` (or null) | Primary section |
+| `preference` | `VARCHAR(50)` | Stable string enum (e.g. `'an_ngon'`, `'dac_san'`) | Selected filter preference |
+| `place_id` | `INTEGER` | Positive integer $> 0$ (or null) | Snapshot database ID of venue |
+| `result_position`| `SMALLINT` | $1 \mid 2 \mid 3$ (or null) | 1-based display position on screen |
+| `result_count` | `SMALLINT` | $0 \le n \le 3$ (or null) | Number of venues returned |
+| `is_nearby` | `BOOLEAN` | `true` \| `false` | Whether nearby mode was active |
+| `radius_km` | `SMALLINT` | $1 \mid 3 \mid 5$ (or null) | Resolved escalation radius bucket |
+| `failure_reason`| `VARCHAR(20)` | `'denied'` \| `'timeout'` \| `'unavailable'` \| `'inaccurate'` | Geolocation failure code |
+| `meaningful_tap_count`| `SMALLINT`| Integer $\ge 1$ | Cumulative intentional taps in journey |
 
 ---
 
-## 5. User & Session Identity Policy
+## 3. Session & Journey Policy
 
-- **No User Account Requirement**: La Cà Đà Nẵng is an open discovery utility; login/account creation does not exist and is not needed.
-- **Session Identity**:
-  - Generated via `crypto.randomUUID()` upon first client load.
-  - Stored strictly in `sessionStorage` (ephemeral; destroyed upon closing the browser tab).
-  - Never stored in `localStorage` to prevent cross-day tracking.
-  - Reset Policy: Closing the tab ends the session. Inactivity $> 30$ minutes starts a new session token.
-  - Zero cross-device or persistent profiling.
+### Session Policy (`session_id`)
+- **Lifecycle**: **One Tab Lifetime = One Session**.
+- **Storage**: `sessionStorage` strictly. Automatically destroyed when the user closes the browser tab or browser.
+- **Determinism**: Zero timer or background heartbeat complexity. Zero persistent cross-day tracking.
+- **No User Identity**: No user login, no email, no device fingerprinting.
 
----
-
-## 6. Provider Evaluation & Architectural Recommendation
-
-| Criteria | Option A: Neon Internal Events | Option B: PostHog Cloud | Option C: Google Analytics 4 | Option D: Plausible Hosted |
-|---|---|---|---|---|
-| **Setup Complexity** | Very Low (1 table, 1 Next.js API route) | Medium (SDK, project setup) | Low (gtag script) | Low (script snippet) |
-| **Cost** | **$0** (included in existing Neon DB) | Free tier (1M events/mo) | Free | $9+/month |
-| **Privacy & Compliance** | **100% First-Party & Sovereign** | Third-party cloud | Third-party / ad-profiling | First-party friendly |
-| **Ad-Blocker Resistance** | **High** (First-party origin) | Medium (blocked by default) | Very Poor (30-40% blocked) | Good |
-| **Custom Funnel & SQL Power** | **Unlimited SQL capabilities** | Pre-built UI funnels | Clunky reporting / 24h delay | Basic stats only |
-| **Cloudflare / Next.js Stack** | **100% Native compatibility** | Good | Standard | Standard |
-
-### Recommendation for MVP: Option A (Internal Neon Analytics via Next.js Route)
-- **Rationale**:
-  1. Zero additional cost and zero external vendor lock-in.
-  2. Immune to ad-blockers because endpoints reside on the same first-party domain (`/api/analytics`).
-  3. Strict privacy guarantees: data never leaves the project's own database.
-  4. Instant, real-time reporting via simple SQL queries answering all 12 product questions with 100% accuracy.
+### Discovery Journey Policy (`journey_id`)
+- **Definition**: Represents a single continuous goal-oriented search cycle within a session.
+- **Journey Initiation**: A new `journey_id` (`crypto.randomUUID()`) is generated on initial Home load.
+- **Journey Continuation (Preserved)**:
+  - Tapping between intents before selecting a preference maintains the **SAME** `journey_id`.
+  - Switching languages (VI $\leftrightarrow$ EN $\leftrightarrow$ KO) maintains the **SAME** `journey_id`.
+  - Toggling "Gần tôi" (Nearby) or retrying a failed query maintains the **SAME** `journey_id`.
+  - Clicking external Google Maps links is part of the **SAME** `journey_id`.
+- **Journey Reset Rules**:
+  - Tapping "Đổi lựa chọn" (Change selection) or returning to Home explicitly **ENDS** the current journey and starts a **NEW** `journey_id`.
+- **Value**: Enables exact journey-level funnels (`COUNT(DISTINCT journey_id)`) and accurate tap-to-result tracking without timestamp guesswork.
 
 ---
 
-## 7. Proposed Neon Schema (Design Specification Only — No Migrations in M8-A)
+## 4. Event Semantics & Deduplication Contract
+
+1. **`results_shown` Strict Semantics**:
+   - Emitted **ONLY ONCE** when a fresh discovery outcome is successfully rendered for the active `journey_id`.
+   - **Locale Re-fetch Guard**: When switching languages in the results view, the discovery data is re-fetched to update translated text. This re-fetch **MUST NOT** emit `results_shown`. It only emits `language_changed`.
+   - **Retry Guard**: Clicking "Thử lại" only emits `results_shown` if the journey was previously in an error state.
+2. **NOW Intent Analytics Boundary**:
+   - NOW is currently a static sample timeline (`ItineraryTimeline`).
+   - M8-B tracks `intent_selected` (`intent = 'NOW'`) and `preference_selected` (if timeline period chosen).
+   - **NOW is EXCLUDED from the places discovery conversion funnel**.
+   - No fake `0..3` result counts or `results_shown` place events are emitted for NOW.
+3. **`place_id` Validation & Snapshot Policy**:
+   - `place_id` is validated as a positive integer ($> 0$), never hardcoded to $1..500$.
+   - Treated as an independent snapshot identifier without a strict `FOREIGN KEY ... ON DELETE CASCADE` constraint, ensuring historical analytics data remains intact if a venue record is archived or removed.
+4. **Metadata Policy**:
+   - **JSONB metadata is completely REMOVED from the M8-B schema**.
+   - All permitted properties are first-class, strictly typed SQL columns. This prevents clients from passing arbitrary JSON or evading the privacy allowlist.
+
+---
+
+## 5. Security & Public Endpoint Abuse Contract
+
+Endpoint `POST /api/analytics` is a public HTTP route:
+1. **Strict Zod Validation**: Payload validated against a strict Zod schema with `.strict()`, instantly rejecting unexpected or unknown keys.
+2. **Payload Size Limit**: Maximum request body size capped at **2 KB**.
+3. **Value & Length Range Checks**: All strings capped (e.g. `event_name` $\le 50$ chars, enums strictly verified).
+4. **100% Parameterized SQL**: Zero dynamic SQL string concatenation.
+5. **Telemetry Nature**:
+   > *"Analytics telemetry represents indicative product signals for optimization, not trusted financial or security audit records."*
+   Client events are assumed to be best-effort telemetry, not unforgeable cryptographically signed attestations.
+
+---
+
+## 6. GPS Privacy & Environment Policy
+
+### GPS Privacy Language
+> *"Analytics payloads and the `analytics_events` table do not intentionally include or persist raw GPS coordinates (latitude/longitude), raw meter accuracy, IP addresses, PII, or device fingerprints."*
+- **Clear Separation of Data Domains**:
+  1. *Product Analytics*: Only records `is_nearby = true` and categorical `radius_km = 1 | 3 | 5`.
+  2. *Functional Discovery API*: Receives coordinates in ephemeral RAM via `GET /api/discovery` to calculate distances, immediately discarded.
+  3. *Infrastructure Logs*: Cloudflare/edge operational logs governed by standard server rotation.
+
+### Environment Isolation Policy
+- `development` (localhost): No-op dispatcher (zero network traffic).
+- `test` (vitest): No-op dispatcher (zero network traffic).
+- `preview`: Dispatches with `environment = 'preview'`.
+- `production`: Dispatches with `environment = 'production'`.
+- Product SQL queries filter by `WHERE environment = 'production'`.
+
+---
+
+## 7. Retention & Dashboard Scope Boundary
+
+- **Retention Target**: 60 days for raw event records.
+- **Scope Clarification**:
+  > *"Retention target is documented as 60 days; automated scheduled purge jobs and aggregate summary tables are NOT IMPLEMENTED in M8-B."* (Tracked for future maintenance).
+- **Dashboard Scope**: M8-B is strictly limited to event ingestion, validation, and SQL queryability on Neon. Zero dashboard UI components will be built in M8-B.
+
+---
+
+## 8. Provider Decision & Database Migration Strategy
+
+### Provider Decision
+- **Architecture**: First-party analytics using Neon PostgreSQL + Next.js route `POST /api/analytics`.
+- **Engineering Rationale**:
+  1. Utilizes existing verified Neon PostgreSQL infrastructure ($0 additional vendor cost).
+  2. Zero third-party SDK dependencies added to client bundle.
+  3. 100% data sovereignty and strict privacy compliance.
+  4. Highly expressive, instant SQL funnel queries.
+  5. Minimal implementation surface area.
+
+### Database Migration Strategy for M8-B
+Following repository conventions (ref: `docs/schema/001_initial_schema.sql`):
+- Migration script will be created at: `docs/schema/002_analytics_events.sql`.
+- Fully idempotent: `CREATE TABLE IF NOT EXISTS`, `CREATE INDEX IF NOT EXISTS`.
+- M8-A.1 executes **ZERO** database changes.
+
+---
+
+## 9. Final Canonical Event Table (PostgreSQL Schema for M8-B)
 
 ```sql
--- DESIGN SPECIFICATION ONLY: DO NOT EXECUTE IN M8-A
+-- =============================================================================
+-- LA CÀ ĐÀ NẴNG — Analytics Events Schema (M8-B Specification)
+-- =============================================================================
+
 CREATE TABLE IF NOT EXISTS analytics_events (
-  id BIGSERIAL PRIMARY KEY,
-  event_name VARCHAR(50) NOT NULL,
-  session_id UUID NOT NULL,
-  occurred_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (CURRENT_TIMESTAMP AT TIME ZONE 'UTC'),
-  locale VARCHAR(5) NOT NULL,
-  intent VARCHAR(10),
-  preference VARCHAR(50),
-  place_id INTEGER,
-  result_position SMALLINT,
-  result_count SMALLINT,
-  is_nearby BOOLEAN DEFAULT FALSE,
-  radius_km SMALLINT,
-  tap_count SMALLINT,
-  metadata JSONB
+    id                      BIGSERIAL                   NOT NULL PRIMARY KEY,
+    event_name              VARCHAR(50)                 NOT NULL
+                            CONSTRAINT ck_analytics_event_name_nonempty CHECK (btrim(event_name) <> ''),
+    session_id              UUID                        NOT NULL,
+    journey_id              UUID                        NOT NULL,
+    occurred_at             TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (CURRENT_TIMESTAMP AT TIME ZONE 'UTC'),
+    environment             VARCHAR(15)                 NOT NULL
+                            CONSTRAINT ck_analytics_env CHECK (environment IN ('production', 'preview')),
+    locale                  VARCHAR(5)                  NOT NULL
+                            CONSTRAINT ck_analytics_locale CHECK (locale IN ('vi', 'en', 'ko')),
+    language_mode           VARCHAR(10)                 NOT NULL
+                            CONSTRAINT ck_analytics_lang_mode CHECK (language_mode IN ('auto', 'manual')),
+    intent                  VARCHAR(10)                 DEFAULT NULL
+                            CONSTRAINT ck_analytics_intent CHECK (intent IS NULL OR intent IN ('EAT', 'GO', 'STAY', 'NOW')),
+    preference              VARCHAR(50)                 DEFAULT NULL,
+    place_id                INTEGER                     DEFAULT NULL
+                            CONSTRAINT ck_analytics_place_id CHECK (place_id IS NULL OR place_id > 0),
+    result_position         SMALLINT                    DEFAULT NULL
+                            CONSTRAINT ck_analytics_pos CHECK (result_position IS NULL OR result_position IN (1, 2, 3)),
+    result_count            SMALLINT                    DEFAULT NULL
+                            CONSTRAINT ck_analytics_count CHECK (result_count IS NULL OR (result_count >= 0 AND result_count <= 3)),
+    is_nearby               BOOLEAN                     NOT NULL DEFAULT FALSE,
+    radius_km               SMALLINT                    DEFAULT NULL
+                            CONSTRAINT ck_analytics_radius CHECK (radius_km IS NULL OR radius_km IN (1, 3, 5)),
+    failure_reason          VARCHAR(20)                 DEFAULT NULL
+                            CONSTRAINT ck_analytics_fail CHECK (failure_reason IS NULL OR failure_reason IN ('denied', 'timeout', 'unavailable', 'inaccurate')),
+    meaningful_tap_count    SMALLINT                    NOT NULL DEFAULT 1
+                            CONSTRAINT ck_analytics_tap CHECK (meaningful_tap_count >= 1)
 );
 
--- Targeted indexes for query performance
 CREATE INDEX IF NOT EXISTS idx_analytics_events_name_time ON analytics_events (event_name, occurred_at DESC);
+CREATE INDEX IF NOT EXISTS idx_analytics_events_journey ON analytics_events (journey_id);
 CREATE INDEX IF NOT EXISTS idx_analytics_events_session ON analytics_events (session_id);
 CREATE INDEX IF NOT EXISTS idx_analytics_events_intent_pref ON analytics_events (intent, preference);
 CREATE INDEX IF NOT EXISTS idx_analytics_events_place ON analytics_events (place_id);
@@ -148,113 +207,56 @@ CREATE INDEX IF NOT EXISTS idx_analytics_events_place ON analytics_events (place
 
 ---
 
-## 8. Event Semantics & Deduplication Rules
+## 10. Final 10-Event Specification Matrix
 
-1. `intent_selected`: Emitted **only** when a user clicks a new intent button. Tapping the already active intent or closing an intent does NOT re-emit.
-2. `preference_selected`: Emitted **only** on deliberate chip tap. Repeated taps while a request is in flight are dropped.
-3. `results_shown`: Emitted **only** when API request resolves 200 and UI renders. Loading states and failed API calls do not emit `results_shown`.
-4. `maps_clicked`: Emitted on click of the external Maps CTA before navigation opens.
-5. **i18n Safety**: Changing language re-renders the UI but **must never** re-emit `intent_selected` or `preference_selected`.
-6. **Retry Safety**: Clicking "Thử lại" after an API failure is a recovery event, not a fresh preference selection.
-
----
-
-## 9. Funnel Contracts & Metrics
-
-### Funnel 1: Core Discovery Funnel
-$$\text{Home Viewed} \xrightarrow{\text{Step 1}} \text{Intent Selected} \xrightarrow{\text{Step 2}} \text{Preference Selected} \xrightarrow{\text{Step 3}} \text{Results Shown} \xrightarrow{\text{Step 4}} \text{Maps Clicked}$$
-- **Discovery Completion Rate**: $\frac{\text{Sessions with Results Shown}}{\text{Sessions with Home Viewed}}$
-- **Outbound Maps CTR**: $\frac{\text{Sessions with Maps Clicked}}{\text{Sessions with Results Shown}}$
-
-### Funnel 2: Nearby Discovery Funnel
-$$\text{Results Shown} \xrightarrow{\text{Step 1}} \text{Nearby Requested} \xrightarrow{\text{Step 2}} \text{Nearby Resolved} \xrightarrow{\text{Step 3}} \text{Maps Clicked}$$
-- **Nearby Adoption Rate**: $\frac{\text{Nearby Requested}}{\text{Results Shown}}$
-- **Nearby Success Rate**: $\frac{\text{Nearby Resolved}}{\text{Nearby Requested}}$
-- **Zero-Result Escalation Rate**: Count of `nearby_resolved` with `radius_km = 5` and `result_count = 0`.
+| Event Name | Precise Trigger | Required Properties | Optional Properties | Deduplication & Journey Behavior |
+|---|---|---|---|---|
+| `session_started` | Client initializes session post-hydration | `session_id`, `journey_id`, `environment`, `locale`, `language_mode` | — | Fires once per tab load; initializes `journey_id` |
+| `home_viewed` | Home screen renders and becomes interactive | `session_id`, `journey_id`, `environment`, `locale`, `language_mode` | — | Fires on Home mount; suppressed on simple re-renders |
+| `intent_selected` | User taps intent card (`EAT`, `GO`, `STAY`, `NOW`) | `session_id`, `journey_id`, `intent`, `meaningful_tap_count` | — | Fires once per intent switch; preserves current `journey_id` |
+| `preference_selected` | User taps preference chip | `session_id`, `journey_id`, `intent`, `preference`, `meaningful_tap_count` | — | In-flight duplicate taps ignored; preserves current `journey_id` |
+| `results_shown` | API returns 200 and places render | `session_id`, `journey_id`, `intent`, `preference`, `result_count`, `is_nearby`, `meaningful_tap_count` | `radius_km` | Fires once per unique result set; locale re-fetch is suppressed |
+| `nearby_requested` | User taps "Gần tôi" button | `session_id`, `journey_id`, `intent`, `preference`, `meaningful_tap_count` | — | Fires once per tap; coordinates strictly excluded |
+| `nearby_failed` | GPS error or accuracy $> 1000\text{m}$ | `session_id`, `journey_id`, `intent`, `preference`, `failure_reason` | — | Fires on GPS rejection/timeout |
+| `citywide_selected` | User taps fallback or toggles all-city | `session_id`, `journey_id`, `intent`, `preference` | — | Fires on citywide fallback |
+| `maps_clicked` | User taps "Mở Google Maps" | `session_id`, `journey_id`, `place_id`, `intent`, `preference`, `result_position`, `is_nearby` | `radius_km` | Fires on navigation click; captures 1-based position |
+| `language_changed` | User changes language in modal | `session_id`, `journey_id`, `locale`, `language_mode` | — | Preserves `journey_id`; does NOT trigger discovery events |
 
 ---
 
-## 10. Tap Goal Measurement Strategy
+## 11. Funnel Semantics & Formulas
 
-- Product Target: $\le 2\text{--}3$ meaningful taps to reach useful recommendations.
-- Measurement Mechanism: A lightweight in-memory `tapCounter` tracking deliberate discovery decisions:
-  - Selecting an intent = tap 1.
-  - Selecting a preference = tap 2.
-  - If a user switches intents twice before selecting a preference = tap 3.
-  - When `results_shown` fires, it reports `tap_count_total`.
-  - Excludes scrolling, view toggles, and language switching.
+All funnel queries are strictly anchored to `COUNT(DISTINCT journey_id)`:
 
----
-
-## 11. Internationalization Interaction
-
-- All analytics identifiers must remain strictly language-invariant:
-  - Intents: `"EAT"`, `"GO"`, `"STAY"`, `"NOW"`.
-  - Preferences: `"an_ngon"`, `"dac_san"`, `"chup_anh_dep"`, `"gan_bien"`...
-  - Locales: recorded as separate property `locale: "vi" | "en" | "ko"`.
-- Never transmit translated labels (e.g. never log `"맛있는 음식"` or `"Where to eat"` as the preference identifier).
-
----
-
-## 12. Non-Blocking UX & Failure Policy
-
-- **Non-Blocking Transport**: Dispatch analytics events via `navigator.sendBeacon` or asynchronous `fetch(..., { keepalive: true })`.
-- **Zero UI Interruption**: Analytics dispatch must never cause layout shift, trigger loading states, or delay button click responses.
-- **Graceful Failure**: If the analytics endpoint returns an error, times out, or fails due to network offline:
-  - Silently drop/catch the error.
-  - Never retry infinitely.
-  - Never display any technical error messages or banners to the user.
-  - Discovery, Google Maps links, GPS nearby, and language switching must function with 100% normality.
-
----
-
-## 13. Bot / Dev / Test Traffic Isolation Policy
-
-- `development` (localhost): Analytics tracking disabled (no-op dispatcher).
-- `test` (vitest): Analytics tracking disabled (no-op dispatcher).
-- `preview` deployments: Enabled with `environment = "preview"` to test dispatch without polluting production datasets.
-- `production`: Enabled with `environment = "production"`.
-
----
-
-## 14. Retention & Privacy Separation
-
-- **Data Retention**: Maximum 30–60 days for granular event rows. Aggregated daily summaries can be retained for 90 days.
-- **Three Strict Data Tiers**:
-  1. *Product Analytics*: Aggregated behavioral signals with zero PII.
-  2. *Application Logs*: Next.js server operational logs rotated and purged after 7 days.
-  3. *Personal Data*: Zero storage. None collected, none stored.
-
----
-
-## 15. M8-B Regression Contract
-
-Implementation in M8-B must strictly preserve:
-- ✅ Live Neon discovery for EAT, GO, and STAY.
-- ✅ Nearby GPS 1 $\rightarrow$ 3 $\rightarrow$ 5 km escalation and GPS privacy.
-- ✅ M6-B One-Hand mobile ergonomics and `BottomActionBar`.
-- ✅ M7-B runtime VI / EN / KO localization and dynamic API locale.
-- ✅ M7-C intent vector visuals and footer utility row.
-- ✅ Truthful 0–3 results, exact Google Maps URLs, zero fake padding, zero venue images.
-- ✅ NOW sample timeline; CAFE inactive (400).
-- ✅ Clean database state (no schema corruption or unintended mutations).
-
----
-
-## 16. Comprehensive Test Plan for M8-B
-
-1. **Dispatcher Unit Tests**:
-   - Verify `session_id` generation and `sessionStorage` lifecycle.
-   - Verify non-blocking `sendBeacon` / `fetch` dispatch.
-   - Verify silent failure handling when endpoint returns 500 or network drops.
-2. **Event Integrity Tests**:
-   - Verify stable IDs (`EAT`, `an_ngon`) regardless of active locale (`vi`, `en`, `ko`).
-   - Verify `intent_selected` fires exactly once per selection.
-   - Verify `results_shown` fires with correct `result_count` and `tap_count_total`.
-   - Verify `maps_clicked` captures exact `place_id` and 1-based `result_position`.
-   - Verify `nearby_resolved` records `radius_km` and `result_count` without raw GPS coordinates.
-3. **Environment Isolation Tests**:
-   - Verify `NODE_ENV === "test"` and `NODE_ENV === "development"` emit zero network calls.
-4. **Full Regression Suite**:
-   - Run 225/225 tests to ensure 100% pass rate.
-   - Run linter, typecheck, and Next.js production build.
+1. **Discovery Completion Rate**:
+   ```sql
+   SELECT
+     COUNT(DISTINCT journey_id) FILTER (WHERE event_name = 'results_shown' AND result_count > 0)::float /
+     NULLIF(COUNT(DISTINCT journey_id) FILTER (WHERE event_name = 'intent_selected'), 0) AS discovery_completion_rate
+   FROM analytics_events
+   WHERE environment = 'production';
+   ```
+2. **Outbound Maps Navigation CTR**:
+   ```sql
+   SELECT
+     COUNT(DISTINCT journey_id) FILTER (WHERE event_name = 'maps_clicked')::float /
+     NULLIF(COUNT(DISTINCT journey_id) FILTER (WHERE event_name = 'results_shown' AND result_count > 0), 0) AS maps_ctr
+   FROM analytics_events
+   WHERE environment = 'production';
+   ```
+3. **Nearby Adoption Rate**:
+   ```sql
+   SELECT
+     COUNT(DISTINCT journey_id) FILTER (WHERE event_name = 'nearby_requested')::float /
+     NULLIF(COUNT(DISTINCT journey_id) FILTER (WHERE event_name = 'results_shown'), 0) AS nearby_adoption_rate
+   FROM analytics_events
+   WHERE environment = 'production';
+   ```
+4. **Tap Efficiency Goal Verification ($\le 3$ Taps)**:
+   ```sql
+   SELECT
+     ROUND(AVG(meaningful_tap_count), 2) AS avg_taps_to_result,
+     COUNT(*) FILTER (WHERE meaningful_tap_count <= 3)::float / COUNT(*) AS pct_under_3_taps
+   FROM analytics_events
+   WHERE event_name = 'results_shown' AND environment = 'production';
+   ```

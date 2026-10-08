@@ -24,7 +24,8 @@ M7-A.1 | i18n UX / Runtime Contract Lock | DONE | Current agent | User authoriza
 M7-B | VI/EN/KO runtime + Auto & Switcher | DONE | Current agent | User authorization; M7-A.1 | STOP for review | lint/typecheck/221 tests/build/live browser smoke PASS; M7B_VERIFICATION.md
 M7-C | Intent Visuals & Language Placement Hotfix | DONE | Current agent | Owner feedback; M7-B | STOP for review | lint/typecheck/225 tests/build/live smoke PASS; M7C_VERIFICATION.md
 M8-A | Analytics Readiness Audit & Contract | DONE | Current agent | User authorization; M7-C | STOP for review; audit report created | docs/M8A_ANALYTICS_READINESS_AUDIT.md
-M8-B | Analytics Runtime Implementation | NOT_STARTED | Unassigned | User authorization; M8-A | Follow M8-A contract; await explicit scope | Layer tests + lint/typecheck/build
+M8-A.1 | Analytics Contract Correction & Lock | DONE | Current agent | User authorization; M8-A | STOP for review; contracts locked | docs/M8A_ANALYTICS_READINESS_AUDIT.md & DECISIONS.md (96–105)
+M8-B | Analytics Runtime Implementation | NOT_STARTED | Unassigned | User authorization; M8-A.1 | Follow M8-A.1 contract; await explicit scope | Layer tests + lint/typecheck/build
 M9 | Analytics runtime | NOT_STARTED | Unassigned | User authorization; M8 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
 M10 | Notification reminder MVP | NOT_STARTED | Unassigned | User authorization; M9 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
 M11 | Time/location-aware NOW if supported | NOT_STARTED | Unassigned | User authorization; M10 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
@@ -128,3 +129,18 @@ Report: [M8A_ANALYTICS_READINESS_AUDIT](M8A_ANALYTICS_READINESS_AUDIT.md).
 - Session Identity: Ephemeral session ID in `sessionStorage` (auto-cleared on tab close). Zero persistent device fingerprinting.
 - Recommended Provider: Option A (Internal Neon Analytics via Next.js `/api/analytics` route) recommended for MVP ($0 cost, 100% first-party sovereign, ad-blocker immune, custom SQL funnel queries).
 - Reconciliation summary: M8-A DONE; selective docs-only commit authorized; STOP for user review before M8-B.
+
+## M8-A.1 Analytics Contract Correction & Lock Completed — 2026-10-08
+Report: [M8A_ANALYTICS_READINESS_AUDIT](M8A_ANALYTICS_READINESS_AUDIT.md) & [DECISIONS](DECISIONS.md) (Decisions 96–105).
+- Status: READ-ONLY AUDIT & CONTRACT LOCK ONLY — COMPLETED. Zero runtime modifications, zero database mutations (`NO CREATE TABLE`, `NO INSERT/UPDATE/DELETE`), zero migrations run, zero package installations.
+- Verified Neon live catalog: 6 tables, 3,079 rows (`places`: 500, `place_translations`: 1,500, `place_tags`: 841, `tags`: 36, `tag_translations`: 108, `administrative_units`: 94). DOC/DB drift resolved.
+- Canonical naming locked (17 columns, no `metadata JSONB`).
+- Journey lifecycle locked (`journey_id` per search flow, resets on "Đổi lựa chọn" / Home return).
+- Ephemeral tab lifetime session locked (`sessionStorage`).
+- Deduplication locked: locale switch emits `language_changed` only, never `results_shown`.
+- NOW excluded from place discovery conversion funnels.
+- Place ID is positive integer snapshot (no FK constraint).
+- Public endpoint security: Zod allowlist, 2 KB limit, parameterized SQL, indicative product telemetry disclaimer.
+- Database change strategy: tracked migration `docs/schema/002_analytics_events.sql` for M8-B.
+- Zero source code modifications, zero DB mutations.
+- Next action: STOP for Owner review.

@@ -257,3 +257,25 @@ Report: [M4A_REAL_MAPPING_AUDIT](M4A_REAL_MAPPING_AUDIT.md). HEAD e39c7de65fc413
    - Do not collect raw GPS coordinates, IP addresses, or personal data.
 5. **EXACT NEXT STEP**:
    - STOP for Owner review. Await explicit authorization before implementing M8-B.
+
+## M8-A.1 Analytics Contract Correction & Lock Handoff — 2026-10-08
+1. **Objective**: Reconcile Neon catalog ground truth vs documentation drift, unify analytics property naming across client and schema, lock discovery journey lifecycle (`journey_id`), define session timeout policy, eliminate `metadata JSONB` for privacy allowlisting, secure public `/api/analytics` endpoint, lock GPS privacy and retention contracts, specify SQL migration artifact convention, and define canonical 10-event matrix and funnel semantics before M8-B is permitted to mutate the database.
+2. **Status**: READ-ONLY AUDIT & CONTRACT LOCK COMPLETE — ALL PASS.
+3. **Core Deliverables**:
+   - `docs/M8A_ANALYTICS_READINESS_AUDIT.md`: Fully revised audit and canonical contract document.
+   - `docs/DECISIONS.md`: Decisions 96–105 appended and locked.
+   - Live Neon Catalog Ground Truth: SELECT query verified exactly 6 tables and 3,079 total rows (`places`: 500, `place_translations`: 1,500, `place_tags`: 841, `tags`: 36, `tag_translations`: 108, `administrative_units`: 94). DOC/DB drift resolved.
+   - Canonical 17-column DB Schema & Property Table (typed columns only, zero JSONB).
+   - Ephemeral session (`sessionStorage`, tab lifetime) & Journey lifecycle (`journey_id`, resets on "Đổi lựa chọn" / Home return).
+   - Deduplication rules: locale changes emit `language_changed` but never `results_shown`.
+   - Security specs: Zod validation, 2 KB limit, parameterized queries, indicative telemetry disclaimer.
+   - Database Change Convention: `docs/schema/002_analytics_events.sql` tracked migration for M8-B.
+4. **DO NOT REDO / DO NOT TOUCH**:
+   - Do not re-audit Neon database row counts or tables.
+   - Do not re-open property names or schema columns.
+   - Do not reintroduce `metadata JSONB` or arbitrary client properties.
+   - Do not mutate the database or run migrations in M8-A.1.
+   - Do not modify application source code in `src/` or tests in `tests/`.
+   - Do not push to remote.
+5. **EXACT NEXT STEP**:
+   - STOP for Owner review. Await explicit authorization before proceeding to M8-B (Analytics Runtime Implementation).
