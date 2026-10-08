@@ -88,4 +88,33 @@ Report: [M4A_REAL_MAPPING_AUDIT](M4A_REAL_MAPPING_AUDIT.md). HEAD e39c7de65fc413
 - Ranking: Locked to `distanceRawKm ASC, featured DESC, review_count DESC NULLS LAST, rating DESC NULLS LAST, id ASC`.
 - Empty state: Truthful 0–2 results; 0 results shows `"Không tìm thấy địa điểm phù hợp trong 5 km."` + CTA `"Xem trên toàn Đà Nẵng"`.
 - Privacy: No app logging, no analytics, no DB/storage persistence, no URL GPS leakage, no coordinate echo in API response.
-- Next step: STOP for user review before M5-B implementation. Await explicit authorization to implement M5-B.
+- Audit & contract lock complete.
+
+## M5-B Nearby Discovery Implementation Handoff — 2026-10-08
+1. **Objective**: Implement Nearby Discovery for EAT, GO, and STAY intents connected to live Neon PostgreSQL data; dual-path API routing; candidate retrieval bypassing pre-geo LIMIT 3; pure TS geo engine; user-driven Geolocation UX; PlaceCard distance badges; citywide regression 100% preserved.
+2. **Git**: Branch `phase-2a-deploy`. Selective local commit authorized: `feat: add nearby discovery with GPS`. No push to remote.
+3. **Completed**:
+   - `src/lib/data/discovery-contract.ts`: paired `lat`/`lng` validation, `nearby-provisional-v1` ranking rule, `meta.radiusKm` (1 | 3 | 5) & `meta.nearby` (true), `distanceKm` optional place field.
+   - `src/lib/geo/nearby-engine.ts`: pure TS evaluator with strict 1 -> 3 -> 5 km radius expansion, full float precision for boundary checks and sorting, locked tie-breaking (`distanceRawKm ASC, featured DESC, review_count DESC, rating DESC, id ASC`), candidate deduplication by ID, 1-decimal display formatting.
+   - `src/lib/data/place-repository.ts`: added `NEARBY_CANDIDATES_SQL` and `findNearbyCandidateRows()` retrieving all operational candidates for section + tags without pre-geo `LIMIT 3`.
+   - `src/app/api/discovery/route.ts`: dual-path routing (nearby vs citywide).
+   - `src/components/results/DiscoveryResults.tsx`: Geolocation state machine (`idle`, `requesting`, `granted`, `denied`, `unavailable`, `timeout`, `inaccurate`), 8s timeout, accuracy <= 1000m guard, fallback handling, retry, toggling, reset.
+   - `src/components/results/ResultList.tsx`: "Gần tôi" action button (>=44px), loading spinner, fallback warning banners with "Thử lại", dedicated Nearby empty state within 5 km with CTA "Xem trên toàn Đà Nẵng".
+   - `src/components/results/PlaceCard.tsx`: distance badge (`0,8 km`) when `distanceKm` present; omitted when citywide.
+   - `tests/nearby.test.ts` (18 unit tests) and `tests/nearby-frontend.test.tsx` (11 integration tests).
+4. **Validation Evidence**:
+   - Lint: PASS (`✔ No ESLint warnings or errors`).
+   - Typecheck: PASS (`tsc --noEmit` exit 0).
+   - Tests: 183/183 non-mutating tests PASS across 10 test files.
+   - Build: PASS (Next.js 15.5.27 compiled in 21.5s, 0 errors).
+   - Live API smoke with Neon: Hải Châu EAT an_ngon (R=1, 3 results), EAT dac_san (R=5, 1 result), GO thien_nhien (R=5, 0 results), STAY gan_trung_tam (R=1, 3 results), Mỹ Khê STAY gan_bien (R=3, 3 results), Citywide EAT an_ngon (200, no distance, citywide ranking), invalid missing lng (400 INVALID_PARAMETER), CAFE inactive (400 INTENT_NOT_AVAILABLE).
+   - Browser responsive smoke: 320, 390, 430, 768px viewports inspected; no clipping, touch targets >=44px.
+5. **DO NOT REDO**:
+   - Do not touch database or re-import.
+   - Do not regenerate curated places seed.
+   - Do not stage unrelated files or pre-existing staged renames.
+   - Do not push to remote.
+6. **EXACT NEXT STEP**:
+   - STOP for user review. Await explicit instructions on next authorized milestone.
+7. **Reconciliation status**:
+   - M5-B DONE; selective local commit authorized; STOP before M6.

@@ -23,16 +23,19 @@
 import { NextResponse, type NextRequest } from "next/server";
 import {
   DISCOVERY_MAX_RESULTS,
+  DISCOVERY_NEARBY_RANKING_RULE,
   DISCOVERY_RANKING_RULE,
   ENABLED_DISCOVERY_SECTIONS,
   parseDiscoveryQuery,
   type DiscoveryApiBody,
   type DiscoveryErrorCode,
+  type DiscoveryMeta,
 } from "@/lib/data/discovery-contract";
 import { DatabaseConfigError, DatabaseQueryError, getNeonExecutor } from "@/lib/db/neon";
 import { adaptRows } from "@/lib/data/place-adapter";
 import { clampLimit, createPlaceRepository } from "@/lib/data/place-repository";
 import { resolvePreference } from "@/lib/data/preference-map";
+import { evaluateNearbyDiscovery } from "@/lib/geo/nearby-engine";
 
 export const runtime = "edge";
 // Disable Next.js body parsing (GET has none); opt out of data cache to ensure fresh reads.
@@ -54,7 +57,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<DiscoveryA
   if (!parseResult.ok) {
     return err(400, "INVALID_PARAMETER", parseResult.message, parseResult.field);
   }
-  const { intent, locale, preference } = parseResult.query;
+  const { intent, locale, preference, location } = parseResult.query;
 
   // 2. Check if this intent is currently enabled
   if (!(ENABLED_DISCOVERY_SECTIONS as readonly string[]).includes(intent)) {
@@ -67,18 +70,50 @@ export async function GET(request: NextRequest): Promise<NextResponse<DiscoveryA
     return err(400, "INVALID_PARAMETER", `Preference "${preference}" is not recognised for section "${intent}".`, "preference");
   }
 
-  // 4. Fetch from Neon
-  const limit = clampLimit(DISCOVERY_MAX_RESULTS);
-  let rows;
+  // 4. Fetch from Neon & process results
+  let places;
+  let meta: DiscoveryMeta;
+
   try {
     const executor = getNeonExecutor();
     const repo = createPlaceRepository(executor);
-    rows = await repo.findDiscoveryRows({
-      section: intent,
-      locale,
-      tagCodes: resolved.tagCodes ?? null,
-      limit,
-    });
+
+    if (location !== null) {
+      // Nearby mode: Retrieve all eligible candidates without pre-geo LIMIT 3
+      const candidateRows = await repo.findNearbyCandidateRows({
+        section: intent,
+        locale,
+        tagCodes: resolved.tagCodes ?? null,
+      });
+      const candidates = adaptRows(candidateRows, locale);
+      const nearbyResult = evaluateNearbyDiscovery(candidates, {
+        latitude: location.lat,
+        longitude: location.lng,
+      });
+      places = nearbyResult.places;
+      meta = {
+        limit: DISCOVERY_MAX_RESULTS,
+        ranking: DISCOVERY_NEARBY_RANKING_RULE,
+        source: "neon-postgres",
+        radiusKm: nearbyResult.radiusKm,
+        nearby: true,
+      };
+    } else {
+      // Standard non-location discovery: Keep existing query and LIMIT 3
+      const limit = clampLimit(DISCOVERY_MAX_RESULTS);
+      const rows = await repo.findDiscoveryRows({
+        section: intent,
+        locale,
+        tagCodes: resolved.tagCodes ?? null,
+        limit,
+      });
+      places = adaptRows(rows, locale);
+      meta = {
+        limit: DISCOVERY_MAX_RESULTS,
+        ranking: DISCOVERY_RANKING_RULE,
+        source: "neon-postgres",
+      };
+    }
   } catch (e) {
     if (e instanceof DatabaseConfigError) {
       console.error("[discovery] DatabaseConfigError:", e.message);
@@ -92,10 +127,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<DiscoveryA
     return err(500, "INTERNAL_ERROR", "An unexpected error occurred.");
   }
 
-  // 5. Adapt raw rows to safe API shape
-  const places = adaptRows(rows, locale);
-
-  // 6. Build response
+  // 5. Build response
   const body: DiscoveryApiBody = {
     ok: true,
     data: {
@@ -105,11 +137,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<DiscoveryA
       preferenceMapping: resolved.kind,
       count: places.length,
       places,
-      meta: {
-        limit: DISCOVERY_MAX_RESULTS,
-        ranking: DISCOVERY_RANKING_RULE,
-        source: "neon-postgres",
-      },
+      meta,
     },
   };
   return NextResponse.json(body, {

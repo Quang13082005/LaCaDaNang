@@ -44,6 +44,7 @@ WITH ranked AS (
 )
 SELECT r.id, r.google_place_id, r.name, r.section, r.primary_type, r.address,
        r.latitude, r.longitude, r.google_maps_url, r.rating, r.review_count,
+       r.featured,
        au.id AS area_id, au.official_name AS area_name, au.unit_type AS area_unit_type,
        req.display_name AS req_display_name,
        req.primary_type_label AS req_type_label,
@@ -73,6 +74,59 @@ LEFT JOIN place_translations fb  ON fb.place_id  = r.id AND fb.locale  = 'vi'
 ORDER BY ${ORDER_FINAL}
 `;
 
+/**
+ * Nearby candidate retrieval query (M5-B):
+ * Bypasses pre-geo LIMIT 3 to fetch all active operational candidate rows matching section + tags.
+ * Haversine distance, radius escalation (1 -> 3 -> 5 km) and ranking are applied in-memory.
+ */
+export const NEARBY_CANDIDATES_SQL = `
+WITH candidates AS (
+  SELECT p.id, p.google_place_id, p.name, p.section, p.primary_type, p.address,
+         p.administrative_unit_id, p.latitude, p.longitude, p.google_maps_url,
+         p.rating, p.review_count, p.featured
+  FROM places p
+  WHERE p.active = TRUE
+    AND p.business_status = 'OPERATIONAL'
+    AND p.section = $1
+    AND ($3::text[] IS NULL OR EXISTS (
+          SELECT 1
+          FROM place_tags ft
+          JOIN tags t ON t.id = ft.tag_id
+          WHERE ft.place_id = p.id AND t.active = TRUE AND t.code = ANY($3::text[])
+        ))
+)
+SELECT c.id, c.google_place_id, c.name, c.section, c.primary_type, c.address,
+       c.latitude, c.longitude, c.google_maps_url, c.rating, c.review_count,
+       c.featured,
+       au.id AS area_id, au.official_name AS area_name, au.unit_type AS area_unit_type,
+       req.display_name AS req_display_name,
+       req.primary_type_label AS req_type_label,
+       req.short_description AS req_description,
+       fb.display_name AS fb_display_name,
+       fb.primary_type_label AS fb_type_label,
+       fb.short_description AS fb_description,
+       COALESCE((
+         SELECT json_agg(
+                  json_build_object(
+                    'code', t.code,
+                    'domain', t.domain,
+                    'display_name', t.display_name,
+                    'label_req', (SELECT tt.label FROM tag_translations tt WHERE tt.tag_id = t.id AND tt.locale = $2),
+                    'label_fb',  (SELECT tt.label FROM tag_translations tt WHERE tt.tag_id = t.id AND tt.locale = 'vi')
+                  )
+                  ORDER BY t.code
+                )
+         FROM place_tags pt
+         JOIN tags t ON t.id = pt.tag_id
+         WHERE pt.place_id = c.id AND t.active = TRUE
+       ), '[]'::json) AS tags
+FROM candidates c
+JOIN administrative_units au ON au.id = c.administrative_unit_id
+LEFT JOIN place_translations req ON req.place_id = c.id AND req.locale = $2
+LEFT JOIN place_translations fb  ON fb.place_id  = c.id AND fb.locale  = 'vi'
+ORDER BY c.id ASC
+`;
+
 export interface DiscoveryRepositoryQuery {
   section: DiscoverySection;
   locale: DiscoveryLocale;
@@ -84,6 +138,8 @@ export interface DiscoveryRepositoryQuery {
 export interface PlaceRepository {
   /** Returns RAW rows (not UI-safe). Always pass them through the adapter. */
   findDiscoveryRows(query: DiscoveryRepositoryQuery): Promise<SqlRow[]>;
+  /** Returns ALL eligible candidates for section + tag filter (bypasses pre-geo LIMIT 3). */
+  findNearbyCandidateRows(query: Omit<DiscoveryRepositoryQuery, "limit">): Promise<SqlRow[]>;
 }
 
 export function clampLimit(limit: number): number {
@@ -98,6 +154,12 @@ export function createPlaceRepository(execute: SqlQuery): PlaceRepository {
         throw new Error("tagCodes must be null or non-empty");
       }
       return execute(DISCOVERY_SQL, [section, locale, tagCodes === null ? null : [...tagCodes], clampLimit(limit)]);
+    },
+    async findNearbyCandidateRows({ section, locale, tagCodes }) {
+      if (tagCodes !== null && tagCodes.length === 0) {
+        throw new Error("tagCodes must be null or non-empty");
+      }
+      return execute(NEARBY_CANDIDATES_SQL, [section, locale, tagCodes === null ? null : [...tagCodes]]);
     },
   };
 }

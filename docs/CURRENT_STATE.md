@@ -48,4 +48,15 @@ Report: [M5A_NEARBY_READINESS_AUDIT](M5A_NEARBY_READINESS_AUDIT.md).
 - Nearby ranking locked: `distanceRawKm ASC, featured DESC, review_count DESC NULLS LAST, rating DESC NULLS LAST, id ASC`.
 - Empty state: Truthful 0–2 results; 0 results shows `"Không tìm thấy địa điểm phù hợp trong 5 km."` + CTA `"Xem trên toàn Đà Nẵng"`.
 - Privacy contract: No app logging, no analytics, no DB/storage persistence, no URL GPS leakage, no coordinate echo in API response.
-- Status: Docs-only contract lock. STOP before M5-B implementation.
+- Status: Docs-only contract lock.
+
+## M5-B Nearby Discovery Implementation Completed — 2026-10-08
+Report: [M5B_VERIFICATION](M5B_VERIFICATION.md).
+- Nearby Discovery implemented for EAT, GO, STAY intents connected to live Neon PostgreSQL data.
+- API contract: `GET /api/discovery` with paired optional `lat`/`lng`; single/invalid returns 400 `INVALID_PARAMETER`; omitting both keeps original citywide discovery. Response includes `meta.radiusKm` (1 | 3 | 5) and `meta.nearby: true` without echoing user coordinates.
+- Repository: `findNearbyCandidateRows()` fetches all active operational candidates matching section and tag filters without pre-geo `LIMIT 3`.
+- Geo Engine (`src/lib/geo/nearby-engine.ts`): Strictly evaluates `<= 1 km` (if `>= 3` -> `R = 1`); else evaluates `<= 3 km` (if `>= 3` -> `R = 3`); else evaluates `<= 5 km` (`R = 5`). Full float precision for radius checks & sorting; tie-breaking by `distanceRawKm ASC, featured DESC, review_count DESC, rating DESC, id ASC`; distance formatted to 1 decimal place only for UI display; candidates deduplicated by ID.
+- Geolocation UX: "Gần tôi" action button (`min-h-[44px]`, never auto-triggered on page load); 8s timeout; accuracy guard (`accuracy <= 1000m` -> Nearby, `> 1000m` -> warning message + citywide fallback + retry); error states (`denied`, `unavailable`, `timeout`, `inaccurate`) gracefully fall back to citywide; dedicated empty state within 5 km with CTA `"Xem trên toàn Đà Nẵng"`.
+- PlaceCard: Renders distance badge (`0,8 km`) when `distanceKm` is present; omitted when citywide. Text-first layout, exact Maps URL, and no venue images preserved.
+- Validation: Lint PASS (`0 warnings, 0 errors`), typecheck PASS (`tsc --noEmit` code 0), 183/183 non-mutating tests PASS across 10 suites, build PASS (Next.js 15.5.27 compiled in 21.5s), live Neon API smoke PASS (Hải Châu EAT an_ngon R=1, EAT dac_san R=5 1 result, GO thien_nhien R=5 0 results, STAY gan_trung_tam R=1, Mỹ Khê STAY gan_bien R=3; citywide regression 200; invalid 400), responsive checks across 320, 390, 430, 768px PASS.
+- Reconciliation summary: M5-B DONE; selective local commit authorized; STOP for user review.

@@ -123,6 +123,7 @@ export function adaptRow(row: SqlRow, locale: DiscoveryLocale): DiscoveryPlace |
     tags: parseTags(row.tags, locale),
     description: safeString(row.req_description) ?? safeString(row.fb_description),
     translationFallback,
+    featured: Boolean(row.featured),
   };
 }
 

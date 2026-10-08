@@ -13,6 +13,7 @@ export interface PlaceCardModel {
   tags?: string[];
   description?: string | null;
   googleMapsUrl: string;
+  distanceKm?: number | null;
 }
 
 export function discoveryToCard(place: DiscoveryPlace): PlaceCardModel {
@@ -22,6 +23,7 @@ export function discoveryToCard(place: DiscoveryPlace): PlaceCardModel {
     rating: place.rating, reviewCount: place.reviewCount,
     tags: place.tags.map((tag) => tag.label), description: place.description,
     googleMapsUrl: place.googleMapsUrl,
+    distanceKm: place.distanceKm ?? null,
   };
 }
 

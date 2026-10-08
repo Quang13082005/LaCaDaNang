@@ -6,7 +6,14 @@ export const PlaceCard: React.FC<{ place: PlaceCardModel }> = ({ place }) => (
   <article className="w-full min-w-0 rounded-[16px] bg-white border border-slate-200/90 shadow-sm flex flex-col p-4 sm:p-5 gap-3 break-words [overflow-wrap:anywhere]">
     <div className="space-y-2">
       <h3 className="text-lg sm:text-xl font-extrabold text-slate-900 leading-snug">{place.name}</h3>
-      {place.typeLabel && <p className="text-sm font-medium text-sky-700">{place.typeLabel}</p>}
+      <div className="flex flex-wrap items-center gap-2">
+        {place.typeLabel && <p className="text-sm font-medium text-sky-700">{place.typeLabel}</p>}
+        {place.distanceKm != null && (
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+            {place.distanceKm.toLocaleString("vi-VN", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} km
+          </span>
+        )}
+      </div>
       {place.area && <p className="flex items-start gap-1.5 text-sm text-slate-600"><MapPin aria-hidden="true" className="w-4 h-4 shrink-0 mt-0.5" /><span>{place.area}</span></p>}
       {place.address && <p className="text-sm leading-relaxed text-slate-600">{place.address}</p>}
       {(place.rating != null || place.reviewCount != null) && (

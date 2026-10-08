@@ -29,6 +29,7 @@ export const ENABLED_DISCOVERY_SECTIONS: readonly DiscoverySection[] = ["EAT", "
 
 /** Identifier of the ordering rule; bump when the rule changes so clients/tests can tell. */
 export const DISCOVERY_RANKING_RULE = "provisional-v1" as const;
+export const DISCOVERY_NEARBY_RANKING_RULE = "nearby-provisional-v1" as const;
 
 export type TagDomain = "EAT" | "CAFE" | "GO" | "STAY" | "COMMON";
 
@@ -70,9 +71,21 @@ export interface DiscoveryPlace {
   description: string | null;
   /** true when the requested-locale translation was missing and a fallback was used. */
   translationFallback: boolean;
+  /** Approximate straight-line distance in km (only present in nearby mode). Formatted to 1 decimal place. */
+  distanceKm?: number;
+  /** Whether the place is featured. Used for deterministic tie-breaking. */
+  featured?: boolean;
 }
 
 export type PreferenceMappingKind = "general" | "tags";
+
+export interface DiscoveryMeta {
+  limit: typeof DISCOVERY_MAX_RESULTS;
+  ranking: typeof DISCOVERY_RANKING_RULE | typeof DISCOVERY_NEARBY_RANKING_RULE;
+  source: "neon-postgres";
+  radiusKm?: 1 | 3 | 5;
+  nearby?: boolean;
+}
 
 export interface DiscoveryResponseData {
   intent: DiscoverySection;
@@ -82,11 +95,7 @@ export interface DiscoveryResponseData {
   preferenceMapping: PreferenceMappingKind | null;
   count: number;
   places: DiscoveryPlace[];
-  meta: {
-    limit: typeof DISCOVERY_MAX_RESULTS;
-    ranking: typeof DISCOVERY_RANKING_RULE;
-    source: "neon-postgres";
-  };
+  meta: DiscoveryMeta;
 }
 
 export type DiscoveryErrorCode =
@@ -129,6 +138,7 @@ export interface DiscoveryQuery {
   intent: DiscoverySection;
   locale: DiscoveryLocale;
   preference: string | null;
+  location: { lat: number; lng: number } | null;
 }
 
 export type ParseResult =
@@ -141,9 +151,10 @@ const PREFERENCE_PATTERN = /^[a-z][a-z0-9_]{0,31}$/;
  * Strict query validation. Values must match exactly (no silent coercion): unknown intents,
  * unsupported locales, malformed/duplicated parameters are rejected with the field name.
  * `locale` omitted -> default `vi` (documented, explicit); `preference` omitted -> null.
+ * `lat` and `lng` are optional but must be provided together, finite, and in valid ranges.
  */
 export function parseDiscoveryQuery(params: URLSearchParams): ParseResult {
-  for (const key of ["intent", "locale", "preference"]) {
+  for (const key of ["intent", "locale", "preference", "lat", "lng"]) {
     if (params.getAll(key).length > 1) {
       return { ok: false, field: key, message: `Parameter "${key}" must appear at most once.` };
     }
@@ -175,5 +186,29 @@ export function parseDiscoveryQuery(params: URLSearchParams): ParseResult {
     preference = rawPreference;
   }
 
-  return { ok: true, query: { intent, locale, preference } };
+  const rawLat = params.get("lat");
+  const rawLng = params.get("lng");
+  let location: { lat: number; lng: number } | null = null;
+
+  const hasLat = rawLat !== null && rawLat !== "";
+  const hasLng = rawLng !== null && rawLng !== "";
+
+  if (hasLat !== hasLng) {
+    const missingField = hasLat ? "lng" : "lat";
+    return { ok: false, field: missingField, message: 'Both "lat" and "lng" must be provided together for nearby discovery.' };
+  }
+
+  if (hasLat && hasLng) {
+    const latNum = Number(rawLat);
+    if (!Number.isFinite(latNum) || latNum < -90 || latNum > 90) {
+      return { ok: false, field: "lat", message: 'Parameter "lat" must be a valid number between -90 and 90.' };
+    }
+    const lngNum = Number(rawLng);
+    if (!Number.isFinite(lngNum) || lngNum < -180 || lngNum > 180) {
+      return { ok: false, field: "lng", message: 'Parameter "lng" must be a valid number between -180 and 180.' };
+    }
+    location = { lat: latNum, lng: lngNum };
+  }
+
+  return { ok: true, query: { intent, locale, preference, location } };
 }

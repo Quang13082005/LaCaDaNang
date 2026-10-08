@@ -16,7 +16,7 @@ M4-A | Real data mapping audit | DONE | Completed 2026-10-07 | Explicit user aut
 M4-B | GO & STAY Neon discovery | DONE | Current agent | M4-A + user authorization | STOP for review | lint/typecheck/169 tests/build/live smoke PASS; M4B_VERIFICATION.md
 M4-C | CAFE UI & mapping | NOT_STARTED | Unassigned | Explicit user authorization | Product decision on CAFE UI & mapping | Await scope authorization
 M5-A | GPS / Nearby readiness audit | DONE | Current agent | User authorization; M4-B | STOP for review; audit report created | docs/M5A_NEARBY_READINESS_AUDIT.md
-M5-B | GPS + nearby/server ranking runtime | NOT_STARTED | Unassigned | User authorization; M5-A | Follow M5-A proposal; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
+M5-B | GPS + nearby/server ranking runtime | DONE | Current agent | User authorization; M5-A | STOP for review | lint/typecheck/183 tests/build/live smoke PASS; M5B_VERIFICATION.md
 M6 | Broader card review | NOT_STARTED | Unassigned | User authorization | Basic shared no-image card completed in M3-B; do not recreate image removal; review remaining milestone scope only | M3B_VERIFICATION.md
 M7 | Stable one-thumb UX | NOT_STARTED | Unassigned | User authorization; M6 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
 M8 | VI/EN/KO runtime + Auto | NOT_STARTED | Unassigned | User authorization; M7 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
@@ -52,5 +52,10 @@ Report: [M5A_NEARBY_READINESS_AUDIT](M5A_NEARBY_READINESS_AUDIT.md).
 - Nearby ranking locked: `distanceRawKm ASC, featured DESC, review_count DESC NULLS LAST, rating DESC NULLS LAST, id ASC`.
 - Empty state: Truthful 0–2 results; 0 results shows `"Không tìm thấy địa điểm phù hợp trong 5 km."` + CTA `"Xem trên toàn Đà Nẵng"`.
 - Privacy contract: No app logging, no analytics, no DB/storage persistence, no URL GPS leakage, no coordinate echo in API response.
-- STOP for user review before M5-B implementation. Await explicit authorization to implement M5-B.
+- Audit & contract lock complete.
+
+## M5-B Nearby Discovery Completed — 2026-10-08
+Report: [M5B_VERIFICATION](M5B_VERIFICATION.md).
+M5-B implemented Nearby Discovery for EAT, GO, and STAY intents connected to live Neon PostgreSQL data; dual-path API routing with coupled lat/lng validation; candidate retrieval bypassing pre-geo LIMIT 3; pure TS geo engine with strict 1 -> 3 -> 5 km radius expansion, full float precision, tie-breaking, 1-decimal display formatting; user-driven Geolocation UX with >=44px "Gần tôi" action, 8s timeout, accuracy <= 1000m guard, fallback messages, retry action, empty 5 km state with CTA "Xem trên toàn Đà Nẵng"; PlaceCard distance badge; citywide discovery regression 100% preserved. All validation (lint PASS, typecheck PASS, 183/183 non-mutating tests PASS, build PASS, live Neon API smoke PASS across all test scenarios, responsive checks 320–768px PASS) ALL PASS.
+- **Reconciliation summary**: M5-B DONE; selective local commit authorized; STOP before M6.
 
