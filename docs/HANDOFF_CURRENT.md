@@ -364,3 +364,23 @@ Report: [M4A_REAL_MAPPING_AUDIT](M4A_REAL_MAPPING_AUDIT.md). HEAD e39c7de65fc413
 7. **EXACT NEXT STEP**:
    - STOP — WAITING FOR OWNER REVIEW.
 
+## M9-A Notifications Readiness Audit Handoff — 2026-10-08
+1. **Objective**: Conduct comprehensive product and technical readiness audit for "Nhắc tôi trước khi đi" (visit reminder) without modifying runtime code, database schemas, or package dependencies.
+2. **Status**: COMPLETED & VERIFIED.
+3. **Core Findings & Contracts**:
+   - `docs/M9A_NOTIFICATIONS_READINESS_AUDIT.md`: Complete audit document created.
+   - Current Foundation: Zero notification API code, zero service workers, zero PWA manifests, zero push packages, zero reminder DB tables, zero Cloudflare crons.
+   - Product Gap Solved: Venue database stores zero schedule/operating time data. Explicit departure time selection UI (quick presets `+30m`, `+1h`, `+2h`, evening preset, custom time) is strictly required to establish the departure timestamp.
+   - Browser Realities: Mobile Safari on iOS does not support background Web Push or Notification API unless installed as a PWA (iOS 16.4+). Mobile browsers kill background tab timers when suspended.
+   - Recommended MVP Scope: Hybrid Option 3 (Native Calendar export `.ics` / Google Calendar with alarm `-PT30M` + in-app `localStorage` active reminder badge). Requires zero Cloudflare crons and zero Neon DB bloat.
+   - Timezone: `Asia/Ho_Chi_Minh` (UTC+07:00, no DST) for user calculations, UTC ISO strings for storage.
+   - Analytics: Preserves verified 11-event M8 schema intact; extension telemetry proposed for future review.
+4. **DO NOT REDO / DO NOT TOUCH**:
+   - Do not implement M9-B notification runtime without explicit authorization.
+   - Do not alter `src/` or `tests/`.
+   - Do not mutate the 6 content tables or `analytics_events`.
+   - Do not alter the 11 canonical M8 analytics events.
+   - Do not push to remote.
+5. **EXACT NEXT STEP**:
+   - STOP — WAITING FOR OWNER REVIEW.
+

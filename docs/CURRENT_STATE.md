@@ -226,3 +226,15 @@ Report: [M8B1_CLOUDFLARE_ENV_VERIFICATION](M8B1_CLOUDFLARE_ENV_VERIFICATION.md).
 - Validation: Lint PASS (0 errors), Typecheck PASS, Vitest PASS (262/262), Build PASS.
 - Milestone Status: M8-B Blocker Resolved. M8-B READY FOR FINAL VERIFICATION: YES.
 
+## M9-A Notifications & Reminder Readiness Audit Completed — 2026-10-08
+Report: [M9A_NOTIFICATIONS_READINESS_AUDIT](M9A_NOTIFICATIONS_READINESS_AUDIT.md).
+- Status: READ-ONLY AUDIT & ARCHITECTURE CONTRACT COMPLETE.
+- Existing Foundation: 0 notification API calls in `src/`, 0 service workers in `public/` or `src/`, 0 PWA manifests, 0 push packages in `package.json`, 0 reminder tables in Neon DB, 0 cron triggers in `wrangler.jsonc`.
+- Core Product Use Case: "Nhắc tôi trước khi đi" (opt-in reminder, 30-minute default lead time, no permission on initial load, no marketing spam).
+- Critical Data Gap Identified: Current discovery places possess zero schedule/operating time data. A minimal departure time selection UI (quick preset chips: `+30m`, `+1h`, `+2h`, evening preset, custom time) is strictly required before any reminder can be scheduled.
+- Platform Constraints: Regular iOS Safari tabs DO NOT support Notification API / Web Push without installation as a Home Screen PWA (iOS 16.4+). Mobile background timers terminate when tabs are suspended.
+- Recommended MVP Architecture for M9-B: Option 3 (Hybrid: One-tap Native Calendar export `.ics` / Google Calendar with alarm `-PT30M` + client-side `localStorage` active reminder badge). Delivers 100% reliable alarms on iOS/Android while closed, requires zero Cloudflare cron infrastructure, zero Neon DB bloat, and preserves privacy.
+- Analytics Safeguard: Verified 11-event M8 schema remains 100% intact; draft extension events proposed for separate future authorization.
+- Scope Boundaries: Zero modifications to `src/` or `tests/`; zero DB mutations; CAFE inactive; NOW sample timeline decoupled; no deploy.
+- Next Action: STOP for Owner review before any M9-B implementation.
+

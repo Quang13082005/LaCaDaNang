@@ -168,3 +168,12 @@ Real M3-B commit: `e39c7de65fc413f6561e0069642ba58f6bb95f0e`. Verified exact13 a
 124. **Deterministic Deployment Command Pathways:** Added `deploy:preview` script to `package.json` (`opennextjs-cloudflare build && opennextjs-cloudflare deploy --env preview`). Preserved default `deploy` script (`opennextjs-cloudflare build && opennextjs-cloudflare deploy`) for production.
 125. **Local Development & Test Ingest Isolation:** Normal localhost execution (`npm run dev`) and test execution (`vitest`) continue to enforce no-op client dispatchers to guarantee zero ingestion noise into Neon PostgreSQL.
 
+## M9-A Notifications Readiness Audit Decisions (2026-10-08)
+126. **Utility-Driven Notification Purpose:** Locked product use case strictly to explicit user-requested visit reminders ("Nhắc tôi trước khi đi"). Unsolicited marketing, retention blasts, and background spam are categorically prohibited.
+127. **Zero-Permission Initial Load Rule:** Notification permissions must never be requested on initial page load, landing, or intent navigation. Pre-prompt explanatory UI must precede browser permission requests.
+128. **Missing Departure Time UX Gate:** Acknowledged that venue database entities possess no schedule or operating time data. M9-B must provide a minimal time-selection bottom sheet (e.g., presets `+30m`, `+1h`, `+2h`, evening preset, custom time) to establish the departure timestamp.
+129. **NOW Static Itinerary Decoupling:** Reminders attach strictly to individual verified places from EAT, GO, and STAY results. The static NOW sample timeline is strictly decoupled and must not be altered into a live scheduler.
+130. **Mobile Platform Reality & iOS Safari PWA Constraint:** Acknowledged that standard iOS Safari tabs do not support Notification API or closed-tab Web Push without Home Screen PWA installation (iOS 16.4+). Recommended MVP architecture leverages native calendar (.ics) generation for 100% reliable alarms across all closed mobile devices.
+131. **Da Nang Timezone & UTC Storage:** All reminder scheduling calculations operate under `Asia/Ho_Chi_Minh` (UTC+07:00). Timestamps in memory/storage must use UTC ISO strings (`TIMESTAMPTZ`).
+132. **Preservation of 11 Canonical Analytics Events:** M8 analytics schema and vocabulary remain locked at 11 events. Future reminder analytics (e.g. `reminder_created`) are deferred to an explicit separate extension and not introduced in M9-A.
+

@@ -28,8 +28,8 @@ M8-A.1 | Analytics Contract Correction & Lock | DONE | Current agent | User auth
 M8-A.2 | Final Analytics Contract Patch | DONE | Current agent | User authorization; M8-A.1 | STOP for review; contracts locked | docs/M8A_ANALYTICS_READINESS_AUDIT.md & DECISIONS.md (106–112)
 M8-B | Analytics Runtime Implementation | DONE | Current agent | User authorization; M8-A.2 | STOP for review; verification report created | docs/M8B_VERIFICATION.md (34/34 tests PASS; 259 total PASS; live DB verified)
 M8-B.1 | Cloudflare Analytics Environment Fix | DONE | Current agent | Owner feedback; M8-B | STOP for review; verification report created | docs/M8B1_CLOUDFLARE_ENV_VERIFICATION.md (APP_ENV lock, wrangler envs, 262/262 tests PASS, live DB verified)
-M9 | Analytics runtime | NOT_STARTED | Unassigned | User authorization; M8 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
-M10 | Notification reminder MVP | NOT_STARTED | Unassigned | User authorization; M9 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
+M9-A | Notifications Readiness Audit | DONE | Current agent | User authorization; M8-B.1 | STOP for review; audit report created | docs/M9A_NOTIFICATIONS_READINESS_AUDIT.md
+M9-B | Notification reminder MVP | NOT_STARTED | Unassigned | User authorization; M9-A | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
 M11 | Time/location-aware NOW if supported | NOT_STARTED | Unassigned | User authorization; M10 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
 M12 | Full regression + responsive/preview | NOT_STARTED | Unassigned | User authorization; M11 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
 M13 | Release report; approval before release | NOT_STARTED | Unassigned | User authorization; M12 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
@@ -184,5 +184,17 @@ Report: [M8B1_CLOUDFLARE_ENV_VERIFICATION](M8B1_CLOUDFLARE_ENV_VERIFICATION.md).
 - Automated & Live Verification: Added unit tests in `tests/analytics.test.tsx` (14 suites, 262/262 PASS). Verified live preview event ingest against Neon: stored as `environment = 'preview'`, deleted cleanly (0 rows remaining). Content tables untouched at 3,079 rows.
 - Validation: Lint PASS (0 errors), Typecheck PASS, Vitest PASS (262/262), Build PASS.
 - M8-B Ready for Final Verification: YES.
+- Next action: STOP for Owner review.
+
+## M9-A Notifications Readiness Audit Completed — 2026-10-08
+Report: [M9A_NOTIFICATIONS_READINESS_AUDIT](M9A_NOTIFICATIONS_READINESS_AUDIT.md).
+- Status: READ-ONLY AUDIT & ARCHITECTURE CONTRACT COMPLETE.
+- Existing Foundation: 0 notification API calls in `src/`, 0 service workers, 0 PWA manifests, 0 push packages in `package.json`, 0 reminder tables in Neon DB, 0 cron triggers in `wrangler.jsonc`.
+- Core Use Case: "Nhắc tôi trước khi đi" (opt-in reminder, 30-minute lead time, zero cold prompt on load, zero marketing spam).
+- Missing Time Gap: Places in DB store no schedule/operating times. Explicit departure time selector (`+30m`, `+1h`, `+2h`, evening preset, custom time) is strictly required to establish the departure timestamp.
+- Mobile Platform Constraints: Regular iOS Safari tabs DO NOT support Notification API / Web Push without Home Screen PWA installation (iOS 16.4+). Inactive mobile browser tabs terminate client timers when suspended.
+- Recommended MVP Scope: Hybrid Option 3 (Native Calendar export `.ics` / Google Calendar with alarm `-PT30M` + in-app `localStorage` active reminder badge). Delivers 100% reliable alarms on iOS/Android while closed, requires zero Cloudflare crons, zero Neon DB bloat, and preserves privacy.
+- Analytics Safeguard: Verified 11-event M8 schema remains 100% intact; draft extension events proposed for separate future authorization.
+- Scope Boundaries: Zero modifications to `src/` or `tests/`; zero DB mutations; CAFE inactive; NOW sample timeline decoupled; no deploy.
 - Next action: STOP for Owner review.
 
