@@ -23,6 +23,8 @@ M7-A | i18n Runtime Readiness Audit | DONE | Current agent | User authorization;
 M7-A.1 | i18n UX / Runtime Contract Lock | DONE | Current agent | User authorization; M7-A | STOP for review; contract locked | docs/DECISIONS.md (68–79)
 M7-B | VI/EN/KO runtime + Auto & Switcher | DONE | Current agent | User authorization; M7-A.1 | STOP for review | lint/typecheck/221 tests/build/live browser smoke PASS; M7B_VERIFICATION.md
 M7-C | Intent Visuals & Language Placement Hotfix | DONE | Current agent | Owner feedback; M7-B | STOP for review | lint/typecheck/225 tests/build/live smoke PASS; M7C_VERIFICATION.md
+M8-A | Analytics Readiness Audit & Contract | DONE | Current agent | User authorization; M7-C | STOP for review; audit report created | docs/M8A_ANALYTICS_READINESS_AUDIT.md
+M8-B | Analytics Runtime Implementation | NOT_STARTED | Unassigned | User authorization; M8-A | Follow M8-A contract; await explicit scope | Layer tests + lint/typecheck/build
 M9 | Analytics runtime | NOT_STARTED | Unassigned | User authorization; M8 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
 M10 | Notification reminder MVP | NOT_STARTED | Unassigned | User authorization; M9 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
 M11 | Time/location-aware NOW if supported | NOT_STARTED | Unassigned | User authorization; M10 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
@@ -115,3 +117,14 @@ Report: [M7C_VERIFICATION](M7C_VERIFICATION.md).
 - Next.js "N" Dev Indicator: Clarified as Next.js built-in development tools overlay (`nextjs-portal`), rendered only in `NODE_ENV === "development"` and automatically omitted in production builds. Preserved per non-negotiable instruction.
 - Validation: 13/13 test suites, 225/225 tests PASS (`vitest`). Lint PASS (`0 warnings, 0 errors`). Typecheck PASS (`tsc --noEmit`). Build PASS (production build 4.9s). Dataset clean.
 - Reconciliation summary: M7-C DONE; selective local commit authorized; STOP for user review.
+
+## M8-A Analytics Readiness Audit Completed — 2026-10-08
+Report: [M8A_ANALYTICS_READINESS_AUDIT](M8A_ANALYTICS_READINESS_AUDIT.md).
+- Status: AUDIT & CONTRACT DESIGN ONLY — COMPLETED. Zero runtime modifications, zero database mutations, zero package installations.
+- Existing Foundation: 0 lines of analytics runtime in `src/`, 0 tracking dependencies in `package.json`, 0 analytics tables in Neon PostgreSQL.
+- Product Questions: Defined 12 core product metrics (intent popularity, preference demand, completion rate, tap efficiency $\le 3$ taps, Nearby adoption/radius/zero-result rate, fallback adoption, top Maps places, position CTR, language distribution, auto vs manual mode).
+- Event Vocabulary: 11 minimal high-signal events (`session_started`, `home_viewed`, `intent_selected`, `preference_selected`, `results_shown`, `nearby_requested`, `nearby_resolved`, `nearby_failed`, `citywide_selected`, `maps_clicked`, `language_changed`).
+- Strict Privacy & GPS Contract: Strict prohibition against raw latitude, longitude, raw accuracy in meters, IP addresses, PII, fingerprinting, and URL coordinate leakage. Only categorized radius (1, 3, 5 km) and boolean `is_nearby` permitted.
+- Session Identity: Ephemeral session ID in `sessionStorage` (auto-cleared on tab close). Zero persistent device fingerprinting.
+- Recommended Provider: Option A (Internal Neon Analytics via Next.js `/api/analytics` route) recommended for MVP ($0 cost, 100% first-party sovereign, ad-blocker immune, custom SQL funnel queries).
+- Reconciliation summary: M8-A DONE; selective docs-only commit authorized; STOP for user review before M8-B.

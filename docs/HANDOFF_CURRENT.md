@@ -240,3 +240,20 @@ Report: [M4A_REAL_MAPPING_AUDIT](M4A_REAL_MAPPING_AUDIT.md). HEAD e39c7de65fc413
    - Do not push to remote.
 6. **EXACT NEXT STEP**:
    - STOP for Owner review. Await explicit instructions.
+
+## M8-A Analytics Readiness Audit Handoff — 2026-10-08
+1. **Objective**: Conduct comprehensive analytics readiness audit, design high-signal 11-event vocabulary, define strict privacy/GPS/session contracts, evaluate storage options, and formulate test plan for M8-B without modifying runtime code or database.
+2. **Status**: AUDIT & CONTRACT DESIGN COMPLETE — ALL PASS.
+3. **Core Deliverables**:
+   - `docs/M8A_ANALYTICS_READINESS_AUDIT.md`: Complete audit and specification report.
+   - `docs/DECISIONS.md`: Decisions 88–95 locked.
+   - 11-event minimal vocabulary (`session_started`, `home_viewed`, `intent_selected`, `preference_selected`, `results_shown`, `nearby_requested`, `nearby_resolved`, `nearby_failed`, `citywide_selected`, `maps_clicked`, `language_changed`).
+   - Strict zero-raw-GPS, zero-PII, ephemeral `sessionStorage` identity contract.
+   - Recommended Option A (First-Party Neon Analytics via `/api/analytics` route).
+4. **DO NOT REDO / DO NOT TOUCH**:
+   - Do not implement runtime analytics code until M8-B is explicitly authorized.
+   - Do not install third-party tracking packages.
+   - Do not mutate Neon database schema in M8-A.
+   - Do not collect raw GPS coordinates, IP addresses, or personal data.
+5. **EXACT NEXT STEP**:
+   - STOP for Owner review. Await explicit authorization before implementing M8-B.
