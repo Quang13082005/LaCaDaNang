@@ -21,6 +21,7 @@ export default function HomePage() {
 
   const resultsRef = useRef<HTMLDivElement>(null);
   const selectionRef = useRef<HTMLDivElement>(null);
+  const prevPreferenceRef = useRef<string | null>(null);
 
   const handleSelectIntent = (intent: "EAT" | "GO" | "NOW" | "STAY") => {
     if (selectedIntent === intent) {
@@ -41,15 +42,29 @@ export default function HomePage() {
     setSelectedPreference(null);
   };
 
-  // Orient the user after the new state has mounted, including reset and Home.
+  // Orient user only when results are mounted or reset.
+  // Never jump/auto-scroll on intent click to prevent moving controls under the user's thumb.
   useEffect(() => {
-    const target = selectedPreference ? resultsRef.current : selectionRef.current;
-    const top = selectedIntent && target
-      ? Math.max(0, target.getBoundingClientRect().top + window.scrollY - 20)
-      : 0;
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    window.scrollTo({ top, behavior: reduceMotion ? "auto" : "smooth" });
-  }, [selectedIntent, selectedPreference]);
+    const prev = prevPreferenceRef.current;
+    prevPreferenceRef.current = selectedPreference;
+
+    // Do not scroll if preference did not change (e.g. user selected or toggled intent)
+    if (prev === null && selectedPreference === null) {
+      return;
+    }
+
+    if (selectedPreference !== null) {
+      const target = resultsRef.current;
+      const top = target
+        ? Math.max(0, target.getBoundingClientRect().top + window.scrollY - 20)
+        : 0;
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.scrollTo({ top, behavior: reduceMotion ? "auto" : "smooth" });
+    } else if (selectedIntent !== null) {
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+    }
+  }, [selectedPreference, selectedIntent]);
 
   const currentItinerary =
     selectedIntent === "NOW" && selectedPreference
@@ -72,18 +87,20 @@ export default function HomePage() {
     <div className="min-h-screen bg-slate-50/50 flex flex-col justify-between">
       {/* Centered Mobile-First & Desktop-Balanced Container */}
       <main className="w-full max-w-lg md:max-w-4xl mx-auto px-4 sm:px-6 py-5 sm:py-8 flex-1">
-        {/* Hero Section */}
-        {selectedIntent === null && <Hero />}
+        {/* Hero Section: stays stable in selection state to prevent ~180px upward layout shift */}
+        {selectedPreference === null && <Hero />}
 
-        {/* 4 Primary Intents Grid & Expanding Preference Panels */}
-        {selectedPreference === null && <div ref={selectionRef} className="mt-2">
-          <IntentGrid
-            selectedIntent={selectedIntent}
-            selectedPreference={selectedPreference}
-            onSelectIntent={handleSelectIntent}
-            onSelectPreference={handleSelectPreference}
-          />
-        </div>}
+        {/* 4 Primary Intents Grid & Expanding In-Place Preference Panels */}
+        {selectedPreference === null && (
+          <div ref={selectionRef} className="mt-2">
+            <IntentGrid
+              selectedIntent={selectedIntent}
+              selectedPreference={selectedPreference}
+              onSelectIntent={handleSelectIntent}
+              onSelectPreference={handleSelectPreference}
+            />
+          </div>
+        )}
 
         {/* Results Anchor */}
         <div ref={resultsRef}>

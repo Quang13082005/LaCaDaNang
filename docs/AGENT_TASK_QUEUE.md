@@ -18,7 +18,7 @@ M4-C | CAFE UI & mapping | NOT_STARTED | Unassigned | Explicit user authorizatio
 M5-A | GPS / Nearby readiness audit | DONE | Current agent | User authorization; M4-B | STOP for review; audit report created | docs/M5A_NEARBY_READINESS_AUDIT.md
 M5-B | GPS + nearby/server ranking runtime | DONE | Current agent | User authorization; M5-A | STOP for review | lint/typecheck/183 tests/build/live smoke PASS; M5B_VERIFICATION.md
 M6-A | Mentor Mobile UX / One-Hand Audit | DONE | Current agent | M5-B | STOP for review | Audit report created; M6A_MENTOR_ONE_HAND_UX_AUDIT.md
-M6-B | One-Hand Ergonomics & Bottom Action Bar | NOT_STARTED | Unassigned | User authorization; M6-A | Follow M6-A P0 proposals | Await scope authorization
+M6-B | One-Hand Ergonomics & Bottom Action Bar | DONE | Current agent | User authorization; M6-A | STOP for review | lint/typecheck/196 tests/build/live visual smoke PASS; M6B_VERIFICATION.md
 M7 | Stable one-thumb UX | NOT_STARTED | Unassigned | User authorization; M6 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
 M8 | VI/EN/KO runtime + Auto | NOT_STARTED | Unassigned | User authorization; M7 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
 M9 | Analytics runtime | NOT_STARTED | Unassigned | User authorization; M8 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
@@ -67,3 +67,14 @@ Report: [M6A_MENTOR_ONE_HAND_UX_AUDIT](M6A_MENTOR_ONE_HAND_UX_AUDIT.md).
 - Proposed M6-B repairs: Sticky bottom action bar for primary actions, intent position stabilization, safe-area padding. Zero source modifications in M6-A.
 - STOP for user review before M6-B.
 
+## M6-B One-Hand Mobile UX Implementation Completed — 2026-10-08
+Report: [M6B_VERIFICATION](M6B_VERIFICATION.md).
+- Intent position stability: Intent cards (`NOW`, `EAT`, `GO`, `STAY`) permanently maintain DOM order. No reordering on tap; tapping STAY keeps STAY at slot 4.
+- In-place accordion: `PreferencePanel` expands directly beneath the selected intent card in-place (`#preference-panel-active`).
+- Hero stability: `<Hero />` remains mounted throughout intent selection (`selectedPreference === null`), eliminating the 180px upward layout snap. Jumpy auto-scroll on intent tap eliminated.
+- Persistent mobile action bar: Created `BottomActionBar.tsx` fixed at bottom (`fixed bottom-0`), safe-area aware (`env(safe-area-inset-bottom)`), $\ge 44\text{px}$ touch targets.
+- State-aware actions: Citywide ("Gần tôi" + "Đổi lựa chọn"), Nearby active ("Toàn Đà Nẵng" + "Đổi lựa chọn"), GPS error/fallback ("Thử lại" + "Đổi lựa chọn"), Nearby empty ("Xem toàn Đà Nẵng" + "Đổi lựa chọn"), Requesting ("Đang định vị…" disabled).
+- Zero duplicate controls: Removed duplicate top navigation buttons in `ResultList.tsx`.
+- Content clearance: Added `pb-28 sm:pb-32 pb-[calc(7rem+env(safe-area-inset-bottom,0px))]` ensuring final card and Google Maps CTA are 100% visible and unobscured.
+- All validation (lint PASS, typecheck PASS, 196/196 tests PASS across 11 suites including 13 new one-hand UX tests, build PASS in 4.4s, browser visual verification 320–768px PASS) ALL PASS. Scroll-back-to-control = 0.
+- Reconciliation summary: M6-B DONE; selective local commit authorized; STOP for user review.

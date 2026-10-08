@@ -172,15 +172,17 @@ describe("UX Hardening <= 3-Tap Flow & Truthful Recommendations", () => {
   it("shows only the current decision and returns to Home when the active intent closes", () => {
     render(<HomePage />);
     fireEvent.click(screen.getByText("ĂN GÌ?"));
-    expect(screen.queryByRole("heading", { name: "LA CÀ ĐÀ NẴNG" })).not.toBeInTheDocument();
+    // M6-B Hero stability: Hero stays mounted during intent selection to prevent layout shift
+    expect(screen.getByRole("heading", { name: "LA CÀ ĐÀ NẴNG" })).toBeInTheDocument();
     fireEvent.click(screen.getByText("Hẹn hò"));
+    expect(screen.queryByRole("heading", { name: "LA CÀ ĐÀ NẴNG" })).not.toBeInTheDocument();
     expect(screen.queryByRole("region", { name: "Mục đích khám phá" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Hẹn hò" })).not.toBeInTheDocument();
     expect(screen.queryByText("Phù hợp vì:")).not.toBeInTheDocument();
     expect(screen.queryByText("4.9")).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Đổi lựa chọn" }));
     expect(screen.getByRole("button", { name: "Hẹn hò" })).toBeInTheDocument();
-    expect(screen.queryByRole("heading", { name: "LA CÀ ĐÀ NẴNG" })).not.toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "LA CÀ ĐÀ NẴNG" })).toBeInTheDocument();
     fireEvent.click(screen.getByText("ĂN GÌ?"));
     expect(screen.getByRole("heading", { name: "LA CÀ ĐÀ NẴNG" })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Hẹn hò" })).not.toBeInTheDocument();

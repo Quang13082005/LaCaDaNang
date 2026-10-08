@@ -21,54 +21,60 @@ export const IntentGrid: React.FC<IntentGridProps> = ({
     (i) => i.id !== "NOW"
   ) as IntentConfig[];
 
-
-  if (selectedIntent) {
-    const activeIntent = PRIMARY_INTENTS.find((intent) => intent.id === selectedIntent)!;
-    return (
-      <section className="w-full space-y-3" aria-label="Mục đích khám phá">
-        <IntentCard
-          intent={activeIntent}
-          isSelected
-          onClick={() => onSelectIntent(activeIntent.id)}
-          layoutMode="compact"
-        />
-        <div id="preference-panel-active">
-          <PreferencePanel
-            intentId={selectedIntent}
-            selectedPreferenceId={selectedPreference}
-            onSelectPreference={onSelectPreference}
-          />
-        </div>
-        {PRIMARY_INTENTS.filter((intent) => intent.id !== selectedIntent).map((intent) => (
-          <IntentCard
-            key={intent.id}
-            intent={intent}
-            isSelected={false}
-            onClick={() => onSelectIntent(intent.id)}
-            layoutMode="compact"
-          />
-        ))}
-      </section>
-    );
-  }
-
   return (
     <section className="w-full space-y-3" aria-label="Mục đích khám phá">
-      <IntentCard
-        intent={nowIntent}
-        isSelected={false}
-        onClick={() => onSelectIntent("NOW")}
-        layoutMode="featured"
-      />
+      {/* 1. NOW Intent Card (Featured) */}
+      <div className="space-y-3">
+        <IntentCard
+          intent={nowIntent}
+          isSelected={selectedIntent === "NOW"}
+          onClick={() => onSelectIntent("NOW")}
+          layoutMode="featured"
+        />
+        {selectedIntent === "NOW" && (
+          <div id="preference-panel-active">
+            <PreferencePanel
+              intentId="NOW"
+              selectedPreferenceId={selectedPreference}
+              onSelectPreference={onSelectPreference}
+            />
+          </div>
+        )}
+      </div>
+
+      {/* 2. Standard Discovery Intents (EAT, GO, STAY) with stable in-place Accordion */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
-        {standardIntents.map((intent) => (
-          <IntentCard
-            key={intent.id}
-            intent={intent}
-            isSelected={false}
-            onClick={() => onSelectIntent(intent.id)}
-          />
-        ))}
+        {standardIntents.map((intent, index) => {
+          const isSelected = selectedIntent === intent.id;
+          const desktopOrderClass =
+            index === 0 ? "md:order-1" : index === 1 ? "md:order-2" : "md:order-3";
+
+          return (
+            <React.Fragment key={intent.id}>
+              <div className={`w-full ${desktopOrderClass}`}>
+                <IntentCard
+                  intent={intent}
+                  isSelected={isSelected}
+                  onClick={() => onSelectIntent(intent.id)}
+                />
+              </div>
+
+              {/* In-place Accordion: expands directly below selected intent card */}
+              {isSelected && (
+                <div
+                  id="preference-panel-active"
+                  className="col-span-1 md:col-span-3 md:order-4 w-full"
+                >
+                  <PreferencePanel
+                    intentId={intent.id}
+                    selectedPreferenceId={selectedPreference}
+                    onSelectPreference={onSelectPreference}
+                  />
+                </div>
+              )}
+            </React.Fragment>
+          );
+        })}
       </div>
     </section>
   );

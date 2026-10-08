@@ -329,10 +329,10 @@ describe("Nearby Discovery Frontend UX", () => {
 
     // Empty state message within 5km appears
     await screen.findByText("Không tìm thấy địa điểm phù hợp trong 5 km.");
-    const cta = screen.getByRole("button", { name: "Xem trên toàn Đà Nẵng" });
+    const cta = screen.getByRole("button", { name: /Xem.*toàn Đà Nẵng/ });
     expect(cta).toBeInTheDocument();
 
-    // Click CTA "Xem trên toàn Đà Nẵng"
+    // Click CTA "Xem toàn Đà Nẵng"
     fireEvent.click(cta);
 
     // Citywide results return

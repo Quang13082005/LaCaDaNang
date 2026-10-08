@@ -68,3 +68,16 @@ Report: [M6A_MENTOR_ONE_HAND_UX_AUDIT](M6A_MENTOR_ONE_HAND_UX_AUDIT.md).
 - Touch targets $\ge 44\text{px}$, target spacing $\ge 8\text{px}$, and no-clipping text layout: PASS.
 - M6-B proposal prepared: persistent bottom action bar + stable in-place intent expansion.
 - Zero source/test modifications. STOP for user review before M6-B.
+
+## M6-B One-Hand Mobile UX Implementation Completed — 2026-10-08
+Report: [M6B_VERIFICATION](M6B_VERIFICATION.md).
+- One-hand ergonomics verdict: **PASS**.
+- Intent position stability: Intent cards (`NOW`, `EAT`, `GO`, `STAY`) permanently maintain DOM and visual order. No reordering on tap; tapping STAY keeps STAY at slot 4.
+- In-place accordion: `PreferencePanel` expands directly below the selected intent card in-place (`#preference-panel-active`).
+- Hero stability: `<Hero />` remains mounted throughout intent selection (`selectedPreference === null`), eliminating the 180px upward layout snap. Jumpy auto-scroll on intent tap eliminated.
+- Persistent mobile action bar: Created `BottomActionBar.tsx` fixed at bottom (`fixed bottom-0`), safe-area aware (`env(safe-area-inset-bottom)`), $\ge 44\text{px}$ touch targets.
+- State-aware actions: Citywide ("Gần tôi" + "Đổi lựa chọn"), Nearby active ("Toàn Đà Nẵng" + "Đổi lựa chọn"), GPS error/fallback ("Thử lại" + "Đổi lựa chọn"), Nearby empty ("Xem toàn Đà Nẵng" + "Đổi lựa chọn"), Requesting ("Đang định vị…" disabled).
+- Zero duplicate controls: Removed duplicate top navigation buttons in `ResultList.tsx`.
+- Content clearance: Added `pb-28 sm:pb-32 pb-[calc(7rem+env(safe-area-inset-bottom,0px))]` ensuring final card and Google Maps CTA are 100% visible and unobscured.
+- Validation: Lint PASS (`0 warnings, 0 errors`), typecheck PASS (`tsc --noEmit` code 0), 196/196 tests PASS across 11 suites (including 13 new one-hand UX tests in `tests/one-hand-ux.test.tsx`), build PASS (Next.js 15.5.27 compiled in 4.4s), browser visual verification across 320, 390, 393, 430, 768px PASS. Scroll-back-to-control = 0.
+- Reconciliation summary: M6-B DONE; selective local commit authorized; STOP for user review.

@@ -131,3 +131,30 @@ Report: [M4A_REAL_MAPPING_AUDIT](M4A_REAL_MAPPING_AUDIT.md). HEAD e39c7de65fc413
    - Do not modify application source or tests until M6-B is explicitly authorized.
 5. **EXACT NEXT STEP**:
    - STOP for user review. Await explicit authorization to implement M6-B (One-Hand Ergonomics & Bottom Action Bar).
+
+## M6-B Mobile One-Hand UX Implementation Handoff — 2026-10-08
+1. **Objective**: Implement one-hand mobile UX, stable intent positioning, in-place accordion expansion, persistent fixed BottomActionBar, zero duplicate top controls, and adequate content clearance.
+2. **Git**: Branch `phase-2a-deploy`. Selective local commit authorized: `feat: improve one-hand mobile discovery UX`. No push to remote.
+3. **Completed**:
+   - `src/components/results/BottomActionBar.tsx`: Fixed bottom action bar, safe area padding, primary state-aware actions ("Gần tôi", "Toàn Đà Nẵng", "Thử lại", "Xem toàn Đà Nẵng", "Đang định vị…"), secondary action "Đổi lựa chọn", min-h-[44px].
+   - `src/components/results/ResultList.tsx`: Removed duplicate top header buttons; integrated `BottomActionBar`; removed top duplicate inline retry/CTA buttons; added bottom content clearance `pb-28 sm:pb-32 pb-[calc(7rem+env(safe-area-inset-bottom,0px))]`.
+   - `src/components/home/IntentGrid.tsx`: Completely removed intent card reordering; DOM order strictly preserved as `[NOW, EAT, GO, STAY]`; in-place accordion expands directly below the selected intent card (`#preference-panel-active`).
+   - `src/app/page.tsx`: Hero remains mounted during intent selection state (`{selectedPreference === null && <Hero />}`); jumpy auto-scroll on intent click suppressed.
+   - `tests/one-hand-ux.test.tsx`: 13 new unit/integration tests for position stability, in-place accordion, BottomActionBar state machine, zero top controls.
+4. **Validation Evidence**:
+   - Lint: PASS (`✔ No ESLint warnings or errors`).
+   - Typecheck: PASS (`tsc --noEmit` code 0).
+   - Tests: 196/196 tests PASS across 11 suites.
+   - Build: PASS (Next.js 15.5.27 compiled in 4.4s, 0 errors).
+   - Live visual browser verification: Tested viewports 320x640, 390x844, 393x852, 430x932, 768x1024.
+   - Rendered bounds at 390x844: Hero at $y=44\text{px}$; STAY card at $y=570\text{px}$ before and after tap; preference chips at $y=645\text{px}-745\text{px}$; BottomActionBar at $y=776\text{px}-844\text{px}$; Maps CTA at $y=980\text{px}-1030\text{px}$ fully visible with $112\text{px}$ clearance.
+   - Scroll-back-to-control = 0.
+5. **DO NOT REDO**:
+   - Do not reorder intent cards.
+   - Do not duplicate bottom controls back to header.
+   - Do not modify database or re-import.
+   - Do not push to remote.
+6. **EXACT NEXT STEP**:
+   - STOP for user review. Await explicit authorization before proceeding to any subsequent milestone.
+7. **Reconciliation status**:
+   - M6-B DONE; selective local commit authorized; STOP.
