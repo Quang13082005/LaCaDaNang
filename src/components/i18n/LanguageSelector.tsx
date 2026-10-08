@@ -38,13 +38,8 @@ export const LanguageSelector: React.FC<{ className?: string }> = ({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen]);
 
-  const currentDisplayName = !isManual
-    ? `${t("language.auto")} (${locale.toUpperCase()})`
-    : locale === "vi"
-    ? "Tiếng Việt"
-    : locale === "en"
-    ? "English"
-    : "한국어";
+  const currentDisplayName =
+    locale === "vi" ? "Tiếng Việt" : locale === "en" ? "English" : "한국어";
 
   const handleSelect = (id: SupportedLocale | "auto") => {
     if (id === "auto") {

@@ -217,3 +217,26 @@ Report: [M4A_REAL_MAPPING_AUDIT](M4A_REAL_MAPPING_AUDIT.md). HEAD e39c7de65fc413
    - Do not reorder intent cards `[NOW, EAT, GO, STAY]`.
 5. **EXACT NEXT STEP**:
    - STOP for user review. Await explicit authorization before proceeding to next milestone (e.g. M8 Analytics/Notifications or further scope).
+
+## M7-C Intent Visuals & Language Placement Hotfix Handoff — 2026-10-08
+1. **Objective**: Resolve owner-reported issues on intent visuals (broken image / alt text leakage on EAT, GO, STAY) and reposition LanguageSelector into a clean horizontal footer utility row (`LA CÀ ĐÀ NẴNG` on left, `[ 🌐 Tiếng Việt ]` / `[ 🌐 English ]` / `[ 🌐 한국어 ]` on right). Clarify Next.js dev "N" indicator without code alteration.
+2. **Status**: IMPLEMENTATION & VERIFICATION COMPLETE — ALL PASS.
+3. **Changes**:
+   - `src/components/home/IntentCard.tsx`: Replaced fragile `<Image>` calls with native inline vector icons (`lucide-react`: `Utensils`, `Compass`, `Bed`, `Zap`), tailored gradient containers, and emoji badges.
+   - `src/components/i18n/LanguageSelector.tsx`: Render clean native language names on trigger (`Tiếng Việt` / `English` / `한국어`).
+   - `src/app/page.tsx`: Removed floating middle language button. Formatted footer into horizontal utility row with brand on left and LanguageSelector on right.
+   - `tests/m7c-visual-hotfix.test.tsx`: Added dedicated automated test suite (4 tests) verifying vector visuals, footer layout, label transitions, and touch target ergonomics.
+   - Next.js "N" indicator: Confirmed dev-only indicator, automatically omitted from production builds (`next build`). Preserved in dev.
+4. **Validation**:
+   - `npm run lint`: PASS (0 warnings, 0 errors).
+   - `npm run typecheck`: PASS (`tsc --noEmit` code 0).
+   - `npx vitest run --exclude "**/curation.test.ts"`: 13 suites, 225/225 tests PASS (100%).
+   - `npm run build`: PASS (compiled in 4.9s, static pages 5/5 generated).
+   - Curated dataset: Clean (`git diff HEAD -- src/data/curated/curated-places.json` empty).
+5. **DO NOT REDO / DO NOT TOUCH**:
+   - Do not reintroduce venue images or unoptimized SVG image calls in intent cards.
+   - Do not move LanguageSelector to the top header or inside discovery `BottomActionBar`.
+   - Do not hack/hide the Next.js dev indicator in app source code.
+   - Do not push to remote.
+6. **EXACT NEXT STEP**:
+   - STOP for Owner review. Await explicit instructions.

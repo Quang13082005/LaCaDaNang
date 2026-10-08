@@ -125,3 +125,13 @@ Report: [M7B_VERIFICATION](M7B_VERIFICATION.md).
 - Validation: 12/12 test suites, 221/221 tests PASS (`vitest`). Lint PASS (`0 warnings, 0 errors`). Typecheck PASS (`tsc --noEmit`). Build PASS (Next.js production build). Live browser verification across 320px, 390px, 430px PASS.
 - Curated dataset: Clean (`git diff HEAD -- src/data/curated/curated-places.json` empty).
 - Reconciliation summary: M7-B DONE; selective local commit authorized; STOP for user review before M8.
+
+## M7-C Intent Visuals & Language Placement Hotfix Completed — 2026-10-08
+Report: [M7C_VERIFICATION](M7C_VERIFICATION.md).
+- Status: HOTFIX IMPLEMENTATION & VERIFICATION COMPLETE — ALL PASS.
+- Issue 1 (Broken Intent Visuals): Replaced `<Image>` calls in `IntentCard.tsx` with native inline vector icons (`lucide-react`: `Utensils`, `Compass`, `Bed`, `Zap`), tailored gradient containers, and emoji badges. Completely eliminated broken images, external image dependencies, and alt text leakage. No venue images reintroduced.
+- Issue 2 (Footer Language Trigger Placement): Removed floating middle LanguageSelector on Home. Implemented horizontal footer utility row (`LA CÀ ĐÀ NẴNG` on the left, `[ 🌐 Tiếng Việt ]` / `[ 🌐 English ]` / `[ 🌐 한국어 ]` on the right) with $\ge 44\text{px}$ touch target, one-hand reachability, and responsive `flex-wrap` preventing horizontal overflow on 320px viewports.
+- Next.js "N" Dev Indicator: Clarified as Next.js built-in development tools overlay (`nextjs-portal`), rendered only in `NODE_ENV === "development"` and omitted in production builds. Kept intact per instructions.
+- Hard Regressions: EAT/GO/STAY live Neon discovery preserved; Nearby 1 $\rightarrow$ 3 $\rightarrow$ 5 km preserved; VI/EN/KO runtime i18n preserved; CAFE inactive (400); NOW sample timeline.
+- Validation: 13/13 test suites, 225/225 tests PASS (`vitest`). Lint PASS (`0 warnings, 0 errors`). Typecheck PASS (`tsc --noEmit`). Build PASS (production build 4.9s). Dataset clean.
+- Reconciliation summary: M7-C DONE; selective local commit authorized; STOP for user review.

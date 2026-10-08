@@ -108,10 +108,6 @@ export default function HomePage() {
               onSelectPreference={handleSelectPreference}
             />
 
-            {/* Reachable One-Hand Language Selector on Home */}
-            <div className="mt-8 mb-4 flex justify-center">
-              <LanguageSelector />
-            </div>
           </div>
         )}
 
@@ -141,13 +137,15 @@ export default function HomePage() {
         </div>
       </main>
 
-      {/* Brand Footer */}
-      <footer className="w-full border-t border-slate-200/80 bg-white py-6 px-4 text-center mt-8">
-        <div className="flex flex-col items-center gap-3">
-          {selectedPreference !== null && <LanguageSelector />}
-          <p className="text-xs font-semibold text-slate-700 tracking-wide">
+      {/* Footer utility row */}
+      <footer className="w-full border-t border-slate-200/80 bg-white py-4 px-4 sm:px-6 mt-8">
+        <div className="w-full max-w-lg md:max-w-4xl mx-auto flex items-center justify-between gap-3 flex-wrap">
+          <span className="text-xs sm:text-sm font-bold text-slate-800 tracking-wider uppercase select-none">
             LA CÀ ĐÀ NẴNG
-          </p>
+          </span>
+          <div className="shrink-0">
+            <LanguageSelector />
+          </div>
         </div>
       </footer>
     </div>

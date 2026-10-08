@@ -1,9 +1,31 @@
 import React from "react";
-import Image from "next/image";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Utensils, Compass, Bed, Zap } from "lucide-react";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 import type { MessageKey } from "@/lib/i18n/messages";
 import type { IntentConfig } from "@/data/demo-places";
+
+const INTENT_VISUALS = {
+  EAT: {
+    icon: Utensils,
+    bg: "bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100/70 border border-amber-200/80",
+    iconColor: "text-amber-600",
+  },
+  GO: {
+    icon: Compass,
+    bg: "bg-gradient-to-br from-sky-50 via-cyan-50 to-sky-100/70 border border-sky-200/80",
+    iconColor: "text-sky-600",
+  },
+  STAY: {
+    icon: Bed,
+    bg: "bg-gradient-to-br from-indigo-50 via-purple-50 to-indigo-100/70 border border-indigo-200/80",
+    iconColor: "text-indigo-600",
+  },
+  NOW: {
+    icon: Zap,
+    bg: "bg-gradient-to-br from-amber-50 via-yellow-50 to-amber-100/70 border border-amber-200/80",
+    iconColor: "text-amber-600",
+  },
+} as const;
 
 interface IntentCardProps {
   intent: IntentConfig;
@@ -120,6 +142,9 @@ export const IntentCard: React.FC<IntentCardProps> = ({
     );
   }
 
+  const visual = INTENT_VISUALS[intent.id] || INTENT_VISUALS.EAT;
+  const Icon = visual.icon;
+
   // Standard Discovery Intent Card (ĂN GÌ?, ĐI ĐÂU?, Ở ĐÂU?)
   return (
     <button
@@ -133,25 +158,34 @@ export const IntentCard: React.FC<IntentCardProps> = ({
       }`}
     >
       <div className="flex flex-row md:flex-col items-center md:items-stretch p-3 md:p-0 gap-3 md:gap-0 h-full">
-        {/* Visual Thumbnail: 72px on mobile, full width 124px high on desktop */}
-        <div className="relative w-[72px] h-[72px] md:w-full md:h-32 rounded-[12px] md:rounded-none overflow-hidden shrink-0 bg-slate-100 border border-slate-100 md:border-0 shadow-sm md:shadow-none">
-          <Image
-            src={intent.thumbnailUrl}
-            alt={localizedLabel}
-            fill
-            sizes="(max-width: 768px) 80px, 320px"
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
-          />
-          <div className="absolute inset-0 hidden md:block bg-gradient-to-t from-slate-950/60 via-transparent to-transparent pointer-events-none" />
+        {/* Visual Vector Container: 72px on mobile, full width on desktop */}
+        <div
+          className={`relative w-[72px] h-[72px] md:w-full md:h-28 rounded-[14px] md:rounded-none overflow-hidden shrink-0 flex items-center justify-center transition-all duration-200 ${
+            isSelected
+              ? "bg-sky-50 border border-sky-300 md:border-b-0"
+              : visual.bg
+          }`}
+        >
+          {/* Decorative highlight */}
+          <div className="absolute inset-0 bg-radial from-white/70 to-transparent pointer-events-none" />
+
+          {/* Centerpiece Vector Icon */}
+          <div
+            className={`transition-transform duration-200 group-hover:scale-110 flex items-center justify-center ${
+              isSelected ? "text-sky-600" : visual.iconColor
+            }`}
+          >
+            <Icon className="w-7 h-7 md:w-8 md:h-8" aria-hidden="true" />
+          </div>
 
           {/* Badge & Emoji Pill */}
-          <div className="absolute top-1 left-1 md:top-auto md:bottom-2.5 md:left-3 flex items-center gap-1.5">
-            <span className="w-5 h-5 md:w-6 md:h-6 rounded-full bg-white/95 flex items-center justify-center text-xs shadow-sm">
+          <div className="absolute top-1 left-1 md:top-auto md:bottom-2 md:left-2.5 flex items-center gap-1.5">
+            <span className="w-5 h-5 md:w-5.5 md:h-5.5 rounded-full bg-white/95 flex items-center justify-center text-[11px] shadow-xs border border-slate-100">
               <span role="img" aria-hidden="true">
                 {intent.emoji}
               </span>
             </span>
-            <span className="hidden md:inline text-xs font-semibold text-white drop-shadow-sm">
+            <span className="hidden md:inline text-[11px] font-semibold text-slate-700 bg-white/90 px-2 py-0.5 rounded-full shadow-xs border border-slate-100">
               {localizedBadge}
             </span>
           </div>

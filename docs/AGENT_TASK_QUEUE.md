@@ -22,6 +22,7 @@ M6-B | One-Hand Ergonomics & Bottom Action Bar | DONE | Current agent | User aut
 M7-A | i18n Runtime Readiness Audit | DONE | Current agent | User authorization; M6-B | STOP for review; audit report created | docs/M7A_I18N_RUNTIME_READINESS_AUDIT.md
 M7-A.1 | i18n UX / Runtime Contract Lock | DONE | Current agent | User authorization; M7-A | STOP for review; contract locked | docs/DECISIONS.md (68–79)
 M7-B | VI/EN/KO runtime + Auto & Switcher | DONE | Current agent | User authorization; M7-A.1 | STOP for review | lint/typecheck/221 tests/build/live browser smoke PASS; M7B_VERIFICATION.md
+M7-C | Intent Visuals & Language Placement Hotfix | DONE | Current agent | Owner feedback; M7-B | STOP for review | lint/typecheck/225 tests/build/live smoke PASS; M7C_VERIFICATION.md
 M9 | Analytics runtime | NOT_STARTED | Unassigned | User authorization; M8 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
 M10 | Notification reminder MVP | NOT_STARTED | Unassigned | User authorization; M9 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
 M11 | Time/location-aware NOW if supported | NOT_STARTED | Unassigned | User authorization; M10 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
@@ -105,3 +106,12 @@ Report: [M7B_VERIFICATION](M7B_VERIFICATION.md).
 - Preserved Contracts: M6-B one-hand UX (`BottomActionBar`, in-place accordion, intent order `[NOW, EAT, GO, STAY]`), M5-B Nearby (1 $\rightarrow$ 3 $\rightarrow$ 5 km escalation, accuracy $\le 1000\text{m}$, 0–3 truthful results, exact Maps URLs, no images), CAFE disabled (400), NOW sample timeline, DB unchanged.
 - Validation: 12/12 test suites, 221/221 tests PASS (`vitest`). Lint PASS (`0 warnings, 0 errors`). Typecheck PASS (`tsc --noEmit`). Build PASS. Live browser verification across 320px, 390px, 430px PASS.
 - Reconciliation summary: M7-B DONE; selective local commit authorized; STOP for user review before M8.
+
+## M7-C Intent Visuals & Language Placement Hotfix Completed — 2026-10-08
+Report: [M7C_VERIFICATION](M7C_VERIFICATION.md).
+- Status: HOTFIX IMPLEMENTATION & VERIFICATION COMPLETE — ALL PASS.
+- Issue 1 (Broken Intent Visuals): Replaced fragile `<Image>` calls with inline vector icons (`lucide-react`: `Utensils`, `Compass`, `Bed`, `Zap`), tailored gradient containers, and emoji badges for all 4 intents. Eliminated broken image states and alt text leakage. No venue images reintroduced.
+- Issue 2 (Footer Language Trigger Placement): Moved `LanguageSelector` from floating middle Home to horizontal footer utility row (`LA CÀ ĐÀ NẴNG` on the left, `[ 🌐 Tiếng Việt ]` / `[ 🌐 English ]` / `[ 🌐 한국어 ]` on the right). Preserved $\ge 44\text{px}$ touch targets, one-hand reachability, and zero horizontal clipping across 320–430px.
+- Next.js "N" Dev Indicator: Clarified as Next.js built-in development tools overlay (`nextjs-portal`), rendered only in `NODE_ENV === "development"` and automatically omitted in production builds. Preserved per non-negotiable instruction.
+- Validation: 13/13 test suites, 225/225 tests PASS (`vitest`). Lint PASS (`0 warnings, 0 errors`). Typecheck PASS (`tsc --noEmit`). Build PASS (production build 4.9s). Dataset clean.
+- Reconciliation summary: M7-C DONE; selective local commit authorized; STOP for user review.
