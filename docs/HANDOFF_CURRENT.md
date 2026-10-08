@@ -259,7 +259,7 @@ Report: [M4A_REAL_MAPPING_AUDIT](M4A_REAL_MAPPING_AUDIT.md). HEAD e39c7de65fc413
    - STOP for Owner review. Await explicit authorization before implementing M8-B.
 
 ## M8-A.1 Analytics Contract Correction & Lock Handoff — 2026-10-08
-1. **Objective**: Reconcile Neon catalog ground truth vs documentation drift, unify analytics property naming across client and schema, lock discovery journey lifecycle (`journey_id`), define session timeout policy, eliminate `metadata JSONB` for privacy allowlisting, secure public `/api/analytics` endpoint, lock GPS privacy and retention contracts, specify SQL migration artifact convention, and define canonical 10-event matrix and funnel semantics before M8-B is permitted to mutate the database.
+1. **Objective**: Reconcile Neon catalog ground truth vs documentation drift, unify analytics property naming across client and schema, lock discovery journey lifecycle (`journey_id`), define session timeout policy, eliminate `metadata JSONB` for privacy allowlisting, secure public `/api/analytics` endpoint, lock GPS privacy and retention contracts, specify SQL migration artifact convention, and define canonical 11-event matrix and funnel semantics before M8-B is permitted to mutate the database.
 2. **Status**: READ-ONLY AUDIT & CONTRACT LOCK COMPLETE — ALL PASS.
 3. **Core Deliverables**:
    - `docs/M8A_ANALYTICS_READINESS_AUDIT.md`: Fully revised audit and canonical contract document.
@@ -278,4 +278,28 @@ Report: [M4A_REAL_MAPPING_AUDIT](M4A_REAL_MAPPING_AUDIT.md). HEAD e39c7de65fc413
    - Do not modify application source code in `src/` or tests in `tests/`.
    - Do not push to remote.
 5. **EXACT NEXT STEP**:
+   - STOP for Owner review. Await explicit authorization before proceeding to M8-B (Analytics Runtime Implementation).
+
+## M8-A.2 Final Analytics Contract Patch Handoff — 2026-10-08
+1. **Objective**: Patch final 4 contract inconsistencies and lock runtime telemetry requirements before M8-B database mutation: lock event count to 11, mandate server-generated `occurred_at TIMESTAMPTZ`, require server-derived `environment`, separate client telemetry fields from server fields with Zod `.strict()`, update GPS privacy and cost wording, and lock canonical schema.
+2. **Status**: FINAL CONTRACT PATCH COMPLETE — ALL PASS.
+3. **Core Deliverables & Specifications**:
+   - `docs/M8A_ANALYTICS_READINESS_AUDIT.md`: Fully reconciled contract specification.
+   - `docs/DECISIONS.md`: Decisions 106–112 locked.
+   - Event Count: Exactly 11 allowed events (`session_started`, `home_viewed`, `intent_selected`, `preference_selected`, `results_shown`, `nearby_requested`, `nearby_resolved`, `nearby_failed`, `citywide_selected`, `maps_clicked`, `language_changed`).
+   - Server-Generated Timestamp: `occurred_at TIMESTAMPTZ NOT NULL DEFAULT NOW()`. Client does not transmit timestamp.
+   - Server-Derived Environment: `environment VARCHAR(15) NOT NULL CHECK (environment IN ('production', 'preview'))`. Derived on server from runtime config; client cannot supply or self-declare.
+   - Client Telemetry Payload Contract: 14 allowed fields; server-owned fields (`id`, `occurred_at`, `environment`) are rejected via Zod `.strict()`.
+   - GPS Privacy & Infrastructure: Canonical non-absolute wording locked.
+   - Infrastructure Cost Rationale: Based on reusing Neon, no extra vendor SDKs; actual cost depends on plan.
+   - Final Canonical Schema: DDL locked with `TIMESTAMPTZ`, boolean defaults, CHECK constraints, and 4 indexes.
+   - Database Migration Convention: `docs/schema/002_analytics_events.sql` designated for M8-B.
+4. **DO NOT REDO / DO NOT TOUCH**:
+   - Do not mutate Neon database schema in M8-A.2.
+   - Do not re-open event count (11 events locked).
+   - Do not accept client timestamps or environments.
+   - Do not modify application source code in `src/` or tests in `tests/`.
+   - Do not push to remote.
+5. **M8-B Readiness**: YES.
+6. **EXACT NEXT STEP**:
    - STOP for Owner review. Await explicit authorization before proceeding to M8-B (Analytics Runtime Implementation).

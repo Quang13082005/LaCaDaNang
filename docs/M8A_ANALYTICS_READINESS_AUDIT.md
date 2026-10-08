@@ -1,9 +1,9 @@
-# M8-A.1 Analytics Readiness Audit & Contract Lock
+# M8-A.2 Final Analytics Readiness Audit & Contract Lock
 
 Date: 2026-10-08
 Branch: `phase-2a-deploy`
-Base Checkpoint: `7d228b60d24bd1dea3f73021cc5d5c8a14ae4848`
-Scope: Audit & Contract Correction & Lock ONLY. Zero runtime implementation, zero application source/test modifications, zero database mutations, zero package installations.
+Base Checkpoint: `559b17b5207fa77d1ac4fd1c415ebdc26c52f472`
+Scope: Final Contract Patch & Lock ONLY. Zero runtime implementation, zero application source/test modifications, zero database mutations, zero package installations.
 
 ---
 
@@ -34,17 +34,25 @@ An independent, read-only inspection was executed directly against Neon PostgreS
 
 ---
 
-## 2. Canonical Analytics Property Contract
+## 2. Canonical Analytics Property & Payload Contract
 
-All analytics properties are locked into a single canonical naming standard. Discrepancies such as `tap_count` vs `tap_count_total` or `is_manual` vs `language_mode` are resolved as follows:
+All analytics database columns and client payload properties are strictly partitioned into **Server-Generated Database Fields** and **Client-Allowed Telemetry Fields**.
 
+### A. Server-Generated Database Fields (Forbidden in Client Payload)
+These fields are populated exclusively by the server during ingestion; public clients **MUST NOT** send them:
+| Field Name | DB Data Type | Constraints / Default | Generation Authority |
+|---|---|---|---|
+| `id` | `BIGSERIAL` | Primary Key, positive auto-increment | Database generated |
+| `occurred_at` | `TIMESTAMPTZ` | `NOT NULL DEFAULT NOW()` | Server generated in UTC; eliminates client clock skew and timestamp spoofing |
+| `environment` | `VARCHAR(15)` | `CHECK (environment IN ('production', 'preview'))` | Server derived from trusted deployment configuration (`NODE_ENV` / deployment env); client cannot spoof |
+
+### B. Client-Allowed Telemetry Fields (14 Fields)
+Validated on the server via strict Zod parser (`.strict()`). If a client sends any unknown field (including `id`, `occurred_at`, or `environment`), the request is rejected:
 | Property Name | Data Type | Permitted Values / Constraints | Description |
 |---|---|---|---|
-| `event_name` | `VARCHAR(50)` | Exact 10-event vocabulary enum | Canonical event identifier |
+| `event_name` | `VARCHAR(50)` | Exact 11-event vocabulary enum | Canonical event identifier |
 | `session_id` | `UUID` | RFC-4122 v4 UUID string | Browser session identifier (one tab lifetime) |
 | `journey_id` | `UUID` | RFC-4122 v4 UUID string | Specific discovery journey identifier |
-| `occurred_at` | `TIMESTAMP` | UTC timestamp without time zone | Event creation time |
-| `environment` | `VARCHAR(15)` | `'production'` \| `'preview'` | Isolation flag for telemetry |
 | `locale` | `VARCHAR(5)` | `'vi'` \| `'en'` \| `'ko'` | Active language at time of event |
 | `language_mode`| `VARCHAR(10)` | `'auto'` \| `'manual'` | Whether language was auto-detected or manually selected |
 | `intent` | `VARCHAR(10)` | `'EAT'` \| `'GO'` \| `'STAY'` \| `'NOW'` (or null) | Primary section |
@@ -54,8 +62,8 @@ All analytics properties are locked into a single canonical naming standard. Dis
 | `result_count` | `SMALLINT` | $0 \le n \le 3$ (or null) | Number of venues returned |
 | `is_nearby` | `BOOLEAN` | `true` \| `false` | Whether nearby mode was active |
 | `radius_km` | `SMALLINT` | $1 \mid 3 \mid 5$ (or null) | Resolved escalation radius bucket |
-| `failure_reason`| `VARCHAR(20)` | `'denied'` \| `'timeout'` \| `'unavailable'` \| `'inaccurate'` | Geolocation failure code |
-| `meaningful_tap_count`| `SMALLINT`| Integer $\ge 1$ | Cumulative intentional taps in journey |
+| `failure_reason`| `VARCHAR(20)` | `'denied'` \| `'timeout'` \| `'unavailable'` \| `'inaccurate'` \| `'network_error'` \| `'no_results'` | Geolocation or API failure code |
+| `meaningful_tap_count`| `SMALLINT`| Integer $\ge 0$ (default 0) | Cumulative intentional taps in journey |
 
 ---
 
@@ -104,7 +112,7 @@ All analytics properties are locked into a single canonical naming standard. Dis
 ## 5. Security & Public Endpoint Abuse Contract
 
 Endpoint `POST /api/analytics` is a public HTTP route:
-1. **Strict Zod Validation**: Payload validated against a strict Zod schema with `.strict()`, instantly rejecting unexpected or unknown keys.
+1. **Strict Zod Validation**: Payload validated against a strict Zod schema with `.strict()`, instantly rejecting unexpected or unknown keys. Any attempt by clients to submit server-generated fields (`id`, `occurred_at`, `environment`) is rejected.
 2. **Payload Size Limit**: Maximum request body size capped at **2 KB**.
 3. **Value & Length Range Checks**: All strings capped (e.g. `event_name` $\le 50$ chars, enums strictly verified).
 4. **100% Parameterized SQL**: Zero dynamic SQL string concatenation.
@@ -117,18 +125,19 @@ Endpoint `POST /api/analytics` is a public HTTP route:
 ## 6. GPS Privacy & Environment Policy
 
 ### GPS Privacy Language
-> *"Analytics payloads and the `analytics_events` table do not intentionally include or persist raw GPS coordinates (latitude/longitude), raw meter accuracy, IP addresses, PII, or device fingerprints."*
+> *"Product analytics payloads and `analytics_events` intentionally contain no raw latitude, longitude, IP address, PII, or device fingerprint. Nearby functional requests still transmit ephemeral lat/lng for distance calculation. Application code must not intentionally persist or emit raw GPS into product analytics. Infrastructure/provider access logging is a separate operational concern and must not be represented as product analytics storage."*
+
 - **Clear Separation of Data Domains**:
   1. *Product Analytics*: Only records `is_nearby = true` and categorical `radius_km = 1 | 3 | 5`.
   2. *Functional Discovery API*: Receives coordinates in ephemeral RAM via `GET /api/discovery` to calculate distances, immediately discarded.
-  3. *Infrastructure Logs*: Cloudflare/edge operational logs governed by standard server rotation.
+  3. *Infrastructure Logs*: Cloudflare/edge operational access logging is a separate operational concern and must not be represented as product analytics storage.
 
 ### Environment Isolation Policy
-- `development` (localhost): No-op dispatcher (zero network traffic).
-- `test` (vitest): No-op dispatcher (zero network traffic).
-- `preview`: Dispatches with `environment = 'preview'`.
-- `production`: Dispatches with `environment = 'production'`.
-- Product SQL queries filter by `WHERE environment = 'production'`.
+- `development` (localhost): Client dispatcher no-op (zero network traffic).
+- `test` (vitest): Client dispatcher no-op (zero network traffic).
+- `preview`: Server derives `environment = 'preview'` from deployment runtime configuration.
+- `production`: Server derives `environment = 'production'` from deployment runtime configuration.
+- Product SQL queries and dashboards filter by default: `WHERE environment = 'production'`.
 
 ---
 
@@ -146,7 +155,7 @@ Endpoint `POST /api/analytics` is a public HTTP route:
 ### Provider Decision
 - **Architecture**: First-party analytics using Neon PostgreSQL + Next.js route `POST /api/analytics`.
 - **Engineering Rationale**:
-  1. Utilizes existing verified Neon PostgreSQL infrastructure ($0 additional vendor cost).
+  1. Reuses existing Neon infrastructure; no additional third-party analytics SDK/provider required; cost depends on existing Neon usage/plan.
   2. Zero third-party SDK dependencies added to client bundle.
   3. 100% data sovereignty and strict privacy compliance.
   4. Highly expressive, instant SQL funnel queries.
@@ -156,71 +165,74 @@ Endpoint `POST /api/analytics` is a public HTTP route:
 Following repository conventions (ref: `docs/schema/001_initial_schema.sql`):
 - Migration script will be created at: `docs/schema/002_analytics_events.sql`.
 - Fully idempotent: `CREATE TABLE IF NOT EXISTS`, `CREATE INDEX IF NOT EXISTS`.
-- M8-A.1 executes **ZERO** database changes.
+- M8-A.2 executes **ZERO** database changes.
 
 ---
 
 ## 9. Final Canonical Event Table (PostgreSQL Schema for M8-B)
 
 ```sql
--- =============================================================================
--- LA CÀ ĐÀ NẴNG — Analytics Events Schema (M8-B Specification)
--- =============================================================================
-
 CREATE TABLE IF NOT EXISTS analytics_events (
-    id                      BIGSERIAL                   NOT NULL PRIMARY KEY,
-    event_name              VARCHAR(50)                 NOT NULL
-                            CONSTRAINT ck_analytics_event_name_nonempty CHECK (btrim(event_name) <> ''),
-    session_id              UUID                        NOT NULL,
-    journey_id              UUID                        NOT NULL,
-    occurred_at             TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (CURRENT_TIMESTAMP AT TIME ZONE 'UTC'),
-    environment             VARCHAR(15)                 NOT NULL
-                            CONSTRAINT ck_analytics_env CHECK (environment IN ('production', 'preview')),
-    locale                  VARCHAR(5)                  NOT NULL
-                            CONSTRAINT ck_analytics_locale CHECK (locale IN ('vi', 'en', 'ko')),
-    language_mode           VARCHAR(10)                 NOT NULL
-                            CONSTRAINT ck_analytics_lang_mode CHECK (language_mode IN ('auto', 'manual')),
-    intent                  VARCHAR(10)                 DEFAULT NULL
-                            CONSTRAINT ck_analytics_intent CHECK (intent IS NULL OR intent IN ('EAT', 'GO', 'STAY', 'NOW')),
-    preference              VARCHAR(50)                 DEFAULT NULL,
-    place_id                INTEGER                     DEFAULT NULL
-                            CONSTRAINT ck_analytics_place_id CHECK (place_id IS NULL OR place_id > 0),
-    result_position         SMALLINT                    DEFAULT NULL
-                            CONSTRAINT ck_analytics_pos CHECK (result_position IS NULL OR result_position IN (1, 2, 3)),
-    result_count            SMALLINT                    DEFAULT NULL
-                            CONSTRAINT ck_analytics_count CHECK (result_count IS NULL OR (result_count >= 0 AND result_count <= 3)),
-    is_nearby               BOOLEAN                     NOT NULL DEFAULT FALSE,
-    radius_km               SMALLINT                    DEFAULT NULL
-                            CONSTRAINT ck_analytics_radius CHECK (radius_km IS NULL OR radius_km IN (1, 3, 5)),
-    failure_reason          VARCHAR(20)                 DEFAULT NULL
-                            CONSTRAINT ck_analytics_fail CHECK (failure_reason IS NULL OR failure_reason IN ('denied', 'timeout', 'unavailable', 'inaccurate')),
-    meaningful_tap_count    SMALLINT                    NOT NULL DEFAULT 1
-                            CONSTRAINT ck_analytics_tap CHECK (meaningful_tap_count >= 1)
+  id BIGSERIAL PRIMARY KEY,
+  event_name VARCHAR(50) NOT NULL,
+  session_id UUID NOT NULL,
+  journey_id UUID NOT NULL,
+  occurred_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  environment VARCHAR(15) NOT NULL
+    CHECK (environment IN ('production', 'preview')),
+  locale VARCHAR(5) NOT NULL
+    CHECK (locale IN ('vi', 'en', 'ko')),
+  language_mode VARCHAR(10) NOT NULL
+    CHECK (language_mode IN ('auto', 'manual')),
+  intent VARCHAR(10)
+    CHECK (intent IN ('NOW', 'EAT', 'GO', 'STAY')),
+  preference VARCHAR(50),
+  place_id INTEGER CHECK (place_id > 0),
+  result_position SMALLINT
+    CHECK (result_position BETWEEN 1 AND 3),
+  result_count SMALLINT
+    CHECK (result_count BETWEEN 0 AND 3),
+  is_nearby BOOLEAN NOT NULL DEFAULT FALSE,
+  radius_km SMALLINT
+    CHECK (radius_km IN (1, 3, 5)),
+  failure_reason VARCHAR(20)
+    CHECK (
+      failure_reason IN (
+        'denied',
+        'unavailable',
+        'timeout',
+        'inaccurate',
+        'network_error',
+        'no_results'
+      )
+    ),
+  meaningful_tap_count SMALLINT NOT NULL DEFAULT 0
+    CHECK (meaningful_tap_count >= 0)
 );
 
-CREATE INDEX IF NOT EXISTS idx_analytics_events_name_time ON analytics_events (event_name, occurred_at DESC);
-CREATE INDEX IF NOT EXISTS idx_analytics_events_journey ON analytics_events (journey_id);
-CREATE INDEX IF NOT EXISTS idx_analytics_events_session ON analytics_events (session_id);
-CREATE INDEX IF NOT EXISTS idx_analytics_events_intent_pref ON analytics_events (intent, preference);
-CREATE INDEX IF NOT EXISTS idx_analytics_events_place ON analytics_events (place_id);
+CREATE INDEX IF NOT EXISTS idx_analytics_events_occurred_at ON analytics_events (occurred_at DESC);
+CREATE INDEX IF NOT EXISTS idx_analytics_events_session_id ON analytics_events (session_id);
+CREATE INDEX IF NOT EXISTS idx_analytics_events_journey_id ON analytics_events (journey_id);
+CREATE INDEX IF NOT EXISTS idx_analytics_events_name_env ON analytics_events (event_name, environment);
 ```
 
 ---
 
-## 10. Final 10-Event Specification Matrix
+## 10. Final 11-Event Specification Matrix (11 Allowed Events)
 
-| Event Name | Precise Trigger | Required Properties | Optional Properties | Deduplication & Journey Behavior |
-|---|---|---|---|---|
-| `session_started` | Client initializes session post-hydration | `session_id`, `journey_id`, `environment`, `locale`, `language_mode` | — | Fires once per tab load; initializes `journey_id` |
-| `home_viewed` | Home screen renders and becomes interactive | `session_id`, `journey_id`, `environment`, `locale`, `language_mode` | — | Fires on Home mount; suppressed on simple re-renders |
-| `intent_selected` | User taps intent card (`EAT`, `GO`, `STAY`, `NOW`) | `session_id`, `journey_id`, `intent`, `meaningful_tap_count` | — | Fires once per intent switch; preserves current `journey_id` |
-| `preference_selected` | User taps preference chip | `session_id`, `journey_id`, `intent`, `preference`, `meaningful_tap_count` | — | In-flight duplicate taps ignored; preserves current `journey_id` |
-| `results_shown` | API returns 200 and places render | `session_id`, `journey_id`, `intent`, `preference`, `result_count`, `is_nearby`, `meaningful_tap_count` | `radius_km` | Fires once per unique result set; locale re-fetch is suppressed |
-| `nearby_requested` | User taps "Gần tôi" button | `session_id`, `journey_id`, `intent`, `preference`, `meaningful_tap_count` | — | Fires once per tap; coordinates strictly excluded |
-| `nearby_failed` | GPS error or accuracy $> 1000\text{m}$ | `session_id`, `journey_id`, `intent`, `preference`, `failure_reason` | — | Fires on GPS rejection/timeout |
-| `citywide_selected` | User taps fallback or toggles all-city | `session_id`, `journey_id`, `intent`, `preference` | — | Fires on citywide fallback |
-| `maps_clicked` | User taps "Mở Google Maps" | `session_id`, `journey_id`, `place_id`, `intent`, `preference`, `result_position`, `is_nearby` | `radius_km` | Fires on navigation click; captures 1-based position |
-| `language_changed` | User changes language in modal | `session_id`, `journey_id`, `locale`, `language_mode` | — | Preserves `journey_id`; does NOT trigger discovery events |
+| Event Name | Precise Trigger | Required Client Properties | Optional Client Properties | Forbidden Client Properties | Deduplication & Journey Behavior |
+|---|---|---|---|---|---|
+| `session_started` | Client initializes session post-hydration | `session_id`, `journey_id`, `locale`, `language_mode` | — | `id`, `occurred_at`, `environment`, `place_id`, `result_position` | Fires once per tab load; initializes `journey_id` |
+| `home_viewed` | Home screen renders and becomes interactive | `session_id`, `journey_id`, `locale`, `language_mode` | — | `id`, `occurred_at`, `environment`, `place_id`, `preference` | Fires on Home mount; suppressed on simple re-renders |
+| `intent_selected` | User taps intent card (`EAT`, `GO`, `STAY`, `NOW`) | `session_id`, `journey_id`, `intent`, `meaningful_tap_count` | — | `id`, `occurred_at`, `environment`, `place_id`, `radius_km` | Fires once per intent switch; preserves current `journey_id` |
+| `preference_selected` | User taps preference chip | `session_id`, `journey_id`, `intent`, `preference`, `meaningful_tap_count` | — | `id`, `occurred_at`, `environment`, `place_id` | In-flight duplicate taps ignored; preserves current `journey_id` |
+| `results_shown` | API returns 200 and places render | `session_id`, `journey_id`, `intent`, `preference`, `result_count`, `is_nearby`, `meaningful_tap_count` | `radius_km` | `id`, `occurred_at`, `environment`, `place_id` | Fires once per unique result set; locale re-fetch is suppressed |
+| `nearby_requested` | User taps "Gần tôi" button | `session_id`, `journey_id`, `intent`, `preference`, `meaningful_tap_count` | — | `id`, `occurred_at`, `environment`, `place_id` | Fires once per tap; coordinates strictly excluded |
+| `nearby_resolved` | Nearby results successfully resolve | `session_id`, `journey_id`, `intent`, `preference`, `result_count`, `is_nearby`, `radius_km` | — | `id`, `occurred_at`, `environment`, `place_id` | Fires once per successful GPS resolution |
+| `nearby_failed` | GPS error or accuracy $> 1000\text{m}$ | `session_id`, `journey_id`, `intent`, `preference`, `failure_reason` | — | `id`, `occurred_at`, `environment`, `place_id` | Fires on GPS rejection/timeout |
+| `citywide_selected` | User taps fallback or toggles all-city | `session_id`, `journey_id`, `intent`, `preference`, `meaningful_tap_count` | — | `id`, `occurred_at`, `environment`, `place_id` | Fires on citywide fallback |
+| `maps_clicked` | User taps "Mở Google Maps" | `session_id`, `journey_id`, `place_id`, `intent`, `preference`, `result_position`, `meaningful_tap_count` | `is_nearby`, `radius_km` | `id`, `occurred_at`, `environment` | Fires on navigation click; captures 1-based position |
+| `language_changed` | User changes language in modal | `session_id`, `journey_id`, `locale`, `language_mode` | `intent`, `preference` | `id`, `occurred_at`, `environment`, `place_id` | Preserves `journey_id`; does NOT trigger discovery events |
 
 ---
 

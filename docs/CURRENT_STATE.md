@@ -170,5 +170,16 @@ Report: [M8A_ANALYTICS_READINESS_AUDIT](M8A_ANALYTICS_READINESS_AUDIT.md) & [DEC
 - Public Endpoint Validation: Strict Zod validation, 2 KB payload limit, parameterized SQL, unknown keys rejected, indicative product telemetry disclaimer.
 - GPS Privacy & Environment: Zero raw coordinates, IP, PII, or fingerprints persisted. Categorized radius (1, 3, 5 km) and boolean `is_nearby` only. Environment isolation (`development`/`test` no-op, `preview` tagged, `production` default dashboard filter).
 - Retention & DB Strategy: 60-day target documented; automated purge NOT implemented in M8-B. Tracked reproducible SQL migration artifact `docs/schema/002_analytics_events.sql` specified for M8-B.
-- Final Event Matrix & Funnel Semantics: 10 allowed events; conversion funnels calculated via `COUNT(DISTINCT journey_id)`.
+- Final Event Matrix & Funnel Semantics: 11 allowed events; conversion funnels calculated via `COUNT(DISTINCT journey_id)`.
 - Reconciliation summary: M8-A.1 DONE; selective docs-only commit authorized; STOP for user review before M8-B.
+
+## M8-A.2 Final Analytics Contract Patch Completed — 2026-10-08
+Report: [M8A_ANALYTICS_READINESS_AUDIT](M8A_ANALYTICS_READINESS_AUDIT.md) & [DECISIONS](DECISIONS.md) (Decisions 106–112).
+- Status: FINAL CONTRACT PATCH ONLY — COMPLETED. Zero modifications to `src/` or `tests/`. Zero DB mutations, zero table creation, zero migrations run, zero package installations.
+- Event Count Ground Truth: Locked exactly 11 allowed events (`session_started`, `home_viewed`, `intent_selected`, `preference_selected`, `results_shown`, `nearby_requested`, `nearby_resolved`, `nearby_failed`, `citywide_selected`, `maps_clicked`, `language_changed`).
+- Server-Generated Timestamp: `occurred_at TIMESTAMPTZ NOT NULL DEFAULT NOW()`. Server-generated in UTC; client payload does not send `occurred_at`.
+- Server-Derived Environment: `environment VARCHAR(15) NOT NULL CHECK (environment IN ('production', 'preview'))`. Derived on server from deployment runtime; client cannot self-declare production; development/test client dispatcher is a no-op.
+- Client Telemetry Payload Separation: 14 client-allowed fields strictly validated via Zod `.strict()`. Server-owned fields (`id`, `occurred_at`, `environment`) are rejected if sent by client.
+- Canonical GPS Privacy & Cost Wording: Locked non-absolute GPS privacy wording and factual Neon infrastructure cost rationale.
+- Final Canonical Schema: Locked DDL with TIMESTAMPTZ, boolean defaults, CHECK constraints, and 4 indexes.
+- M8-B Readiness: YES — All contracts locked and reconciled. STOP for Owner review before M8-B implementation.

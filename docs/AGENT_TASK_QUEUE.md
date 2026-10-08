@@ -25,7 +25,8 @@ M7-B | VI/EN/KO runtime + Auto & Switcher | DONE | Current agent | User authoriz
 M7-C | Intent Visuals & Language Placement Hotfix | DONE | Current agent | Owner feedback; M7-B | STOP for review | lint/typecheck/225 tests/build/live smoke PASS; M7C_VERIFICATION.md
 M8-A | Analytics Readiness Audit & Contract | DONE | Current agent | User authorization; M7-C | STOP for review; audit report created | docs/M8A_ANALYTICS_READINESS_AUDIT.md
 M8-A.1 | Analytics Contract Correction & Lock | DONE | Current agent | User authorization; M8-A | STOP for review; contracts locked | docs/M8A_ANALYTICS_READINESS_AUDIT.md & DECISIONS.md (96–105)
-M8-B | Analytics Runtime Implementation | NOT_STARTED | Unassigned | User authorization; M8-A.1 | Follow M8-A.1 contract; await explicit scope | Layer tests + lint/typecheck/build
+M8-A.2 | Final Analytics Contract Patch | DONE | Current agent | User authorization; M8-A.1 | STOP for review; contracts locked | docs/M8A_ANALYTICS_READINESS_AUDIT.md & DECISIONS.md (106–112)
+M8-B | Analytics Runtime Implementation | NOT_STARTED | Unassigned | User authorization; M8-A.2 | Follow M8-A.2 contract; await explicit scope | Layer tests + lint/typecheck/build
 M9 | Analytics runtime | NOT_STARTED | Unassigned | User authorization; M8 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
 M10 | Notification reminder MVP | NOT_STARTED | Unassigned | User authorization; M9 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
 M11 | Time/location-aware NOW if supported | NOT_STARTED | Unassigned | User authorization; M10 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
@@ -143,4 +144,16 @@ Report: [M8A_ANALYTICS_READINESS_AUDIT](M8A_ANALYTICS_READINESS_AUDIT.md) & [DEC
 - Public endpoint security: Zod allowlist, 2 KB limit, parameterized SQL, indicative product telemetry disclaimer.
 - Database change strategy: tracked migration `docs/schema/002_analytics_events.sql` for M8-B.
 - Zero source code modifications, zero DB mutations.
+- Next action: STOP for Owner review.
+
+## M8-A.2 Final Analytics Contract Patch Completed — 2026-10-08
+Report: [M8A_ANALYTICS_READINESS_AUDIT](M8A_ANALYTICS_READINESS_AUDIT.md) & [DECISIONS](DECISIONS.md) (Decisions 106–112).
+- Status: FINAL CONTRACT PATCH ONLY — COMPLETED.
+- Event count: Exactly 11 allowed events locked.
+- Timestamp: `occurred_at TIMESTAMPTZ NOT NULL DEFAULT NOW()`, server-generated in UTC; client payload does not send timestamp.
+- Environment: Server-derived (`preview` | `production`) from runtime config; client does not send.
+- Payload validation: 14 client-allowed fields; Zod `.strict()` rejects server-owned fields (`id`, `occurred_at`, `environment`).
+- GPS privacy & cost wording: Reconciled with non-absolute, realistic language.
+- Final canonical DDL locked with TIMESTAMPTZ, defaults, and 4 indexes.
+- M8-B readiness: YES.
 - Next action: STOP for Owner review.
