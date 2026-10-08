@@ -1,6 +1,7 @@
 import React from "react";
 import { IntentCard } from "@/components/home/IntentCard";
 import { PreferencePanel } from "@/components/home/PreferencePanel";
+import { useLocale } from "@/components/i18n/LocaleProvider";
 import { PRIMARY_INTENTS, type IntentConfig } from "@/data/demo-places";
 
 interface IntentGridProps {
@@ -16,13 +17,15 @@ export const IntentGrid: React.FC<IntentGridProps> = ({
   onSelectIntent,
   onSelectPreference,
 }) => {
+  const { t } = useLocale();
   const nowIntent = PRIMARY_INTENTS.find((i) => i.id === "NOW") as IntentConfig;
   const standardIntents = PRIMARY_INTENTS.filter(
     (i) => i.id !== "NOW"
   ) as IntentConfig[];
 
   return (
-    <section className="w-full space-y-3" aria-label="Mục đích khám phá">
+    <section className="w-full space-y-3" aria-label={t("intent.region")}>
+
       {/* 1. NOW Intent Card (Featured) */}
       <div className="space-y-3">
         <IntentCard

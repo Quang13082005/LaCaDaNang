@@ -196,3 +196,24 @@ Report: [M4A_REAL_MAPPING_AUDIT](M4A_REAL_MAPPING_AUDIT.md). HEAD e39c7de65fc413
    - Do not push language switcher to the top header or into discovery BottomActionBar.
 5. **EXACT NEXT STEP**:
    - STOP for user review. Await explicit authorization before implementing M7-B.
+
+## M7-B VI / EN / KO Runtime i18n Implementation Handoff — 2026-10-08
+1. **Objective**: Implement genuine multilingual runtime capabilities across Vietnamese (`vi`), English (`en`), and Korean (`ko`) with auto-detection, manual selection, localStorage persistence (`laca.ui-locale.v1`), dynamic Discovery API locale, full UI string localization, and dynamic HTML lang synchronization, strictly preserving M6-B mobile one-hand ergonomics and M5-B Nearby discovery contracts.
+2. **Status**: IMPLEMENTATION & VERIFICATION COMPLETE — ALL PASS.
+3. **Verified Achievements**:
+   - Runtime Locale Provider: `src/components/i18n/LocaleProvider.tsx` with zero hydration warnings, `try/catch` storage handling, and `Intl.NumberFormat` formatting.
+   - Language Selector UX: `src/components/i18n/LanguageSelector.tsx` located in reachable lower zone, opening bottom sheet modal with 4 options ($\ge 48\text{px}$). Kept out of `BottomActionBar`.
+   - Dynamic API: `/api/discovery?intent=...&locale=<activeLocale>&preference=...` with stale request cancellation.
+   - Live Neon DB translations verified: returns translated `primary_type_label` and `tags` across all 3 locales. Authentic venue names preserved.
+   - Full UI Dictionary: 45+ keys in `src/lib/i18n/messages.ts`. Brand `LA CÀ ĐÀ NẴNG` and uppercase intent labels intact.
+   - Tests: 12/12 test suites, 221/221 tests PASS (`vitest`). Lint PASS (0 warnings, 0 errors). Typecheck PASS. Next.js production build PASS.
+   - Live browser verification: 390x844, 320x800, 430x932 verified. WebP session video recorded.
+   - Curated dataset: Clean (`src/data/curated/curated-places.json` untouched).
+4. **DO NOT REDO / DO NOT TOUCH**:
+   - Do not reinstall external i18n libraries.
+   - Do not alter `messages.ts` without running `tests/i18n.test.ts` and `tests/runtime-i18n.test.tsx`.
+   - Do not move LanguageSelector to the top header or into discovery `BottomActionBar`.
+   - Do not mutate Neon PostgreSQL database.
+   - Do not reorder intent cards `[NOW, EAT, GO, STAY]`.
+5. **EXACT NEXT STEP**:
+   - STOP for user review. Await explicit authorization before proceeding to next milestone (e.g. M8 Analytics/Notifications or further scope).

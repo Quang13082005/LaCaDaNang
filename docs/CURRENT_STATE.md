@@ -112,3 +112,16 @@ Report: [M7A_I18N_RUNTIME_READINESS_AUDIT](M7A_I18N_RUNTIME_READINESS_AUDIT.md) 
   11. NOW Boundary: UI chrome translation permitted; timeline data remains sample only.
   12. Acceptance: Visual verification at 320, 390, 430px; truncation prohibited if meaning lost.
 - Reconciliation summary: M7-A.1 DONE; selective local commit authorized; STOP for user review before M7-B.
+
+## M7-B VI / EN / KO Runtime i18n Implementation Completed — 2026-10-08
+Report: [M7B_VERIFICATION](M7B_VERIFICATION.md).
+- Status: IMPLEMENTATION & VERIFICATION COMPLETE — ALL PASS.
+- Runtime Locale Provider: Implemented in `src/components/i18n/LocaleProvider.tsx`. Server HTML renders `vi`; client resolves `localStorage (laca.ui-locale.v1) > navigator.languages > navigator.language > vi` in `useEffect` without hydration mismatch. Updates `document.documentElement.lang`. `formatNumber` provides locale-aware metric formatting.
+- Language Selector UX: `src/components/i18n/LanguageSelector.tsx` secondary trigger on Home in reachable zone opening compact bottom sheet modal (`Tiếng Việt`, `English`, `한국어`, `Theo thiết bị / Auto`). All options $\ge 48\text{px}$ touch height, keyboard accessible (Escape closes). Kept out of discovery `BottomActionBar`.
+- Dynamic API Locale: Discovery requests supply `locale=<activeLocale>`. Switching locale re-fetches Neon DB while preserving `selectedIntent`, `selectedPreference`, Nearby GPS coordinates, and scroll stability. Race-safety guard discards stale responses from previous locales.
+- Neon DB Translations: Real DB returns translated `primary_type_label` and `tags` across `vi`, `en`, and `ko`. Proper venue names preserved untranslated.
+- UI Localization: Complete typed dictionary in `src/lib/i18n/messages.ts` for all 45+ UI strings. Brand `LA CÀ ĐÀ NẴNG` and uppercase intent titles preserved.
+- One-Hand & Nearby Guardrails: M6-B one-hand UX (`BottomActionBar`, in-place accordion, intent order `[NOW, EAT, GO, STAY]`) and M5-B Nearby (1 $\rightarrow$ 3 $\rightarrow$ 5 km, 0–3 truthful results, exact Maps URLs, no images) strictly preserved. CAFE remains disabled (400); NOW remains sample timeline.
+- Validation: 12/12 test suites, 221/221 tests PASS (`vitest`). Lint PASS (`0 warnings, 0 errors`). Typecheck PASS (`tsc --noEmit`). Build PASS (Next.js production build). Live browser verification across 320px, 390px, 430px PASS.
+- Curated dataset: Clean (`git diff HEAD -- src/data/curated/curated-places.json` empty).
+- Reconciliation summary: M7-B DONE; selective local commit authorized; STOP for user review before M8.

@@ -1,5 +1,6 @@
 import React from "react";
 import { Navigation, MapPin } from "lucide-react";
+import { useLocale } from "@/components/i18n/LocaleProvider";
 import type { DemoItineraryStop } from "@/data/demo-places";
 
 interface ItineraryStopProps {
@@ -13,6 +14,8 @@ export const ItineraryStop: React.FC<ItineraryStopProps> = ({
   index,
   isLast,
 }) => {
+  const { t } = useLocale();
+
   return (
     <div className="relative flex items-start gap-3.5 pb-6">
       {/* Vertical Timeline Track Line */}
@@ -55,7 +58,7 @@ export const ItineraryStop: React.FC<ItineraryStopProps> = ({
               className="w-full min-h-[44px] rounded-[12px] bg-sky-500 hover:bg-sky-600 active:bg-sky-700 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-1.5 shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
             >
               <Navigation className="w-3.5 h-3.5 shrink-0 fill-white" />
-              <span className="min-w-0 text-center">Xem trên Google Maps</span>
+              <span className="min-w-0 text-center">{t("action.maps")}</span>
             </a>
           </div>
         )}
@@ -63,3 +66,4 @@ export const ItineraryStop: React.FC<ItineraryStopProps> = ({
     </div>
   );
 };
+

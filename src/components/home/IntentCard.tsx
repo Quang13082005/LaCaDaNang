@@ -1,6 +1,8 @@
 import React from "react";
 import Image from "next/image";
 import { ChevronDown } from "lucide-react";
+import { useLocale } from "@/components/i18n/LocaleProvider";
+import type { MessageKey } from "@/lib/i18n/messages";
 import type { IntentConfig } from "@/data/demo-places";
 
 interface IntentCardProps {
@@ -16,6 +18,15 @@ export const IntentCard: React.FC<IntentCardProps> = ({
   onClick,
   layoutMode = "grid",
 }) => {
+  const { t } = useLocale();
+  const labelKey = `intent.${intent.id.toLowerCase()}` as MessageKey;
+  const helperKey = `intent.${intent.id.toLowerCase()}.helper` as MessageKey;
+  const badgeKey = `intent.${intent.id.toLowerCase()}.badge` as MessageKey;
+
+  const localizedLabel = t(labelKey);
+  const localizedSublabel = t(helperKey);
+  const localizedBadge = t(badgeKey);
+
   // Compact mode for State B/C when intent is unselected or compacted
   if (layoutMode === "compact") {
     return (
@@ -34,7 +45,7 @@ export const IntentCard: React.FC<IntentCardProps> = ({
             {intent.emoji}
           </span>
           <span className={`font-bold text-sm break-words ${isSelected ? "text-sky-600" : "text-slate-800"}`}>
-            {intent.label}
+            {localizedLabel}
           </span>
         </div>
         <div
@@ -49,6 +60,7 @@ export const IntentCard: React.FC<IntentCardProps> = ({
       </button>
     );
   }
+
 
   const isNow = intent.id === "NOW" || layoutMode === "featured";
 
@@ -86,10 +98,10 @@ export const IntentCard: React.FC<IntentCardProps> = ({
                   isSelected ? "text-sky-600" : "text-slate-900"
                 }`}
               >
-                {intent.label}
+                {localizedLabel}
               </h2>
               <p className="text-xs sm:text-sm text-slate-500 font-normal mt-0.5 leading-relaxed">
-                {intent.sublabel}
+                {localizedSublabel}
               </p>
             </div>
           </div>
@@ -125,7 +137,7 @@ export const IntentCard: React.FC<IntentCardProps> = ({
         <div className="relative w-[72px] h-[72px] md:w-full md:h-32 rounded-[12px] md:rounded-none overflow-hidden shrink-0 bg-slate-100 border border-slate-100 md:border-0 shadow-sm md:shadow-none">
           <Image
             src={intent.thumbnailUrl}
-            alt={intent.label}
+            alt={localizedLabel}
             fill
             sizes="(max-width: 768px) 80px, 320px"
             className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -140,7 +152,7 @@ export const IntentCard: React.FC<IntentCardProps> = ({
               </span>
             </span>
             <span className="hidden md:inline text-xs font-semibold text-white drop-shadow-sm">
-              {intent.categoryBadge}
+              {localizedBadge}
             </span>
           </div>
         </div>
@@ -153,10 +165,10 @@ export const IntentCard: React.FC<IntentCardProps> = ({
                 isSelected ? "text-sky-600" : "text-slate-900"
               }`}
             >
-              {intent.label}
+              {localizedLabel}
             </h2>
             <p className="text-xs text-slate-500 mt-0.5 md:mt-1 font-normal leading-relaxed break-words">
-              {intent.sublabel}
+              {localizedSublabel}
             </p>
           </div>
 
@@ -169,7 +181,7 @@ export const IntentCard: React.FC<IntentCardProps> = ({
                   : "text-slate-400 group-hover:text-sky-600"
               }
             >
-              {isSelected ? "Đang chọn" : "Khám phá"}
+              {isSelected ? t("action.selected") : t("action.explore")}
             </span>
             <div
               className={`w-6 h-6 rounded-full flex items-center justify-center transition-transform duration-200 ${

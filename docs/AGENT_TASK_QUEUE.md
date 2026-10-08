@@ -21,7 +21,7 @@ M6-A | Mentor Mobile UX / One-Hand Audit | DONE | Current agent | M5-B | STOP fo
 M6-B | One-Hand Ergonomics & Bottom Action Bar | DONE | Current agent | User authorization; M6-A | STOP for review | lint/typecheck/196 tests/build/live visual smoke PASS; M6B_VERIFICATION.md
 M7-A | i18n Runtime Readiness Audit | DONE | Current agent | User authorization; M6-B | STOP for review; audit report created | docs/M7A_I18N_RUNTIME_READINESS_AUDIT.md
 M7-A.1 | i18n UX / Runtime Contract Lock | DONE | Current agent | User authorization; M7-A | STOP for review; contract locked | docs/DECISIONS.md (68–79)
-M7-B | VI/EN/KO runtime + Auto & Switcher | NOT_STARTED | Unassigned | User authorization; M7-A | Follow M7-A audit contract | Layer tests + lint/typecheck/build
+M7-B | VI/EN/KO runtime + Auto & Switcher | DONE | Current agent | User authorization; M7-A.1 | STOP for review | lint/typecheck/221 tests/build/live browser smoke PASS; M7B_VERIFICATION.md
 M9 | Analytics runtime | NOT_STARTED | Unassigned | User authorization; M8 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
 M10 | Notification reminder MVP | NOT_STARTED | Unassigned | User authorization; M9 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
 M11 | Time/location-aware NOW if supported | NOT_STARTED | Unassigned | User authorization; M10 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
@@ -97,3 +97,11 @@ Report: [M7A_I18N_RUNTIME_READINESS_AUDIT](M7A_I18N_RUNTIME_READINESS_AUDIT.md) 
 - Status: CONTRACT LOCK ONLY — COMPLETED. Zero modifications to `src/` or `tests/`. Zero DB mutations.
 - 12 Decisions Locked: Precedence, persistence, reachable lower Home switcher opening bottom sheet / compact selector (never in BottomActionBar, not in top header), state preservation, realistic layout stability, hydration safety, HTML lang, translation boundaries, DB fallback, number formatting, NOW boundaries, visual acceptance on 320/390/430px.
 - Reconciliation summary: M7-A.1 DONE; selective local commit authorized; STOP for user review before M7-B.
+
+## M7-B VI / EN / KO Runtime i18n Implementation Completed — 2026-10-08
+Report: [M7B_VERIFICATION](M7B_VERIFICATION.md).
+- Status: IMPLEMENTATION & VERIFICATION COMPLETE — ALL PASS.
+- Deliverables: Runtime `LocaleProvider` with auto-detection and `laca.ui-locale.v1` persistence, `LanguageSelector` bottom sheet in reachable zone, dynamic API locale (`locale=<activeLocale>`) with Neon DB translations, 45+ localized UI strings in `messages.ts`, dynamic `document.documentElement.lang`, presentation `Intl.NumberFormat`.
+- Preserved Contracts: M6-B one-hand UX (`BottomActionBar`, in-place accordion, intent order `[NOW, EAT, GO, STAY]`), M5-B Nearby (1 $\rightarrow$ 3 $\rightarrow$ 5 km escalation, accuracy $\le 1000\text{m}$, 0–3 truthful results, exact Maps URLs, no images), CAFE disabled (400), NOW sample timeline, DB unchanged.
+- Validation: 12/12 test suites, 221/221 tests PASS (`vitest`). Lint PASS (`0 warnings, 0 errors`). Typecheck PASS (`tsc --noEmit`). Build PASS. Live browser verification across 320px, 390px, 430px PASS.
+- Reconciliation summary: M7-B DONE; selective local commit authorized; STOP for user review before M8.

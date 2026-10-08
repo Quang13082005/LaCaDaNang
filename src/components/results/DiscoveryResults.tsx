@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { useLocale } from "@/components/i18n/LocaleProvider";
 import type { DiscoveryApiBody } from "@/lib/data/discovery-contract";
 import { discoveryToCard, type PlaceCardModel } from "@/lib/data/place-card-model";
 import { ResultList, type GeolocationUiState } from "./ResultList";
@@ -15,8 +16,10 @@ export function DiscoveryResults({ intent, intentLabel, preference, preferenceLa
   preferenceLabel?: string;
   onResetPreference: () => void;
 }) {
+  const { locale } = useLocale();
   const [state, setState] = useState<State>({ status: "idle", places: [] });
   const [attempt, setAttempt] = useState(0);
+
 
   // Geolocation State Machine: idle | requesting | granted | denied | unavailable | timeout | inaccurate
   const [nearbyStatus, setNearbyStatus] = useState<GeolocationUiState>("idle");
@@ -101,7 +104,7 @@ export function DiscoveryResults({ intent, intentLabel, preference, preferenceLa
     setState({ status: "loading", places: [] });
     const timeout = window.setTimeout(() => controller.abort(), 15000);
 
-    const params = new URLSearchParams({ intent, locale: "vi", preference });
+    const params = new URLSearchParams({ intent, locale, preference });
     if (userCoords) {
       params.set("lat", userCoords.lat.toString());
       params.set("lng", userCoords.lng.toString());
@@ -113,7 +116,7 @@ export function DiscoveryResults({ intent, intentLabel, preference, preferenceLa
         if (!response.ok) throw new Error("Discovery unavailable");
         const body: DiscoveryApiBody = await response.json();
         if (
-          !body.ok || body.data.intent !== intent || body.data.locale !== "vi" ||
+          !body.ok || body.data.intent !== intent || body.data.locale !== locale ||
           body.data.preference !== preference || !Array.isArray(body.data.places) ||
           body.data.count !== body.data.places.length || body.data.count > 3 ||
           body.data.places.some((place) => place.section !== intent) ||
@@ -139,7 +142,7 @@ export function DiscoveryResults({ intent, intentLabel, preference, preferenceLa
     }
     void load();
     return () => { active = false; window.clearTimeout(timeout); controller.abort(); };
-  }, [intent, preference, attempt, userCoords]);
+  }, [intent, preference, attempt, userCoords, locale]);
 
   return (
     <ResultList

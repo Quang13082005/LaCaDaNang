@@ -5,13 +5,16 @@ import { Hero } from "@/components/home/Hero";
 import { IntentGrid } from "@/components/home/IntentGrid";
 import { DiscoveryResults } from "@/components/results/DiscoveryResults";
 import { ItineraryTimeline } from "@/components/itinerary/ItineraryTimeline";
+import { LanguageSelector } from "@/components/i18n/LanguageSelector";
+import { useLocale } from "@/components/i18n/LocaleProvider";
+import type { MessageKey } from "@/lib/i18n/messages";
 import {
   getItineraryForPreference,
   PREFERENCES_BY_INTENT,
-  PRIMARY_INTENTS,
 } from "@/data/demo-places";
 
 export default function HomePage() {
+  const { t } = useLocale();
   const [selectedIntent, setSelectedIntent] = useState<
     "EAT" | "GO" | "NOW" | "STAY" | null
   >(null);
@@ -71,16 +74,21 @@ export default function HomePage() {
       ? getItineraryForPreference(selectedPreference)
       : null;
 
-  const currentIntentLabel =
-    selectedIntent
-      ? PRIMARY_INTENTS.find((i) => i.id === selectedIntent)?.label
-      : undefined;
+  const currentIntentLabel = selectedIntent
+    ? t(`intent.${selectedIntent.toLowerCase()}` as MessageKey)
+    : undefined;
 
   const currentPreferenceLabel =
     selectedIntent && selectedPreference
-      ? PREFERENCES_BY_INTENT[selectedIntent]?.find(
-          (c) => c.id === selectedPreference
-        )?.label
+      ? (() => {
+          const prefKey = `pref.${selectedPreference}` as MessageKey;
+          const translated = t(prefKey);
+          return translated !== prefKey
+            ? translated
+            : PREFERENCES_BY_INTENT[selectedIntent]?.find(
+                (c) => c.id === selectedPreference
+              )?.label;
+        })()
       : undefined;
 
   return (
@@ -99,6 +107,11 @@ export default function HomePage() {
               onSelectIntent={handleSelectIntent}
               onSelectPreference={handleSelectPreference}
             />
+
+            {/* Reachable One-Hand Language Selector on Home */}
+            <div className="mt-8 mb-4 flex justify-center">
+              <LanguageSelector />
+            </div>
           </div>
         )}
 
@@ -130,10 +143,14 @@ export default function HomePage() {
 
       {/* Brand Footer */}
       <footer className="w-full border-t border-slate-200/80 bg-white py-6 px-4 text-center mt-8">
-        <p className="text-xs font-semibold text-slate-700">
-          LA CÀ ĐÀ NẴNG
-        </p>
+        <div className="flex flex-col items-center gap-3">
+          {selectedPreference !== null && <LanguageSelector />}
+          <p className="text-xs font-semibold text-slate-700 tracking-wide">
+            LA CÀ ĐÀ NẴNG
+          </p>
+        </div>
       </footer>
     </div>
   );
 }
+

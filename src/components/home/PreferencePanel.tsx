@@ -1,6 +1,8 @@
 import React from "react";
 import { Sparkles } from "lucide-react";
 import { MoodChip } from "@/components/shared/MoodChip";
+import { useLocale } from "@/components/i18n/LocaleProvider";
+import type { MessageKey } from "@/lib/i18n/messages";
 import { PREFERENCES_BY_INTENT } from "@/data/demo-places";
 
 interface PreferencePanelProps {
@@ -14,6 +16,7 @@ export const PreferencePanel: React.FC<PreferencePanelProps> = ({
   selectedPreferenceId,
   onSelectPreference,
 }) => {
+  const { t } = useLocale();
   const chips = PREFERENCES_BY_INTENT[intentId] || [];
 
   return (
@@ -24,25 +27,32 @@ export const PreferencePanel: React.FC<PreferencePanelProps> = ({
           <Sparkles className="w-3.5 h-3.5 text-sky-500 shrink-0" />
           <span className="text-xs font-semibold text-slate-700">
             {intentId === "NOW"
-              ? "Đi cùng ai:"
-              : "Bạn muốn tìm chỗ thế nào?"}
+              ? t("preference.companionPrompt")
+              : t("preference.prompt")}
           </span>
         </div>
 
         {/* Chip Grid: 2 columns on small mobile, 3 on standard mobile, auto-wrap on desktop */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-2.5">
-          {chips.map((chip) => (
-            <MoodChip
-              key={chip.id}
-              id={chip.id}
-              label={chip.label}
-              emoji={chip.emoji}
-              isSelected={selectedPreferenceId === chip.id}
-              onClick={() => onSelectPreference(chip.id)}
-            />
-          ))}
+          {chips.map((chip) => {
+            const labelKey = `pref.${chip.id}` as MessageKey;
+            const translated = t(labelKey);
+            const displayLabel = translated !== labelKey ? translated : chip.label;
+
+            return (
+              <MoodChip
+                key={chip.id}
+                id={chip.id}
+                label={displayLabel}
+                emoji={chip.emoji}
+                isSelected={selectedPreferenceId === chip.id}
+                onClick={() => onSelectPreference(chip.id)}
+              />
+            );
+          })}
         </div>
       </div>
     </div>
   );
 };
+
