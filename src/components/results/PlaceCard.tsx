@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { MapPin, Navigation, Bell } from "lucide-react";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 import { trackMapsClicked } from "@/lib/analytics/client";
 import type { PlaceCardModel } from "@/lib/data/place-card-model";
-import { getReminderForPlace } from "@/lib/reminders/storage";
 import { ReminderSheet } from "@/components/reminders/ReminderSheet";
 
 export interface PlaceCardProps {
@@ -25,17 +24,6 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({
 }) => {
   const { t, formatNumber, locale, isManual } = useLocale();
   const [isReminderOpen, setIsReminderOpen] = useState(false);
-  const [hasReminder, setHasReminder] = useState(false);
-
-  // Check client-side reminder status on mount
-  useEffect(() => {
-    if (place.id) {
-      const existing = getReminderForPlace(Number(place.id));
-      if (existing) {
-        setHasReminder(true);
-      }
-    }
-  }, [place.id]);
 
   const showReminder = intent !== "NOW" && Boolean(place.id);
 
@@ -122,11 +110,6 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({
           >
             <Bell aria-hidden="true" className="w-4 h-4 shrink-0 text-slate-500" />
             <span>{t("action.remind")}</span>
-            {hasReminder && (
-              <span className="ml-1 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                {t("reminder.badge")}
-              </span>
-            )}
           </button>
         )}
       </div>
@@ -136,7 +119,6 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({
           place={place}
           isOpen={isReminderOpen}
           onClose={() => setIsReminderOpen(false)}
-          onSuccess={() => setHasReminder(true)}
         />
       )}
     </article>

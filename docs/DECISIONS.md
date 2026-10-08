@@ -195,3 +195,8 @@ Real M3-B commit: `e39c7de65fc413f6561e0069642ba58f6bb95f0e`. Verified exact13 a
 147. **Deterministic Timezone & Validation:** User-selected wall-clock time is interpreted explicitly as `Asia/Ho_Chi_Minh` (GMT+7) independent of tourist device timezone. Rejects visit times $\le \text{now} + 30$ minutes with friendly localized validation warning.
 148. **Local Storage Contract:** Saved under `laca.reminders.v1` strictly upon actual user export. Repeat exports replace/update the venue record. Prohibited `sent`, `delivered`, `dismissed`. Zero PII, zero GPS, zero secret exposure.
 
+## M9-B.1 Calendar Reminder Semantic Fix Decisions (2026-10-08)
+149. **Removal of Fabricated Visit Duration:** VEVENT strictly contains `DTSTART:<instant>` and omits `DTEND`, because venue data contains no duration and La Cà does not know how long visitors stay.
+150. **Removal of Misleading "Đã lên lịch" Badge:** Removed persistent visible badge on PlaceCard entirely. `localStorage` preserves export configuration without claiming external Calendar application synchronization or scheduled status.
+151. **Truthful Post-Export Wording:** Post-export confirmation instructs the user: *"Đã tạo file lịch nhắc. Hãy mở và lưu sự kiện trong ứng dụng Lịch của bạn."* (EN: *"Calendar reminder created. Open and save the event in your Calendar app."* / KO: *"캘린더 알림 파일이 생성되었습니다. 캘린더 앱에서 일정을 열고 저장해 주세요."*). Zero false claims of scheduled confirmation or delivery.
+

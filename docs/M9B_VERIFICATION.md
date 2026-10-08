@@ -14,18 +14,19 @@ Scope: Implementation of "Nhắc tôi" Calendar Reminder Export MVP strictly per
 |---|---|---|---|
 | **Hard Scope** | "Nhắc tôi" Calendar Reminder Export only | Implemented: PlaceCard CTA $\rightarrow$ Bottom sheet $\rightarrow$ RFC 5545 `.ics` with 30m `VALARM` $\rightarrow$ Blob download $\rightarrow$ `localStorage` log | **PASS** |
 | **Notification API** | Zero `Notification.requestPermission()`, zero `new Notification()` | 0 occurrences in `src/`, 0 permission prompts, 0 push managers, 0 service workers | **PASS** |
-| **PlaceCard CTA** | Secondary to Google Maps, touch target $\ge 44$px | Google Maps remains primary; `🔔 Nhắc tôi` secondary button with `min-h-[44px]` below Maps CTA | **PASS** |
+| **PlaceCard CTA** | Secondary to Google Maps, touch target $\ge 44$px | Google Maps remains primary; `🔔 Nhắc tôi` secondary button with `min-h-[44px]` below Maps CTA. Misleading "Đã lên lịch" badge removed per M9-B.1 | **PASS** |
 | **Itinerary Guard** | Exclude from static NOW itinerary | Reminder CTA renders only when `intent !== "NOW" && Boolean(place.id)` | **PASS** |
 | **Bottom Sheet UX** | Lower one-thumb reach zone, dialog semantics, safe-area | `role="dialog" aria-modal="true"`, thumb-reachable bottom sheet, `safe-area-inset-bottom`, Escape key + backdrop close | **PASS** |
 | **Quick Presets** | Exactly `+1h`, `+2h`, `+4h`, and custom date/time | Presets `1 giờ nữa`, `2 giờ nữa`, `4 giờ nữa`, and `Chọn ngày & giờ` with `datetime-local` | **PASS** |
 | **Timezone & Math** | Explicit `Asia/Ho_Chi_Minh` (GMT+7), wall-clock parsing independent of tourist device timezone | `parseDaNangWallClockToUtc` parses local wall-clock to exact UTC; rejects `\le 30m`; UI states `Giờ Đà Nẵng (GMT+7)` | **PASS** |
-| **RFC 5545 Conformance** | CRLF `\r\n`, UTC Z, unique UID, VALARM `-PT30M`, escaping, Maps URL in DESCRIPTION | Valid `VCALENDAR`, `VEVENT`, `VALARM` (`TRIGGER:-PT30M`, `ACTION:DISPLAY`), CRLF terminators, escaped characters, exact Maps link | **PASS** |
+| **RFC 5545 Conformance** | CRLF `\r\n`, UTC Z, unique UID, VALARM `-PT30M`, escaping, Maps URL in DESCRIPTION, NO fabricated DTEND | Valid `VCALENDAR`, `VEVENT`, `VALARM` (`TRIGGER:-PT30M`, `ACTION:DISPLAY`), CRLF terminators, escaped characters, exact Maps link; `DTEND` omitted per M9-B.1 | **PASS** |
 | **Location Field** | Include only if valid address exists; omit if absent | `LOCATION` line emitted only if `place.address` exists; omitted for places without address; 0 address fabrication | **PASS** |
 | **Storage Contract** | `localStorage` `laca.reminders.v1`, safe try/catch, only on actual export | Saved strictly on user-initiated export; repeat export updates record; 0 `sent`/`delivered`/`dismissed`; 0 PII | **PASS** |
+| **Post-Export Confirmation** | Truthful instruction to open/save in Calendar | UI displays "Đã tạo file lịch nhắc. Hãy mở và lưu sự kiện trong ứng dụng Lịch của bạn."; zero claims of scheduled confirmation or delivery | **PASS** |
 | **i18n Coverage** | Full typed coverage in `vi`, `en`, and `ko` | All UI labels, validation messages, and `.ics` event text translated across VI, EN, KO; place names preserved | **PASS** |
 | **Analytics Hard Boundary** | M8 locked 11 events intact; zero reminder analytics events | Exactly 11 allowed events preserved; zero reminder analytics events added; zero schema mutations | **PASS** |
 | **Database Boundary** | Zero Neon database mutations | Zero tables added; 6 content tables (3,079 rows) and `analytics_events` 100% intact | **PASS** |
-| **Automated Tests** | Full regression and dedicated reminder test suite | **286/286 tests PASS** across 15 suites (24 new dedicated reminder tests, 262 existing tests 100% green) | **PASS** |
+| **Automated Tests** | Full regression and dedicated reminder test suite | **289/289 tests PASS** across 15 suites (27 dedicated reminder tests, 262 existing tests 100% green) | **PASS** |
 | **Quality Gates** | `lint`, `typecheck`, `build`, `git diff --check`, dataset integrity | `npm run lint`: PASS (0 errors); `npm run typecheck`: PASS; `npm run build`: PASS; dataset: 0 diff | **PASS** |
 | **Responsive Viewports** | 320px, 390px, 393px, 430px inspected in browser | Clean layout, no text clipping, zero horizontal overflow (`scrollWidth <= innerWidth`), thumb reachable | **PASS** |
 | **Physical Calendar Import** | Manual physical phone test status | **NOT VERIFIED** (tested in browser engine; physical device import requires real device testing) | **NOT VERIFIED** |

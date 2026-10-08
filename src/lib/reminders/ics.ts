@@ -42,7 +42,6 @@ export interface IcsEventOptions {
   address?: string | null;
   googleMapsUrl: string;
   visitStartUtc: Date;
-  visitEndUtc?: Date;
   nowUtc?: Date;
   locale: SupportedLocale;
 }
@@ -50,6 +49,7 @@ export interface IcsEventOptions {
 /**
  * Generates an RFC 5545-compliant .ics file string with CRLF line endings,
  * UTC timestamps, and a 30-minute VALARM notification.
+ * Omits DTEND to avoid fabricating visit duration.
  */
 export function generateIcsContent(options: IcsEventOptions): string {
   const {
@@ -58,14 +58,12 @@ export function generateIcsContent(options: IcsEventOptions): string {
     address,
     googleMapsUrl,
     visitStartUtc,
-    visitEndUtc = new Date(visitStartUtc.getTime() + 60 * 60 * 1000), // Default 1 hour duration
     nowUtc = new Date(),
     locale,
   } = options;
 
   const dtstamp = formatIcsTimestamp(nowUtc);
   const dtstart = formatIcsTimestamp(visitStartUtc);
-  const dtend = formatIcsTimestamp(visitEndUtc);
 
   const summaryText = translate(locale, "reminder.icsSummary", { name: placeName });
 
@@ -94,7 +92,6 @@ export function generateIcsContent(options: IcsEventOptions): string {
     `UID:${uid}`,
     `DTSTAMP:${dtstamp}`,
     `DTSTART:${dtstart}`,
-    `DTEND:${dtend}`,
     `SUMMARY:${escapedSummary}`,
     `DESCRIPTION:${escapedDescription}`,
   ];

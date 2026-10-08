@@ -63,6 +63,10 @@ describe("LA CÀ ĐÀ NẴNG — M9-B Calendar Reminder MVP Suite", () => {
     localStorage.setItem(LOCALE_STORAGE_KEY, "vi");
     document.documentElement.lang = "vi";
     vi.restoreAllMocks();
+
+    global.URL.createObjectURL = vi.fn().mockReturnValue("blob:mock-url-1234");
+    global.URL.revokeObjectURL = vi.fn();
+    vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(() => {});
   });
 
   afterEach(() => {
@@ -116,6 +120,30 @@ describe("LA CÀ ĐÀ NẴNG — M9-B Calendar Reminder MVP Suite", () => {
         </LocaleProvider>
       );
       expect(screen.queryByRole("button", { name: /Nhắc tôi/i })).not.toBeInTheDocument();
+    });
+
+    it("never renders a persistent 'Đã lên lịch' badge even when an export record exists in localStorage", () => {
+      saveReminderRecord({
+        reminder_id: "test-existing-uid",
+        place_id: 101,
+        place_name: "Bánh mì Bà Lan",
+        scheduled_visit_at_utc: "2026-10-08T12:00:00.000Z",
+        lead_time_minutes: 30,
+        locale: "vi",
+        created_at_utc: "2026-10-08T10:00:00.000Z",
+        calendar_exported_at_utc: "2026-10-08T10:00:00.000Z",
+      });
+
+      render(
+        <LocaleProvider>
+          <PlaceCard place={mockPlaceEat} intent="EAT" preference="an_ngon" />
+        </LocaleProvider>
+      );
+
+      // Verify no misleading badge claiming scheduled/added status
+      expect(screen.queryByText(/Đã lên lịch/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/Scheduled/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/Added to calendar/i)).not.toBeInTheDocument();
     });
   });
 
@@ -240,9 +268,8 @@ describe("LA CÀ ĐÀ NẴNG — M9-B Calendar Reminder MVP Suite", () => {
       expect(escaped).toBe("Quán ăn A\\, B\\; C \\\\ D\\nĐịa chỉ mới\\nĐà Nẵng");
     });
 
-    it("generates valid RFC 5545 calendar with CRLF, UTC Z timestamps, and VALARM -PT30M", () => {
+    it("generates valid RFC 5545 calendar with CRLF, UTC Z timestamps, and VALARM -PT30M without fabricated DTEND", () => {
       const visitUtc = new Date("2026-10-08T12:00:00.000Z");
-      const endUtc = new Date("2026-10-08T13:00:00.000Z");
       const nowUtc = new Date("2026-10-08T08:00:00.000Z");
 
       const ics = generateIcsContent({
@@ -252,7 +279,6 @@ describe("LA CÀ ĐÀ NẴNG — M9-B Calendar Reminder MVP Suite", () => {
         address: "62 Trưng Nữ Vương, Hải Châu, Đà Nẵng",
         googleMapsUrl: "https://maps.google.com/?cid=12345",
         visitStartUtc: visitUtc,
-        visitEndUtc: endUtc,
         nowUtc,
         locale: "vi",
       });
@@ -268,7 +294,8 @@ describe("LA CÀ ĐÀ NẴNG — M9-B Calendar Reminder MVP Suite", () => {
       expect(lines).toContain("UID:test-uuid-1234@laca-danang");
       expect(lines).toContain("DTSTAMP:20261008T080000Z");
       expect(lines).toContain("DTSTART:20261008T120000Z");
-      expect(lines).toContain("DTEND:20261008T130000Z");
+      // DTEND must NOT be fabricated per M9-B.1 contract
+      expect(ics).not.toContain("DTEND");
       expect(lines).toContain("SUMMARY:Ghé thăm Bánh mì Bà Lan (La Cà Đà Nẵng)");
       expect(lines).toContain("LOCATION:62 Trưng Nữ Vương\\, Hải Châu\\, Đà Nẵng");
 
@@ -398,6 +425,49 @@ describe("LA CÀ ĐÀ NẴNG — M9-B Calendar Reminder MVP Suite", () => {
       expect(saveReminderRecord(record)).toBe(false);
 
       setItemSpy.mockRestore();
+    });
+
+    it("confirms local record schema does not include delivered, sent, calendar_synced, or imported statuses", () => {
+      const record: LocalReminderRecord = {
+        reminder_id: "test-id-1",
+        place_id: 101,
+        place_name: "Bánh mì Bà Lan",
+        scheduled_visit_at_utc: "2026-10-08T12:00:00.000Z",
+        lead_time_minutes: 30,
+        locale: "vi",
+        created_at_utc: "2026-10-08T10:00:00.000Z",
+        calendar_exported_at_utc: "2026-10-08T10:00:00.000Z",
+      };
+      saveReminderRecord(record);
+
+      const saved = getReminderForPlace(101) as any;
+      expect(saved.delivered).toBeUndefined();
+      expect(saved.sent).toBeUndefined();
+      expect(saved.calendar_synced).toBeUndefined();
+      expect(saved.imported).toBeUndefined();
+      expect(saved.dismissed).toBeUndefined();
+    });
+
+    it("displays truthful post-export confirmation telling user to open and save in calendar app", async () => {
+      render(
+        <LocaleProvider>
+          <ReminderSheet place={mockPlaceEat} isOpen={true} onClose={() => {}} />
+        </LocaleProvider>
+      );
+
+      const exportBtn = screen.getByRole("button", { name: /Thêm vào lịch/i });
+      fireEvent.click(exportBtn);
+
+      await waitFor(() => {
+        expect(
+          screen.getByText("Đã tạo file lịch nhắc. Hãy mở và lưu sự kiện trong ứng dụng Lịch của bạn.")
+        ).toBeInTheDocument();
+      });
+
+      // Verify it does NOT claim false delivery or scheduled confirmation
+      expect(screen.queryByText(/La Cà will notify you/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/Reminder scheduled successfully/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/Added to your calendar/i)).not.toBeInTheDocument();
     });
   });
 

@@ -448,3 +448,35 @@ Report: [M4A_REAL_MAPPING_AUDIT](M4A_REAL_MAPPING_AUDIT.md). HEAD e39c7de65fc413
 7. **EXACT NEXT STEP**:
    - STOP — WAITING FOR OWNER REVIEW.
 
+## M9-B.1 Calendar Reminder Semantic Fix Handoff — 2026-10-08
+1. **Objective**: Apply three semantic corrections to the Calendar Reminder MVP export feature:
+   - Remove fabricated visit duration: VEVENT must strictly contain `DTSTART` and no invented `DTEND`.
+   - Remove misleading "Đã lên lịch" persistent badge from `PlaceCard.tsx`.
+   - Update post-export confirmation copy across `vi`, `en`, and `ko` to truthfully instruct opening/saving in Calendar app, without false claims of scheduling/delivery.
+   - Retain `localStorage` (`laca.reminders.v1`) strictly for local export initiation/configuration metadata (no `delivered`, `sent`, `calendar_synced`, `imported`).
+2. **Status**: COMPLETED & VERIFIED — ALL PASS.
+3. **Files Modified**:
+   - `src/lib/reminders/ics.ts`: Removed `visitEndUtc` option and `DTEND` generation from VEVENT.
+   - `src/components/results/PlaceCard.tsx`: Removed `hasReminder` state, `getReminderForPlace` query on mount, and persistent "Đã lên lịch" badge.
+   - `src/lib/i18n/messages.ts`: Updated `reminder.exportSuccess` in `vi`, `en`, and `ko`.
+   - `tests/reminders.test.tsx`: Expanded to 27 tests covering DTSTART-only RFC 5545, badge removal, truthful copy, and strict storage schema.
+   - Documentation: `docs/M9B_VERIFICATION.md`, `docs/DECISIONS.md` (Decisions 149–151), `docs/CURRENT_STATE.md`, `docs/HANDOFF_CURRENT.md`, `docs/AGENT_TASK_QUEUE.md`.
+4. **Validation Evidence**:
+   - `npx vitest run --exclude "**/curation.test.ts"`: 15 suites, **289 passed (289)**.
+   - `npm run lint`: 0 warnings, 0 errors.
+   - `npm run typecheck`: 0 errors.
+   - `npm run build`: Production build succeeded.
+   - `git diff --check`: Clean (0 whitespace errors).
+   - Dataset `src/data/curated/curated-places.json`: 100% clean (0 diff).
+   - Physical Calendar Import: NOT VERIFIED (requires physical mobile phone).
+5. **DO NOT REDO / DO NOT TOUCH**:
+   - Do not re-add `DTEND` or invent visit duration.
+   - Do not restore "Đã lên lịch" or claim calendar import status.
+   - Do not mutate Neon DB tables or schemas.
+   - Do not alter the 11 canonical M8 analytics events.
+   - Do not add Web Push, Service Worker, or Notification API calls.
+   - Do not push to remote repository (`origin`).
+6. **M9-B.1 Readiness**: DONE — READY FOR FINAL VERIFICATION.
+7. **EXACT NEXT STEP**:
+   - STOP — WAITING FOR OWNER REVIEW.
+

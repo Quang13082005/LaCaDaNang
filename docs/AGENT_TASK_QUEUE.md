@@ -31,6 +31,7 @@ M8-B.1 | Cloudflare Analytics Environment Fix | DONE | Current agent | Owner fee
 M9-A | Notifications Readiness Audit | DONE | Current agent | User authorization; M8-B.1 | STOP for review; audit report created | docs/M9A_NOTIFICATIONS_READINESS_AUDIT.md
 M9-A.1 | Reminder MVP Contract Lock | DONE | Current agent | User authorization; M9-A | STOP for review; contract locked | docs/M9A_NOTIFICATIONS_READINESS_AUDIT.md & DECISIONS.md (133–142)
 M9-B | Calendar Reminder MVP | DONE | Current agent | User authorization; M9-A.1 | STOP for review | docs/M9B_VERIFICATION.md (24/24 tests PASS; 286 total PASS; lint/typecheck/build PASS)
+M9-B.1 | Calendar Reminder Semantic Fix | DONE | Current agent | Owner feedback; M9-B | STOP for review | docs/M9B_VERIFICATION.md (27/27 tests PASS; 289 total PASS; lint/typecheck/build PASS)
 M11 | Time/location-aware NOW if supported | NOT_STARTED | Unassigned | User authorization; M10 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
 M12 | Full regression + responsive/preview | NOT_STARTED | Unassigned | User authorization; M11 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
 M13 | Release report; approval before release | NOT_STARTED | Unassigned | User authorization; M12 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
@@ -252,4 +253,17 @@ Report: [M9B_VERIFICATION](M9B_VERIFICATION.md).
   - Live browser verified at 320px, 390px, 393px, 430px: 0 horizontal overflow, >=44px touch targets.
   - Physical Calendar Import: NOT VERIFIED (requires physical mobile device).
 - Exact Next Step: STOP — Waiting for Owner review.
+
+## M9-B.1 Calendar Reminder Semantic Fix Completed — 2026-10-08
+Report: [M9B_VERIFICATION](M9B_VERIFICATION.md) & [DECISIONS](DECISIONS.md) (Decisions 149–151).
+- Status: COMPLETED & VERIFIED — ALL PASS.
+- Deliverables:
+  - Canonical VEVENT in `src/lib/reminders/ics.ts` contains strictly `DTSTART:<instant>`; fabricated `DTEND` completely removed.
+  - Removed misleading "Đã lên lịch" persistent badge from `src/components/results/PlaceCard.tsx`.
+  - Truthful post-export confirmation copy across `vi`, `en`, `ko` instructing users to open and save the event in their Calendar app.
+  - `localStorage` record schema strictly holds export configuration without claiming `delivered`, `sent`, `calendar_synced`, or `imported`.
+- Quality Gates:
+  - 289/289 vitest tests PASS across 15 suites (27 dedicated reminder tests).
+  - Lint PASS, typecheck PASS, build PASS, dataset clean.
+- Next step: STOP — Waiting for Owner review.
 

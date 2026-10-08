@@ -292,3 +292,30 @@ Report: [M9B_VERIFICATION](M9B_VERIFICATION.md).
   - Physical Calendar Import: NOT VERIFIED (requires physical mobile device).
 - Exact Next Step: STOP — Waiting for Owner review.
 
+## M9-B.1 Calendar Reminder Semantic Fix Completed — 2026-10-08
+Report: [M9B_VERIFICATION](M9B_VERIFICATION.md) & [DECISIONS](DECISIONS.md) (Decisions 149–151).
+- Status: COMPLETED & VERIFIED — ALL PASS.
+- Semantic Corrections:
+  1. Removed Fabricated Visit Duration: Canonical VEVENT in `src/lib/reminders/ics.ts` contains strictly `DTSTART:<scheduled visit instant UTC>` and completely omits `DTEND`. La Cà does not invent visit duration or assume 1 hour stay.
+  2. Removed Misleading "Đã lên lịch" Badge: Removed persistent "Đã lên lịch" status badge from `src/components/results/PlaceCard.tsx`. `localStorage` (`laca.reminders.v1`) is retained solely for export configuration/repeat replacement metadata without implying calendar synchronization.
+  3. Truthful Post-Export Copy: One-time toast/confirmation updated across all 3 locales:
+     - `vi`: "Đã tạo file lịch nhắc. Hãy mở và lưu sự kiện trong ứng dụng Lịch của bạn."
+     - `en`: "Calendar reminder created. Open and save the event in your Calendar app."
+     - `ko`: "캘린더 알림 파일이 생성되었습니다. 캘린더 앱에서 일정을 열고 저장해 주세요."
+     - Strictly eliminated misleading claims ("Reminder scheduled successfully", "La Cà will notify you", "Added to your calendar").
+- Preserved Contracts:
+  - 0 Notification API (`Notification.requestPermission`, `new Notification`).
+  - 0 Service Workers, Push API, or background tasks.
+  - 0 Neon DB mutations (content tables remain at 3,079 rows; analytics_events schema untouched).
+  - Exactly 11 canonical analytics events intact (0 reminder events added).
+  - RFC 5545 format intact: CRLF `\r\n`, UTF-8, UTC `Z` timestamp, `VALARM` (`TRIGGER:-PT30M`, `ACTION:DISPLAY`), Google Maps URL.
+- Quality Gates & Automated Tests:
+  - 289/289 vitest tests PASS across 15 suites (27 dedicated reminder tests in `tests/reminders.test.tsx`).
+  - `npm run lint`: PASS (0 warnings, 0 errors).
+  - `npm run typecheck`: PASS (0 errors).
+  - `npm run build`: PASS (production build succeeds).
+  - `git diff --check`: PASS (clean).
+  - `curated-places.json`: 0 diff (untouched).
+- Physical Calendar Import: NOT VERIFIED (requires physical mobile device).
+- Exact Next Step: STOP — Waiting for Owner review.
+
