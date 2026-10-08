@@ -19,8 +19,8 @@ M5-A | GPS / Nearby readiness audit | DONE | Current agent | User authorization;
 M5-B | GPS + nearby/server ranking runtime | DONE | Current agent | User authorization; M5-A | STOP for review | lint/typecheck/183 tests/build/live smoke PASS; M5B_VERIFICATION.md
 M6-A | Mentor Mobile UX / One-Hand Audit | DONE | Current agent | M5-B | STOP for review | Audit report created; M6A_MENTOR_ONE_HAND_UX_AUDIT.md
 M6-B | One-Hand Ergonomics & Bottom Action Bar | DONE | Current agent | User authorization; M6-A | STOP for review | lint/typecheck/196 tests/build/live visual smoke PASS; M6B_VERIFICATION.md
-M7 | Stable one-thumb UX | NOT_STARTED | Unassigned | User authorization; M6 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
-M8 | VI/EN/KO runtime + Auto | NOT_STARTED | Unassigned | User authorization; M7 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
+M7-A | i18n Runtime Readiness Audit | DONE | Current agent | User authorization; M6-B | STOP for review; audit report created | docs/M7A_I18N_RUNTIME_READINESS_AUDIT.md
+M7-B | VI/EN/KO runtime + Auto & Switcher | NOT_STARTED | Unassigned | User authorization; M7-A | Follow M7-A audit contract | Layer tests + lint/typecheck/build
 M9 | Analytics runtime | NOT_STARTED | Unassigned | User authorization; M8 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
 M10 | Notification reminder MVP | NOT_STARTED | Unassigned | User authorization; M9 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
 M11 | Time/location-aware NOW if supported | NOT_STARTED | Unassigned | User authorization; M10 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
@@ -78,3 +78,16 @@ Report: [M6B_VERIFICATION](M6B_VERIFICATION.md).
 - Content clearance: Added `pb-28 sm:pb-32 pb-[calc(7rem+env(safe-area-inset-bottom,0px))]` ensuring final card and Google Maps CTA are 100% visible and unobscured.
 - All validation (lint PASS, typecheck PASS, 196/196 tests PASS across 11 suites including 13 new one-hand UX tests, build PASS in 4.4s, browser visual verification 320–768px PASS) ALL PASS. Scroll-back-to-control = 0.
 - Reconciliation summary: M6-B DONE; selective local commit authorized; STOP for user review.
+## M7-A i18n Runtime Readiness Audit Completed — 2026-10-08
+Report: [M7A_I18N_RUNTIME_READINESS_AUDIT](M7A_I18N_RUNTIME_READINESS_AUDIT.md).
+- Status: AUDIT ONLY — COMPLETED. Zero modifications to `src/` or `tests/`. Database READ-ONLY verification only.
+- Existing i18n foundation: Pure BCP-47 resolver in `src/lib/i18n/locales.ts` and 27 typed keys in `src/lib/i18n/messages.ts` with 22 vitest tests passing in `tests/i18n.test.ts`. Zero active runtime usage in frontend components.
+- Database translations (Neon): 500/500 places (100%) have `vi`, `en`, and `ko` rows in `place_translations` (1,500 total rows); venue proper names are identical across languages for Da Nang authenticity, while `primary_type_label` is fully localized. 36/36 tags (100%) have `vi`, `en`, and `ko` rows in `tag_translations` (108 total rows).
+- Discovery API: `GET /api/discovery` accepts `locale` (`vi`, `en`, `ko`, default: `vi`); invalid returns 400. Repository joins requested locale with Vietnamese fallback.
+- Frontend audit: 45+ user-facing strings hardcoded in Vietnamese identified; `DiscoveryResults.tsx` hardcodes `locale: "vi"`; `<html lang="vi">` in `layout.tsx` is static.
+- Architecture locked:
+  - Precedence: Manual user choice (persisted in `localStorage` under `laca.ui-locale.v1`) > browser `navigator.languages` > default `vi`.
+  - Hydration safety: Server renders `vi`, client resolves browser/stored choice in `useEffect` to prevent SSR mismatch.
+  - Switcher placement: Top utility bar / header (not in bottom thumb zone) to protect M6-B `BottomActionBar` ergonomics.
+  - Text expansion risks: Mitigation planned for 320px viewport in `BottomActionBar`.
+- Reconciliation summary: M7-A DONE; selective local commit authorized; STOP for user review before M7-B.

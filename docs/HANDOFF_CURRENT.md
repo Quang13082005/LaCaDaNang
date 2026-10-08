@@ -158,3 +158,19 @@ Report: [M4A_REAL_MAPPING_AUDIT](M4A_REAL_MAPPING_AUDIT.md). HEAD e39c7de65fc413
    - STOP for user review. Await explicit authorization before proceeding to any subsequent milestone.
 7. **Reconciliation status**:
    - M6-B DONE; selective local commit authorized; STOP.
+## M7-A i18n Runtime Readiness Audit Handoff — 2026-10-08
+1. **Objective**: Conduct exhaustive technical audit of i18n readiness across source, database, API, and frontend UI for Vietnamese (`vi`), English (`en`), and Korean (`ko`).
+2. **Status**: AUDIT ONLY — COMPLETED. Zero modifications to `src/` or `tests/`. Report at `docs/M7A_I18N_RUNTIME_READINESS_AUDIT.md`.
+3. **Findings Summary**:
+   - Source: `src/lib/i18n/locales.ts` and `messages.ts` provide pure BCP-47 resolver and 27 typed keys (22 tests PASS). Zero current runtime usage in UI.
+   - Database: 500 places in Neon have 1,500 translation rows (`vi`, `en`, `ko`, 100% coverage). Venue names are kept authentic (identical to Vietnamese proper name); primary type labels are fully translated. 36 tags have 108 translation rows (`vi`, `en`, `ko`, 100% coverage).
+   - API: `GET /api/discovery` accepts `locale` (`vi`, `en`, `ko`, default: `vi`); repository joins requested locale with Vietnamese fallback.
+   - Frontend: `DiscoveryResults.tsx` hardcodes `locale: "vi"`. 45+ UI strings hardcoded in Vietnamese identified. `<html lang="vi">` is static.
+   - UX & Ergonomics: Language switcher must reside in top utility bar / header (touch target >= 44px) to avoid compromising the M6-B bottom thumb zone (`BottomActionBar`).
+   - SSR Safety: Server renders default `vi`, client resolves browser/stored locale post-hydration to eliminate React hydration mismatch risk.
+4. **DO NOT REDO**:
+   - Do not re-audit M7-A.
+   - Do not modify application source or tests until M7-B is explicitly authorized.
+   - Do not modify database or mutate translations.
+5. **EXACT NEXT STEP**:
+   - STOP for user review. Await explicit authorization before implementing M7-B (Runtime i18n with VI/EN/KO and language switcher).
