@@ -76,5 +76,16 @@ Report: [M4A_REAL_MAPPING_AUDIT](M4A_REAL_MAPPING_AUDIT.md). HEAD e39c7de65fc413
 6. **EXACT NEXT STEP**:
    - STOP for user review. Await explicit instructions on CAFE UI/mapping or next authorized milestone.
 7. **Reconciliation status**:
-   - M4-B DONE; commit `f319ae42825eea540281c499486a43d7131f7c8f`; EAT/GO/STAY use Neon; CAFE NOT_STARTED; next milestone requires explicit authorization. STOP.
+   - M4-B DONE; commit `f319ae42825eea540281c499486a43d7131f7c8f`; EAT/GO/STAY use Neon; CAFE NOT_STARTED.
 
+## M5-A / M5-A.1 GPS / Nearby Readiness Audit & Contract Lock — 2026-10-08
+- Audit & Contract Lock report: [M5A_NEARBY_READINESS_AUDIT.md](M5A_NEARBY_READINESS_AUDIT.md).
+- Status: AUDIT & CONTRACT LOCK — VERIFIED. Zero changes to `src/` or `tests/`. Zero DB mutations.
+- Candidate retrieval: M5-B repository must bypass pre-geo LIMIT 3 for nearby mode to retrieve all candidates.
+- Precision: Haversine full float precision for radius checks (`<= 1.0`, `<= 3.0`, `<= 5.0`) & sorting; 1 decimal only for final display.
+- Accuracy: `accuracy <= 1000m` uses Nearby; `> 1000m` warns and falls back to all-city discovery.
+- Expansion rule: Strictly `evaluate <= 1km (>=3 ? R=1) -> evaluate <= 3km (>=3 ? R=3) -> evaluate <= 5km (R=5)`; max 3 places, no fake padding.
+- Ranking: Locked to `distanceRawKm ASC, featured DESC, review_count DESC NULLS LAST, rating DESC NULLS LAST, id ASC`.
+- Empty state: Truthful 0–2 results; 0 results shows `"Không tìm thấy địa điểm phù hợp trong 5 km."` + CTA `"Xem trên toàn Đà Nẵng"`.
+- Privacy: No app logging, no analytics, no DB/storage persistence, no URL GPS leakage, no coordinate echo in API response.
+- Next step: STOP for user review before M5-B implementation. Await explicit authorization to implement M5-B.

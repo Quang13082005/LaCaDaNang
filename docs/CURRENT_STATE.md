@@ -37,3 +37,15 @@ Report: [M4B_VERIFICATION](M4B_VERIFICATION.md).
 - Local selective checkpoint completed: `f319ae42825eea540281c499486a43d7131f7c8f` — `feat: connect GO and STAY to Neon discovery`.
 - **Reconciliation summary**: M4-B DONE; commit `f319ae42825eea540281c499486a43d7131f7c8f`; EAT/GO/STAY use Neon; CAFE NOT_STARTED; next milestone requires explicit authorization. STOP.
 
+## M5-A / M5-A.1 GPS / Nearby Readiness Audit & Contract Lock — 2026-10-08
+Report: [M5A_NEARBY_READINESS_AUDIT](M5A_NEARBY_READINESS_AUDIT.md).
+- Geo helpers: Pure TS Haversine in `src/lib/geo/` (18/18 vitest tests PASS).
+- DB coordinates: 500/500 places in Neon valid, non-null, unique coordinates.
+- Candidate retrieval contract: M5-B must bypass pre-geo LIMIT 3 in repository for Nearby mode to evaluate all candidates before distance filtering.
+- Distance precision: Full floating-point precision for radius boundary filtering and sorting; 1 decimal only for final display.
+- GPS accuracy: `accuracy <= 1000m` uses Nearby; `> 1000m` warns and falls back to all-city discovery.
+- Radius escalation locked: Strictly `evaluate <= 1km (>=3 ? R=1) -> evaluate <= 3km (>=3 ? R=3) -> evaluate <= 5km (R=5)`; max 3 places, no fake padding.
+- Nearby ranking locked: `distanceRawKm ASC, featured DESC, review_count DESC NULLS LAST, rating DESC NULLS LAST, id ASC`.
+- Empty state: Truthful 0–2 results; 0 results shows `"Không tìm thấy địa điểm phù hợp trong 5 km."` + CTA `"Xem trên toàn Đà Nẵng"`.
+- Privacy contract: No app logging, no analytics, no DB/storage persistence, no URL GPS leakage, no coordinate echo in API response.
+- Status: Docs-only contract lock. STOP before M5-B implementation.

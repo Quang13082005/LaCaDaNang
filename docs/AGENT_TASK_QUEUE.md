@@ -15,7 +15,8 @@ M3-B | EAT frontend + no-image card | DONE | Completed 2026-10-07 | M3-A + user 
 M4-A | Real data mapping audit | DONE | Completed 2026-10-07 | Explicit user authorization | — | SELECT-only live audit; M4A_REAL_MAPPING_AUDIT.md
 M4-B | GO & STAY Neon discovery | DONE | Current agent | M4-A + user authorization | STOP for review | lint/typecheck/169 tests/build/live smoke PASS; M4B_VERIFICATION.md
 M4-C | CAFE UI & mapping | NOT_STARTED | Unassigned | Explicit user authorization | Product decision on CAFE UI & mapping | Await scope authorization
-M5 | GPS + nearby/server ranking | NOT_STARTED | Unassigned | User authorization; M4 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
+M5-A | GPS / Nearby readiness audit | DONE | Current agent | User authorization; M4-B | STOP for review; audit report created | docs/M5A_NEARBY_READINESS_AUDIT.md
+M5-B | GPS + nearby/server ranking runtime | NOT_STARTED | Unassigned | User authorization; M5-A | Follow M5-A proposal; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
 M6 | Broader card review | NOT_STARTED | Unassigned | User authorization | Basic shared no-image card completed in M3-B; do not recreate image removal; review remaining milestone scope only | M3B_VERIFICATION.md
 M7 | Stable one-thumb UX | NOT_STARTED | Unassigned | User authorization; M6 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
 M8 | VI/EN/KO runtime + Auto | NOT_STARTED | Unassigned | User authorization; M7 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
@@ -39,4 +40,17 @@ Report: [M4A_REAL_MAPPING_AUDIT](M4A_REAL_MAPPING_AUDIT.md). HEAD e39c7de65fc413
 Report: [M4B_VERIFICATION](M4B_VERIFICATION.md).
 M4-B connected GO and STAY to live Neon discovery with verified tag mappings; DiscoveryResults generalized; STAY chips updated; EAT preserved; CAFE disabled. All validation (lint, typecheck, 169/169 tests, build, 8 GO/STAY + 3 EAT live smoke, responsive 320–1280px) ALL PASS. Selective checkpoint completed: `f319ae42825eea540281c499486a43d7131f7c8f` — `feat: connect GO and STAY to Neon discovery`.
 - **Reconciliation summary**: M4-B DONE; commit `f319ae42825eea540281c499486a43d7131f7c8f`; EAT/GO/STAY use Neon; CAFE NOT_STARTED; next milestone requires explicit authorization. STOP before M5.
+
+## M5-A / M5-A.1 GPS / Nearby readiness audit & contract lock — 2026-10-08
+Report: [M5A_NEARBY_READINESS_AUDIT](M5A_NEARBY_READINESS_AUDIT.md).
+- Geo helpers: Pure TS Haversine in `src/lib/geo/`; 18/18 vitest tests PASS; 0 runtime dependencies.
+- DB coordinates: 500/500 places valid, non-null, unique coordinates; zero nulls/invalid.
+- Candidate retrieval contract: M5-B repository must bypass pre-geo LIMIT 3 for nearby mode to retrieve all candidates.
+- Distance precision: Full floating-point precision for radius boundary filtering and sorting; 1 decimal only for final display.
+- GPS accuracy: `accuracy <= 1000m` uses Nearby; `> 1000m` warns and falls back to all-city discovery.
+- Radius escalation locked: Strictly `evaluate <= 1km (>=3 ? R=1) -> evaluate <= 3km (>=3 ? R=3) -> evaluate <= 5km (R=5)`; max 3 places, no fake padding.
+- Nearby ranking locked: `distanceRawKm ASC, featured DESC, review_count DESC NULLS LAST, rating DESC NULLS LAST, id ASC`.
+- Empty state: Truthful 0–2 results; 0 results shows `"Không tìm thấy địa điểm phù hợp trong 5 km."` + CTA `"Xem trên toàn Đà Nẵng"`.
+- Privacy contract: No app logging, no analytics, no DB/storage persistence, no URL GPS leakage, no coordinate echo in API response.
+- STOP for user review before M5-B implementation. Await explicit authorization to implement M5-B.
 
