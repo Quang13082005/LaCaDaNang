@@ -200,3 +200,13 @@ Real M3-B commit: `e39c7de65fc413f6561e0069642ba58f6bb95f0e`. Verified exact13 a
 150. **Removal of Misleading "Đã lên lịch" Badge:** Removed persistent visible badge on PlaceCard entirely. `localStorage` preserves export configuration without claiming external Calendar application synchronization or scheduled status.
 151. **Truthful Post-Export Wording:** Post-export confirmation instructs the user: *"Đã tạo file lịch nhắc. Hãy mở và lưu sự kiện trong ứng dụng Lịch của bạn."* (EN: *"Calendar reminder created. Open and save the event in your Calendar app."* / KO: *"캘린더 알림 파일이 생성되었습니다. 캘린더 앱에서 일정을 열고 저장해 주세요."*). Zero false claims of scheduled confirmation or delivery.
 
+## P1 Owner Physical One-Hand UX Fix Decisions (2026-10-09)
+152. **Root Cause of Owner One-Hand Reachability Failure:** Recognized that automated checks (>=44px touch targets, zero overflow, responsive scaling) do not guarantee physical thumb reach on real mobile phones. The single vertical column stack forced NOW and EAT above $y=400\text{px}$ into the upper Hard Reach Zone under an oversized hero.
+153. **Flat Layout & Prohibition of Raised Home Overlays:** Eliminated floating rounded sheets, draggable overlays, and permanent sheets under the hero. Home page is completely flat: compact hero ($124\text{px}$) $\to$ flat page background $\to$ flat "Chọn nhanh" header $\to$ 2x2 grid.
+154. **2x2 Grid Structure & DOM Ordering:** Adopted 2-column $\times$ 2-row layout (`grid-cols-2`). Strict DOM order preserved: `[NOW, EAT, GO, STAY]`. Row 1 = NOW & EAT; Row 2 = GO & STAY.
+155. **Visual Themes & Whole-Card Interaction:** Designed distinct pastel themes for all 4 cards (NOW: amber/yellow + Zap; EAT: peach/orange + Utensils; GO: soft blue + Compass; STAY: lavender + Bed). Entire card is a single `<button>` with `min-h-[148px]` and decorative wave SVG accents.
+156. **Elimination of Inline Accordion Shifting:** Prohibited inline accordion expansion under selected cards that pushes other intents off-screen. Preference selection moved into a temporary modal mobile bottom sheet (`PreferenceBottomSheet.tsx`).
+157. **Preference Bottom Sheet Accessibility & Interaction:** Sheet uses `role="dialog"`, `aria-modal="true"`, `id="preference-panel-active"`, $\ge 44\text{px}$ close button, Escape key, and backdrop dismiss. Home 2x2 grid behind it remains fully stable.
+158. **Physical Acceptance Status Distinction:** Explicitly documented that browser-verified layout is NOT physical device acceptance. Current status is strictly *BROWSER READY FOR OWNER PHYSICAL RETEST* until Owner physically confirms on device.
+
+

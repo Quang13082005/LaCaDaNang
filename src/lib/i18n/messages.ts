@@ -16,7 +16,13 @@ const vi = {
   "intent.now.badge": "Lịch trình mẫu",
   "intent.stay.badge": "Lưu trú hợp gu",
 
+  // Home Quick Select
+  "home.quickSelect.title": "Chọn nhanh",
+  "home.quickSelect.subtitle": "Khám phá Đà Nẵng theo nhu cầu của bạn",
+
   // Preferences
+  "preference.sheetTitle": "Chọn sở thích",
+  "preference.close": "Đóng",
   "preference.prompt": "Bạn muốn tìm chỗ thế nào?",
   "preference.companionPrompt": "Đi cùng ai:",
   "pref.an_ngon": "Ăn ngon",
@@ -140,7 +146,13 @@ export const UI_MESSAGES = {
     "intent.now.badge": "Sample itinerary",
     "intent.stay.badge": "Curated stays",
 
+    // Home Quick Select
+    "home.quickSelect.title": "Quick Select",
+    "home.quickSelect.subtitle": "Discover Da Nang tailored to your needs",
+
     // Preferences
+    "preference.sheetTitle": "Choose preference",
+    "preference.close": "Close",
     "preference.prompt": "What kind of place are you looking for?",
     "preference.companionPrompt": "Who are you going with?",
     "pref.an_ngon": "Delicious food",
@@ -258,7 +270,13 @@ export const UI_MESSAGES = {
     "intent.now.badge": "예시 일정",
     "intent.stay.badge": "맞춤 숙소",
 
+    // Home Quick Select
+    "home.quickSelect.title": "빠른 선택",
+    "home.quickSelect.subtitle": "원하는 방식으로 다낭을 둘러보세요",
+
     // Preferences
+    "preference.sheetTitle": "선호도 선택",
+    "preference.close": "닫기",
     "preference.prompt": "어떤 곳을 찾으시나요?",
     "preference.companionPrompt": "누구와 함께 가시나요?",
     "pref.an_ngon": "맛있는 음식",

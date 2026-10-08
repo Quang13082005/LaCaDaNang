@@ -319,3 +319,45 @@ Report: [M9B_VERIFICATION](M9B_VERIFICATION.md) & [DECISIONS](DECISIONS.md) (Dec
 - Physical Calendar Import: NOT VERIFIED (requires physical mobile device).
 - Exact Next Step: STOP — Waiting for Owner review.
 
+## P1 Owner Physical One-Hand UX Fix Completed — 2026-10-09
+Report: [P1_OWNER_ONE_HAND_UX_VERIFICATION](P1_OWNER_ONE_HAND_UX_VERIFICATION.md).
+- Status: **BROWSER READY FOR OWNER PHYSICAL RETEST** (Physical acceptance strictly NOT VERIFIED until Owner tests on real phone).
+- Problem Solved: Owner physical test on real phone failed one-thumb reachability because previous vertical stack placed NOW ($y \approx 180-276\text{px}$) and EAT ($y \approx 276-384\text{px}$) in the upper Hard Reach Zone under an oversized hero.
+- Implementation:
+  - Compact Hero: reduced mobile height to $124\text{px}$, keeping brand Da Nang / Dragon Bridge identity with `<h1>LA CÀ ĐÀ NẴNG</h1>`.
+  - Completely Flat Page Background: zero raised panels, zero floating sheets, zero drag handles, zero inline accordions.
+  - Flat "Chọn nhanh" Section: flat header with subtitle translated across `vi`, `en`, and `ko`.
+  - 2x2 Intent Grid: 2 columns $\times$ 2 rows (`grid grid-cols-2 gap-3.5`) in strict DOM order `[NOW, EAT, GO, STAY]`.
+    - NOW: soft amber/yellow (`Zap` icon, `#FEF08A`).
+    - EAT: soft peach/orange (`Utensils` icon, `#FED7AA`).
+    - GO: soft blue (`Compass` icon, `#BAE6FD`).
+    - STAY: soft lavender/purple (`Bed` icon, `#E9D5FF`).
+    - Whole-card clickable targets: interactive `<button>` with `min-h-[148px]`, meeting/exceeding $\ge 44\text{px}$.
+  - Mobile Preference Bottom Sheet (`PreferenceBottomSheet.tsx`):
+    - Tapping an intent opens modal sheet with `role="dialog"`, `aria-modal="true"`, `id="preference-panel-active"`.
+    - Clear title (`{intentLabel} · {sheetTitle}`), close button $\ge 44\text{px}$, Escape key & backdrop dismiss.
+    - Preference chips meet $\ge 44\text{px}$ touch targets.
+    - Home 2x2 grid behind sheet remains completely stable (no accordion shifting).
+- Preserved Contracts:
+  - 0 Neon DB mutations, 0 schema changes.
+  - Discovery API and 0–3 truthful results preserved.
+  - Nearby 1 km $\to$ 3 km $\to$ 5 km Haversine logic preserved.
+  - Analytics 11-event contract intact (`intent_selected`, `preference_selected` fire accurately).
+  - Calendar Reminder intact (P2 scope untouched).
+  - NOW flow preserves static sample itinerary ("Lịch trình mẫu nhanh").
+  - CAFE remains disabled.
+- Quality Gates & Validation:
+  - 298/298 vitest tests PASS across 15 suites (9 new dedicated P1 tests in `tests/one-hand-ux.test.tsx`).
+  - `npm run lint`: PASS (0 warnings, 0 errors).
+  - `npm run typecheck`: PASS (0 errors).
+  - `npm run build`: PASS (production build succeeds in 6.5s).
+  - `git diff --check`: PASS (clean).
+  - `src/data/curated/curated-places.json`: 0 diff.
+- Multi-Viewport Browser Measurements:
+  - 320x800, 375x812, 390x844, 393x852, 430x932 verified.
+  - Hero height: 124px. Grid Y-range: `[212.1px, 520.2px]`.
+  - All 4 intents visible without scroll across all mobile viewports.
+  - 0 horizontal overflow.
+- Exact Next Step: STOP — Waiting for Owner review and physical device testing.
+
+

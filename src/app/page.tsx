@@ -121,20 +121,19 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-slate-50/50 flex flex-col justify-between">
       {/* Centered Mobile-First & Desktop-Balanced Container */}
-      <main className="w-full max-w-lg md:max-w-4xl mx-auto px-4 sm:px-6 py-5 sm:py-8 flex-1">
-        {/* Hero Section: stays stable in selection state to prevent ~180px upward layout shift */}
+      <main className="w-full max-w-lg md:max-w-4xl mx-auto px-4 sm:px-6 py-3.5 sm:py-6 flex-1">
+        {/* Hero Section: stays stable in selection state to prevent upward layout shift */}
         {selectedPreference === null && <Hero />}
 
-        {/* 4 Primary Intents Grid & Expanding In-Place Preference Panels */}
+        {/* 4 Primary Intents Grid & Preference Bottom Sheet */}
         {selectedPreference === null && (
-          <div ref={selectionRef} className="mt-2">
+          <div ref={selectionRef} className="mt-1">
             <IntentGrid
               selectedIntent={selectedIntent}
               selectedPreference={selectedPreference}
               onSelectIntent={handleSelectIntent}
               onSelectPreference={handleSelectPreference}
             />
-
           </div>
         )}
 

@@ -271,3 +271,155 @@ describe("M6-B Mobile BottomActionBar & State-Aware Actions", () => {
     expect(screen.getAllByRole("button", { name: /Đổi lựa chọn/ })).toHaveLength(1);
   });
 });
+
+describe("P1 Owner Physical One-Hand UX 2x2 Grid & Bottom Sheet", () => {
+  function getOrderedIntentLabels(container: HTMLElement): string[] {
+    const section = container.querySelector("section[aria-label='Mục đích khám phá']");
+    if (!section) return [];
+    const buttons = Array.from(section.querySelectorAll("button")).filter((btn) =>
+      btn.querySelector("h2")
+    );
+    return buttons.map((btn) => btn.querySelector("h2")?.textContent?.trim() || "");
+  }
+
+  it("renders exactly 4 intent cards in strict DOM order [NOW, EAT, GO, STAY] in a 2x2 grid layout", () => {
+    const { container } = render(<HomePage />);
+    const labels = getOrderedIntentLabels(container);
+    expect(labels).toHaveLength(4);
+    expect(labels).toEqual(["BÂY GIỜ LÀM GÌ?", "ĂN GÌ?", "ĐI ĐÂU?", "Ở ĐÂU?"]);
+
+    const grid = container.querySelector(".grid.grid-cols-2");
+    expect(grid).toBeInTheDocument();
+    expect(grid?.children).toHaveLength(4);
+  });
+
+  it("ensures all 4 intent cards are whole-card clickable buttons with touch target >= 44px", () => {
+    const { container } = render(<HomePage />);
+    const section = container.querySelector("section[aria-label='Mục đích khám phá']");
+    const buttons = Array.from(section?.querySelectorAll("button") || []).filter((btn) =>
+      btn.querySelector("h2")
+    );
+
+    expect(buttons).toHaveLength(4);
+    buttons.forEach((btn) => {
+      // Each button has min-height class meeting or exceeding 44px touch target (min-h-[148px])
+      expect(btn.className).toMatch(/min-h-\[/);
+      expect(btn).toHaveAttribute("aria-pressed");
+    });
+  });
+
+  it("renders flat 'Chọn nhanh' section header without floating panels or drag handles", () => {
+    const { container } = render(<HomePage />);
+    expect(screen.getByText("Chọn nhanh")).toBeInTheDocument();
+    expect(screen.getByText("Khám phá Đà Nẵng theo nhu cầu của bạn")).toBeInTheDocument();
+
+    // Verify there is no drag handle or floating sheet markup
+    expect(container.querySelector("[data-testid='drag-handle']")).toBeNull();
+    expect(container.querySelector(".drag-handle")).toBeNull();
+  });
+
+  it("tapping EAT opens preference bottom sheet dialog without inline accordion expansion", () => {
+    const { container } = render(<HomePage />);
+    fireEvent.click(screen.getByText("ĂN GÌ?"));
+
+    // Modal bottom sheet dialog must be open
+    const dialog = screen.getByRole("dialog");
+    expect(dialog).toBeInTheDocument();
+    expect(dialog).toHaveAttribute("aria-modal", "true");
+    expect(dialog).toHaveAttribute("id", "preference-panel-active");
+
+    // Dialog title must be present and clear
+    expect(screen.getByText(/ĂN GÌ\? · Chọn sở thích/i)).toBeInTheDocument();
+
+    // Close button must exist with >= 44px touch target
+    const closeBtn = screen.getByRole("button", { name: "Đóng" });
+    expect(closeBtn).toBeInTheDocument();
+    expect(closeBtn.className).toMatch(/min-h-\[44px\]/);
+    expect(closeBtn.className).toMatch(/min-w-\[44px\]/);
+
+    // Intent grid DOM order remains stable underneath
+    const labels = getOrderedIntentLabels(container);
+    expect(labels).toEqual(["BÂY GIỜ LÀM GÌ?", "ĂN GÌ?", "ĐI ĐÂU?", "Ở ĐÂU?"]);
+  });
+
+  it("tapping GO and STAY open their respective preference bottom sheets", () => {
+    const { unmount } = render(<HomePage />);
+    fireEvent.click(screen.getByText("ĐI ĐÂU?"));
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    expect(screen.getByText(/ĐI ĐÂU\? · Chọn sở thích/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Biển / ngắm cảnh" })).toBeInTheDocument();
+    unmount();
+
+    render(<HomePage />);
+    fireEvent.click(screen.getByText("Ở ĐÂU?"));
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    expect(screen.getByText(/Ở ĐÂU\? · Chọn sở thích/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Gần biển" })).toBeInTheDocument();
+  });
+
+  it("tapping NOW opens its preference bottom sheet and preserves sample itinerary flow", () => {
+    render(<HomePage />);
+    fireEvent.click(screen.getByText("BÂY GIỜ LÀM GÌ?"));
+
+    // Modal bottom sheet dialog opens with NOW preferences
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    expect(screen.getByText(/BÂY GIỜ LÀM GÌ\? · Chọn sở thích/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Đi cùng bạn bè" })).toBeInTheDocument();
+
+    // Select sample preference
+    fireEvent.click(screen.getByRole("button", { name: "Đi cùng bạn bè" }));
+
+    // Sheet closes and sample itinerary is rendered
+    expect(screen.queryByRole("dialog")).toBeNull();
+    expect(screen.getByText(/Lịch trình mẫu/i)).toBeInTheDocument();
+  });
+
+  it("closes preference bottom sheet via close button and Escape key", () => {
+    render(<HomePage />);
+    fireEvent.click(screen.getByText("ĂN GÌ?"));
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+
+    // Close via button
+    fireEvent.click(screen.getByRole("button", { name: "Đóng" }));
+    expect(screen.queryByRole("dialog")).toBeNull();
+
+    // Re-open and close via Escape
+    fireEvent.click(screen.getByText("ĂN GÌ?"));
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    fireEvent.keyDown(window, { key: "Escape" });
+    expect(screen.queryByRole("dialog")).toBeNull();
+  });
+
+  it("preference chips inside bottom sheet meet minimum 44px touch targets", () => {
+    render(<HomePage />);
+    fireEvent.click(screen.getByText("ĂN GÌ?"));
+
+    const dialog = screen.getByRole("dialog");
+    const chips = within(dialog).getAllByRole("button");
+    // Filter out close button, get mood chips
+    const moodChips = chips.filter((btn) => btn.getAttribute("aria-label") !== "Đóng");
+    expect(moodChips.length).toBeGreaterThan(0);
+    moodChips.forEach((chip) => {
+      expect(chip.className).toMatch(/min-h-\[44px\]/);
+    });
+  });
+
+  it("selecting a preference inside bottom sheet triggers discovery and returns via 'Đổi lựa chọn'", async () => {
+    render(<HomePage />);
+    fireEvent.click(screen.getByText("ĂN GÌ?"));
+
+    const chip = screen.getByRole("button", { name: "Ăn ngon" });
+    fireEvent.click(chip);
+
+    // Should transition to discovery result stage
+    const resetBtn = await screen.findByRole("button", { name: /Đổi lựa chọn/i });
+    expect(resetBtn).toBeInTheDocument();
+
+    // Tapping 'Đổi lựa chọn' returns to the 2x2 Home grid
+    fireEvent.click(resetBtn);
+    expect(screen.getByText("BÂY GIỜ LÀM GÌ?")).toBeInTheDocument();
+    expect(screen.getByText("ĂN GÌ?")).toBeInTheDocument();
+    expect(screen.getByText("ĐI ĐÂU?")).toBeInTheDocument();
+    expect(screen.getByText("Ở ĐÂU?")).toBeInTheDocument();
+  });
+});

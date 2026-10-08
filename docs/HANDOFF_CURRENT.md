@@ -480,3 +480,34 @@ Report: [M4A_REAL_MAPPING_AUDIT](M4A_REAL_MAPPING_AUDIT.md). HEAD e39c7de65fc413
 7. **EXACT NEXT STEP**:
    - STOP — WAITING FOR OWNER REVIEW.
 
+## P1 Owner Physical One-Hand UX Fix Handoff — 2026-10-09
+1. **Objective**: Resolve Owner physical mobile one-thumb reachability failure by redesigning Home from a single vertical stack under an oversized hero into a compact hero followed by a completely flat page with a 2x2 intent grid (NOW, EAT, GO, STAY) and modal bottom sheet preference interactions.
+2. **Status**: **BROWSER READY FOR OWNER PHYSICAL RETEST** (Physical acceptance strictly NOT VERIFIED until Owner tests on real phone).
+3. **Completed**:
+   - Compact hero banner ($124\text{px}$ mobile) with Dragon Bridge branding and `<h1>LA CÀ ĐÀ NẴNG</h1>`.
+   - Completely flat page structure; zero raised panels, zero draggable sheets, zero inline accordions.
+   - Flat "Chọn nhanh" header with localized subtitle (`vi`, `en`, `ko`).
+   - 2x2 Intent Grid (`grid-cols-2`) with DOM order `[NOW, EAT, GO, STAY]`.
+   - Whole-card clickable buttons (`min-h-[148px]`, decorative vector wave accents, pastel color themes).
+   - Modal mobile bottom sheet (`PreferenceBottomSheet.tsx`, `role="dialog"`, `aria-modal="true"`, $\ge 44\text{px}$ close button, Escape key, backdrop dismiss, $\ge 44\text{px}$ mood chips).
+   - Preserved all business logic, Neon queries, Discovery API, 11-event analytics, Nearby 1-3-5km engine, and Calendar Reminder export.
+4. **Validation Evidence**:
+   - `npx vitest run --exclude "**/curation.test.ts"`: 15 suites, **298 passed (298)**.
+   - `npm run lint`: 0 warnings, 0 errors.
+   - `npm run typecheck`: 0 errors.
+   - `npm run build`: Production build succeeded in 6.5s.
+   - `git diff --check`: Clean.
+   - `curated-places.json`: 0 diff (unmodified).
+   - Multi-viewport browser measurements: all 4 intents visible without scroll across 320x800, 375x812, 390x844, 393x852, 430x932. Entire grid sits in $y \in [212.1\text{px}, 520.2\text{px}]$ (middle-lower thumb zone).
+5. **DO NOT REDO / DO NOT TOUCH**:
+   - Do not mutate Neon DB tables or schema.
+   - Do not push to remote (`origin`).
+   - Do not deploy production (`npm run deploy`).
+   - Do not alter Calendar Reminder implementation (P2 scope).
+   - Do not alter Nearby engine or insert places (P3 scope).
+   - Do not claim physical phone acceptance without Owner physical confirmation.
+6. **P1 Readiness**: BROWSER READY FOR OWNER PHYSICAL RETEST.
+7. **EXACT NEXT STEP**:
+   - STOP — WAITING FOR OWNER REVIEW.
+
+
