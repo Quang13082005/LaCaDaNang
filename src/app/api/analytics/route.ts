@@ -2,7 +2,6 @@ import { NextResponse, type NextRequest } from "next/server";
 import { validateClientAnalyticsPayload } from "@/lib/analytics/validator";
 import { insertAnalyticsEvent, resolveServerEnvironment } from "@/lib/analytics/db";
 
-export const runtime = "edge";
 export const dynamic = "force-dynamic";
 
 const MAX_BODY_BYTES = 2048; // 2 KB body limit
