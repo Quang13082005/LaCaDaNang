@@ -37,7 +37,6 @@ import { clampLimit, createPlaceRepository } from "@/lib/data/place-repository";
 import { resolvePreference } from "@/lib/data/preference-map";
 import { evaluateNearbyDiscovery } from "@/lib/geo/nearby-engine";
 
-export const runtime = "edge";
 // Disable Next.js body parsing (GET has none); opt out of data cache to ensure fresh reads.
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
