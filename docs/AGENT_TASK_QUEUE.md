@@ -20,6 +20,7 @@ M5-B | GPS + nearby/server ranking runtime | DONE | Current agent | User authori
 M6-A | Mentor Mobile UX / One-Hand Audit | DONE | Current agent | M5-B | STOP for review | Audit report created; M6A_MENTOR_ONE_HAND_UX_AUDIT.md
 M6-B | One-Hand Ergonomics & Bottom Action Bar | DONE | Current agent | User authorization; M6-A | STOP for review | lint/typecheck/196 tests/build/live visual smoke PASS; M6B_VERIFICATION.md
 M7-A | i18n Runtime Readiness Audit | DONE | Current agent | User authorization; M6-B | STOP for review; audit report created | docs/M7A_I18N_RUNTIME_READINESS_AUDIT.md
+M7-A.1 | i18n UX / Runtime Contract Lock | DONE | Current agent | User authorization; M7-A | STOP for review; contract locked | docs/DECISIONS.md (68–79)
 M7-B | VI/EN/KO runtime + Auto & Switcher | NOT_STARTED | Unassigned | User authorization; M7-A | Follow M7-A audit contract | Layer tests + lint/typecheck/build
 M9 | Analytics runtime | NOT_STARTED | Unassigned | User authorization; M8 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
 M10 | Notification reminder MVP | NOT_STARTED | Unassigned | User authorization; M9 | Follow master and canonical spec; no early execution | Layer tests + applicable lint/typecheck/build; no invented PASS
@@ -91,3 +92,8 @@ Report: [M7A_I18N_RUNTIME_READINESS_AUDIT](M7A_I18N_RUNTIME_READINESS_AUDIT.md).
   - Switcher placement: Top utility bar / header (not in bottom thumb zone) to protect M6-B `BottomActionBar` ergonomics.
   - Text expansion risks: Mitigation planned for 320px viewport in `BottomActionBar`.
 - Reconciliation summary: M7-A DONE; selective local commit authorized; STOP for user review before M7-B.
+## M7-A.1 i18n UX / Runtime Contract Lock Completed — 2026-10-08
+Report: [M7A_I18N_RUNTIME_READINESS_AUDIT](M7A_I18N_RUNTIME_READINESS_AUDIT.md) & [DECISIONS](DECISIONS.md) (Decisions 68–79).
+- Status: CONTRACT LOCK ONLY — COMPLETED. Zero modifications to `src/` or `tests/`. Zero DB mutations.
+- 12 Decisions Locked: Precedence, persistence, reachable lower Home switcher opening bottom sheet / compact selector (never in BottomActionBar, not in top header), state preservation, realistic layout stability, hydration safety, HTML lang, translation boundaries, DB fallback, number formatting, NOW boundaries, visual acceptance on 320/390/430px.
+- Reconciliation summary: M7-A.1 DONE; selective local commit authorized; STOP for user review before M7-B.

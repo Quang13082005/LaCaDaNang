@@ -174,3 +174,25 @@ Report: [M4A_REAL_MAPPING_AUDIT](M4A_REAL_MAPPING_AUDIT.md). HEAD e39c7de65fc413
    - Do not modify database or mutate translations.
 5. **EXACT NEXT STEP**:
    - STOP for user review. Await explicit authorization before implementing M7-B (Runtime i18n with VI/EN/KO and language switcher).
+## M7-A.1 i18n UX / Runtime Contract Lock Handoff — 2026-10-08
+1. **Objective**: Lock the architectural, UX, ergonomics, and runtime contract for i18n across Vietnamese (`vi`), English (`en`), and Korean (`ko`) before M7-B implementation.
+2. **Status**: CONTRACT LOCK ONLY — COMPLETED. Zero modifications to `src/` or `tests/`. Zero DB mutations.
+3. **Locked Decisions (1–12)**:
+   - Precedence: `manual > navigator.languages > navigator.language > vi`.
+   - Storage: `localStorage` key `laca.ui-locale.v1`; Auto clears key; try/catch resilience; in-memory fallback.
+   - Switcher UX: Home secondary trigger button situated in reachable lower zone opening bottom sheet / compact selector (`VI / EN / 한국어 / Theo thiết bị`). Never placed in `BottomActionBar`. Touch targets >= 44px.
+   - Dynamic Switch: Preserves intent, preference, nearby state, coordinates, scroll; re-fetches API; no mock fallback.
+   - Layout Stability: Replaced unrealistic 0px claim with rigorous boundary: no intent reorder, no state reset, no scroll jump, BottomActionBar fixed, no horizontal overflow/clipping.
+   - Hydration: Server base `vi`; client resolves in `useEffect`; brief first-load transition acknowledged; no blocking spinner.
+   - HTML lang: Synchronizes `document.documentElement.lang` on resolution and manual switch.
+   - Translation Boundary: Neon owns venues/tags; frontend owns UI chrome.
+   - DB Fallback: `req -> vi -> source`.
+   - Formatting: `Intl.NumberFormat(activeLocale)` for numbers; `km` unchanged.
+   - NOW Scope: Chrome strings only; logic/data remains sample.
+   - Acceptance: 320, 390, 430px responsive checks; no truncating action verbs.
+4. **DO NOT REDO**:
+   - Do not re-audit M7-A or re-lock M7-A.1 contracts.
+   - Do not modify application source or tests until M7-B is explicitly authorized.
+   - Do not push language switcher to the top header or into discovery BottomActionBar.
+5. **EXACT NEXT STEP**:
+   - STOP for user review. Await explicit authorization before implementing M7-B.

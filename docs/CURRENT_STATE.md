@@ -95,3 +95,20 @@ Report: [M7A_I18N_RUNTIME_READINESS_AUDIT](M7A_I18N_RUNTIME_READINESS_AUDIT.md).
   - Switcher placement: Top utility bar / header (not in bottom thumb zone) to protect M6-B `BottomActionBar` ergonomics.
   - Text expansion risks: Mitigation planned for 320px viewport in `BottomActionBar`.
 - Reconciliation summary: M7-A DONE; selective local commit authorized; STOP for user review before M7-B.
+## M7-A.1 i18n UX / Runtime Contract Lock Completed — 2026-10-08
+Report: [M7A_I18N_RUNTIME_READINESS_AUDIT](M7A_I18N_RUNTIME_READINESS_AUDIT.md) & [DECISIONS](DECISIONS.md) (Decisions 68–79).
+- Status: CONTRACT LOCK ONLY — COMPLETED. Zero modifications to `src/` or `tests/`. Zero DB mutations.
+- 12 Decisions Locked:
+  1. Precedence: `explicit manual locale > navigator.languages > navigator.language > vi`.
+  2. Persistence: `localStorage` key `laca.ui-locale.v1`; Auto removes key; try/catch wrapped; memory fallback.
+  3. UX Placement: Replaced top header suggestion. Situates reachable secondary trigger on Home opening bottom sheet / compact selector; strictly kept out of discovery `BottomActionBar`; >=44px targets.
+  4. Runtime State Preservation: Preserves selected intent, preference, nearby mode, user coordinates, and scroll position; re-fetches discovery data with new locale.
+  5. Layout Stability: Realistic definition: no intent reordering, no state reset, no forced scroll jumps, BottomActionBar fixed, no horizontal overflow, no clipping. Natural vertical reflow permitted.
+  6. Hydration: Server renders `vi`; client resolves post-hydration in `useEffect`; known short initial transition acknowledged (no fake zero-flash claim); no full-page blocking loaders.
+  7. HTML lang: Synchronized dynamically to `activeLocale`.
+  8. Translation Boundary: Neon DB for places/tags; frontend dictionary for UI chrome.
+  9. DB Fallback: Deterministic `req -> vi -> raw/source`.
+  10. Formatting: `Intl.NumberFormat(activeLocale)` for metrics; `km` universal.
+  11. NOW Boundary: UI chrome translation permitted; timeline data remains sample only.
+  12. Acceptance: Visual verification at 320, 390, 430px; truncation prohibited if meaning lost.
+- Reconciliation summary: M7-A.1 DONE; selective local commit authorized; STOP for user review before M7-B.

@@ -295,26 +295,22 @@ The locale parser in `src/lib/i18n/locales.ts` uses `Intl.getCanonicalLocales` t
 
 ---
 
-## 9. Manual Language Switcher UX Audit & Placement
+## 9. Manual Language Switcher UX Audit & Placement (Updated in M7-A.1)
 
-### 9.1 Placement Ergonomics Analysis
-In milestone **M6-B**, the bottom mobile viewport was strictly certified as the **Thumb Reach Zone** dedicated to `BottomActionBar` (`"Gần tôi"`, `"Đổi lựa chọn"`).
-- **Rule**: The language switcher MUST NOT be placed at the bottom or inside `BottomActionBar`. Placing it at the bottom would:
-  - Displace primary discovery actions into the hard-to-reach zone.
-  - Crowd the bottom action area, violating the $\ge 44\text{px}$ touch target rule.
-  - Introduce layout instability during results view.
-
-### 9.2 Proposed Placement: Header / Top Utility Bar
-- **Location**: Top utility bar above the main Hero, or subtle top-right corner.
-- **Form Factor**: A compact segmented pill switcher:
-  ```text
-  [ VI | EN | 한국어 ]
-  ```
-- **Specifications**:
-  - Minimum touch target: $\ge 44\times 44\text{px}$ per button.
-  - Active indicator: bold text + subtle background contrast (meets WCAG 2.1 AA).
-  - Accessible name: `aria-label="Chọn ngôn ngữ / Select language / 언어 선택"`, with `aria-pressed="true"` on the active locale.
-  - Zero interference with the natural discovery flow.
+### 9.1 Placement Ergonomics & Contract Lock
+- **Revision to initial M7-A suggestion**: Placing language controls in the top header/utility bar forces users to reach into the Hard Reach Zone ($y < 100\text{px}$) with one hand. Language switching is a secondary setting and must be designed for mobile one-hand ergonomics.
+- **BottomActionBar Protection Rule**: The language switcher MUST NOT be placed inside the discovery `BottomActionBar` (`BottomActionBar` is strictly dedicated to primary discovery actions: `Nearby / Citywide / Retry / Change selection`).
+- **Locked UX Pattern for M7-B**:
+  - Home features a dedicated secondary "Ngôn ngữ / Language" trigger button situated in the easily reachable thumb zone below the primary intent content.
+  - Tapping this trigger opens a compact one-hand friendly bottom sheet or selector modal presenting:
+    ```text
+    [ VI - Tiếng Việt ]
+    [ EN - English ]
+    [ KO - 한국어 ]
+    [ Theo thiết bị / Device Language ]
+    ```
+  - All touch targets must be $\ge 44\text{px}$ with adequate vertical spacing.
+  - Avoids cluttering Home with 4 permanent large buttons while guaranteeing 100% one-thumb reachability.
 
 ---
 
@@ -450,3 +446,21 @@ Milestone **M7-A** confirms that the repository is **technically and architectur
 5. Add unit and visual tests for VI/EN/KO across 320–768px viewports.
 
 **STOP HERE. AWAIT USER AUTHORIZATION BEFORE M7-B IMPLEMENTATION.**
+---
+
+## 17. M7-A.1 Locked Runtime & UX Contract (Decisions 1–12)
+
+The following 12 contract decisions are formally locked for Milestone **M7-B**:
+
+1. **Locale Precedence:** `explicit manual locale > navigator.languages > navigator.language > vi`. Supported: `vi`, `en`, `ko`. Mapping: `vi-* -> vi`, `en-* -> en`, `ko-* -> ko`, unsupported -> `vi`.
+2. **Persistence:** `localStorage` key `laca.ui-locale.v1` (`vi | en | ko`). Auto mode removes key. Wrapped in `try/catch` with memory fallback. No DB/cookie persistence in M7-B.
+3. **Language Switcher UX:** Not in top header. Secondary setting situated in reachable zone below main Home content, opening bottom sheet / compact selector (`VI / EN / 한국어 / Theo thiết bị`). Never inside discovery `BottomActionBar`. Touch target $\ge 44\text{px}$.
+4. **State Preservation on Switch:** Preserves `selectedIntent`, `selectedPreference`, nearby/citywide mode, in-memory GPS coordinates, and scroll position. Re-fetches `/api/discovery?...&locale=<newLocale>`. No mock fallback.
+5. **Layout Stability Definition:** No unrealistic "0px layout shift" claim. Contract enforces: no intent reordering, no state reset, no forced scroll jumps, `BottomActionBar` fixed, no horizontal overflow, no clipping, no inaccessible actions. Natural vertical reflow permitted.
+6. **Hydration & Initial Locale:** Server renders base `vi`. Client resolves browser/manual choice in `useEffect`. Zero hydration warnings, zero broken intermediate UI. Initial brief VI -> EN/KO first load switch is acknowledged MVP behavior (not claimed as zero-flash). No full-page blocking loaders.
+7. **HTML lang Synchronization:** Base `<html lang="vi">`. Updated via `document.documentElement.lang = activeLocale` on client resolution and manual switch.
+8. **Translation Boundary:** Venue/tag content from Neon DB translations. UI chrome/labels from frontend typed dictionary (`messages.ts`). No invented venue names.
+9. **Database Fallback:** Deterministic chain: `requested locale -> vi translation -> raw/source`. No empty/undefined strings.
+10. **Formatting:** `Intl.NumberFormat(activeLocale)` for metrics without changing raw numeric values (e.g. `vi: 0,8 km`, `en: 0.8 km`, `ko: 0.8 km`).
+11. **NOW Scope:** Chrome/labels localized if shared in UI dictionary. Business logic and timeline data remain static sample.
+12. **Acceptance Testing:** Visual checks on `320px`, `390px`, `430px` for `vi`, `en`, `ko`. Truncation that destroys actionable meaning is prohibited.
