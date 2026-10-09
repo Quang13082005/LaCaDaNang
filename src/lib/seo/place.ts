@@ -4,7 +4,8 @@ import { placePath, siteOrigin } from "./site";
 export function placeMetadata(place: DiscoveryPlace, locale: DiscoveryLocale): Metadata {
  const url = siteOrigin() + placePath(place.id, locale);
  const description = [place.name, place.typeLabel, place.address, place.description].filter(Boolean).join(" — ");
- return { title: `${place.name} | La Cà Đà Nẵng`, description,
+ // Real address distinguishes branches/venues sharing a name without inventing SEO copy.
+ return { title: `${[place.name, place.address].filter(Boolean).join(" — ")} | La Cà Đà Nẵng`, description,
   alternates: { canonical: url, languages: Object.fromEntries(["vi","en","ko"].map(l=>[l,siteOrigin()+placePath(place.id,l)])) },
   openGraph: { title: place.name, description, url, type: "website", locale: {vi:"vi_VN",en:"en_US",ko:"ko_KR"}[locale] } };
 }

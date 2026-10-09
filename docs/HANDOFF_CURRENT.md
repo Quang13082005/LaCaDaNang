@@ -597,3 +597,27 @@ Exact application-source gate evidence retained: lint/typecheck PASS,24 test fil
 GA4 code ready, NEXT_PUBLIC_GA_MEASUREMENT_ID absent; live script absent, collection NOT VERIFIED. Existing11 first-party events preserved. No synthetic analytics traffic; live browser Home JS deliberately not executed. GSC code ready, GOOGLE_SITE_VERIFICATION absent; ownership/indexing NOT VERIFIED. Owner must configure actual values, disable GA Enhanced Measurement before controlled verification, rebuild/redeploy when authorized, verify ownership and submit sitemap. No fake IDs/tokens.
 Migration docs/schema/002_places_id_sequence.sql preserved as future schema artifact; not executed live or on fresh PostgreSQL. Existing owned sequence left intact; fresh schema path creates owned sequence above max(id), unexpected preexisting unowned sequence raises for inspection. Backup restore untested; pre/post content backups remain outside Git.
 Evidence: sibling POST_IMPORT_2026-10-09/{deploy.log,seo-smoke.json,discovery-smoke.json,metadata-live.json,baseline.json,backups.json,responsive.json,tests.log,build.log,opennext.log}. Final docs-only checkpoint hash and local/remote/status recorded after commit in FINAL_GIT_RESULT.json. Owner JSON stays untracked; no dataset/backups/env staged. Exact next step: STOP for Owner review. Configure real GA/GSC only when Owner supplies values/authorization; no new features or production deployment. Physical GPS/one-hand and Korean human review remain unverified.
+
+
+## Production SEO local checkpoint — 2026-10-10 (LATEST AUTHORITY)
+
+The latest user prompt permits LOCAL work only: no commit, push, deployment, database writes or GA4/Consent changes. Takeover/current HEAD is `9855faebe5e1857da65ca52f483ba6812174e0e5`; remote hash was verified equal. Gemini GA4/Consent is present and Owner reports live acceptance. Earlier statements that GA4 is absent or Preview is canonical are historical.
+
+Fresh SELECT: 1500 eligible places — EAT384, CAFE425, GO414, STAY277; translations4500, place_tags3076, admins94, tags36. Production robots/sitemap/detail canonical URLs incorrectly reference Preview. Production Worker version `2cdc57be-068e-4bb2-8ed8-c59a19f71b76` verified read-only; exact deployed Git SHA not proven.
+
+Local repair complete: Production SEO origin with Preview/localhost guard, Home canonical/OG, real address in titles for repeated venue names, environment example and tests. No business logic, UI layout, GA4, Consent, schema or deployment configuration changes. Final lint/typecheck passed; 25 files/424 tests passed; Next/OpenNext passed and worker.js exists. One earlier parallel GO test hit 5000ms timeout; bounded-worker final suite passed without increasing timeouts.
+
+Full local HTTP verification: 1500 VI pages passed canonical/real JSON-LD/Maps checks; 24 EN/KO pages passed; three invalid IDs returned404. 28 API regressions passed. Sitemap has1501 locs,4500 alternate links,573780 bytes and zero missing/duplicate/wrong-origin entries. Production fix NOT deployed. No analytics writes.
+
+Six reports: SEO_PROJECT_TAKEOVER, SEO_BASELINE_AUDIT, SEO_SITEMAP_COVERAGE, SEO_IMPLEMENTATION_REPORT, SEO_SEARCH_CONSOLE_HANDOFF and SEO_RELEASE_CHECKLIST.md. Evidence in sibling SEO_PRODUCTION_2026-10-09. Protected hashes unchanged; Owner JSON remains untracked. Prior handoff files backed up and hash verified outside Git. No documents deleted or archived; this checkpoint supersedes older authority.
+
+STATUS: READY_FOR_REVIEW LOCAL. EXACT NEXT STEP: Owner reviews diff/reports and explicitly approves commit/push/deployment before release. Reverify build/runtime SITE_URL, then perform live Production checks and Owner Search Console verification/submission. Do not re-import, migrate, alter GA4 or start another feature. Owned local server3112 stopped. Human Korean review, physical acceptance and Google indexing remain unverified.
+
+
+## Controlled Production release authorized — 2026-10-10
+
+Owner has reviewed the local handoff and explicitly authorized selective commit, push and Production deployment, conditional on preflight gates. This supersedes the local-only stop above for this SEO release only. Source remains the six approved example/source/test files; no GA4/Consent, data/schema, domain or unrelated work is authorized.
+
+Preflight: branch/remote HEAD `9855faebe5e1857da65ca52f483ba6812174e0e5`, no divergence or unexpected changes. Build and current Worker runtime SITE_URL are unset, using the Production default in the approved source. Worker bindings APP_ENV=production and ASSETS match the unchanged config; secret list empty. Existing live bundle GA Measurement ID matches the local configured ID and built assets (value deliberately omitted). Protected hashes unchanged. Fresh SELECT confirms1500 eligible places,4500 translations,sequence2500/is_called=true and unchanged historical500 fingerprint.
+
+Rollback target captured: Production Worker `la-ca-da-nang`, version `2cdc57be-068e-4bb2-8ed8-c59a19f71b76`. No migration needed or permitted. Release command is existing `npm.cmd run deploy`, targeting root Worker config, NOT deploy:preview. Final deployment/live verification outcomes will be recorded in SEO_PRODUCTION_RELEASE_REPORT.md. Do not claim release success before HTTP/SELECT checks. No Google account access or Search Console submission authorized.

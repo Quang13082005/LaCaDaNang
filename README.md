@@ -1,3 +1,11 @@
+# Controlled Production SEO release — 2026-10-10
+
+Owner has authorized selective commit/push/Production deployment after preflight. The local-only statements below describe the previous checkpoint. Final release results belong in docs/SEO_PRODUCTION_RELEASE_REPORT.md; do not infer deployment success from this authorization.
+
+# Latest checkpoint — Production SEO local only, 2026-10-10
+
+Current source is based on 9855fae (GA4/Consent retained). Local SEO fixes now default canonical URLs to https://lacadanang.quangdev.id.vn, including Preview builds. No commit/push/deploy authorized or performed. Production still has the old Preview-origin SEO bug until approved release. See [SEO implementation handoff](docs/SEO_IMPLEMENTATION_REPORT.md) and [release checklist](docs/SEO_RELEASE_CHECKLIST.md). Historical checkpoints below remain evidence, not current authority.
+
 # Current checkpoint — 2026-10-09 post-import SEO/GA4
 
 This section supersedes historical status below. Canonical Neon content:1500 active/OPERATIONAL places (EAT384/CAFE425/GO414/STAY277),4500 translations,3076 place-tags,94 admins,36 tags. IDs1–500 and1501–2500 are intentional; places_id_seq last2500. Never reimport/reset sequence. Calendar/ICS removed in450530d; Maps preserved. NOW is real time/location-aware, GO+cafe queries CAFE; APIs use Node-compatible OpenNext runtime, not Edge.
