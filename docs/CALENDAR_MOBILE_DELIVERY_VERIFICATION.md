@@ -7,3 +7,7 @@ Calendar implementation focused PASS: two explicit localized actions; Google dra
 NEXT: implement explicit Nearby zero-result recovery, then browser/full final regression. No DB mutation/push/deploy. Do not redo NOW/GO+cafe/Hero or alter geo algorithm.
 
 Reference: https://developers.google.com/workspace/calendar/api/concepts/inviting-attendees-to-events — template link opens a prefilled event for the user to save; it does not guarantee notification configuration. Physical app delivery remains unverified.
+
+
+## Final release verification — 2026-10-09
+Final source regression: lint/typecheck,23 files392 non-curation tests,Next/OpenNext PASS. Preview deployed;28 GET API cases independently SELECT verified. See FINAL_RELEASE_CANDIDATE_VERIFICATION.md for logs, browser screenshot scope and limitations. Live client JavaScript/analytics ingestion deliberately NOT RUN per owner read-only instruction. Physical Calendar/import/notification/GPS/one-hand acceptance NOT VERIFIED; historical pending items above are superseded only within this explicit scope. STOP for owner checklist; no production.

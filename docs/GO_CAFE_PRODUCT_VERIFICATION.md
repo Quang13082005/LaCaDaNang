@@ -6,3 +6,7 @@ Analytics events11 and primaryenumNOW/EAT/GO/STAY unchanged. Existing preference
 Live HTTP200 allVI/EN/KO: citywideIDs214/188/66; synthetic publicpoint16.06,108.2 NearbyIDs22/21/16 at3km;0,0 gives0at5km. IndependentSELECT confirms everyreturnedID,section,active,OPERATIONAL,exactMapsURL. ExistingEAT/GO/STAY API smoke also200. Actual browser EnglishGOsheetandcafecards393pxverified. Evidence live-api.json,phase2-tests.log,go_cafe_sheet_en_393.png,go_cafe_en_393.png in MASTER_CONTINUATION_2026-10-09. Fullbrowsermatrix deferredfinal verification; no physicalclaim.
 
 Previous CAFE_ACTIVATION_VERIFICATION.md is historical blocker evidence superseded by latest owner decision; no fifthanalyticsintent or telemetryomission chosen. No DBwrites/push/deploy.
+
+
+## Final release verification — 2026-10-09
+Final source regression: lint/typecheck,23 files392 non-curation tests,Next/OpenNext PASS. Preview deployed;28 GET API cases independently SELECT verified. See FINAL_RELEASE_CANDIDATE_VERIFICATION.md for logs, browser screenshot scope and limitations. Live client JavaScript/analytics ingestion deliberately NOT RUN per owner read-only instruction. Physical Calendar/import/notification/GPS/one-hand acceptance NOT VERIFIED; historical pending items above are superseded only within this explicit scope. STOP for owner checklist; no production.
