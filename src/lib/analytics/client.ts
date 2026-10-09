@@ -1,3 +1,4 @@
+import { mirrorFirstPartyToGa } from "./ga4";
 /**
  * LA CÀ ĐÀ NẴNG — Client Analytics Dispatcher & Session / Journey State
  *
@@ -142,6 +143,7 @@ export function dispatchAnalyticsEvent(payload: ClientAnalyticsPayload): void {
     return;
   }
 
+  mirrorFirstPartyToGa(payload);
   const jsonString = JSON.stringify(payload);
   const endpoint = "/api/analytics";
 

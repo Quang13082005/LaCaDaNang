@@ -21,3 +21,7 @@ docs/evidence/* | LOCAL_EVIDENCE (git-ignored) | Machine-local M0 logs; hash-ide
 - Legacy 86-row curation docs (archive/phase-2a-data-2026-10) and danang_mvp_candidates_v2.json / curated-places.json: historical 86-row data scope, CONFLICTING if applied to the 500-row workbook; no authority over new import.
 - Workbook README/image action columns: stale scrape tasks, deferred under the no-image decision; not agent instructions.
 - External UX reports/handoff/screenshots/logs dated 02–05/10 outside repo: HISTORICAL_EVIDENCE; nothing deleted.
+
+
+## 2026-10-09 superseding reference
+POST_IMPORT_SEO_GA4_VERIFICATION.md is evidence/current reference for the owner-authorized1500 baseline and SEO/GA4 milestone. CURRENT_STATE/HANDOFF/DECISIONS/QUEUE latest appended sections govern scope. Old500/Calendar/CAFE-inactive/sampleNOW descriptions are historical; preserve reports but do not apply their stale product state.

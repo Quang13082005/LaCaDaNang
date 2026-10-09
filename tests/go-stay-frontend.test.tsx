@@ -35,7 +35,7 @@ describe("GO/STAY real frontend", () => {
     expect(screen.getByRole("heading", { name: `${intentLabel} · ${label}` })).toBeInTheDocument();
     expect(screen.getAllByRole("article")).toHaveLength(3);
     screen.getAllByRole("article").forEach((card, index) => {
-      expect(within(card).getByRole("link")).toHaveAttribute("href", `https://maps.google.com/?cid=${901 + index}`);
+      expect(within(card).getByRole("link", { name: /Google Maps/ })).toHaveAttribute("href", `https://maps.google.com/?cid=${901 + index}`);
       expect(card.querySelector("img,picture")).toBeNull();
       expect(card).not.toHaveTextContent("Điểm Google");
       expect(card).not.toHaveTextContent("đánh giá");

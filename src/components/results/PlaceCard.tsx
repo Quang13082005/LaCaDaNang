@@ -1,4 +1,6 @@
 import React from "react";
+import { placePath } from "@/lib/seo/site";
+import { sendGaEvent } from "@/lib/analytics/ga4";
 import { MapPin, Navigation } from "lucide-react";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 import { trackMapsClicked } from "@/lib/analytics/client";
@@ -45,7 +47,7 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({
   return (
     <article className="w-full min-w-0 rounded-[16px] bg-white border border-slate-200/90 shadow-sm flex flex-col p-4 sm:p-5 gap-3 break-words [overflow-wrap:anywhere]">
       <div className="space-y-2">
-        <h3 className="text-lg sm:text-xl font-extrabold text-slate-900 leading-snug">{place.name}</h3>
+        <h3 className="text-lg sm:text-xl font-extrabold text-slate-900 leading-snug">{Number.isSafeInteger(Number(place.id)) && Number(place.id)>0 ? <a className="inline-flex min-h-[44px] items-center underline decoration-sky-200 underline-offset-4" href={placePath(Number(place.id),locale)} onClick={()=>sendGaEvent("place_detail_opened",{place_id:Number(place.id),locale})}>{place.name}</a> : place.name}</h3>
         <div className="flex flex-wrap items-center gap-2">
           {place.typeLabel && <p className="text-sm font-medium text-sky-700">{place.typeLabel}</p>}
           {place.distanceKm != null && (

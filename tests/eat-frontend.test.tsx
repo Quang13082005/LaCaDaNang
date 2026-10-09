@@ -115,7 +115,7 @@ describe("No-image PlaceCard", () => {
     const { container } = render(<PlaceCard place={place} />);
     const card = screen.getByRole("article");
     expect(within(card).getByRole("heading")).toHaveTextContent(place.name);
-    expect(within(card).getByRole("link")).toHaveAttribute("href", place.googleMapsUrl);
+    expect(within(card).getByRole("link", { name: /Google Maps/ })).toHaveAttribute("href", place.googleMapsUrl);
     expect(container.querySelector("img,picture,svg image")).toBeNull();
     expect(card).not.toHaveTextContent("Điểm Google");
     expect(card).not.toHaveTextContent("đánh giá");

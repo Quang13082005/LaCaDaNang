@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Be_Vietnam_Pro } from "next/font/google";
 import { LocaleProvider } from "@/components/i18n/LocaleProvider";
 import "@/styles/globals.css";
+import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
+import { siteOrigin } from "@/lib/seo/site";
 
 const beVietnamPro = Be_Vietnam_Pro({
   subsets: ["latin", "vietnamese"],
@@ -11,6 +13,8 @@ const beVietnamPro = Be_Vietnam_Pro({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteOrigin()),
+  verification: process.env.GOOGLE_SITE_VERIFICATION ? { google: process.env.GOOGLE_SITE_VERIFICATION } : undefined,
   title: "La Cà Đà Nẵng — Gợi ý trong 3 lần chạm",
   description: "Khám phá địa điểm ăn uống, vui chơi và trải nghiệm Đà Nẵng nhanh chóng trong tối đa 3 lần chạm.",
 };
@@ -31,6 +35,7 @@ export default function RootLayout({
     <html lang="vi" className={beVietnamPro.variable}>
       <body className="min-h-screen bg-white text-slate-900 antialiased font-sans">
         <LocaleProvider>{children}</LocaleProvider>
+        <GoogleAnalytics />
       </body>
     </html>
   );

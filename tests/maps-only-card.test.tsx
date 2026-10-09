@@ -13,7 +13,8 @@ describe("Maps-only place actions after Calendar removal", () => {
       localStorage.setItem(LOCALE_STORAGE_KEY, locale);
       const url = "https://maps.google.com/?cid=15858543023798826021";
       render(<LocaleProvider><PlaceCard place={{ id: 33, name: "Verified place", typeLabel: "", area: "", googleMapsUrl: url, rating: null, reviewCount: null }} intent={intent} preference="general" /></LocaleProvider>);
-      const link = screen.getByRole("link");
+      const link = screen.getAllByRole("link").find(link => link.getAttribute("href") === url)!;
+      expect(screen.getByRole("link", {name:"Verified place"})).toHaveAttribute("href", `/places/33${locale === "vi" ? "" : `?locale=${locale}`}`);
       expect(link).toHaveAttribute("href", url);
       expect(link).toHaveAttribute("target", "_blank");
       expect(screen.queryAllByRole("button")).toHaveLength(0);

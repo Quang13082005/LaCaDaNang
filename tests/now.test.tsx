@@ -50,8 +50,8 @@ describe("NOW lifecycle and truthful UI", () => {
     expect(await screen.findByRole("heading", { name: "Gợi ý cho buổi tối" })).toBeInTheDocument();
     expect(screen.queryAllByRole("article")).toHaveLength(count);
     expect(screen.queryAllByRole("img")).toHaveLength(0);
-    expect(screen.queryAllByRole("link")).toHaveLength(count);
-    if (count) expect(screen.getAllByRole("link")[0]).toHaveAttribute("href", "https://maps.google.com/?cid=901");
+    expect(screen.queryAllByRole("link", { name: /Google Maps/ })).toHaveLength(count);
+    if (count) expect(screen.getAllByRole("link", { name: /Google Maps/ })[0]).toHaveAttribute("href", "https://maps.google.com/?cid=901");
     expect(screen.queryByText(/Điểm Google/)).not.toBeInTheDocument();
     expect(screen.getByText(/Chưa xác minh giờ mở cửa/)).toBeInTheDocument();
   });

@@ -1,3 +1,13 @@
+# Current checkpoint — 2026-10-09 post-import SEO/GA4
+
+This section supersedes historical status below. Canonical Neon content:1500 active/OPERATIONAL places (EAT384/CAFE425/GO414/STAY277),4500 translations,3076 place-tags,94 admins,36 tags. IDs1–500 and1501–2500 are intentional; places_id_seq last2500. Never reimport/reset sequence. Calendar/ICS removed in450530d; Maps preserved. NOW is real time/location-aware, GO+cafe queries CAFE; APIs use Node-compatible OpenNext runtime, not Edge.
+
+Place pages: `/places/<id>`, EN/KO via `?locale=en|ko`; sitemap/robots and optional GSC metadata. `SITE_URL` controls canonical origin (Preview default); `GOOGLE_SITE_VERIFICATION` and `NEXT_PUBLIC_GA_MEASUREMENT_ID` are optional owner configuration. GA4 coexists with unchanged11-event first-party analytics. See [post-import verification](docs/POST_IMPORT_SEO_GA4_VERIFICATION.md) for safety, evidence and setup.
+
+Run non-mutating suite with `npx vitest run --exclude "**/curation.test.ts"`. Run legacy curation only in an isolated copy; do not follow historical restore-after-test advice below. New forward schema artifact002 is NOT to be executed on already repaired live Neon. No production deploy.
+
+---
+
 # La Cà Đà Nẵng
 
 Mobile-first web application that helps people in Đà Nẵng quickly decide what to **eat, explore, or stay at** in $\le 3$ deliberate taps (preferably 2). Designed for fast, one-thumb mobile interaction with truthful recommendations, zero fluff, and no artificial data padding.
