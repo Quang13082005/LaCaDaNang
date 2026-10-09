@@ -3,6 +3,7 @@ import { Be_Vietnam_Pro } from "next/font/google";
 import { LocaleProvider } from "@/components/i18n/LocaleProvider";
 import "@/styles/globals.css";
 import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
+import { AnalyticsConsentBanner } from "@/components/analytics/AnalyticsConsentBanner";
 import { siteOrigin } from "@/lib/seo/site";
 
 const beVietnamPro = Be_Vietnam_Pro({
@@ -34,7 +35,10 @@ export default function RootLayout({
   return (
     <html lang="vi" className={beVietnamPro.variable}>
       <body className="min-h-screen bg-white text-slate-900 antialiased font-sans">
-        <LocaleProvider>{children}</LocaleProvider>
+        <LocaleProvider>
+          {children}
+          <AnalyticsConsentBanner />
+        </LocaleProvider>
         <GoogleAnalytics />
       </body>
     </html>

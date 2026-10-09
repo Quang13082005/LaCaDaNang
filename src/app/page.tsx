@@ -166,8 +166,23 @@ export default function HomePage() {
           <span className="text-xs sm:text-sm font-bold text-slate-800 tracking-wider uppercase select-none">
             LA CÀ ĐÀ NẴNG
           </span>
-          <div className="shrink-0">
+          <div className="shrink-0 flex items-center gap-3">
             <LanguageSelector />
+            <button
+              type="button"
+              onClick={() => {
+                if (typeof window !== "undefined") {
+                  window.dispatchEvent(new Event("laca_open_consent_settings"));
+                }
+              }}
+              className="text-xs text-slate-500 hover:text-slate-800 underline underline-offset-2 min-h-[44px] px-1 inline-flex items-center cursor-pointer"
+            >
+              {locale === "en"
+                ? "Privacy"
+                : locale === "ko"
+                ? "개인정보"
+                : "Quyền riêng tư"}
+            </button>
           </div>
         </div>
       </footer>
