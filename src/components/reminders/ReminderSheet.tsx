@@ -15,6 +15,7 @@ import {
   generateIcsContent,
   downloadIcsFile,
 } from "@/lib/reminders/ics";
+import { googleCalendarUrl } from "@/lib/reminders/google-calendar";
 import { saveReminderRecord } from "@/lib/reminders/storage";
 import type { LocalReminderRecord, ReminderPreset } from "@/lib/reminders/types";
 
@@ -81,6 +82,23 @@ export const ReminderSheet: React.FC<ReminderSheetProps> = ({
 
   if (!isOpen) return null;
 
+  const handleGoogleCalendar = () => {
+    const visitStartUtc = selectedPreset === "custom"
+      ? parseDaNangWallClockToUtc(customDateTime) : getPresetVisitTime(selectedPreset);
+    if (!visitStartUtc || !isValidVisitTime(visitStartUtc)) {
+      setValidationError(t("reminder.minTimeWarning"));
+      return;
+    }
+    try {
+      const url = googleCalendarUrl({ placeName: place.name, address: place.address,
+        googleMapsUrl: place.googleMapsUrl, visitStartUtc, locale });
+      window.open(url, "_blank", "noopener,noreferrer");
+      // No export record: opening a draft proves neither saving nor delivery.
+    } catch {
+      setStatusMessage({ type: "error", text: t("reminder.exportError") });
+    }
+  };
+
   const handleExport = () => {
     try {
       setIsExporting(true);
@@ -102,7 +120,8 @@ export const ReminderSheet: React.FC<ReminderSheetProps> = ({
       const now = new Date();
       const uid = generateReminderUid();
       const placeId = Number(place.id) || 0;
-      const mapsUrl = place.googleMapsUrl || "https://maps.google.com";
+      const mapsUrl = place.googleMapsUrl;
+      if (!mapsUrl) throw new Error("Missing Maps URL");
 
       // Generate RFC 5545 calendar string
       const icsString = generateIcsContent({
@@ -162,7 +181,7 @@ export const ReminderSheet: React.FC<ReminderSheetProps> = ({
     }
   };
 
-  const isExportDisabled = isExporting || (selectedPreset === "custom" && validationError !== null);
+  const isExportDisabled = !place.googleMapsUrl || isExporting || (selectedPreset === "custom" && validationError !== null);
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col justify-end">
@@ -180,7 +199,7 @@ export const ReminderSheet: React.FC<ReminderSheetProps> = ({
         aria-modal="true"
         aria-labelledby="reminder-sheet-title"
         aria-describedby="reminder-sheet-desc"
-        className="relative z-10 w-full max-w-lg mx-auto bg-white rounded-t-[24px] p-5 sm:p-6 shadow-2xl border-t border-slate-100 pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))] animate-in slide-in-from-bottom duration-200"
+        className="relative z-10 w-full max-w-lg max-h-[90dvh] overflow-y-auto mx-auto bg-white rounded-t-[24px] p-5 sm:p-6 shadow-2xl border-t border-slate-100 pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))] animate-in slide-in-from-bottom duration-200"
       >
         {/* Header */}
         <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-100">
@@ -316,7 +335,7 @@ export const ReminderSheet: React.FC<ReminderSheetProps> = ({
         {/* Timezone & Advance lead time notice */}
         <div className="flex items-center gap-1.5 text-xs text-slate-500 font-medium mb-5 bg-slate-50 p-2.5 rounded-[10px] border border-slate-100">
           <Clock className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-          <span>{t("reminder.leadNotice")}</span>
+          <span>{t("reminder.timezoneNotice")}</span>
         </div>
 
         {/* Action Buttons */}
@@ -324,7 +343,7 @@ export const ReminderSheet: React.FC<ReminderSheetProps> = ({
           <button
             type="button"
             disabled={isExportDisabled}
-            onClick={handleExport}
+            onClick={handleGoogleCalendar}
             className={`w-full min-h-[48px] rounded-[14px] px-4 py-3 font-bold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer ${
               isExportDisabled
                 ? "bg-slate-200 text-slate-400 cursor-not-allowed"
@@ -332,8 +351,14 @@ export const ReminderSheet: React.FC<ReminderSheetProps> = ({
             }`}
           >
             <Calendar className="w-4 h-4 shrink-0" />
-            <span>{t("reminder.addToCalendar")}</span>
+            <span>{t("reminder.openGoogle")}</span>
           </button>
+          <p className="text-xs leading-relaxed text-slate-600">{t("reminder.googleNotice")}</p>
+          <button type="button" disabled={isExportDisabled} onClick={handleExport}
+            className="w-full min-h-[48px] rounded-[14px] px-4 py-3 font-semibold text-sm border border-sky-200 text-sky-800 bg-sky-50 disabled:opacity-50">
+            {t("reminder.downloadIcs")}
+          </button>
+          <p className="text-xs leading-relaxed text-slate-600">{t("reminder.icsNotice")}</p>
           <button
             type="button"
             onClick={onClose}

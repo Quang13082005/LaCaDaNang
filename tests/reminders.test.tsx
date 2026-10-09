@@ -455,7 +455,7 @@ describe("LA CÀ ĐÀ NẴNG — M9-B Calendar Reminder MVP Suite", () => {
         </LocaleProvider>
       );
 
-      const exportBtn = screen.getByRole("button", { name: /Thêm vào lịch/i });
+      const exportBtn = screen.getByRole("button", { name: /Tải lịch nhắc/i });
       fireEvent.click(exportBtn);
 
       await waitFor(() => {

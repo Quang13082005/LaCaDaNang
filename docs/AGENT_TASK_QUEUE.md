@@ -319,3 +319,9 @@ Phase1 implementation+focused tests5files80/80 and live five-slot independent SE
 Next: Phase2 GO preference cafe -> DB CAFE; then Phase3 gates before Calendar/Nearby repair. Do not redo Hero/NOW infrastructure/analytics/geo engine. Calendar physical and owner home-location acceptance remain NOT VERIFIED.
 
 Phase2 focused/live complete: GO+cafe -> separateDBCAFE, responseintentGO, analyticsGO/cafe without changing11events/4intentenum/schema. Tests3files47PASS; live15APIcases withindependentSELECTPASS. See GO_CAFE_PRODUCT_VERIFICATION.md. Phase3 fullintermediatevalidation IN_PROGRESS; Calendar/Nearbyrecovery NOT_STARTED. Phase1commit452b18b.
+
+
+## Interrupted-session resume — Calendar checkpoint, 2026-10-09
+Actual resume HEAD 96e3792458c7fe07a29ffa14a2a6b92320120766, branch phase-2a-deploy, CLEAN index/tree. No partial Calendar edits found. Existing source commits452b18b NOW3 and96e3792 GO+cafe retained. Intermediate gate completed before Calendar edits: lint/typecheck PASS,20files360tests PASS excluding curation, Next/OpenNext PASS, worker.js exists; evidence intermediate-*.log in MASTER_CONTINUATION_2026-10-09.
+Calendar implementation focused PASS: two explicit localized actions; Google draft via standard template URL, exact UTC visit instant + Asia/Ho_Chi_Minh, exact Maps, address only when present. Equal dates endpoints introduce no invented duration; user must review Google draft time/duration/notifications. No OAuth/account/token access or saved/delivered claim. Google path writes no local export record. Original ICS generator unchanged;30-minute VALARM and noDTEND retained. Removed generic fake Maps fallback in sheet. Scrollable90dvh sheet,48px actions. Focused2files33tests PASS; typecheck PASS. Browser/final gates pending. Physical Calendar NOT VERIFIED.
+NEXT: implement explicit Nearby zero-result recovery, then browser/full final regression. No DB mutation/push/deploy. Do not redo NOW/GO+cafe/Hero or alter geo algorithm.
