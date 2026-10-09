@@ -51,6 +51,8 @@ const vi = {
   "action.citywide": "Toàn Đà Nẵng",
   "action.retry": "Thử lại",
   "action.viewCitywide": "Xem toàn Đà Nẵng",
+  "action.generalNearby": "Xem tất cả gần tôi",
+  "pref.general": "Tất cả địa điểm",
   "action.locating": "Đang định vị…",
   "action.navAria": "Thao tác khám phá",
 
@@ -72,8 +74,8 @@ const vi = {
   "results.error.message": "Hãy thử lại hoặc đổi lựa chọn.",
 
   // Nearby Empty
-  "nearby.empty.title": "Không tìm thấy địa điểm phù hợp trong 5 km.",
-  "nearby.empty.message": "Hãy thử mở rộng tìm kiếm trên toàn thành phố hoặc đổi lựa chọn khác.",
+  "nearby.empty.title": "Chưa có địa điểm phù hợp với tiêu chí này trong 5 km.",
+  "nearby.empty.message": "Giữ tiêu chí và xem toàn Đà Nẵng, hoặc bỏ tiêu chí hẹp để xem cùng loại địa điểm gần bạn.",
 
   // Empty Generic
   "empty.title": "Chưa có gợi ý phù hợp tiêu chí này.",
@@ -201,6 +203,8 @@ export const UI_MESSAGES = {
     "action.citywide": "All Da Nang",
     "action.retry": "Retry",
     "action.viewCitywide": "View all Da Nang",
+  "action.generalNearby": "Show all nearby",
+  "pref.general": "All places",
     "action.locating": "Locating…",
     "action.navAria": "Discovery actions",
 
@@ -222,8 +226,8 @@ export const UI_MESSAGES = {
     "results.error.message": "Please try again or change selection.",
 
     // Nearby Empty
-    "nearby.empty.title": "No matching places found within 5 km.",
-    "nearby.empty.message": "Try expanding your search citywide or choose another option.",
+  "nearby.empty.title": "No places match this filter within 5 km.",
+  "nearby.empty.message": "Keep this filter across Da Nang, or remove the narrow filter to see the same category nearby.",
 
     // Empty Generic
     "empty.title": "No suggestions match these criteria yet.",
@@ -345,6 +349,8 @@ export const UI_MESSAGES = {
     "action.citywide": "다낭 전체",
     "action.retry": "다시 시도",
     "action.viewCitywide": "다낭 전체 보기",
+  "action.generalNearby": "주변 전체 보기",
+  "pref.general": "모든 장소",
     "action.locating": "위치 확인 중…",
     "action.navAria": "탐색 작업",
 
@@ -366,8 +372,8 @@ export const UI_MESSAGES = {
     "results.error.message": "다시 시도하거나 선택을 변경해 보세요.",
 
     // Nearby Empty
-    "nearby.empty.title": "5km 이내에 일치하는 장소가 없습니다.",
-    "nearby.empty.message": "도시 전체로 검색을 확장하거나 다른 옵션을 선택해 보세요.",
+  "nearby.empty.title": "5km 이내에 이 조건에 맞는 장소가 없습니다.",
+  "nearby.empty.message": "다낭 전체에서 같은 조건으로 찾거나, 세부 조건을 해제하고 주변의 같은 종류의 장소를 확인하세요.",
 
     // Empty Generic
     "empty.title": "이 조건에 맞는 추천 장소가 아직 없습니다.",

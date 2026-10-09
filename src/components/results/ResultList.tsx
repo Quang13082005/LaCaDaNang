@@ -27,6 +27,7 @@ interface ResultListProps {
   onToggleNearby?: () => void;
   onRetryNearby?: () => void;
   onResetNearby?: () => void;
+  onGeneralNearby?: () => void;
   radiusKm?: 1 | 3 | 5;
 }
 
@@ -43,6 +44,7 @@ export const ResultList: React.FC<ResultListProps> = ({
   onToggleNearby,
   onRetryNearby,
   onResetNearby,
+  onGeneralNearby,
   radiusKm,
 }) => {
   const { t } = useLocale();
@@ -180,6 +182,7 @@ export const ResultList: React.FC<ResultListProps> = ({
         onToggleNearby={onToggleNearby}
         onRetryNearby={onRetryNearby}
         onResetNearby={onResetNearby}
+        onGeneralNearby={onGeneralNearby}
         onResetPreference={onResetPreference}
         onRetryDiscovery={onRetry}
       />

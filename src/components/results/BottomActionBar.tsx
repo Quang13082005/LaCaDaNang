@@ -11,6 +11,7 @@ export interface BottomActionBarProps {
   onToggleNearby?: () => void;
   onRetryNearby?: () => void;
   onResetNearby?: () => void;
+  onGeneralNearby?: () => void;
   onResetPreference: () => void;
   onRetryDiscovery?: () => void;
 }
@@ -21,6 +22,7 @@ export const BottomActionBar: React.FC<BottomActionBarProps> = ({
   onToggleNearby,
   onRetryNearby,
   onResetNearby,
+  onGeneralNearby,
   onResetPreference,
   onRetryDiscovery,
 }) => {
@@ -99,7 +101,7 @@ export const BottomActionBar: React.FC<BottomActionBarProps> = ({
           className="flex-1 min-h-[44px] min-w-0 px-2.5 sm:px-4 py-2.5 rounded-full text-xs sm:text-sm font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 border border-slate-200/80 transition-colors flex items-center justify-center gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 cursor-pointer select-none shrink-0"
         >
           <RotateCcw className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-          <span className="truncate">{t("action.changeSelection")}</span>
+          <span className="whitespace-normal">{t("action.changeSelection")}</span>
         </button>
 
         {/* Primary Action: State-aware */}
@@ -117,9 +119,15 @@ export const BottomActionBar: React.FC<BottomActionBarProps> = ({
           }`}
         >
           {primaryAction.icon}
-          <span className="truncate">{primaryAction.label}</span>
+          <span className="whitespace-normal">{primaryAction.label}</span>
         </button>
       </div>
+      {status === "empty" && isNearbyActive && onGeneralNearby && (
+        <button type="button" onClick={onGeneralNearby}
+          className="block w-full max-w-lg md:max-w-4xl mx-auto mt-2 min-h-[44px] px-4 py-2.5 rounded-full bg-sky-50 border border-sky-200 text-sky-800 text-sm font-semibold whitespace-normal">
+          {t("action.generalNearby")}
+        </button>
+      )}
     </aside>
   );
 };

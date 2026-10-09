@@ -1,0 +1,7 @@
+# Nearby zero-result recovery
+
+
+## Nearby recovery checkpoint — 2026-10-09
+Calendar commit2b624b2 retained. Nearby recovery CODE VERIFIED: explicit citywide restores original preference and removes location; explicit general retains coordinates, omits narrow preference for EAT/GO/STAY; GO+cafe retains cafe so database category staysCAFE. Existing null-preference API contract reused; no repository/geo/ranking/API changes. Result heading and telemetry use general rather than pretending narrow preference still matched. No automatic preference_selected. Existing abort/stale/retry paths retained. Two lower recovery actions>=44px, text wraps, result footer clears bar.
+Focused3files26tests PASS. Current full suite22files370tests PASS, lintPASS. Browser empty fixture/dev/nearby-recovery uses real ResultList, zero fixture places/noGPS/noAPI; production returns404. Screenshot/DOM VI widths320/360/375/390/393/412/430/440/480/768/1280, EN360 andKO320, callbacks verified. This is visual fixture verification, not a physical geolocation test. Calendar VI matrix samewidths,EN393,KO320; exactactions48px. Google newtab opened but unsigned IAB redirected toGoogle product landing; authenticated draft fields and device import NOT VERIFIED.
+NEXT: final typecheck/Next/OpenNext, refreshed SELECT liveNOW/finalAPI smoke, final evidence/report and selective commits. No DB mutations/push/deploy. PhysicalCalendar/Nearby ownerhome NOT VERIFIED.

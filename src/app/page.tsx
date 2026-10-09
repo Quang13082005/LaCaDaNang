@@ -159,7 +159,7 @@ export default function HomePage() {
       {/* Footer utility row: immediately below grid on Home, natural spacing */}
       <footer
         className={`w-full border-t border-slate-200/80 bg-white/80 py-2.5 px-4 sm:px-6 shrink-0 ${
-          selectedPreference === null ? "mt-2 sm:mt-2.5" : selectedIntent === "NOW" ? "mt-8 !pb-[calc(6rem+env(safe-area-inset-bottom,0px))]" : "mt-8"
+          selectedPreference === null ? "mt-2 sm:mt-2.5" : selectedIntent === "NOW" ? "mt-8 !pb-[calc(6rem+env(safe-area-inset-bottom,0px))]" : "mt-8 !pb-[calc(10rem+env(safe-area-inset-bottom,0px))]"
         }`}
       >
         <div className="w-full max-w-lg md:max-w-4xl mx-auto flex items-center justify-between gap-3 flex-wrap">

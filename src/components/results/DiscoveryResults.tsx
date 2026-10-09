@@ -24,7 +24,7 @@ export function DiscoveryResults({ intent, intentLabel, preference, preferenceLa
   preferenceLabel?: string;
   onResetPreference: () => void;
 }) {
-  const { locale, isManual } = useLocale();
+  const { locale, isManual, t } = useLocale();
   const languageMode = isManual ? "manual" : "auto";
   const [state, setState] = useState<State>({ status: "idle", places: [] });
   const [attempt, setAttempt] = useState(0);
@@ -33,6 +33,10 @@ export function DiscoveryResults({ intent, intentLabel, preference, preferenceLa
   const [nearbyStatus, setNearbyStatus] = useState<GeolocationUiState>("idle");
   const [userCoords, setUserCoords] = useState<{ lat: number; lng: number } | null>(null);
   const [radiusKm, setRadiusKm] = useState<1 | 3 | 5 | undefined>(undefined);
+
+  const [generalNearby, setGeneralNearby] = useState(false);
+  const effectivePreference = generalNearby && !(intent === "GO" && preference === "cafe") ? null : preference;
+  const analyticsPreference = effectivePreference ?? "general";
 
   // Tracks the last rendered result state to suppress duplicate results_shown on locale-only refetches
   const lastResultsStateRef = useRef<string | null>(null);
@@ -96,6 +100,7 @@ export function DiscoveryResults({ intent, intentLabel, preference, preferenceLa
   }, [intent, preference, locale, languageMode]);
 
   const handleToggleNearby = () => {
+    setGeneralNearby(false);
     if (nearbyStatus === "granted") {
       // Toggle off back to citywide discovery
       trackCitywideSelected(intent, preference, locale, languageMode);
@@ -112,11 +117,19 @@ export function DiscoveryResults({ intent, intentLabel, preference, preferenceLa
   };
 
   const handleResetNearby = () => {
+    setGeneralNearby(false);
     // Empty state CTA: "Xem trên toàn Đà Nẵng"
     trackCitywideSelected(intent, preference, locale, languageMode);
     setNearbyStatus("idle");
     setUserCoords(null);
     setRadiusKm(undefined);
+  };
+
+  const handleGeneralNearby = () => {
+    if (!userCoords) return;
+    setState({ status: "loading", places: [] });
+    setGeneralNearby(true);
+    setAttempt(value => value + 1);
   };
 
   useEffect(() => {
@@ -125,7 +138,8 @@ export function DiscoveryResults({ intent, intentLabel, preference, preferenceLa
     setState({ status: "loading", places: [] });
     const timeout = window.setTimeout(() => controller.abort(), 15000);
 
-    const params = new URLSearchParams({ intent, locale, preference });
+    const params = new URLSearchParams({ intent, locale });
+    if (effectivePreference !== null) params.set("preference", effectivePreference);
     if (userCoords) {
       params.set("lat", userCoords.lat.toString());
       params.set("lng", userCoords.lng.toString());
@@ -138,9 +152,9 @@ export function DiscoveryResults({ intent, intentLabel, preference, preferenceLa
         const body: DiscoveryApiBody = await response.json();
         if (
           !body.ok || body.data.intent !== intent || body.data.locale !== locale ||
-          body.data.preference !== preference || !Array.isArray(body.data.places) ||
+          body.data.preference !== effectivePreference || !Array.isArray(body.data.places) ||
           body.data.count !== body.data.places.length || body.data.count > 3 ||
-          body.data.places.some((place) => place.section !== discoverySectionFor(intent, preference)) ||
+          body.data.places.some((place) => place.section !== discoverySectionFor(intent, effectivePreference)) ||
           new Set(body.data.places.map((place) => place.id)).size !== body.data.count
         ) {
           throw new Error("Invalid discovery response");
@@ -156,12 +170,12 @@ export function DiscoveryResults({ intent, intentLabel, preference, preferenceLa
 
           // Analytics: Deduplicated results_shown
           const isNearby = Boolean(userCoords);
-          const stateKey = `${intent}:${preference}:${isNearby ? "nearby" : "citywide"}`;
+          const stateKey = `${intent}:${analyticsPreference}:${isNearby ? "nearby" : "citywide"}`;
           if (lastResultsStateRef.current !== stateKey) {
             lastResultsStateRef.current = stateKey;
             trackResultsShown(
               intent,
-              preference,
+              analyticsPreference,
               places.length,
               isNearby,
               locale,
@@ -173,7 +187,7 @@ export function DiscoveryResults({ intent, intentLabel, preference, preferenceLa
           if (isNearby && body.data.meta.radiusKm) {
             trackNearbyResolved(
               intent,
-              preference,
+              analyticsPreference,
               places.length,
               body.data.meta.radiusKm as 1 | 3 | 5,
               locale,
@@ -193,21 +207,22 @@ export function DiscoveryResults({ intent, intentLabel, preference, preferenceLa
     }
     void load();
     return () => { active = false; window.clearTimeout(timeout); controller.abort(); };
-  }, [intent, preference, attempt, userCoords, locale, languageMode]);
+  }, [intent, effectivePreference, analyticsPreference, attempt, userCoords, locale, languageMode]);
 
   return (
     <ResultList
       {...state}
       intent={intent}
-      preference={preference}
+      preference={analyticsPreference}
       intentLabel={intentLabel}
-      preferenceLabel={preferenceLabel}
+      preferenceLabel={generalNearby && effectivePreference === null ? t("pref.general") : preferenceLabel}
       onResetPreference={onResetPreference}
       onRetry={() => { setState({ status: "loading", places: [] }); setAttempt((value) => value + 1); }}
       nearbyStatus={nearbyStatus}
       onToggleNearby={handleToggleNearby}
       onRetryNearby={handleRetryNearby}
       onResetNearby={handleResetNearby}
+      onGeneralNearby={handleGeneralNearby}
       radiusKm={radiusKm}
     />
   );

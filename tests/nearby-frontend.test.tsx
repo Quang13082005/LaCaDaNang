@@ -328,7 +328,7 @@ describe("Nearby Discovery Frontend UX", () => {
     fireEvent.click(screen.getByRole("button", { name: /Gần tôi/ }));
 
     // Empty state message within 5km appears
-    await screen.findByText("Không tìm thấy địa điểm phù hợp trong 5 km.");
+    await screen.findByText("Chưa có địa điểm phù hợp với tiêu chí này trong 5 km.");
     const cta = screen.getByRole("button", { name: /Xem.*toàn Đà Nẵng/ });
     expect(cta).toBeInTheDocument();
 
