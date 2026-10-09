@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import { MapPin, Navigation, Bell } from "lucide-react";
+import React from "react";
+import { MapPin, Navigation } from "lucide-react";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 import { trackMapsClicked } from "@/lib/analytics/client";
 import type { PlaceCardModel } from "@/lib/data/place-card-model";
-import { ReminderSheet } from "@/components/reminders/ReminderSheet";
 
 export interface PlaceCardProps {
   place: PlaceCardModel;
@@ -23,9 +22,6 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({
   radiusKm,
 }) => {
   const { t, formatNumber, locale, isManual } = useLocale();
-  const [isReminderOpen, setIsReminderOpen] = useState(false);
-
-  const showReminder = intent !== "NOW" && Boolean(place.id);
 
   const handleMapsClick = () => {
     try {
@@ -99,28 +95,8 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({
           </a>
         )}
 
-        {showReminder && (
-          <button
-            type="button"
-            onClick={() => setIsReminderOpen(true)}
-            aria-haspopup="dialog"
-            aria-expanded={isReminderOpen}
-            aria-label={`${t("action.remind")}: ${place.name}`}
-            className="w-full min-h-[44px] rounded-[12px] px-3 py-2.5 bg-slate-50 hover:bg-slate-100 active:bg-slate-200 border border-slate-200/90 text-slate-700 hover:text-slate-900 font-semibold text-sm flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 transition-colors cursor-pointer select-none"
-          >
-            <Bell aria-hidden="true" className="w-4 h-4 shrink-0 text-slate-500" />
-            <span>{t("action.remind")}</span>
-          </button>
-        )}
       </div>
 
-      {showReminder && (
-        <ReminderSheet
-          place={place}
-          isOpen={isReminderOpen}
-          onClose={() => setIsReminderOpen(false)}
-        />
-      )}
     </article>
   );
 };
