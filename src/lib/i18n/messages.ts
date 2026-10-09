@@ -83,9 +83,13 @@ const vi = {
 
   // GPS Warnings
   "gps.warning.inaccurate": "Vị trí chưa đủ chính xác để tìm địa điểm gần bạn. Đang hiển thị gợi ý toàn thành phố.",
+  "now.gps.inaccurate": "Vị trí chưa đủ chính xác để tìm địa điểm gần bạn. Hãy thử lại hoặc chọn gợi ý toàn Đà Nẵng.",
   "gps.warning.denied": "Bạn đã từ chối quyền vị trí. Đang hiển thị gợi ý toàn thành phố.",
+  "now.gps.denied": "Bạn đã từ chối quyền vị trí. Hãy thử lại hoặc chọn gợi ý toàn Đà Nẵng.",
   "gps.warning.timeout": "Không nhận được phản hồi vị trí kịp thời. Đang hiển thị gợi ý toàn thành phố.",
+  "now.gps.timeout": "Không nhận được phản hồi vị trí kịp thời. Hãy thử lại hoặc chọn gợi ý toàn Đà Nẵng.",
   "gps.warning.unavailable": "Thiết bị không thể xác định vị trí hiện tại. Đang hiển thị gợi ý toàn thành phố.",
+  "now.gps.unavailable": "Thiết bị không thể xác định vị trí hiện tại. Hãy thử lại hoặc chọn gợi ý toàn Đà Nẵng.",
 
   // Place Card
   "card.googleRating": "Điểm Google",
@@ -107,6 +111,11 @@ const vi = {
   "now.basedOn": "Dựa trên thời điểm hiện tại tại Đà Nẵng.",
   "now.hours": "Chưa xác minh giờ mở cửa. Hãy kiểm tra với địa điểm trước khi đến.",
   "now.citywide": "Gợi ý toàn thành phố; thứ tự không tối ưu quãng đường.",
+  "now.locationPrompt": "Dùng vị trí của bạn để gợi ý lịch trình gần đây?",
+  "now.allowLocation": "Cho phép vị trí",
+  "now.showCitywide": "Xem gợi ý toàn Đà Nẵng",
+  "now.nearbyRadius": "Trong {radius} km quanh bạn. Khoảng cách đường chim bay; thứ tự chưa tối ưu đường đi.",
+  "now.insufficient": "Chưa đủ địa điểm phù hợp để tạo lịch trình 3 điểm trong 5 km. Các điểm hiện có được hiển thị bên dưới.",
 
   "intent.region": "Mục đích khám phá",
 
@@ -235,9 +244,13 @@ export const UI_MESSAGES = {
 
     // GPS Warnings
     "gps.warning.inaccurate": "Location is not accurate enough to find nearby places. Showing citywide suggestions.",
+    "now.gps.inaccurate": "Location is not accurate enough to find nearby places. Retry location or choose citywide suggestions.",
     "gps.warning.denied": "Location permission denied. Showing citywide suggestions.",
+    "now.gps.denied": "Location permission denied. Retry location or choose citywide suggestions.",
     "gps.warning.timeout": "Location request timed out. Showing citywide suggestions.",
+    "now.gps.timeout": "Location request timed out. Retry location or choose citywide suggestions.",
     "gps.warning.unavailable": "Unable to determine current location. Showing citywide suggestions.",
+    "now.gps.unavailable": "Unable to determine current location. Retry location or choose citywide suggestions.",
 
     // Place Card
     "card.googleRating": "Google rating",
@@ -259,6 +272,11 @@ export const UI_MESSAGES = {
   "now.basedOn": "Based on the current time in Da Nang.",
   "now.hours": "Opening hours are unverified. Check with each venue before visiting.",
   "now.citywide": "Citywide suggestions; stop order is not optimized for distance.",
+  "now.locationPrompt": "Use your location to suggest a nearby itinerary?",
+  "now.allowLocation": "Allow location",
+  "now.showCitywide": "Show citywide suggestions",
+  "now.nearbyRadius": "Within {radius} km of you. Straight-line distances; stop order is not route-optimized.",
+  "now.insufficient": "There are not enough places for a 3-stop itinerary within 5 km. Available stops are shown below.",
 
     "intent.region": "Choose what to explore",
 
@@ -381,9 +399,13 @@ export const UI_MESSAGES = {
 
     // GPS Warnings
     "gps.warning.inaccurate": "주변 장소를 찾기에 위치 정확도가 부족합니다. 도시 전체 추천을 표시합니다.",
+    "now.gps.inaccurate": "주변 장소를 찾기에 위치 정확도가 부족합니다. 위치를 다시 확인하거나 다낭 전체 추천을 선택하세요.",
     "gps.warning.denied": "위치 권한이 거부되었습니다. 도시 전체 추천을 표시합니다.",
+    "now.gps.denied": "위치 권한이 거부되었습니다. 위치를 다시 확인하거나 다낭 전체 추천을 선택하세요.",
     "gps.warning.timeout": "위치 확인 시간이 초과되었습니다. 도시 전체 추천을 표시합니다.",
+    "now.gps.timeout": "위치 확인 시간이 초과되었습니다. 위치를 다시 확인하거나 다낭 전체 추천을 선택하세요.",
     "gps.warning.unavailable": "현재 위치를 확인할 수 없습니다. 도시 전체 추천을 표시합니다.",
+    "now.gps.unavailable": "현재 위치를 확인할 수 없습니다. 위치를 다시 확인하거나 다낭 전체 추천을 선택하세요.",
 
     // Place Card
     "card.googleRating": "Google 평점",
@@ -405,6 +427,11 @@ export const UI_MESSAGES = {
   "now.basedOn": "현재 다낭 시간을 기준으로 추천합니다.",
   "now.hours": "영업시간은 확인되지 않았습니다. 방문 전에 장소에 확인해 주세요.",
   "now.citywide": "도시 전체 추천이며, 이동 거리에 최적화된 순서는 아닙니다.",
+  "now.locationPrompt": "현재 위치를 사용해 주변 코스를 추천할까요?",
+  "now.allowLocation": "위치 허용",
+  "now.showCitywide": "다낭 전체 추천 보기",
+  "now.nearbyRadius": "주변 {radius}km 이내입니다. 직선거리이며 방문 순서는 이동 경로에 최적화되지 않았습니다.",
+  "now.insufficient": "5km 이내에 3곳 코스를 만들 장소가 부족합니다. 가능한 장소를 아래에 표시합니다.",
 
     "intent.region": "원하는 활동 선택",
 

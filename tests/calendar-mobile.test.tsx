@@ -7,7 +7,7 @@ import { LocaleProvider } from "@/components/i18n/LocaleProvider";
 import { LOCALE_STORAGE_KEY } from "@/lib/i18n/locales";
 import { REMINDERS_STORAGE_KEY } from "@/lib/reminders/storage";
 import { parseDaNangWallClockToUtc } from "@/lib/reminders/time";
-const place = { id: 1, name: "Quán A & B / 한글", googleMapsUrl: "https://maps.google.com/?cid=123&x=a%20b", tags: [], rating: null, reviewCount: null };
+const place = { id: 1, typeLabel: "Cafe", area: "Da Nang", name: "Quán A & B / 한글", googleMapsUrl: "https://maps.google.com/?cid=123&x=a%20b", tags: [], rating: null, reviewCount: null };
 beforeEach(() => { localStorage.clear(); });
 afterEach(() => { cleanup(); vi.restoreAllMocks(); });
 describe("Calendar mobile delivery", () => {

@@ -10,8 +10,9 @@ export function ItineraryTimeline({ itinerary }: { itinerary: NowData }) {
       <h2 className="text-xl font-bold">{t(`now.${itinerary.slot}`)}</h2>
       <p className="text-sm">{t("now.basedOn")}</p>
       <p className="text-sm">{t("now.hours")}</p>
-      <p className="text-sm">{t("now.citywide")}</p>
+      <p className="text-sm">{itinerary.meta.mode === "nearby" ? t("now.nearbyRadius", { radius: itinerary.meta.radiusKm ?? 5 }) : t("now.citywide")}</p>
     </div>
+    {itinerary.meta.mode === "nearby" && itinerary.count < 3 && <p role="status">{t("now.insufficient")}</p>}
     <p role="status">{itinerary.count === 0 ? t("results.zero") : t("results.count", { count: itinerary.count })}</p>
     <div>{itinerary.places.map((stop, index) => <ItineraryStop key={stop.id} stop={stop} index={index} isLast={index === itinerary.count - 1} />)}</div>
   </section>;

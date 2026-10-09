@@ -357,11 +357,11 @@ describe("P1 Owner Physical One-Hand UX 2x2 Grid & Bottom Sheet", () => {
     expect(screen.getByRole("button", { name: "Gần biển" })).toBeInTheDocument();
   });
 
-  it("tapping NOW starts time-slot discovery directly with a lower reset action", () => {
+  it("tapping NOW opens explicit location choice with a lower reset action", () => {
     render(<HomePage />);
     fireEvent.click(screen.getByText("BÂY GIỜ LÀM GÌ?"));
     expect(screen.queryByRole("dialog")).toBeNull();
-    expect(screen.getByRole("status")).toHaveTextContent("Đang tìm địa điểm…");
+    expect(screen.getByRole("status")).toHaveTextContent("Dùng vị trí của bạn để gợi ý lịch trình gần đây?");
     const reset = screen.getByRole("button", { name: "Đổi lựa chọn" });
     expect(reset.className).toContain("min-h-[44px]");
     fireEvent.click(reset);

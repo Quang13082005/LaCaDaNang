@@ -51,10 +51,12 @@ describe("UX Hardening <= 3-Tap Flow & Truthful Recommendations", () => {
     );
   });
 
-  it("starts real NOW in one tap and returns Home without a demo preference", async () => {
+  it("starts location choice on NOW tap and returns Home without a demo preference", async () => {
     vi.mocked(fetch).mockResolvedValue({ ok: false } as Response);
     render(<HomePage />);
     fireEvent.click(screen.getByText("BÂY GIỜ LÀM GÌ?"));
+    expect(fetch).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole("button", { name: "Xem gợi ý toàn Đà Nẵng" }));
     expect(fetch).toHaveBeenCalledWith("/api/now?locale=vi", expect.objectContaining({ cache: "no-store" }));
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     expect(await screen.findByRole("alert")).toHaveTextContent("Chưa tải được địa điểm.");

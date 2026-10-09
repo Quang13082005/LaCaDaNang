@@ -10,7 +10,7 @@ export interface NowData {
   evaluatedAt: string;
   count: number;
   places: DiscoveryPlace[];
-  meta: { source: "neon-postgres"; policy: "time-slot-v1.1"; shortfallReason?: "eligible-catalog-exhausted"; openingHoursVerified: false };
+  meta: { source: "neon-postgres"; policy: "time-slot-v1.1" | "location-v2"; mode?: "nearby" | "citywide"; radiusKm?: 1 | 3 | 5 | null; compositionDiverse?: boolean; shortfallReason?: "eligible-catalog-exhausted" | "radius-candidates-exhausted"; openingHoursVerified: false };
 }
 
 /** Absolute instant -> Da Nang wall time; never depend on the device/server timezone. */

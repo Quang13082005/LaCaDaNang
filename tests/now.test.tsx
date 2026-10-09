@@ -24,6 +24,7 @@ describe("NOW lifecycle and truthful UI", () => {
     vi.useFakeTimers();
     vi.stubGlobal("fetch", vi.fn((_url, options) => new Promise((_resolve,reject) => options.signal.addEventListener("abort", () => reject(new Error("aborted"))))));
     render(<NowResults onResetPreference={vi.fn()} />);
+    fireEvent.click(screen.getByRole("button", { name: /Xem gợi ý toàn Đà Nẵng|Show citywide suggestions|다낭 전체 추천 보기/ }));
     await act(async () => { await vi.advanceTimersByTimeAsync(15000); });
     expect(screen.getByRole("alert")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Thử lại" })).toBeInTheDocument();
@@ -34,6 +35,7 @@ describe("NOW lifecycle and truthful UI", () => {
     vi.stubGlobal("fetch",vi.fn().mockReturnValueOnce(new Promise<Response>(r => { resolveOld=r; })).mockResolvedValue(response(data(0,"en"))));
     function Switch() { const { setLocale }=useLocale(); return <button onClick={() => setLocale("en")}>switch</button>; }
     render(<LocaleProvider><Switch /><NowResults onResetPreference={vi.fn()} /></LocaleProvider>);
+    fireEvent.click(screen.getByRole("button", { name: /Xem gợi ý toàn Đà Nẵng|Show citywide suggestions|다낭 전체 추천 보기/ }));
     fireEvent.click(screen.getByText("switch"));
     await screen.findByText(translate("en","now.EVENING"));
     await act(async () => { resolveOld(response(data(2,"vi"))); });
@@ -43,6 +45,7 @@ describe("NOW lifecycle and truthful UI", () => {
   it.each([0,1,2,3])("renders %i real API stops with no padding or images", async count => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response(data(count))));
     render(<NowResults onResetPreference={vi.fn()} />);
+    fireEvent.click(screen.getByRole("button", { name: /Xem gợi ý toàn Đà Nẵng|Show citywide suggestions|다낭 전체 추천 보기/ }));
     expect(screen.getByRole("status")).toHaveTextContent("Đang tìm địa điểm…");
     expect(await screen.findByRole("heading", { name: "Gợi ý cho buổi tối" })).toBeInTheDocument();
     expect(screen.queryAllByRole("article")).toHaveLength(count);
@@ -55,6 +58,7 @@ describe("NOW lifecycle and truthful UI", () => {
   it("shows an error with no demo fallback, then retries", async () => {
     vi.stubGlobal("fetch", vi.fn().mockRejectedValueOnce(new Error("offline")).mockResolvedValue(response()));
     render(<NowResults onResetPreference={vi.fn()} />);
+    fireEvent.click(screen.getByRole("button", { name: /Xem gợi ý toàn Đà Nẵng|Show citywide suggestions|다낭 전체 추천 보기/ }));
     expect(await screen.findByRole("alert")).toBeInTheDocument();
     expect(screen.queryAllByRole("article")).toHaveLength(0);
     fireEvent.click(screen.getByRole("button", { name: "Thử lại" }));
@@ -64,6 +68,7 @@ describe("NOW lifecycle and truthful UI", () => {
     localStorage.setItem(LOCALE_STORAGE_KEY, locale);
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response(data(2,locale))));
     render(<LocaleProvider><NowResults onResetPreference={vi.fn()} /></LocaleProvider>);
+    fireEvent.click(screen.getByRole("button", { name: /Xem gợi ý toàn Đà Nẵng|Show citywide suggestions|다낭 전체 추천 보기/ }));
     expect(await screen.findByText(translate(locale,"now.EVENING"))).toBeInTheDocument();
     expect(screen.getByText(translate(locale,"now.hours"))).toBeInTheDocument();
     expect(fetch).toHaveBeenLastCalledWith(`/api/now?locale=${locale}`,expect.objectContaining({cache:"no-store"}));
@@ -73,10 +78,12 @@ describe("NOW lifecycle and truthful UI", () => {
     const fetchMock = vi.fn().mockReturnValueOnce(new Promise<Response>(r => { resolve = r; })).mockResolvedValue(response(data(0)));
     vi.stubGlobal("fetch",fetchMock);
     const first = render(<NowResults onResetPreference={vi.fn()} />);
+    fireEvent.click(screen.getByRole("button", { name: /Xem gợi ý toàn Đà Nẵng|Show citywide suggestions|다낭 전체 추천 보기/ }));
     const signal = fetchMock.mock.calls[0][1].signal as AbortSignal;
     first.unmount();
     expect(signal.aborted).toBe(true);
     render(<NowResults onResetPreference={vi.fn()} />);
+    fireEvent.click(screen.getByRole("button", { name: /Xem gợi ý toàn Đà Nẵng|Show citywide suggestions|다낭 전체 추천 보기/ }));
     await screen.findByText("Chưa có gợi ý cho lựa chọn này.");
     await act(async () => { resolve(response()); });
     expect(screen.queryAllByRole("article")).toHaveLength(0);

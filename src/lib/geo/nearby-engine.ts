@@ -32,22 +32,7 @@ export function evaluateNearbyDiscovery(
   candidates: readonly DiscoveryPlace[],
   origin: Coordinates,
 ): NearbyDiscoveryResult {
-  // Step 1: Calculate raw distance for every candidate with full precision (deduplicating by place id)
-  const seenIds = new Set<number>();
-  const evaluated: EvaluatedPlace[] = [];
-  for (const place of candidates) {
-    if (seenIds.has(place.id)) {
-      continue;
-    }
-    seenIds.add(place.id);
-    const rawDist = calculateDistanceKm(origin, {
-      latitude: place.location.lat,
-      longitude: place.location.lng,
-    });
-    if (rawDist !== null && Number.isFinite(rawDist) && rawDist >= 0) {
-      evaluated.push({ item: place, distanceRawKm: rawDist });
-    }
-  }
+  const evaluated = evaluateCandidateDistances(candidates, origin);
 
   // Step 2: Radius expansion (Decision 1)
   const pool1 = evaluated.filter((e) => e.distanceRawKm <= 1.0);
@@ -111,4 +96,26 @@ export function evaluateNearbyDiscovery(
   }));
 
   return { places, radiusKm };
+}
+
+/** Shared full-precision, deduplicated geo pool; callers retain their own composition policy. */
+export function evaluateCandidateDistances(candidates: readonly DiscoveryPlace[], origin: Coordinates): EvaluatedPlace[] {
+
+  const seenIds = new Set<number>();
+  const evaluated: EvaluatedPlace[] = [];
+  for (const place of candidates) {
+    if (seenIds.has(place.id)) {
+      continue;
+    }
+    seenIds.add(place.id);
+    const rawDist = calculateDistanceKm(origin, {
+      latitude: place.location.lat,
+      longitude: place.location.lng,
+    });
+    if (rawDist !== null && Number.isFinite(rawDist) && rawDist >= 0) {
+      evaluated.push({ item: place, distanceRawKm: rawDist });
+    }
+  }
+
+  return evaluated;
 }

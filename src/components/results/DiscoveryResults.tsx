@@ -9,6 +9,7 @@ import {
   trackNearbyFailed,
   trackCitywideSelected,
 } from "@/lib/analytics/client";
+import { requestLocation as requestUserLocation } from "@/lib/geo/request-location";
 import { discoverySectionFor } from "@/lib/data/preference-map";
 import type { DiscoveryApiBody } from "@/lib/data/discovery-contract";
 import { discoveryToCard, type PlaceCardModel } from "@/lib/data/place-card-model";
@@ -41,62 +42,19 @@ export function DiscoveryResults({ intent, intentLabel, preference, preferenceLa
   // Tracks the last rendered result state to suppress duplicate results_shown on locale-only refetches
   const lastResultsStateRef = useRef<string | null>(null);
 
+  const cancelGps = useRef<() => void>(() => {});
+  useEffect(() => () => cancelGps.current(), []);
   const requestLocation = useCallback(() => {
+    cancelGps.current();
     trackNearbyRequested(intent, preference, locale, languageMode);
-
-    if (typeof window === "undefined" || !("geolocation" in navigator)) {
-      setNearbyStatus("unavailable");
-      setUserCoords(null);
-      trackNearbyFailed(intent, preference, "unavailable", locale, languageMode);
-      return;
-    }
-
     setNearbyStatus("requesting");
-
-    let isTimedOut = false;
-    const gpsTimer = window.setTimeout(() => {
-      isTimedOut = true;
-      setNearbyStatus("timeout");
-      setUserCoords(null);
-      trackNearbyFailed(intent, preference, "timeout", locale, languageMode);
-    }, 8000);
-
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        if (isTimedOut) return;
-        window.clearTimeout(gpsTimer);
-        const { latitude, longitude, accuracy } = pos.coords;
-        // Decision 4: Accuracy check threshold 1000m
-        if (accuracy > 1000) {
-          setNearbyStatus("inaccurate");
-          setUserCoords(null);
-          trackNearbyFailed(intent, preference, "inaccurate", locale, languageMode);
-        } else {
-          setNearbyStatus("granted");
-          setUserCoords({ lat: latitude, lng: longitude });
-        }
-      },
-      (err) => {
-        if (isTimedOut) return;
-        window.clearTimeout(gpsTimer);
-        if (err.code === err.PERMISSION_DENIED) {
-          setNearbyStatus("denied");
-          trackNearbyFailed(intent, preference, "denied", locale, languageMode);
-        } else if (err.code === err.TIMEOUT) {
-          setNearbyStatus("timeout");
-          trackNearbyFailed(intent, preference, "timeout", locale, languageMode);
-        } else {
-          setNearbyStatus("unavailable");
-          trackNearbyFailed(intent, preference, "unavailable", locale, languageMode);
-        }
-        setUserCoords(null);
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 8000,
-        maximumAge: 60000,
-      }
-    );
+    cancelGps.current = requestUserLocation(point => {
+      setNearbyStatus("granted");
+      setUserCoords({ lat: point.latitude, lng: point.longitude });
+    }, reason => {
+      setNearbyStatus(reason); setUserCoords(null);
+      trackNearbyFailed(intent, preference, reason, locale, languageMode);
+    });
   }, [intent, preference, locale, languageMode]);
 
   const handleToggleNearby = () => {

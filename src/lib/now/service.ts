@@ -3,6 +3,9 @@ import { adaptRows } from "@/lib/data/place-adapter";
 import type { PlaceRepository } from "@/lib/data/place-repository";
 import { getNowSlot, NOW_SLOTS, NOW_TIME_ZONE, type NowData, type NowSlot } from "./contract";
 
+import { evaluateCandidateDistances } from "@/lib/geo/nearby-engine";
+import type { Coordinates } from "@/lib/geo/distance";
+
 type Leg = { section: DiscoverySection; tagCodes: readonly string[] | null };
 /** Editorial composition, never operating hours or route optimization. */
 export const NOW_POLICY: Record<NowSlot, readonly Leg[]> = {
@@ -31,7 +34,7 @@ function rank(a: DiscoveryPlace, b: DiscoveryPlace): number {
 }
 
 /** Fetch complete eligible pools so invalid top rows/duplicates cannot falsely exhaust candidates. */
-export async function findNowItinerary(repo: PlaceRepository, locale: DiscoveryLocale, instant = new Date()): Promise<NowData> {
+export async function findNowItinerary(repo: PlaceRepository, locale: DiscoveryLocale, instant = new Date(), origin?: Coordinates): Promise<NowData> {
   const slot = getNowSlot(instant);
   const pools = await Promise.all(ALLOWED.map(async section => {
     // Existing parameterized all-candidate SELECT; no GPS or nearby evaluation here.
@@ -39,6 +42,22 @@ export async function findNowItinerary(repo: PlaceRepository, locale: DiscoveryL
     return adaptRows(rows, locale).filter(p => p.section === section && hasValidNowMapsUrl(p.googleMapsUrl)).sort(rank);
   }));
   const all = pools.flat().sort(rank);
+  if (origin) {
+    const evaluated = evaluateCandidateDistances(all, origin);
+    for (const radiusKm of [1, 3, 5] as const) {
+      const pool = evaluated.filter(p => p.distanceRawKm <= radiusKm)
+        .sort((a, b) => a.distanceRawKm - b.distanceRawKm || rank(a.item, b.item));
+      const candidates = pool.map(p => ({ ...p.item, distanceKm: Math.round(p.distanceRawKm * 10) / 10 }));
+      const places = composeNearby(candidates, slot);
+      const diverse = new Set(places.map(p => p.section)).size === 3;
+      if (places.length === 3 && diverse || radiusKm === 5) {
+        return { locale, slot, timeZone: NOW_TIME_ZONE, evaluatedAt: instant.toISOString(), count: places.length, places,
+          meta: { source: "neon-postgres", policy: "location-v2", mode: "nearby", radiusKm, openingHoursVerified: false,
+            ...(places.length < 3 ? { shortfallReason: "radius-candidates-exhausted" as const } : {}),
+            compositionDiverse: diverse } };
+      }
+    }
+  }
   const places: DiscoveryPlace[] = [];
   const offset = NOW_SLOTS.indexOf(slot) % 3;
   const choose = (pool: DiscoveryPlace[]) => {
@@ -59,6 +78,22 @@ export async function findNowItinerary(repo: PlaceRepository, locale: DiscoveryL
     if (place) places.push(place);
   }
   return { locale, slot, timeZone: NOW_TIME_ZONE, evaluatedAt: instant.toISOString(), count: places.length, places,
-    meta: { source: "neon-postgres", policy: "time-slot-v1.1", openingHoursVerified: false,
+    meta: { source: "neon-postgres", policy: "time-slot-v1.1", mode: "citywide", radiusKm: null, openingHoursVerified: false,
       ...(places.length < 3 ? { shortfallReason: "eligible-catalog-exhausted" as const } : {}) } };
+}
+
+/** Input already distance-ranked. Prefer each required section before alternatives; no slot offset nearby. */
+function composeNearby(pool: DiscoveryPlace[], slot: NowSlot): DiscoveryPlace[] {
+  const chosen: DiscoveryPlace[] = [];
+  for (const leg of NOW_POLICY[slot]) {
+    const remaining = pool.filter(p => !chosen.some(c => c.id === p.id));
+    const same = remaining.filter(p => p.section === leg.section);
+    const preferred = leg.tagCodes ? same.filter(p => hasTag(p, leg.tagCodes!)) : same;
+    const unusedSections = remaining.filter(p => !chosen.some(c => c.section === p.section));
+    const tiers = [preferred, same, unusedSections, remaining];
+    const sensible = slot === "NIGHT" ? [...tiers.map(t => t.filter(p => !daytimeCategory(p))), ...tiers] : tiers;
+    const next = sensible.find(t => t.length)?.[0];
+    if (next) chosen.push(next);
+  }
+  return chosen;
 }
