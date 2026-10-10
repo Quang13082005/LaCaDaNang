@@ -15,6 +15,7 @@ import {
   resetJourneyId,
 } from "@/lib/analytics/client";
 import type { MessageKey } from "@/lib/i18n/messages";
+import { BROWSE_COPY, BROWSE_SLUGS, hubPath } from "@/lib/seo/browse";
 import {
   PREFERENCES_BY_INTENT,
 } from "@/data/discovery-ui";
@@ -184,6 +185,18 @@ export default function HomePage() {
                 : "Quyền riêng tư"}
             </button>
           </div>
+          {/* Crawlable plain links to the public place directory; not an intent and not a recommendation. */}
+          <nav aria-label={BROWSE_COPY[locale].navLabel} className="w-full flex flex-wrap items-center gap-x-4">
+            {(["eat", "go", "stay"] as const).map((slug) => (
+              <a
+                key={slug}
+                href={hubPath(slug, 1, locale)}
+                className="text-xs text-slate-500 hover:text-slate-800 underline underline-offset-2 min-h-[44px] px-1 inline-flex items-center"
+              >
+                {BROWSE_COPY[locale].sections[BROWSE_SLUGS[slug]]}
+              </a>
+            ))}
+          </nav>
         </div>
       </footer>
     </div>

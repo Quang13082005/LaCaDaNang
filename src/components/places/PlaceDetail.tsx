@@ -5,7 +5,10 @@ import type { DiscoveryLocale, DiscoveryPlace } from "@/lib/data/discovery-contr
 import { placePath } from "@/lib/seo/site";
 import { translate } from "@/lib/i18n/messages";
 import { sendGaEvent } from "@/lib/analytics/ga4";
-export function PlaceDetail({ place, locale }: {place: DiscoveryPlace; locale: DiscoveryLocale}) {
+import type { PlaceLink } from "@/lib/data/place-browse";
+import { BROWSE_COPY } from "@/lib/seo/browse";
+import { PlaceLinkList } from "./PlaceLinkList";
+export function PlaceDetail({ place, locale, related = [] }: {place: DiscoveryPlace; locale: DiscoveryLocale; related?: PlaceLink[]}) {
  const seen = useRef("");
  useEffect(()=>{const key=`${place.id}:${locale}`;if(seen.current!==key){seen.current=key;sendGaEvent("place_detail_viewed",{place_id:place.id,locale});}},[place.id,locale]);
  const number=new Intl.NumberFormat(locale);
@@ -19,5 +22,9 @@ export function PlaceDetail({ place, locale }: {place: DiscoveryPlace; locale: D
   {place.tags.length>0 && <ul className="flex flex-wrap gap-2">{place.tags.map(t=><li key={t.code} className="bg-sky-50 rounded-lg p-2">{t.label}</li>)}</ul>}
   {place.description && <p>{place.description}</p>}
   <a href={place.googleMapsUrl} target="_blank" rel="noopener noreferrer" onClick={()=>sendGaEvent("place_detail_maps_clicked",{place_id:place.id,locale})} className="min-h-[44px] flex items-center justify-center rounded-xl p-3 bg-sky-600 text-white font-semibold">{translate(locale,"action.maps")}</a>
+  {related.length>0 && <section aria-labelledby="related-places" className="space-y-1 pt-2">
+   <h2 id="related-places" className="text-lg font-semibold">{BROWSE_COPY[locale].related(place.area.name)}</h2>
+   <PlaceLinkList places={related} locale={locale}/>
+  </section>}
  </main>;
 }
