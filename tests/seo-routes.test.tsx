@@ -1,6 +1,7 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { apiPlace } from "./discovery-fixtures";
 vi.mock("@/lib/data/place-detail",()=>({getPlace:vi.fn(),listPlaceIds:vi.fn()}));
+vi.mock("@/lib/data/place-browse",()=>({listRelated:vi.fn().mockResolvedValue([])}));
 vi.mock("next/navigation",()=>({notFound:()=>{throw Error("404");},permanentRedirect:(url:string)=>{throw Error("308:"+url);}}));
 import {getPlace,listPlaceIds} from "@/lib/data/place-detail";
 import Page,{generateMetadata} from "@/app/places/[id]/page";
