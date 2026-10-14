@@ -10,7 +10,7 @@ import {
 } from "@/lib/data/place-schema";
 
 describe("Phase 2A.2 Curation Evidence Hardening Suite", () => {
-  const result = runSeedCuration();
+  const result = runSeedCuration({ writeToFile: false });
 
   it("audits the candidate file and produces the curated seed", () => {
     expect(result.inputCount).toBe(300);

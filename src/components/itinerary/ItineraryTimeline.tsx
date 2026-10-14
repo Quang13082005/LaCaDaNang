@@ -1,4 +1,5 @@
 import React from "react";
+import { RentalSuggestion } from "@/components/rental/RentalSuggestion";
 import { ItineraryStop } from "./ItineraryStop";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 import type { NowData } from "@/lib/now/contract";
@@ -15,5 +16,6 @@ export function ItineraryTimeline({ itinerary }: { itinerary: NowData }) {
     {itinerary.meta.mode === "nearby" && itinerary.count < 3 && <p role="status">{t("now.insufficient")}</p>}
     <p role="status">{itinerary.count === 0 ? t("results.zero") : t("results.count", { count: itinerary.count })}</p>
     <div>{itinerary.places.map((stop, index) => <ItineraryStop key={stop.id} stop={stop} index={index} isLast={index === itinerary.count - 1} />)}</div>
+    {itinerary.count > 0 && itinerary.places.length > 0 && <RentalSuggestion now />}
   </section>;
 }

@@ -45,7 +45,7 @@ describe("NOW opt-in location lifecycle",()=>{
   render(<NowResults onResetPreference={()=>{}}/>);expect(geo).not.toHaveBeenCalled();expect(fetcher).not.toHaveBeenCalled();
   fireEvent.click(screen.getByRole("button",{name:"Cho phép vị trí"}));await screen.findByRole("alert");
   fireEvent.click(screen.getByRole("button",{name:"Thử lại"}));await screen.findByText("API fixture 1");
-  expect(geo).toHaveBeenCalledTimes(1);expect(fetcher).toHaveBeenLastCalledWith('/api/now?locale=vi&lat=16&lng=108',expect.anything());
+  expect(geo).toHaveBeenCalledTimes(1);expect(fetcher).toHaveBeenCalledWith('/api/now?locale=vi&lat=16&lng=108',expect.anything());
   expect(screen.getByText(/Chưa đủ địa điểm/)).toBeInTheDocument();expect(localStorage.length).toBe(0);
  });
  it.each(["denied","inaccurate","unavailable"])("%s never silently calls citywide",async reason=>{

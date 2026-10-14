@@ -1,0 +1,233 @@
+[
+  {
+    "code": "XE001",
+    "brand": "Honda",
+    "model": "Vision",
+    "color": "Trắng-Bạc-Đen",
+    "engineCc": 108,
+    "category": "scooter",
+    "registrationYear": 2012,
+    "rawDailyPrice": 130,
+    "rawAssetDeposit": "2.000.000"
+  },
+  {
+    "code": "XE002",
+    "brand": "Yamaha",
+    "model": "Jupiter",
+    "color": "Đen-Vàng",
+    "engineCc": 110,
+    "category": "semi",
+    "registrationYear": 2012,
+    "rawDailyPrice": 100,
+    "rawAssetDeposit": "1.000.000"
+  },
+  {
+    "code": "XE003",
+    "brand": "Yamaha",
+    "model": "Sirius",
+    "color": "Đỏ-Đen",
+    "engineCc": 110,
+    "category": "semi",
+    "registrationYear": 2021,
+    "rawDailyPrice": 120,
+    "rawAssetDeposit": "1.000.000"
+  },
+  {
+    "code": "XE004",
+    "brand": "Yamaha",
+    "model": "Sirius",
+    "color": "Xám-Đen",
+    "engineCc": 110,
+    "category": "semi",
+    "registrationYear": 2023,
+    "rawDailyPrice": 110,
+    "rawAssetDeposit": "1.000.000"
+  },
+  {
+    "code": "XE005",
+    "brand": "Honda",
+    "model": "Air Blade",
+    "color": "Xanh-Đen",
+    "engineCc": 124.8,
+    "category": "scooter",
+    "registrationYear": 2023,
+    "rawDailyPrice": 180,
+    "rawAssetDeposit": "2.000.000"
+  },
+  {
+    "code": "XE006",
+    "brand": "Honda",
+    "model": "Wave",
+    "color": "Đỏ-Đen-Bạc",
+    "engineCc": 109,
+    "category": "semi",
+    "registrationYear": 2019,
+    "rawDailyPrice": 140,
+    "rawAssetDeposit": "1.000.000"
+  },
+  {
+    "code": "XE007",
+    "brand": "Yamaha",
+    "model": "Janus",
+    "color": "Xám-Đen",
+    "engineCc": 125,
+    "category": "scooter",
+    "registrationYear": 2021,
+    "rawDailyPrice": 110,
+    "rawAssetDeposit": "2.000.000"
+  },
+  {
+    "code": "XE008",
+    "brand": "Honda",
+    "model": "Lead",
+    "color": "Đen",
+    "engineCc": 125,
+    "category": "scooter",
+    "registrationYear": 2018,
+    "rawDailyPrice": 150,
+    "rawAssetDeposit": "2.000.000"
+  },
+  {
+    "code": "XE009",
+    "brand": "Honda",
+    "model": "Air Blade",
+    "color": "Đen-Bạc",
+    "engineCc": 124,
+    "category": "scooter",
+    "registrationYear": 2017,
+    "rawDailyPrice": 150,
+    "rawAssetDeposit": "2.000.000"
+  },
+  {
+    "code": "XE010",
+    "brand": "Yamaha",
+    "model": "Exciter",
+    "color": "Xanh-Bạc",
+    "engineCc": 149,
+    "category": "manual",
+    "registrationYear": 2016,
+    "rawDailyPrice": 150,
+    "rawAssetDeposit": "1.500.000"
+  },
+  {
+    "code": "XE011",
+    "brand": "Yamaha",
+    "model": "Sirius",
+    "color": "Xám-…",
+    "engineCc": 110.3,
+    "category": "semi",
+    "registrationYear": 2024,
+    "rawDailyPrice": 120,
+    "rawAssetDeposit": "1.000.000"
+  },
+  {
+    "code": "XE012",
+    "brand": "Honda",
+    "model": "Air Blade",
+    "color": "Xám-Đen",
+    "engineCc": 125,
+    "category": "scooter",
+    "registrationYear": 2016,
+    "rawDailyPrice": 150,
+    "rawAssetDeposit": "2.000.000"
+  },
+  {
+    "code": "XE013",
+    "brand": "Yamaha",
+    "model": "Sirius",
+    "color": "Trắng-Đen",
+    "engineCc": 110,
+    "category": "semi",
+    "registrationYear": 2017,
+    "rawDailyPrice": 110,
+    "rawAssetDeposit": "1.000.000"
+  },
+  {
+    "code": "XE014",
+    "brand": "Honda",
+    "model": "Vision",
+    "color": "Đỏ",
+    "engineCc": 108,
+    "category": "scooter",
+    "registrationYear": 2016,
+    "rawDailyPrice": 150,
+    "rawAssetDeposit": "2.000.000"
+  },
+  {
+    "code": "XE015",
+    "brand": "Honda",
+    "model": "Air Blade",
+    "color": "Xám-Đen",
+    "engineCc": 125,
+    "category": "scooter",
+    "registrationYear": 2018,
+    "rawDailyPrice": 150,
+    "rawAssetDeposit": "2.000.000"
+  },
+  {
+    "code": "XE016",
+    "brand": "Yamaha",
+    "model": "Sirius",
+    "color": "Đen-Đỏ",
+    "engineCc": 110,
+    "category": "semi",
+    "registrationYear": 2018,
+    "rawDailyPrice": 110,
+    "rawAssetDeposit": "1.000.000"
+  },
+  {
+    "code": "XE017",
+    "brand": "Yamaha",
+    "model": "Sirius",
+    "color": "Đen",
+    "engineCc": 113,
+    "category": "semi",
+    "registrationYear": 2015,
+    "rawDailyPrice": 100,
+    "rawAssetDeposit": "1.000.000"
+  },
+  {
+    "code": "XE018",
+    "brand": "Yamaha",
+    "model": "Sirius",
+    "color": "Đỏ-Đen",
+    "engineCc": 110,
+    "category": "semi",
+    "registrationYear": 2019,
+    "rawDailyPrice": 110,
+    "rawAssetDeposit": "1.000.000"
+  },
+  {
+    "code": "XE019",
+    "brand": "Honda",
+    "model": "Vision",
+    "color": "Đỏ-Nâu",
+    "engineCc": 108,
+    "category": "scooter",
+    "registrationYear": 2020,
+    "rawDailyPrice": 150,
+    "rawAssetDeposit": "2.000.000"
+  },
+  {
+    "code": "XE020",
+    "brand": "Yamaha",
+    "model": "Sirius",
+    "color": "Đỏ-Đen",
+    "engineCc": 110,
+    "category": "semi",
+    "registrationYear": 2018,
+    "rawDailyPrice": 110,
+    "rawAssetDeposit": "1.000.000"
+  },
+  {
+    "code": "XE021",
+    "brand": "Honda",
+    "model": "Air Blade",
+    "color": "Đỏ-Đen-Xám",
+    "engineCc": 149.3,
+    "category": "scooter",
+    "registrationYear": 2021,
+    "rawDailyPrice": 170,
+    "rawAssetDeposit": "2.000.000"
+  }
+]

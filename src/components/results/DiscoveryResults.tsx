@@ -93,7 +93,7 @@ export function DiscoveryResults({ intent, intentLabel, preference, preferenceLa
   useEffect(() => {
     const controller = new AbortController();
     let active = true;
-    setState({ status: "loading", places: [] });
+    setState(prev => ({ status: prev.places.length > 0 ? "success" : "loading", places: prev.places }));
     const timeout = window.setTimeout(() => controller.abort(), 15000);
 
     const params = new URLSearchParams({ intent, locale });

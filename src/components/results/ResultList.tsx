@@ -1,4 +1,5 @@
 import React from "react";
+import { RentalSuggestion } from "@/components/rental/RentalSuggestion";
 import { PlaceCard } from "@/components/results/PlaceCard";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { BottomActionBar } from "@/components/results/BottomActionBar";
@@ -175,7 +176,8 @@ export const ResultList: React.FC<ResultListProps> = ({
         )}
       </div>
 
-      {/* Persistent Mobile Bottom Action Bar */}
+      {/* Rental Promotion: Shown at the bottom of all discovery intents (EAT, GO, STAY/WHERE) when places are present */}
+      {status === "success" && places.length > 0 && <RentalSuggestion />}
       <BottomActionBar
         status={status}
         nearbyStatus={nearbyStatus}

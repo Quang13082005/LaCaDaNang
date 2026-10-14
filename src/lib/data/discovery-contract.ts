@@ -73,6 +73,8 @@ export interface DiscoveryPlace {
   translationFallback: boolean;
   /** Approximate straight-line distance in km (only present in nearby mode). Formatted to 1 decimal place. */
   distanceKm?: number;
+  /** Full-precision raw Haversine distance in km (only present in nearby mode). */
+  distanceRawKm?: number;
   /** Whether the place is featured. Used for deterministic tie-breaking. */
   featured?: boolean;
 }

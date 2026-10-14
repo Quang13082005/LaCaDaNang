@@ -1,8 +1,13 @@
 import React from "react";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 
 export default function DesignSystemPage() {
+  if (process.env.NODE_ENV === "production") {
+    notFound();
+  }
+
   return (
     <main className="min-h-screen bg-white text-slate-900 p-4 sm:p-8 max-w-xl mx-auto">
       <Link

@@ -52,7 +52,13 @@ function getFriendlyTypeName(type: string, section: "EAT" | "GO" | "STAY"): stri
   return map[type] || (section === "EAT" ? "Địa điểm ẩm thực" : section === "STAY" ? "Cơ sở lưu trú" : "Điểm tham quan");
 }
 
-export function runSeedCuration() {
+export interface SeedCurationOptions {
+  writeToFile?: boolean;
+  outputPath?: string;
+}
+
+export function runSeedCuration(options: SeedCurationOptions = {}) {
+  const { writeToFile = true, outputPath: customOutputPath } = options;
   const rootDir = process.cwd();
   const candidatePath = path.join(rootDir, "danang_mvp_candidates_v2.json");
 
@@ -365,14 +371,16 @@ export function runSeedCuration() {
   // Validate entire output with Zod
   const validatedSeed = CuratedSeedSchema.parse(curatedSeedData);
 
-  // Save to src/data/curated/curated-places.json
-  const outputDir = path.join(rootDir, "src/data/curated");
-  if (!fs.existsSync(outputDir)) {
-    fs.mkdirSync(outputDir, { recursive: true });
-  }
+  // Save to src/data/curated/curated-places.json if writeToFile is enabled
+  if (writeToFile) {
+    const outputDir = path.join(rootDir, "src/data/curated");
+    if (!fs.existsSync(outputDir)) {
+      fs.mkdirSync(outputDir, { recursive: true });
+    }
 
-  const outputPath = path.join(outputDir, "curated-places.json");
-  fs.writeFileSync(outputPath, JSON.stringify(validatedSeed, null, 2), "utf8");
+    const outputPath = customOutputPath || path.join(outputDir, "curated-places.json");
+    fs.writeFileSync(outputPath, JSON.stringify(validatedSeed, null, 2), "utf8");
+  }
 
   return {
     inputCount,

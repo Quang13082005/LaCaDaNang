@@ -89,9 +89,10 @@ export function evaluateNearbyDiscovery(
   // Step 4: Slice max 3
   const topMatches = ranked.slice(0, 3);
 
-  // Step 5: Format distanceKm (1 decimal place) for UI
+  // Step 5: Format distanceKm (1 decimal place) for UI, preserving distanceRawKm for precision rules
   const places: DiscoveryPlace[] = topMatches.map((m) => ({
     ...m.item,
+    distanceRawKm: m.distanceRawKm,
     distanceKm: Math.round(m.distanceRawKm * 10) / 10,
   }));
 

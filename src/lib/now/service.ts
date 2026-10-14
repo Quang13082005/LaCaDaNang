@@ -47,7 +47,11 @@ export async function findNowItinerary(repo: PlaceRepository, locale: DiscoveryL
     for (const radiusKm of [1, 3, 5] as const) {
       const pool = evaluated.filter(p => p.distanceRawKm <= radiusKm)
         .sort((a, b) => a.distanceRawKm - b.distanceRawKm || rank(a.item, b.item));
-      const candidates = pool.map(p => ({ ...p.item, distanceKm: Math.round(p.distanceRawKm * 10) / 10 }));
+      const candidates = pool.map(p => ({
+        ...p.item,
+        distanceRawKm: p.distanceRawKm,
+        distanceKm: Math.round(p.distanceRawKm * 10) / 10,
+      }));
       const places = composeNearby(candidates, slot);
       const diverse = new Set(places.map(p => p.section)).size === 3;
       if (places.length === 3 && diverse || radiusKm === 5) {

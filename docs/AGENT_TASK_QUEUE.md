@@ -1,4 +1,12 @@
 # Agent task queue
+CURRENT_AUTHORITY — 2026-10-14 16:30.
+Stage D0: DONE
+Stage D1: DONE
+Stage D2: DONE
+Stage D3: DONE
+Stage D4: DONE (Release Cleanup Completed — Code Verified — Ready for Release Review)
+Next Gate: RELEASE_APPROVAL_GATE (Awaiting Owner Approval for Commit, Cloudflare Preview, and active=true activation)
+
 CURRENT M4-B OVERRIDE — 2026-10-07: M4-B GO & STAY Neon discovery completed and verified; selective local commit authorized. STOP before M5. Earlier milestone entries are historical.
 CURRENT_AUTHORITY — 2026-10-07. M4-B verified complete; selective checkpoint authorized. STOP before M5.
 
@@ -394,6 +402,66 @@ STATUS: READY_FOR_REVIEW LOCAL. EXACT NEXT STEP: Owner reviews diff/reports and 
 
 Owner has reviewed the local handoff and explicitly authorized selective commit, push and Production deployment, conditional on preflight gates. This supersedes the local-only stop above for this SEO release only. Source remains the six approved example/source/test files; no GA4/Consent, data/schema, domain or unrelated work is authorized.
 
-Preflight: branch/remote HEAD `9855faebe5e1857da65ca52f483ba6812174e0e5`, no divergence or unexpected changes. Build and current Worker runtime SITE_URL are unset, using the Production default in the approved source. Worker bindings APP_ENV=production and ASSETS match the unchanged config; secret list empty. Existing live bundle GA Measurement ID matches the local configured ID and built assets (value deliberately omitted). Protected hashes unchanged. Fresh SELECT confirms1500 eligible places,4500 translations,sequence2500/is_called=true and unchanged historical500 fingerprint.
+Preflight: branch/remote HEAD `9855faebe5e1857da65ca52f483ba6812174e0e5`, no divergence or unexpected changes. Build and current Worker runtime SITE_URL are unset, using the Production default in the approved source. Rollback target captured: Production Worker `la-ca-da-nang`, version `2cdc57be-068e-4bb2-8ed8-c59a19f71b76`. No migration needed or permitted. Release command is existing `npm.cmd run deploy`, targeting root Worker config, NOT deploy:preview. Final deployment/live verification outcomes will be recorded in SEO_PRODUCTION_RELEASE_REPORT.md. Do not claim release success before HTTP/SELECT checks. No Google account access or Search Console submission authorized.
 
-Rollback target captured: Production Worker `la-ca-da-nang`, version `2cdc57be-068e-4bb2-8ed8-c59a19f71b76`. No migration needed or permitted. Release command is existing `npm.cmd run deploy`, targeting root Worker config, NOT deploy:preview. Final deployment/live verification outcomes will be recorded in SEO_PRODUCTION_RELEASE_REPORT.md. Do not claim release success before HTTP/SELECT checks. No Google account access or Search Console submission authorized.
+## Rental MVP — Stage D1 Schema Migration Completed — 2026-10-14 (CURRENT AUTHORITY)
+- ID: `RENTAL-STAGE-D1`
+- Milestone: Rental Schema Migration on Neon Production
+- Status: `DONE` (`D1_PASS_COMPLETED`)
+- Owner/Agent: Current agent
+- Dependencies: Proposal V2.1 + D0.1 Rehearsal + Owner explicit approval
+- Verification: 4 empty tables created, 3 indexes created, 7 core tables 100% unaffected, single atomic transaction committed. Full report: `docs/RENTAL_STAGE_D1_REPORT.md`.
+- Exact Next Action: STOP at OWNER & CHATGPT APPROVAL GATE. Do NOT start Stage D2 (Dark-import) without explicit approval.
+
+Rental checkpoint bắt buộc: [RENTAL_FEATURE_CHECKPOINT.md](RENTAL_FEATURE_CHECKPOINT.md) đã được tạo ở trạng thái IN_PROGRESS ngày 2026-10-13. Cập nhật cùng HANDOFF sau Phase 0–2; không coi tài liệu hiện tại là nghiệm thu. Giữ STOP trước ghi Neon/commit/push/deploy.
+
+## 2026-10-14 — Owner real-phone gate (latest authority)
+Owner requires LOCAL → real phone test → fixes/confirmation → explicit Preview approval → Preview QA → separate Production approval. No Cloudflare deployment, commit/push, activation or Production rental writes authorized. This supersedes old Preview-before-phone ordering.
+Actual branch phase-2a-deploy, HEAD f7e5f9ba2ba877304c52b4679d6f02123ac5aef7; existing modified/untracked work preserved. Gemini D1 artifacts now exist; do not overwrite the V2.1 proposal/import or rerun D1. Migration SHA256 bac9cc7555f607d4f4420698986679574c1390f977b58e691751327c9506dac6 and import SHA256 029eb6139e640668bad3ec07024c800dc10cba5fdc0a4563501dbf7849af3e14 match new Owner prompt.
+Fresh SELECT at the expected D1 endpoint/neondb: models0, vehicles0, media0, contacts0; active defaults false, media is_primary false. Evidence ../RENTAL_PHONE_GATE_2026-10-14/d1-readonly-check.json. Counts/defaults verified; full independent D1 constraint/Neon control-plane branch audit not repeated yet. D2 NOT EXECUTED, requires explicit Owner approval. D3 public rental API not implemented yet; current dev UI remains fixture preview, not Neon acceptance.
+Previous recovery changes: fixed catalog focus/scroll restoration with remounted refs; compile-time guard removes fixture data from Production static chunks. Safe regression26files433tests PASS; focused9tests PASS; typecheck/lint PASS after correcting test typing and require resolution. Next build PASS; opennext-final.log ends OpenNext build complete with worker saved. These are prior-run results, not fresh validation of Gemini's subsequent artifacts. No broad UX PASS.
+PHONE NETWORK BLOCKER: current Windows Wi-Fi SSID FPT Software Guest, profile Public, IPv4 192.168.22.221. No listeners found on3115/3000. Did not expose dev server on this guest/public network or change firewall/profile/router. Owner should connect computer+phone to trusted home/private Wi-Fi (or a trusted private hotspot), then agent re-reads IPv4/profile and starts npm.cmd run dev -- -H <verified LAN IPv4> -p 3115 after checking port. Never reuse old IP blindly. No public tunnel or Preview workaround.
+Automated viewport QA: PARTIAL/PENDING; real phone QA: PENDING; Owner UX acceptance: PENDING. HTTP LAN may not support browser geolocation because it is not a secure context: report this separately, do not bypass browser security or claim GPS regression. Source/price/locales pending work remains; new policy specifies two CCCDs from two different people and no inferred foreign-passport policy. Align local copy with reviewed V2.1 before acceptance.
+EXACT NEXT: Owner switches to trusted LAN; verify network again, complete local implementation/validation and protected fixture preview, start verified LAN server and give full URLs plus phone checklist. Continue D2 importer preparation/D3 local work without Production writes; request separate D2 approval only for a concrete reviewed importer. No deployment until Owner explicitly confirms phone testing and approves Cloudflare Preview.
+
+## 2026-10-14 — D2/D3 recovered checkpoint (LATEST AUTHORITY)
+Owner preliminarily accepted fixture real-phone UX; Neon real-data phone acceptance and deployment remain PENDING. This section supersedes earlier statements that D3 is not implemented or FPT Guest is the current blocker.
+Branch phase-2a-deploy; HEAD f7e5f9ba2ba877304c52b4679d6f02123ac5aef7 unchanged. Final worktree: 7 tracked modified and 35 untracked files (includes preserved earlier work, not all authored in this task); nothing staged/committed/pushed. No deploy or DB writes.
+D1 SELECT verification PASS: four empty rental tables; exact target/source/schema evidence ../RENTAL_D2_2026-10-14/preflight.json. D2 importer READY_FOR_REVIEW, NOT EXECUTED. Read RENTAL_D2_PREFLIGHT_REPORT.md for exact transaction/hash/rollback/risks. Separate Owner Production write authorization required.
+D3 local code implemented: public catalog/detail UUID APIs, DTO projection, active filters, API-driven catalog states, authenticated development-only inactive QA. Original fixture preview remains separate and guarded. Production Rental not activated. Status IN_PROGRESS until imported-data verification and Owner second phone pass.
+Fresh evidence: typecheck/lint/Next build PASS; 28 suites449 tests PASS excluding mutating curation; additional2 QA token tests PASS. OpenNext log ends 'OpenNext build complete.' Client41chunks targeted scan found0 forbidden patterns. Git diff --check PASS.
+Local production-build HTTP: catalog vi/en/ko200 empty/contactnull; active=false400; bigint detail400; unknown UUID404; QA API/page404. Development unauthenticated QA401. Browser empty-state verified; 320px QA gate screenshot saved. This is NOT a full new responsive certification or real21-row validation.
+Evidence ../RENTAL_D2_2026-10-14/: logs, production-local-http.json, dev-qa-unauthenticated.json, qa-auth-tests.log, qa-gate-320.png, datedgitstatus; earlier logs preserved. Full handoff: RENTAL_PROMOTION_ASTRA_HANDOFF.md.
+Server: old LAN dev stopped deliberately before builds. Local dev now127.0.0.1:3115 (session74370), no QA token provisioned; production loopback smoke server stopped. Re-read network/IP and bind trusted LAN for next Owner phone test; do not reuse prior IP blindly.
+EXACT NEXT: Owner reviews/approves ONE D2 atomic dark import 8models/21vehicles/1contact/0media allactivefalse from SHA029eb6139e640668bad3ec07024c800dc10cba5fdc0a4563501dbf7849af3e14. Then refreshed preflight/core read-only baseline, approved transaction, postcommit audit, authenticated real-data local QA and second phone acceptance. STOP before INSERT, activation, commit/push/deploy. Do not redo D0/D1 or overwrite Gemini work.
+
+## 2026-10-14 — FINAL D2 REHEARSAL PASS / CLEANED (latest checkpoint)
+Owner authorized one isolated test branch only; no Production import approval yet. Report: RENTAL_D2_FINAL_REHEARSAL_REPORT.md supersedes earlier 'importer not rehearsed' status.
+Test branch br-patient-field-b3pzs2v7 created from Production br-shiny-band-b3mlezx7, verified nonprimary/nondefault and endpoint before SQL. SAME exported importTransaction used by Production and harness. Forced PostgreSQL22012 after8models+10vehicles -> ROLLBACK -> all4tables0. Separate success transaction ->8models/21vehicles/1contact/0media, allinactive, allsourcefield assertions PASS, activepublicprojection0. Schema and7corefingerprints unchanged.
+CLEANED at2026-10-14T04:44:11.568Z: exactcreatedbranch andendpoint absentfromAPI; nochildbranch/otherclients orappconfigdependencies; Production retained. Production rental still0/0/0/0; schema and7corecounts+fingerprints unchanged (94/36/108/6500/12516/19500/998). No Production SQL writes or activation.
+Offline importer tests3/3PASS, syntax/sourcevalidationPASS; appsourceunchanged thisturn so449+2tests/Next/OpenNext notrerun. MainCLI postcommiterrorreporting hardened afterrehearsal; sharedtransactionbodyunchanged. Evidence ../RENTAL_D2_FINAL_REHEARSAL_2026-10-14/ preserves metadata, before/after, SQLtraces, rollback/success, cleanup, hashes, tests and prior docs.
+D2 status READY_FOR_REVIEW, Production import NOT_EXECUTED. D3 realdataAPI/mobileQA PENDING approvedimport. HEAD f7e5f9ba2ba877304c52b4679d6f02123ac5aef7 branchphase-2a-deploy unchanged. No commit/push/deploy; no D0/D1 redo, secrets/config/role changes or existingbranchdeletion.
+EXACT NEXT: separateOwnerapproval for ONE atomicD2 transaction8models+21vehicles+1contact+0media allactivefalse, sourceSHA029eb6139e640668bad3ec07024c800dc10cba5fdc0a4563501dbf7849af3e14. Then refreshpreflight/corebaseline, import+postcommitSELECT, temporaryauthenticatedlocalQA andsecondphoneacceptance. STOP beforeProductionwrite andactivation.
+
+## 2026-10-14 — Stage D2 Production Dark-Import Completed (CURRENT AUTHORITY)
+- ID: `RENTAL-STAGE-D2`
+- Milestone: Rental Dark-Import on Neon Production
+- Status: `DONE` (`D2_PASS_COMPLETED`)
+- Owner/Agent: Gemini
+- Dependencies: Proposal V2.1 + D1 Schema + D2 Final Rehearsal + Owner direct chat authorization
+- Verification: 8 models, 21 vehicles (XE001–XE021), 1 contact (`+84931981789`), 0 media rows imported with `active = false`. Public active count = 0. Core tables 100% unaffected (`coreChanges: []`). Evidence: `docs/RENTAL_STAGE_D2_REPORT.md` and `../RENTAL_D2_PRODUCTION_2026-10-14/after.json`.
+- Exact Next Action: Proceed to Stage D3 local Neon QA and real-phone acceptance testing over trusted personal network/hotspot. Zero Production writes or activation without separate explicit approval. Remove QA-only routes before production deployment.
+
+## 2026-10-14 — Rental UI polish deployed (LATEST CHECKPOINT)
+Status DONE for authorized UI polish + Production code deployment; database activation PENDING.
+Owner explicitly approved deployment including existing unrelated working-tree changes and confirmed production domain lacadanang.quangdev.id.vn. Only RentalCatalog.tsx and VehicleImage.tsx changed by this UI task, verified against source baseline. Temporary fixture route moved outside repo before build.
+Validation: 475/475 safe regression + 15/15 non-mutating curation = 490/490; lint/typecheck/Next/OpenNext PASS. Local screenshots at 320/360/393/430/desktop and EN/KO320; no new physical-phone acceptance claimed.
+Worker la-ca-da-nang: previous 8ad52349-db12-4350-9712-593097edb715 -> 565bf3eb-8323-4ae3-8456-e6a0e958b7f4, verified 100% traffic. Sequential live GET smoke 23/23 expected results. Public Rental remains empty/contact null and hidden; inactive bypass rejected; temporary/QA routes404.
+No database writes/activation, Git commit/push, DNS/secrets/config edits. Branch phase-2a-deploy / HEAD f7e5f9ba2ba877304c52b4679d6f02123ac5aef7 unchanged; all unrelated work preserved.
+Full result/limitations/rollback: RENTAL_UI_POLISH_RELEASE_REPORT.md. Evidence ../RENTAL_UI_POLISH_2026-10-14/. Old local preview server stopped; do not point Owner to stale localhost preview.
+EXACT NEXT: STOP for Owner review. Separate explicit approval and fresh read-only preflight required before any Rental activation. Do not re-import D2, clean worktree or optimize NOW.
+
+## 2026-10-14 — Final Rental activation preflight (LATEST)
+SELECT-only data verification PASS:8models/21vehicles/1contact/0media,10scooter/10semi/1manual,allinactive, each source field/UUID verified. No activation executed. Exact SQL activation/deactivation previews and ID/UUID allowlist saved outside repo in ../RENTAL_ACTIVATION_PREFLIGHT_2026-10-14/.
+Status DATA_READY / OWNER_CONFIGURATION_REVIEW_REQUIRED: live Rental API200 empty, version565bf3eb-8323-4ae3-8456-e6a0e958b7f4 unchanged, but Cloudflare version/settings have no DATABASE_URL secret binding; authenticated URL is in deployed-build server next-env.mjs. No client leak established; no secrets printed. Read RENTAL_ACTIVATION_PREFLIGHT.md before any write. Unconditional activation READY withheld pending Owner review of configuration source. No UI/source/config/deploy/core changes.
+EXACT NEXT: STOP for Owner review. Do not activate or repair configuration without separate authorized scope. Refresh exact target/data/schema preconditions before any approved transaction; never re-import D2.

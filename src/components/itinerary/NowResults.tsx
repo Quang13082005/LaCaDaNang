@@ -25,7 +25,7 @@ export function NowResults({ onResetPreference }: { onResetPreference: () => voi
     if (mode === "choose") return;
     let active = true;
     const controller = new AbortController();
-    setState({ locale, status: "loading" });
+    setState(prev => ({ locale, status: prev.data ? "success" : "loading", data: prev.data }));
     const timeout = window.setTimeout(() => controller.abort(), 15000);
     void (async () => {
       try {
@@ -47,7 +47,7 @@ export function NowResults({ onResetPreference }: { onResetPreference: () => voi
     })();
     return () => { active = false; controller.abort(); window.clearTimeout(timeout); };
   }, [locale, attempt, mode, origin]);
-  const status = state.locale === locale ? state.status : "loading";
+  const status = state.locale === locale ? state.status : (state.data ? "success" : "loading");
   if (mode === "choose") return <div className="pb-40 pt-8 min-h-[320px]">
     <h2 className="text-xl font-bold">{t("intent.now")}</h2>
     <p className="mt-3" role="status">{gps === "idle" ? t("now.locationPrompt") : gps === "requesting" ? t("action.locating") : t(`now.gps.${gps}`)}</p>

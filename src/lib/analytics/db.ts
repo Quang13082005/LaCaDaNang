@@ -62,6 +62,11 @@ export async function insertAnalyticsEvent(
   event: ClientAnalyticsPayload,
   environment: AnalyticsEnvironment
 ): Promise<number> {
+  // STRICT READ-ONLY SAFETY: Preview environment is strictly prohibited from mutating Neon database.
+  if (environment === "preview") {
+    return 0;
+  }
+
   const sql = getNeonSql();
 
   const intent = "intent" in event ? event.intent ?? null : null;

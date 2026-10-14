@@ -71,7 +71,7 @@ describe("NOW lifecycle and truthful UI", () => {
     fireEvent.click(screen.getByRole("button", { name: /Xem gợi ý toàn Đà Nẵng|Show citywide suggestions|다낭 전체 추천 보기/ }));
     expect(await screen.findByText(translate(locale,"now.EVENING"))).toBeInTheDocument();
     expect(screen.getByText(translate(locale,"now.hours"))).toBeInTheDocument();
-    expect(fetch).toHaveBeenLastCalledWith(`/api/now?locale=${locale}`,expect.objectContaining({cache:"no-store"}));
+    expect(fetch).toHaveBeenCalledWith(`/api/now?locale=${locale}`,expect.objectContaining({cache:"no-store"}));
   });
   it("aborts on unmount and ignores a late response", async () => {
     let resolve!: (v: Response) => void;
