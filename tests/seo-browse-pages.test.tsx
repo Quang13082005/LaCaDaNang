@@ -76,6 +76,22 @@ describe("directory hub route", () => {
     expect(String(meta.description)).toContain("250");
     expect(meta.robots).toBeUndefined();
   });
+  it("renders an ItemList JSON-LD schema with listed places", async () => {
+    vi.mocked(getBrowse).mockResolvedValue(data(2, [link(1), link(2)]));
+    const html = renderToStaticMarkup(await Hub(props("eat")));
+    expect(html).toContain('type="application/ld+json"');
+    expect(html).toContain('"@type":"ItemList"');
+    expect(html).toContain('"@type":"Place"');
+    expect(html).toContain('"name":"Quán 1"');
+  });
+  it("renders editorial intro on page 1 and omits it on page > 1", async () => {
+    vi.mocked(getBrowse).mockResolvedValue(data(250));
+    const htmlP1 = renderToStaticMarkup(await Hub(props("eat")));
+    expect(htmlP1).toContain("Danh bạ ẩm thực Đà Nẵng với đầy đủ quán ăn ngon");
+
+    const htmlP2 = renderToStaticMarkup(await Hub(props("eat", { page: "2" })));
+    expect(htmlP2).not.toContain("Danh bạ ẩm thực Đà Nẵng với đầy đủ quán ăn ngon");
+  });
 });
 
 describe("related links on the place detail page", () => {

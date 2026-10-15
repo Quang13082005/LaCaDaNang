@@ -16,6 +16,8 @@ import {
 } from "@/lib/analytics/client";
 import type { MessageKey } from "@/lib/i18n/messages";
 import { BROWSE_COPY, BROWSE_SLUGS, hubPath } from "@/lib/seo/browse";
+import { websiteJsonLd } from "@/lib/seo/site";
+import { serializeJsonLd } from "@/lib/seo/place";
 import {
   PREFERENCES_BY_INTENT,
 } from "@/data/discovery-ui";
@@ -115,7 +117,12 @@ export default function HomePage() {
       : undefined;
 
   return (
-    <div className="min-h-screen bg-slate-50/50 flex flex-col justify-between">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(websiteJsonLd()) }}
+      />
+      <div className="min-h-screen bg-slate-50/50 flex flex-col justify-between">
       {/* Centered Mobile-First & Desktop-Balanced Container */}
       <main className="w-full max-w-lg md:max-w-4xl mx-auto px-4 sm:px-6 pt-2.5 sm:pt-4 pb-1 flex-1 flex flex-col justify-between min-h-0">
         {/* Hero Section: stays stable in selection state to prevent upward layout shift */}
@@ -200,6 +207,7 @@ export default function HomePage() {
         </div>
       </footer>
     </div>
+    </>
   );
 }
 

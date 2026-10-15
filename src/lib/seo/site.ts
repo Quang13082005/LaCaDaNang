@@ -14,3 +14,13 @@ export function parsePlaceId(value: string): number | null {
   const id = Number(value);
   return Number.isSafeInteger(id) && id <= 2147483647 ? id : null;
 }
+
+export function websiteJsonLd(origin = siteOrigin()) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "La Cà Đà Nẵng",
+    alternateName: ["LaCaDaNang", "lacadanang"],
+    url: origin + "/",
+  };
+}

@@ -24,6 +24,14 @@ describe("Phase 1 Home & Design System Shell", () => {
     expect(cafeLink).toHaveAttribute("href", "/browse/cafe");
     expect(goLink).toHaveAttribute("href", "/browse/go");
     expect(stayLink).toHaveAttribute("href", "/browse/stay");
+
+    // WebSite JSON-LD for Google Brand Recognition
+    const jsonLdScript = document.querySelector('script[type="application/ld+json"]');
+    expect(jsonLdScript).not.toBeNull();
+    const parsed = JSON.parse(jsonLdScript?.textContent || "{}");
+    expect(parsed["@type"]).toBe("WebSite");
+    expect(parsed.name).toBe("La Cà Đà Nẵng");
+    expect(parsed.alternateName).toContain("LaCaDaNang");
   });
 
   it("renders the design system reference page", () => {
