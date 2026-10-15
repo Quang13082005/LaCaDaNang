@@ -9,6 +9,6 @@ export function ItineraryStop({ stop, index, isLast }: { stop: DiscoveryPlace; i
   return <div className="relative flex items-start gap-2 pb-5">
     {!isLast && <div aria-hidden="true" className="absolute left-4 top-8 bottom-0 w-0.5 bg-sky-200" />}
     <span className="relative shrink-0 w-8 h-8 rounded-full bg-sky-500 text-white text-sm font-bold flex items-center justify-center">{index + 1}</span>
-    <div className="min-w-0 flex-1"><p className="text-sm font-semibold text-sky-700 mb-2">{t(`now.section.${stop.section}`)}</p><PlaceCard place={discoveryToCard(stop)} intent="NOW" /></div>
+    <div className="min-w-0 flex-1"><p className="text-sm font-semibold text-sky-700 mb-2">{t(`now.section.${stop.section}`)}</p><PlaceCard place={discoveryToCard(stop)} intent="NOW" preference="time_slot" position={(Math.min(Math.max(index + 1, 1), 3)) as 1 | 2 | 3} /></div>
   </div>;
 }

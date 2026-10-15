@@ -130,6 +130,7 @@ export function safeGaParams(
   for (const key of [
     "place_id",
     "position",
+    "result_position",
     "result_count",
     "meaningful_tap_count",
   ]) {

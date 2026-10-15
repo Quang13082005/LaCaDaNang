@@ -1,7 +1,12 @@
 import React from "react";
 import { placePath } from "@/lib/seo/site";
 import { sendGaEvent } from "@/lib/analytics/ga4";
-import { MapPin, Navigation } from "lucide-react";
+import {
+  saveNavSource,
+  saveDiscoverySelection,
+  setPendingReturnRestore,
+} from "@/lib/navigation/nav-state";
+import { MapPin, Navigation, Info } from "lucide-react";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 import { trackMapsClicked } from "@/lib/analytics/client";
 import type { PlaceCardModel } from "@/lib/data/place-card-model";
@@ -27,12 +32,13 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({
 
   const handleMapsClick = () => {
     try {
-      if (place.id && intent && preference) {
+      const resolvedPref = preference || (intent === "NOW" ? "time_slot" : undefined);
+      if (place.id && intent && resolvedPref) {
         trackMapsClicked(
           Number(place.id),
           (position || 1) as 1 | 2 | 3,
           intent,
-          preference,
+          resolvedPref,
           locale,
           isManual ? "manual" : "auto",
           isNearby,
@@ -44,10 +50,34 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({
     }
   };
 
+  const hasValidPlaceId = Number.isSafeInteger(Number(place.id)) && Number(place.id) > 0;
+
+  const handleOpenDetail = () => {
+    saveNavSource("/", "home");
+    const resolvedPref = preference || (intent === "NOW" ? "time_slot" : undefined);
+    if (intent && resolvedPref) {
+      saveDiscoverySelection(intent, resolvedPref);
+      setPendingReturnRestore(true);
+    }
+    sendGaEvent("place_detail_opened", { place_id: Number(place.id), locale });
+  };
+
   return (
     <article className="w-full min-w-0 rounded-[16px] bg-white border border-slate-200/90 shadow-sm flex flex-col p-4 sm:p-5 gap-3 break-words [overflow-wrap:anywhere]">
       <div className="space-y-2">
-        <h3 className="text-lg sm:text-xl font-extrabold text-slate-900 leading-snug">{Number.isSafeInteger(Number(place.id)) && Number(place.id)>0 ? <a className="inline-flex min-h-[44px] items-center underline decoration-sky-200 underline-offset-4" href={placePath(Number(place.id),locale)} onClick={()=>sendGaEvent("place_detail_opened",{place_id:Number(place.id),locale})}>{place.name}</a> : place.name}</h3>
+        <h3 className="text-lg sm:text-xl font-extrabold text-slate-900 leading-snug">
+          {hasValidPlaceId ? (
+            <a
+              className="inline-flex min-h-[44px] items-center hover:text-sky-700 transition-colors"
+              href={placePath(Number(place.id), locale)}
+              onClick={handleOpenDetail}
+            >
+              {place.name}
+            </a>
+          ) : (
+            place.name
+          )}
+        </h3>
         <div className="flex flex-wrap items-center gap-2">
           {place.typeLabel && <p className="text-sm font-medium text-sky-700">{place.typeLabel}</p>}
           {place.distanceKm != null && (
@@ -96,7 +126,15 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({
             <Navigation aria-hidden="true" className="w-4 h-4 shrink-0" /><span>{t("action.maps")}</span>
           </a>
         )}
-
+        {hasValidPlaceId && (
+          <a
+            href={placePath(Number(place.id), locale)}
+            onClick={handleOpenDetail}
+            className="w-full min-h-[44px] rounded-[12px] px-3 py-2.5 bg-sky-50 hover:bg-sky-100 active:bg-sky-200 text-sky-700 border border-sky-200/80 font-semibold text-sm flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 transition-colors"
+          >
+            <Info aria-hidden="true" className="w-4 h-4 shrink-0" /><span>{t("action.viewDetails")}</span>
+          </a>
+        )}
       </div>
 
     </article>

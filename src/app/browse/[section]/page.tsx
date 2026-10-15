@@ -98,7 +98,12 @@ export default async function Page(props: Props) {
             <p>{copy.intro[BROWSE_SLUGS[slug]]}</p>
           </section>
         )}
-        <PlaceLinkList places={data.places} locale={locale} />
+        <PlaceLinkList
+          places={data.places}
+          locale={locale}
+          currentPath={hubPath(slug, page, locale)}
+          navType="browse"
+        />
         {data.pages > 1 && (
           <nav aria-label={copy.pagination} className="flex flex-wrap gap-2">
             {Array.from({ length: data.pages }, (_, i) => i + 1).map(n => (

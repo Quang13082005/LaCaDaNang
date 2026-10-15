@@ -14,6 +14,12 @@ import {
   trackPreferenceSelected,
   resetJourneyId,
 } from "@/lib/analytics/client";
+import {
+  getValidDiscoverySelection,
+  saveDiscoverySelection,
+  clearDiscoverySelection,
+  consumeReturnRestoreFlag,
+} from "@/lib/navigation/nav-state";
 import type { MessageKey } from "@/lib/i18n/messages";
 import { BROWSE_COPY, BROWSE_SLUGS, hubPath } from "@/lib/seo/browse";
 import { websiteJsonLd } from "@/lib/seo/site";
@@ -35,6 +41,24 @@ export default function HomePage() {
   const selectionRef = useRef<HTMLDivElement>(null);
   const prevPreferenceRef = useRef<string | null>(null);
 
+  // Restore valid previous selection on return/Back only when returning from a detail page
+  useEffect(() => {
+    if (consumeReturnRestoreFlag()) {
+      const saved = getValidDiscoverySelection();
+      if (saved) {
+        setSelectedIntent(saved.intent);
+        setSelectedPreference(saved.preference);
+      }
+    }
+  }, []);
+
+  // Save active valid selection to session storage
+  useEffect(() => {
+    if (selectedIntent && selectedPreference) {
+      saveDiscoverySelection(selectedIntent, selectedPreference);
+    }
+  }, [selectedIntent, selectedPreference]);
+
   useEffect(() => {
     trackSessionStarted(locale, isManual ? "manual" : "auto");
   }, [locale, isManual]);
@@ -50,6 +74,7 @@ export default function HomePage() {
       // Toggle off if tapping same intent
       setSelectedIntent(null);
       setSelectedPreference(null);
+      clearDiscoverySelection();
     } else {
       trackIntentSelected(intent, locale, isManual ? "manual" : "auto");
       setSelectedIntent(intent);
@@ -71,6 +96,7 @@ export default function HomePage() {
 
   const handleResetPreference = () => {
     resetJourneyId();
+    clearDiscoverySelection();
     if (selectedIntent === "NOW") setSelectedIntent(null);
     setSelectedPreference(null);
   };
@@ -91,10 +117,10 @@ export default function HomePage() {
       const top = target
         ? Math.max(0, target.getBoundingClientRect().top + window.scrollY - 20)
         : 0;
-      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
       window.scrollTo({ top, behavior: reduceMotion ? "auto" : "smooth" });
     } else if (selectedIntent !== null) {
-      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
       window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
     }
   }, [selectedPreference, selectedIntent]);

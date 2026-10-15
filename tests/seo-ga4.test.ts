@@ -21,6 +21,7 @@ describe("stable real-place SEO",()=>{
 describe("optional privacy-safe GA4",()=>{
  it("absent or malformed ID is disabled",()=>{expect(measurementId("")).toBeNull();expect(measurementId("not-id")).toBeNull();expect(measurementId("G-TEST123")).toBe("G-TEST123");});
  it("drops raw GPS PII identifiers and query URLs",()=>{expect(safeGaParams({latitude:16,longitude:108,accuracy:20,email:"x@y",session_id:"id",page_location:"https://x/?lat=16",radius_km:3,intent:"GO",locale:"ko"})).toEqual({intent:"GO",locale:"ko",radius_km:3});expect(safePagePath("/api/now?lat=16")).toBe("/");expect(safePagePath("/places/1501?foo=bar")).toBe("/");expect(safePagePath("/places/1501")).toBe("/places/1501");});
+ it("allows result_position and place_id in safeGaParams while dropping sensitive fields",()=>{expect(safeGaParams({place_id:1501,result_position:2,position:1,result_count:3,meaningful_tap_count:4,latitude:16.068,longitude:108.221,email:"user@example.com",session_id:"550e8400-e29b-41d4-a716-446655440000"})).toEqual({place_id:1501,result_position:2,position:1,result_count:3,meaningful_tap_count:4});});
  it.each(ANALYTICS_EVENT_NAMES)("mirrors %s without changing first-party contract",name=>{
   vi.stubEnv("NODE_ENV","production");
   vi.stubEnv("NEXT_PUBLIC_GA_MEASUREMENT_ID","G-TEST123");

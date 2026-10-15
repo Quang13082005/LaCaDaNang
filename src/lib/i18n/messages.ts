@@ -44,6 +44,10 @@ const vi = {
 
   // Actions
   "action.maps": "Xem trên Google Maps",
+  "action.viewDetails": "Xem chi tiết địa điểm",
+  "action.back": "Quay lại",
+  "action.viewCategory": "Xem danh mục",
+  "action.home": "Trang chủ",
   "action.changeSelection": "Đổi lựa chọn",
   "action.explore": "Khám phá",
   "action.selected": "Đang chọn",
@@ -179,6 +183,10 @@ export const UI_MESSAGES = {
 
     // Actions
     "action.maps": "View on Google Maps",
+    "action.viewDetails": "View place details",
+    "action.back": "Back",
+    "action.viewCategory": "View category",
+    "action.home": "Home",
     "action.changeSelection": "Change selection",
     "action.explore": "Explore",
     "action.selected": "Selected",
@@ -308,6 +316,10 @@ export const UI_MESSAGES = {
 
     // Actions
     "action.maps": "Google 지도에서 보기",
+    "action.viewDetails": "장소 상세 보기",
+    "action.back": "뒤로 가기",
+    "action.viewCategory": "카테고리 보기",
+    "action.home": "홈",
     "action.changeSelection": "선택 변경",
     "action.explore": "둘러보기",
     "action.selected": "선택됨",
