@@ -8,6 +8,7 @@ import { getBrowse, listRelated } from "@/lib/data/place-browse";
 import { getPlace } from "@/lib/data/place-detail";
 import Hub, { generateMetadata } from "@/app/browse/[section]/page";
 import Detail from "@/app/places/[id]/page";
+import { BROWSE_COPY } from "@/lib/seo/browse";
 
 const link = (id: number, over = {}) => ({ id, section: "EAT" as const, name: `Quán ${id}`, address: `${id} Bạch Đằng, Hải Châu`, areaName: "Hải Châu", ...over });
 const props = (section: string, search: Record<string, string> = {}) => ({ params: Promise.resolve({ section }), searchParams: Promise.resolve(search) });
@@ -87,10 +88,43 @@ describe("directory hub route", () => {
   it("renders editorial intro on page 1 and omits it on page > 1", async () => {
     vi.mocked(getBrowse).mockResolvedValue(data(250));
     const htmlP1 = renderToStaticMarkup(await Hub(props("eat")));
-    expect(htmlP1).toContain("Danh bạ ẩm thực Đà Nẵng với đầy đủ quán ăn ngon");
+    expect(htmlP1).toContain("Danh bạ ẩm thực Đà Nẵng tổng hợp các địa điểm ăn uống");
 
     const htmlP2 = renderToStaticMarkup(await Hub(props("eat", { page: "2" })));
-    expect(htmlP2).not.toContain("Danh bạ ẩm thực Đà Nẵng với đầy đủ quán ăn ngon");
+    expect(htmlP2).not.toContain("Danh bạ ẩm thực Đà Nẵng tổng hợp các địa điểm ăn uống");
+  });
+  it("ensures editorial intros strictly adhere to displayed place data without subjective or unverified claims", () => {
+    const unverifiedPatterns = [
+      /đánh giá thực tế từ Google/i,
+      /số lượt đánh giá/i,
+      /đánh giá cộng đồng/i,
+      /review count/i,
+      /community rating/i,
+      /리뷰 수/,
+      /방문자 리뷰/,
+      /địa chỉ chính xác/i,
+      /địa chỉ chuẩn xác/i,
+      /địa chỉ minh bạch/i,
+      /địa chỉ đã xác minh/i,
+      /verified address/i,
+      /exact location/i,
+      /transparent address/i,
+      /실제 주소/,
+      /정확한 주소/,
+      /투명한/,
+      /quán ăn ngon/i,
+      /bãi biển đẹp/i,
+      /맛집/,
+    ];
+
+    for (const [locale, copy] of Object.entries(BROWSE_COPY)) {
+      for (const [section, text] of Object.entries(copy.intro)) {
+        expect(text, `${locale}.${section} must be non-empty`).toBeTruthy();
+        for (const pattern of unverifiedPatterns) {
+          expect(text, `${locale}.${section} must not match ${pattern}`).not.toMatch(pattern);
+        }
+      }
+    }
   });
 });
 
