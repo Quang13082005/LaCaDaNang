@@ -187,7 +187,7 @@ export default function HomePage() {
           </div>
           {/* Crawlable plain links to the public place directory; not an intent and not a recommendation. */}
           <nav aria-label={BROWSE_COPY[locale].navLabel} className="w-full flex flex-wrap items-center gap-x-4">
-            {(["eat", "go", "stay"] as const).map((slug) => (
+            {(["eat", "cafe", "go", "stay"] as const).map((slug) => (
               <a
                 key={slug}
                 href={hubPath(slug, 1, locale)}

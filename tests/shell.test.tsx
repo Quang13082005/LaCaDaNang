@@ -14,6 +14,16 @@ describe("Phase 1 Home & Design System Shell", () => {
     expect(screen.getByText("ĐI ĐÂU?")).toBeInTheDocument();
     expect(screen.getByText("BÂY GIỜ LÀM GÌ?")).toBeInTheDocument();
     expect(screen.getByText("Ở ĐÂU?")).toBeInTheDocument();
+
+    // Footer directory links
+    const eatLink = screen.getByRole("link", { name: "Ăn uống" });
+    const cafeLink = screen.getByRole("link", { name: "Cà phê" });
+    const goLink = screen.getByRole("link", { name: "Vui chơi" });
+    const stayLink = screen.getByRole("link", { name: "Lưu trú" });
+    expect(eatLink).toHaveAttribute("href", "/browse/eat");
+    expect(cafeLink).toHaveAttribute("href", "/browse/cafe");
+    expect(goLink).toHaveAttribute("href", "/browse/go");
+    expect(stayLink).toHaveAttribute("href", "/browse/stay");
   });
 
   it("renders the design system reference page", () => {
