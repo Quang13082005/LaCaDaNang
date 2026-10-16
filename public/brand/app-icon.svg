@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="sqBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#F1F5F9"/>
+    </linearGradient>
+    <filter id="iconShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#0B2A4A" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <!-- Squircle Base -->
+  <rect x="16" y="16" width="480" height="480" rx="112" ry="112" fill="url(#sqBg)"/>
+  <rect x="16" y="16" width="480" height="480" rx="112" ry="112" fill="none" stroke="#E2E8F0" stroke-width="2"/>
+
+  <!-- Centered Logomark -->
+  <g transform="translate(96, 68) scale(1.6)" filter="url(#iconShadow)">
+
+  <defs>
+    <!-- Sun Gradient -->
+    <radialGradient id="sunGrad" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#FFE082"/>
+      <stop offset="60%" stop-color="#FFC629"/>
+      <stop offset="100%" stop-color="#F59E0B"/>
+    </radialGradient>
+
+    <!-- Sky Background Inside Pin -->
+    <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFD54F"/>
+      <stop offset="100%" stop-color="#FFC629"/>
+    </linearGradient>
+
+    <!-- Lower Wave Gradient -->
+    <linearGradient id="lowerWaveGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#0284C7"/>
+    </linearGradient>
+
+    <!-- Pin Clip Path -->
+    <clipPath id="pinClip">
+      <path d="M 100 12
+               C 148 12, 182 46, 182 96
+               C 182 136, 142 180, 106 222
+               C 103 226, 97 226, 94 222
+               C 58 180, 18 136, 18 96
+               C 18 46, 52 12, 100 12 Z" />
+    </clipPath>
+  </defs>
+
+  <!-- Pin Container with Clipped Content -->
+  <g clip-path="url(#pinClip)">
+    <!-- Yellow Sky Base -->
+    <rect x="0" y="0" width="200" height="240" fill="url(#skyGrad)"/>
+
+    <!-- Sun Disc -->
+    <circle cx="74" cy="106" r="33" fill="url(#sunGrad)"/>
+
+    <!-- Navy Ring around Sun -->
+    <path d="M 44 116 A 37 37 0 1 1 106 122" fill="none" stroke="#0B2A4A" stroke-width="12" stroke-linecap="round"/>
+
+    <!-- Sun Rays (Top-Right) -->
+    <line x1="94" y1="44" x2="94" y2="58" stroke="#0B2A4A" stroke-width="9.5" stroke-linecap="round"/>
+    <line x1="117" y1="56" x2="128" y2="68" stroke="#0B2A4A" stroke-width="9.5" stroke-linecap="round"/>
+    <line x1="133" y1="78" x2="146" y2="86" stroke="#0B2A4A" stroke-width="9.5" stroke-linecap="round"/>
+
+    <!-- Mountain Silhouette (Navy) -->
+    <path d="M 116 136 L 134 115 L 144 120 L 159 98 L 186 138 L 186 160 L 116 160 Z" fill="#0B2A4A"/>
+
+    <!-- Golden Suspension Bridge -->
+    <!-- Roadway deck -->
+    <path d="M 122 144 L 182 144" stroke="#FFC629" stroke-width="4.5" stroke-linecap="round"/>
+    <!-- Central Tower/Pylon -->
+    <path d="M 152 122 L 152 154" stroke="#FFC629" stroke-width="4.5" stroke-linecap="round"/>
+    <path d="M 148 134 L 156 134" stroke="#FFC629" stroke-width="2.5"/>
+    <!-- Suspension Main Cables -->
+    <path d="M 124 144 Q 138 138 152 123 Q 166 138 180 144" fill="none" stroke="#FFC629" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- Vertical Suspenders -->
+    <line x1="134" y1="140" x2="134" y2="144" stroke="#FFC629" stroke-width="1.8"/>
+    <line x1="143" y1="133" x2="143" y2="144" stroke="#FFC629" stroke-width="1.8"/>
+    <line x1="161" y1="133" x2="161" y2="144" stroke="#FFC629" stroke-width="1.8"/>
+    <line x1="170" y1="140" x2="170" y2="144" stroke="#FFC629" stroke-width="1.8"/>
+
+    <!-- Wave 1: Dark Navy Wave Body with White Crest -->
+    <path d="M 10 126 Q 50 148 95 132 Q 140 118 190 152 L 190 185 Q 140 155 95 168 Q 50 180 10 160 Z" fill="#0B2A4A"/>
+    <path d="M 12 125 Q 52 146 95 130 Q 140 116 188 150" fill="none" stroke="#FFFFFF" stroke-width="7.5" stroke-linecap="round"/>
+
+    <!-- Wave 2: Sky Blue Ribbon -->
+    <path d="M 10 154 Q 52 176 96 160 Q 142 146 190 178 L 190 200 Q 140 175 96 190 Q 50 202 10 180 Z" fill="#7DD3FC"/>
+
+    <!-- Wave 3: Bottom Sea Blue Tip -->
+    <path d="M 10 172 Q 52 195 96 180 Q 140 166 190 196 L 190 240 L 10 240 Z" fill="url(#lowerWaveGrad)"/>
+    <path d="M 12 171 Q 54 193 96 178 Q 138 164 186 194" fill="none" stroke="#BAE6FD" stroke-width="4.5" stroke-linecap="round"/>
+  </g>
+
+  </g>
+</svg>

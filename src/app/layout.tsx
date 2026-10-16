@@ -16,12 +16,36 @@ const beVietnamPro = Be_Vietnam_Pro({
 export const metadata: Metadata = {
   metadataBase: new URL(siteOrigin()),
   alternates: { canonical: siteOrigin() + "/" },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/brand/icon-32.png", type: "image/png", sizes: "32x32" },
+      { url: "/brand/icon-192.png", type: "image/png", sizes: "192x192" },
+    ],
+    apple: [
+      { url: "/brand/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
   openGraph: {
     title: "La Cà Đà Nẵng — Gợi ý trong 3 lần chạm",
     description: "Khám phá địa điểm ăn uống, vui chơi và trải nghiệm Đà Nẵng nhanh chóng trong tối đa 3 lần chạm.",
     url: siteOrigin() + "/",
     type: "website",
     locale: "vi_VN",
+    images: [
+      {
+        url: "/og/la-ca-da-nang-og.png",
+        width: 1200,
+        height: 630,
+        alt: "La Cà Đà Nẵng — Khám phá Đà Nẵng theo cách của bạn",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "La Cà Đà Nẵng — Gợi ý trong 3 lần chạm",
+    description: "Khám phá địa điểm ăn uống, vui chơi và trải nghiệm Đà Nẵng nhanh chóng trong tối đa 3 lần chạm.",
+    images: ["/og/la-ca-da-nang-og.png"],
   },
   verification: process.env.GOOGLE_SITE_VERIFICATION ? { google: process.env.GOOGLE_SITE_VERIFICATION } : undefined,
   title: "La Cà Đà Nẵng — Gợi ý trong 3 lần chạm",

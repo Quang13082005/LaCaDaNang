@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" fill="none" width="100%" height="100%">
+  <defs>
+    <radialGradient id="sunGrad" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#FFE082"/>
+      <stop offset="60%" stop-color="#FFC629"/>
+      <stop offset="100%" stop-color="#F59E0B"/>
+    </radialGradient>
+    <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFD54F"/>
+      <stop offset="100%" stop-color="#FFC629"/>
+    </linearGradient>
+    <linearGradient id="lowerWaveGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#0284C7"/>
+    </linearGradient>
+    <clipPath id="pinClip">
+      <path d="M 100 10 C 152 10, 185 45, 185 96 C 185 138, 142 182, 105 224 C 102 228, 98 228, 95 224 C 58 182, 15 138, 15 96 C 15 45, 48 10, 100 10 Z" />
+    </clipPath>
+  </defs>
+  <g clip-path="url(#pinClip)">
+    <rect x="0" y="0" width="200" height="240" fill="url(#skyGrad)"/>
+    <circle cx="72" cy="98" r="34" fill="url(#sunGrad)"/>
+    <path d="M 42 108 A 36 36 0 1 1 106 114" fill="none" stroke="#0B2A4A" stroke-width="12" stroke-linecap="round"/>
+    <line x1="102" y1="32" x2="104" y2="46" stroke="#0B2A4A" stroke-width="9.5" stroke-linecap="round"/>
+    <line x1="124" y1="44" x2="134" y2="57" stroke="#0B2A4A" stroke-width="9.5" stroke-linecap="round"/>
+    <line x1="136" y1="66" x2="150" y2="75" stroke="#0B2A4A" stroke-width="9.5" stroke-linecap="round"/>
+    <path d="M 102 125 Q 118 108 132 100 Q 142 108 152 104 Q 166 98 186 118 L 186 145 L 102 145 Z" fill="#0B2A4A"/>
+    <path d="M 116 122 L 184 122" stroke="#FFC629" stroke-width="4.2" stroke-linecap="round"/>
+    <path d="M 152 102 L 152 136" stroke="#FFC629" stroke-width="4.5" stroke-linecap="round"/>
+    <path d="M 148 114 L 156 114" stroke="#FFC629" stroke-width="2.5"/>
+    <path d="M 120 122 Q 136 116 152 103 Q 168 116 182 122" fill="none" stroke="#FFC629" stroke-width="2.6" stroke-linecap="round"/>
+    <line x1="130" y1="118" x2="130" y2="122" stroke="#FFC629" stroke-width="1.8"/>
+    <line x1="140" y1="111" x2="140" y2="122" stroke="#FFC629" stroke-width="1.8"/>
+    <line x1="162" y1="111" x2="162" y2="122" stroke="#FFC629" stroke-width="1.8"/>
+    <line x1="172" y1="118" x2="172" y2="122" stroke="#FFC629" stroke-width="1.8"/>
+    <path d="M 8 118 Q 50 108 95 125 Q 140 138 194 122 L 194 162 Q 140 148 95 158 Q 50 166 8 150 Z" fill="#0B2A4A"/>
+    <path d="M 10 118 Q 50 108 95 124 Q 140 137 192 122" fill="none" stroke="#FFFFFF" stroke-width="7.5" stroke-linecap="round"/>
+    <path d="M 8 146 Q 52 162 96 152 Q 142 142 194 158 L 194 186 Q 140 168 96 178 Q 50 188 8 172 Z" fill="#7DD3FC"/>
+    <path d="M 8 168 Q 52 186 96 174 Q 140 162 194 180 L 194 240 L 8 240 Z" fill="url(#lowerWaveGrad)"/>
+    <path d="M 10 167 Q 54 184 96 172 Q 138 160 190 178" fill="none" stroke="#BAE6FD" stroke-width="4" stroke-linecap="round"/>
+  </g>
+</svg>
