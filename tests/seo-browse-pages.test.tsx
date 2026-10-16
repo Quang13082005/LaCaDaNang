@@ -154,3 +154,21 @@ describe("related links on the place detail page", () => {
     log.mockRestore();
   });
 });
+
+describe("Server/Client Component boundaries for browse and places", () => {
+  it("ensures PlaceLinkList is explicitly marked as a Client Component", async () => {
+    const fs = await import("node:fs");
+    const path = await import("node:path");
+    const filePath = path.resolve(__dirname, "../src/components/places/PlaceLinkList.tsx");
+    const content = fs.readFileSync(filePath, "utf8");
+    expect(content.trim().startsWith('"use client";')).toBe(true);
+  });
+
+  it("ensures browse hub page remains a pure Server Component without use client", async () => {
+    const fs = await import("node:fs");
+    const path = await import("node:path");
+    const filePath = path.resolve(__dirname, "../src/app/browse/[section]/page.tsx");
+    const content = fs.readFileSync(filePath, "utf8");
+    expect(content.includes('"use client"')).toBe(false);
+  });
+});

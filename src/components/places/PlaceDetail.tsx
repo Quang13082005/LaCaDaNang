@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useEffect, useRef, useMemo } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, House } from "lucide-react";
 import type { DiscoveryLocale, DiscoveryPlace } from "@/lib/data/discovery-contract";
 import { placePath } from "@/lib/seo/site";
@@ -11,6 +11,7 @@ import { BROWSE_COPY } from "@/lib/seo/browse";
 import {
   clearDiscoverySelection,
   clearNavSource,
+  getCategoryFallback,
   resolveBackTarget,
   setPendingReturnRestore,
 } from "@/lib/navigation/nav-state";
@@ -35,7 +36,13 @@ export function PlaceDetail({
     }
   }, [place.id, locale]);
 
-  const backTarget = useMemo(() => resolveBackTarget(place, locale), [place, locale]);
+  // Initial state matches server-rendered fallback exactly to avoid hydration mismatch
+  const [backTarget, setBackTarget] = useState(() => getCategoryFallback(place, locale));
+
+  useEffect(() => {
+    setBackTarget(resolveBackTarget(place, locale));
+  }, [place, locale]);
+
   const backLabel = backTarget.isFallback
     ? translate(locale, "action.viewCategory")
     : translate(locale, "action.back");

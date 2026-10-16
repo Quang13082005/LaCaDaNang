@@ -1,3 +1,5 @@
+"use client";
+
 import type { DiscoveryLocale } from "@/lib/data/discovery-contract";
 import type { PlaceLink } from "@/lib/data/place-browse";
 import { placePath } from "@/lib/seo/site";

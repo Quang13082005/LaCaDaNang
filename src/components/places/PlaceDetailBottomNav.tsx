@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowLeft, House } from "lucide-react";
 import type { DiscoveryLocale, DiscoveryPlace } from "@/lib/data/discovery-contract";
@@ -8,6 +8,7 @@ import { translate } from "@/lib/i18n/messages";
 import {
   clearDiscoverySelection,
   clearNavSource,
+  getCategoryFallback,
   resolveBackTarget,
   setPendingReturnRestore,
 } from "@/lib/navigation/nav-state";
@@ -18,7 +19,13 @@ export interface PlaceDetailBottomNavProps {
 }
 
 export function PlaceDetailBottomNav({ place, locale }: PlaceDetailBottomNavProps) {
-  const backTarget = useMemo(() => resolveBackTarget(place, locale), [place, locale]);
+  // Initial state matches server-rendered fallback exactly to avoid hydration mismatch
+  const [backTarget, setBackTarget] = useState(() => getCategoryFallback(place, locale));
+
+  useEffect(() => {
+    setBackTarget(resolveBackTarget(place, locale));
+  }, [place, locale]);
+
   const backLabel = backTarget.isFallback
     ? translate(locale, "action.viewCategory")
     : translate(locale, "action.back");

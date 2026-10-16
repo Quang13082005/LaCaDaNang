@@ -233,6 +233,19 @@ export function resolveBackTarget(
   }
 
   // Fallback category hub: /browse/{section}
-  const categoryHub = hubPath(slugOf(place.section), 1, locale);
-  return { href: categoryHub, isFallback: true };
+  return getCategoryFallback(place, locale);
+}
+
+/**
+ * Returns the default fallback category hub for a place detail page.
+ * Guaranteed to be pure and identical on both server and client (no sessionStorage read).
+ */
+export function getCategoryFallback(
+  place: { section: DiscoverySection },
+  locale: DiscoveryLocale
+): { href: string; isFallback: boolean } {
+  return {
+    href: hubPath(slugOf(place.section), 1, locale),
+    isFallback: true,
+  };
 }
