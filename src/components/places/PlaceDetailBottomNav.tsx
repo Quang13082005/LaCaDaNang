@@ -8,9 +8,12 @@ import { translate } from "@/lib/i18n/messages";
 import {
   clearDiscoverySelection,
   clearNavSource,
+  clearNowItinerarySnapshot,
   getCategoryFallback,
+  getValidNowItinerarySnapshot,
   resolveBackTarget,
   setPendingReturnRestore,
+  setPendingNowRestore,
 } from "@/lib/navigation/nav-state";
 
 export interface PlaceDetailBottomNavProps {
@@ -33,13 +36,18 @@ export function PlaceDetailBottomNav({ place, locale }: PlaceDetailBottomNavProp
   const handleBackClick = () => {
     if (backTarget.href === "/" || backTarget.href.startsWith("/?")) {
       setPendingReturnRestore(true);
+      if (getValidNowItinerarySnapshot()) {
+        setPendingNowRestore(true);
+      }
     }
   };
 
   const handleHomeClick = () => {
     clearDiscoverySelection();
     clearNavSource();
+    clearNowItinerarySnapshot();
     setPendingReturnRestore(false);
+    setPendingNowRestore(false);
   };
 
   return (

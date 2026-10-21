@@ -64,6 +64,14 @@ const vi = {
   "hero.description": "Tìm chỗ ăn, chơi và nghỉ ở Đà Nẵng.",
   "hero.imageAlt": "Cầu Rồng và sông Hàn lúc hoàng hôn ở Đà Nẵng",
 
+  // Home Intro (SEO & Guide)
+  "home.intro.title": "Khám phá địa điểm Đà Nẵng cùng La Cà",
+  "home.intro.description": "La Cà Đà Nẵng hỗ trợ bạn tìm nhanh nơi ăn uống, điểm vui chơi, quán cà phê và cơ sở lưu trú tại thành phố Đà Nẵng. Lựa chọn danh mục theo nhu cầu để nhận gợi ý phù hợp và xem vị trí địa điểm trên Google Maps.",
+  "home.intro.guideTitle": "Cách khám phá địa điểm nhanh chóng",
+  "home.intro.guideStep1": "1. Chọn nhu cầu: ĂN GÌ, ĐI ĐÂU, BÂY GIỜ LÀM GÌ hoặc Ở ĐÂU.",
+  "home.intro.guideStep2": "2. Chọn sở thích phù hợp để nhận ngay các gợi ý sát nhu cầu.",
+  "home.intro.guideStep3": "3. Xem chi tiết thông tin và xem vị trí địa điểm trên Google Maps khi cần.",
+
   // Results & Counts
   "results.title": "Gợi ý địa điểm",
   "results.region": "Kết quả gợi ý",
@@ -203,6 +211,14 @@ export const UI_MESSAGES = {
     "hero.description": "Find food, activities and places to stay in Da Nang.",
     "hero.imageAlt": "Dragon Bridge and the Han River at sunset in Da Nang",
 
+    // Home Intro (SEO & Guide)
+    "home.intro.title": "Explore Da Nang with La Cà",
+    "home.intro.description": "La Cà Da Nang helps you quickly find dining spots, attractions, cafés, and accommodations across Da Nang. Select your current need to get suitable suggestions and view places on Google Maps.",
+    "home.intro.guideTitle": "Quick discovery guide",
+    "home.intro.guideStep1": "1. Choose an intent: What to eat, Where to go, What to do now, or Where to stay.",
+    "home.intro.guideStep2": "2. Select your preference to view targeted suggestions instantly.",
+    "home.intro.guideStep3": "3. Check place details and view the place on Google Maps when needed.",
+
     // Results & Counts
     "results.title": "Suggested places",
     "results.region": "Suggestions",
@@ -335,6 +351,14 @@ export const UI_MESSAGES = {
     // Hero
     "hero.description": "다낭의 맛집, 즐길 거리와 숙소를 찾아보세요.",
     "hero.imageAlt": "다낭의 석양 속 용다리와 한강",
+
+    // Home Intro (SEO & Guide)
+    "home.intro.title": "라카 다낭과 함께하는 다낭 장소 탐색",
+    "home.intro.description": "라카 다낭은 다낭의 음식점, 즐길 거리, 카페, 숙소를 빠르게 찾을 수 있도록 도와줍니다. 원하는 카테고리를 선택해 알맞은 추천 장소를 확인하고 Google 지도에서 장소 위치를 확인해보세요.",
+    "home.intro.guideTitle": "빠른 장소 탐색 방법",
+    "home.intro.guideStep1": "1. 활동 선택: 먹거리, 명소, 지금 할 일, 또는 숙소 중 하나를 선택합니다.",
+    "home.intro.guideStep2": "2. 원하는 테마를 선택하여 알맞은 추천 장소를 바로 확인합니다.",
+    "home.intro.guideStep3": "3. 상세 정보를 확인하고 필요할 때 Google 지도에서 장소 위치를 확인하세요.",
 
     // Results & Counts
     "results.title": "추천 장소",

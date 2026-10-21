@@ -5,6 +5,7 @@ import {
   saveNavSource,
   saveDiscoverySelection,
   setPendingReturnRestore,
+  setPendingNowRestore,
 } from "@/lib/navigation/nav-state";
 import { MapPin, Navigation, Info } from "lucide-react";
 import { useLocale } from "@/components/i18n/LocaleProvider";
@@ -58,6 +59,9 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({
     if (intent && resolvedPref) {
       saveDiscoverySelection(intent, resolvedPref);
       setPendingReturnRestore(true);
+      if (intent === "NOW") {
+        setPendingNowRestore(true);
+      }
     }
     sendGaEvent("place_detail_opened", { place_id: Number(place.id), locale });
   };

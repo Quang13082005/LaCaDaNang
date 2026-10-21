@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Hero } from "@/components/home/Hero";
 import { IntentGrid } from "@/components/home/IntentGrid";
+import { HomeIntro } from "@/components/home/HomeIntro";
 import { DiscoveryResults } from "@/components/results/DiscoveryResults";
 import { NowResults } from "@/components/itinerary/NowResults";
 import { LanguageSelector } from "@/components/i18n/LanguageSelector";
@@ -18,6 +19,7 @@ import {
   getValidDiscoverySelection,
   saveDiscoverySelection,
   clearDiscoverySelection,
+  clearNowItinerarySnapshot,
   consumeReturnRestoreFlag,
 } from "@/lib/navigation/nav-state";
 import type { MessageKey } from "@/lib/i18n/messages";
@@ -75,10 +77,14 @@ export default function HomePage() {
       setSelectedIntent(null);
       setSelectedPreference(null);
       clearDiscoverySelection();
+      clearNowItinerarySnapshot();
     } else {
       trackIntentSelected(intent, locale, isManual ? "manual" : "auto");
       setSelectedIntent(intent);
       setSelectedPreference(intent === "NOW" ? "time_slot" : null);
+      if (intent !== "NOW") {
+        clearNowItinerarySnapshot();
+      }
     }
   };
 
@@ -97,6 +103,7 @@ export default function HomePage() {
   const handleResetPreference = () => {
     resetJourneyId();
     clearDiscoverySelection();
+    clearNowItinerarySnapshot();
     if (selectedIntent === "NOW") setSelectedIntent(null);
     setSelectedPreference(null);
   };
@@ -165,6 +172,9 @@ export default function HomePage() {
             />
           </div>
         )}
+
+        {/* SEO Introduction & Discovery Guide: rendered only in initial exploration mode */}
+        {selectedPreference === null && selectedIntent === null && <HomeIntro />}
 
         {/* Results Anchor */}
         <div ref={resultsRef}>

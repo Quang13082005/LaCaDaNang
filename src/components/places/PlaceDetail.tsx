@@ -11,9 +11,12 @@ import { BROWSE_COPY } from "@/lib/seo/browse";
 import {
   clearDiscoverySelection,
   clearNavSource,
+  clearNowItinerarySnapshot,
   getCategoryFallback,
+  getValidNowItinerarySnapshot,
   resolveBackTarget,
   setPendingReturnRestore,
+  setPendingNowRestore,
 } from "@/lib/navigation/nav-state";
 import { PlaceDetailBottomNav } from "./PlaceDetailBottomNav";
 import { PlaceLinkList } from "./PlaceLinkList";
@@ -50,13 +53,18 @@ export function PlaceDetail({
   const handleBackClick = () => {
     if (backTarget.href === "/" || backTarget.href.startsWith("/?")) {
       setPendingReturnRestore(true);
+      if (getValidNowItinerarySnapshot()) {
+        setPendingNowRestore(true);
+      }
     }
   };
 
   const handleHomeClick = () => {
     clearDiscoverySelection();
     clearNavSource();
+    clearNowItinerarySnapshot();
     setPendingReturnRestore(false);
+    setPendingNowRestore(false);
   };
 
   const number = new Intl.NumberFormat(locale);

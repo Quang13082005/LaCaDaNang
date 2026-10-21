@@ -88,10 +88,10 @@ describe("directory hub route", () => {
   it("renders editorial intro on page 1 and omits it on page > 1", async () => {
     vi.mocked(getBrowse).mockResolvedValue(data(250));
     const htmlP1 = renderToStaticMarkup(await Hub(props("eat")));
-    expect(htmlP1).toContain("Danh bạ ẩm thực Đà Nẵng tổng hợp các địa điểm ăn uống");
+    expect(htmlP1).toContain("Khám phá ẩm thực Đà Nẵng qua danh mục quán ăn");
 
     const htmlP2 = renderToStaticMarkup(await Hub(props("eat", { page: "2" })));
-    expect(htmlP2).not.toContain("Danh bạ ẩm thực Đà Nẵng tổng hợp các địa điểm ăn uống");
+    expect(htmlP2).not.toContain("Khám phá ẩm thực Đà Nẵng qua danh mục quán ăn");
   });
   it("ensures editorial intros strictly adhere to displayed place data without subjective or unverified claims", () => {
     const unverifiedPatterns = [

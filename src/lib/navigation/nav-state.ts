@@ -1,11 +1,14 @@
 import { PREFERENCES_BY_INTENT } from "@/data/discovery-ui";
 import type { DiscoveryLocale, DiscoverySection } from "@/lib/data/discovery-contract";
+import type { NowData } from "@/lib/now/contract";
 import { hubPath, slugOf } from "@/lib/seo/browse";
 import { placePath } from "@/lib/seo/site";
 
 export const DISCOVERY_SELECTION_STORAGE_KEY = "laca_discovery_selection";
 export const NAV_SOURCE_STORAGE_KEY = "laca_nav_source";
 export const RETURN_RESTORE_KEY = "laca_return_restore";
+export const NOW_ITINERARY_STORAGE_KEY = "laca_now_itinerary";
+export const NOW_RETURN_RESTORE_KEY = "laca_now_return_restore";
 
 /** TTL for temporary session state: 30 minutes */
 export const NAV_STATE_TTL_MS = 30 * 60 * 1000;
@@ -248,4 +251,122 @@ export function getCategoryFallback(
     href: hubPath(slugOf(place.section), 1, locale),
     isFallback: true,
   };
+}
+
+/**
+ * Strict validator for cached NowData snapshot.
+ * Ensures data matches the API contract, has <= 3 places, and contains NO private GPS coords.
+ */
+export function isValidNowData(data: unknown): data is NowData {
+  if (!data || typeof data !== "object") return false;
+  const d = data as Partial<NowData>;
+  if (!d.locale || !["vi", "en", "ko"].includes(d.locale)) return false;
+  if (!d.slot || !["MORNING", "MIDDAY", "AFTERNOON", "EVENING", "NIGHT"].includes(d.slot)) return false;
+  if (d.timeZone !== "Asia/Ho_Chi_Minh") return false;
+  if (typeof d.evaluatedAt !== "string") return false;
+  if (typeof d.count !== "number" || d.count < 0 || d.count > 3) return false;
+  if (!Array.isArray(d.places) || d.places.length !== d.count) return false;
+
+  for (const p of d.places) {
+    if (!p || typeof p !== "object") return false;
+    if (!Number.isSafeInteger(p.id) || p.id <= 0) return false;
+    if (typeof p.name !== "string" || !p.name) return false;
+    if (!["EAT", "CAFE", "GO", "STAY"].includes(p.section)) return false;
+    if (typeof p.address !== "string") return false;
+  }
+
+  if (!d.meta || typeof d.meta !== "object") return false;
+  if (d.meta.source !== "neon-postgres") return false;
+  if (d.meta.mode !== undefined && d.meta.mode !== "nearby" && d.meta.mode !== "citywide") return false;
+  if (d.meta.openingHoursVerified !== false) return false;
+
+  return true;
+}
+
+export interface NowItinerarySnapshot {
+  data: NowData;
+  timestamp: number;
+}
+
+/** Set or clear the pending NOW return restore flag */
+export function setPendingNowRestore(enabled: boolean): void {
+  if (typeof window === "undefined") return;
+  try {
+    if (enabled) {
+      window.sessionStorage?.setItem(NOW_RETURN_RESTORE_KEY, "true");
+    } else {
+      window.sessionStorage?.removeItem(NOW_RETURN_RESTORE_KEY);
+    }
+  } catch {
+    // ignore
+  }
+}
+
+/** Check and consume the pending NOW return restore flag */
+export function consumePendingNowRestore(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    const isPending = window.sessionStorage?.getItem(NOW_RETURN_RESTORE_KEY) === "true";
+    if (isPending) {
+      window.sessionStorage?.removeItem(NOW_RETURN_RESTORE_KEY);
+      return true;
+    }
+    return false;
+  } catch {
+    return false;
+  }
+}
+
+/** Save valid NOW itinerary snapshot to sessionStorage (TTL 30m) */
+export function saveNowItinerarySnapshot(data: NowData): void {
+  if (typeof window === "undefined") return;
+  if (!isValidNowData(data)) return;
+
+  try {
+    const snapshot: NowItinerarySnapshot = {
+      data,
+      timestamp: Date.now(),
+    };
+    window.sessionStorage?.setItem(NOW_ITINERARY_STORAGE_KEY, JSON.stringify(snapshot));
+  } catch {
+    // ignore
+  }
+}
+
+/** Get valid, non-expired NOW itinerary snapshot from sessionStorage */
+export function getValidNowItinerarySnapshot(): NowData | null {
+  if (typeof window === "undefined") return null;
+
+  try {
+    const raw = window.sessionStorage?.getItem(NOW_ITINERARY_STORAGE_KEY);
+    if (!raw) return null;
+
+    const parsed = JSON.parse(raw) as Partial<NowItinerarySnapshot>;
+    if (!parsed || typeof parsed !== "object") return null;
+
+    if (typeof parsed.timestamp !== "number" || Date.now() - parsed.timestamp > NAV_STATE_TTL_MS) {
+      clearNowItinerarySnapshot();
+      return null;
+    }
+
+    if (isValidNowData(parsed.data)) {
+      return parsed.data;
+    }
+
+    clearNowItinerarySnapshot();
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+/** Clear NOW itinerary snapshot and restore flags */
+export function clearNowItinerarySnapshot(): void {
+  if (typeof window === "undefined") return;
+  try {
+    window.sessionStorage?.removeItem(NOW_ITINERARY_STORAGE_KEY);
+    window.sessionStorage?.removeItem(NOW_RETURN_RESTORE_KEY);
+  } catch {
+    // ignore
+  }
 }

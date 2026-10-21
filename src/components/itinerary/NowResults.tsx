@@ -5,24 +5,60 @@ import { useLocale } from "@/components/i18n/LocaleProvider";
 import { NOW_SLOTS, NOW_TIME_ZONE, type NowData } from "@/lib/now/contract";
 import { requestLocation, type LocationFailure } from "@/lib/geo/request-location";
 import type { Coordinates } from "@/lib/geo/distance";
+import {
+  consumePendingNowRestore,
+  getValidNowItinerarySnapshot,
+  saveNowItinerarySnapshot,
+} from "@/lib/navigation/nav-state";
 import { ItineraryTimeline } from "./ItineraryTimeline";
 
 export function NowResults({ onResetPreference }: { onResetPreference: () => void }) {
   const { locale, t } = useLocale();
-  const [mode, setMode] = useState<"choose" | "nearby" | "citywide">("choose");
+
+  const [restoredSnapshot] = useState<NowData | null>(() => {
+    if (consumePendingNowRestore()) {
+      return getValidNowItinerarySnapshot();
+    }
+    return null;
+  });
+
+  const [mode, setMode] = useState<"choose" | "nearby" | "citywide">(() => {
+    if (restoredSnapshot?.meta?.mode === "nearby" || restoredSnapshot?.meta?.mode === "citywide") {
+      return restoredSnapshot.meta.mode;
+    }
+    return "choose";
+  });
   const [origin, setOrigin] = useState<Coordinates | null>(null);
   const [gps, setGps] = useState<"idle" | "requesting" | LocationFailure>("idle");
   const cancelGps = useRef<() => void>(() => {});
   useEffect(() => () => cancelGps.current(), []);
+
   const locate = () => {
     cancelGps.current(); setGps("requesting");
     cancelGps.current = requestLocation(point => { setOrigin(point); setGps("idle"); setMode("nearby"); }, reason => setGps(reason));
   };
   const citywide = () => { cancelGps.current(); setGps("idle"); setOrigin(null); setMode("citywide"); };
+
   const [attempt, setAttempt] = useState(0);
-  const [state, setState] = useState<{ locale: string; status: "loading" | "success" | "error"; data?: NowData }>({ locale, status: "loading" });
+  const [state, setState] = useState<{ locale: string; status: "loading" | "success" | "error"; data?: NowData }>(() => {
+    if (restoredSnapshot) {
+      return { locale: restoredSnapshot.locale, status: "success", data: restoredSnapshot };
+    }
+    return { locale, status: "loading" };
+  });
+
+  const skipInitialFetchRef = useRef(restoredSnapshot !== null);
+
   useEffect(() => {
     if (mode === "choose") return;
+    if (skipInitialFetchRef.current) {
+      skipInitialFetchRef.current = false;
+      return;
+    }
+    if (mode === "nearby" && !origin) {
+      setMode("citywide");
+      return;
+    }
     let active = true;
     const controller = new AbortController();
     setState(prev => ({ locale, status: prev.data ? "success" : "loading", data: prev.data }));
@@ -40,7 +76,10 @@ export function NowResults({ onResetPreference }: { onResetPreference: () => voi
           d.meta.source !== "neon-postgres" || d.meta.openingHoursVerified !== false ||
           !Array.isArray(d.places) || d.count !== d.places.length || d.count > 3 ||
           new Set(d.places.map(p => p.id)).size !== d.count) throw new Error("Invalid response");
-        if (active) setState({ locale, status: "success", data: d });
+        if (active) {
+          setState({ locale, status: "success", data: d });
+          saveNowItinerarySnapshot(d);
+        }
       } catch {
         if (active) setState({ locale, status: "error" });
       } finally { window.clearTimeout(timeout); }

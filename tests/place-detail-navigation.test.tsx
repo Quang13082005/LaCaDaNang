@@ -14,13 +14,22 @@ import {
   resolveBackTarget,
   setPendingReturnRestore,
   consumeReturnRestoreFlag,
+  setPendingNowRestore,
+  consumePendingNowRestore,
+  saveNowItinerarySnapshot,
+  getValidNowItinerarySnapshot,
+  clearNowItinerarySnapshot,
+  isValidNowData,
   RETURN_RESTORE_KEY,
   DISCOVERY_SELECTION_STORAGE_KEY,
   NAV_SOURCE_STORAGE_KEY,
+  NOW_ITINERARY_STORAGE_KEY,
+  NOW_RETURN_RESTORE_KEY,
   NAV_STATE_TTL_MS,
 } from "@/lib/navigation/nav-state";
 import { apiPlace } from "./discovery-fixtures";
 import type { DiscoveryPlace } from "@/lib/data/discovery-contract";
+import type { NowData } from "@/lib/now/contract";
 
 describe("Safe Navigation State Manager (nav-state.ts)", () => {
   beforeEach(() => {
@@ -350,5 +359,195 @@ describe("Discovery State Restoration Flow (HomePage <-> PlaceDetail)", () => {
     });
 
     expect(screen.getByText(/ĐI ĐÂU\? · Đi cafe/i)).toBeInTheDocument();
+  });
+
+  it("restores NOW citywide itinerary when returning from detail page without re-fetching API", async () => {
+    const fetchSpy = vi.spyOn(global, "fetch");
+
+    const sampleNowData: NowData = {
+      locale: "vi",
+      slot: "AFTERNOON",
+      timeZone: "Asia/Ho_Chi_Minh",
+      evaluatedAt: "2026-10-20T14:30:00.000Z",
+      count: 3,
+      places: [
+        apiPlace(101, "EAT"),
+        apiPlace(102, "CAFE"),
+        apiPlace(103, "GO"),
+      ],
+      meta: {
+        source: "neon-postgres",
+        policy: "time-slot-v1.1",
+        mode: "citywide",
+        openingHoursVerified: false,
+      },
+    };
+
+    saveDiscoverySelection("NOW", "time_slot");
+    saveNowItinerarySnapshot(sampleNowData);
+    setPendingReturnRestore(true);
+    setPendingNowRestore(true);
+
+    act(() => {
+      render(<HomePage />);
+    });
+
+    // Should immediately render all 3 stops in order
+    expect(screen.getByText("API fixture 101")).toBeInTheDocument();
+    expect(screen.getByText("API fixture 102")).toBeInTheDocument();
+    expect(screen.getByText("API fixture 103")).toBeInTheDocument();
+
+    // Verify /api/now was NOT re-fetched on Back restore
+    const nowFetchCalls = fetchSpy.mock.calls.filter((c) =>
+      typeof c[0] === "string" && c[0].includes("/api/now")
+    );
+    expect(nowFetchCalls).toHaveLength(0);
+  });
+
+  it("restores NOW nearby itinerary without GPS prompt or location re-request", async () => {
+    const sampleNearbyData: NowData = {
+      locale: "vi",
+      slot: "AFTERNOON",
+      timeZone: "Asia/Ho_Chi_Minh",
+      evaluatedAt: "2026-10-20T14:30:00.000Z",
+      count: 3,
+      places: [
+        apiPlace(201, "EAT"),
+        apiPlace(202, "CAFE"),
+        apiPlace(203, "GO"),
+      ],
+      meta: {
+        source: "neon-postgres",
+        policy: "location-v2",
+        mode: "nearby",
+        radiusKm: 3,
+        openingHoursVerified: false,
+      },
+    };
+
+    saveDiscoverySelection("NOW", "time_slot");
+    saveNowItinerarySnapshot(sampleNearbyData);
+    setPendingReturnRestore(true);
+    setPendingNowRestore(true);
+
+    act(() => {
+      render(<HomePage />);
+    });
+
+    // Renders the 3 nearby places directly
+    expect(screen.getByText("API fixture 201")).toBeInTheDocument();
+    expect(screen.getByText("API fixture 202")).toBeInTheDocument();
+    expect(screen.getByText("API fixture 203")).toBeInTheDocument();
+
+    // Geolocation prompt must NOT be displayed
+    expect(screen.queryByText(/Dùng vị trí của bạn để gợi ý/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Cho phép vị trí/i)).not.toBeInTheDocument();
+  });
+
+  it("clears NOW snapshot on 'Đổi lựa chọn' so subsequent NOW visits start fresh in choose mode", () => {
+    const sampleNowData: NowData = {
+      locale: "vi",
+      slot: "AFTERNOON",
+      timeZone: "Asia/Ho_Chi_Minh",
+      evaluatedAt: "2026-10-20T14:30:00.000Z",
+      count: 3,
+      places: [
+        apiPlace(301, "EAT"),
+        apiPlace(302, "CAFE"),
+        apiPlace(303, "GO"),
+      ],
+      meta: {
+        source: "neon-postgres",
+        policy: "time-slot-v1.1",
+        mode: "citywide",
+        openingHoursVerified: false,
+      },
+    };
+
+    saveDiscoverySelection("NOW", "time_slot");
+    saveNowItinerarySnapshot(sampleNowData);
+    setPendingReturnRestore(true);
+    setPendingNowRestore(true);
+
+    const { unmount } = render(<HomePage />);
+    expect(screen.getByText("API fixture 301")).toBeInTheDocument();
+
+    // User clicks "Đổi lựa chọn"
+    const changeBtn = screen.getByRole("button", { name: "Đổi lựa chọn" });
+    fireEvent.click(changeBtn);
+
+    // Snapshot must be cleared from storage
+    expect(getValidNowItinerarySnapshot()).toBeNull();
+    unmount();
+
+    // Re-render HomePage afresh and click NOW: must show location prompt, not old snapshot
+    render(<HomePage />);
+    const nowBtn = screen.getByText("BÂY GIỜ LÀM GÌ?");
+    fireEvent.click(nowBtn);
+
+    expect(screen.getByText(/Dùng vị trí của bạn để gợi ý/i)).toBeInTheDocument();
+    expect(screen.queryByText("API fixture 301")).not.toBeInTheDocument();
+  });
+});
+
+describe("NOW Itinerary Snapshot Manager (nav-state.ts)", () => {
+  beforeEach(() => {
+    sessionStorage.clear();
+  });
+
+  afterEach(() => {
+    sessionStorage.clear();
+  });
+
+  const validData: NowData = {
+    locale: "vi",
+    slot: "MORNING",
+    timeZone: "Asia/Ho_Chi_Minh",
+    evaluatedAt: "2026-10-20T08:00:00.000Z",
+    count: 2,
+    places: [apiPlace(1, "EAT"), apiPlace(2, "CAFE")],
+    meta: {
+      source: "neon-postgres",
+      policy: "time-slot-v1.1",
+      mode: "citywide",
+      openingHoursVerified: false,
+    },
+  };
+
+  it("saves and retrieves valid NowData snapshot", () => {
+    saveNowItinerarySnapshot(validData);
+    const restored = getValidNowItinerarySnapshot();
+    expect(restored).not.toBeNull();
+    expect(restored?.count).toBe(2);
+    expect(restored?.places[0].id).toBe(1);
+    expect(restored?.places[1].id).toBe(2);
+  });
+
+  it("expires snapshot past 30-minute TTL", () => {
+    const expiredTimestamp = Date.now() - (NAV_STATE_TTL_MS + 1000);
+    sessionStorage.setItem(
+      NOW_ITINERARY_STORAGE_KEY,
+      JSON.stringify({ data: validData, timestamp: expiredTimestamp })
+    );
+
+    expect(getValidNowItinerarySnapshot()).toBeNull();
+  });
+
+  it("rejects invalid or corrupted snapshot data", () => {
+    // Corrupted: count > 3
+    const badData = { ...validData, count: 5 };
+    sessionStorage.setItem(
+      NOW_ITINERARY_STORAGE_KEY,
+      JSON.stringify({ data: badData, timestamp: Date.now() })
+    );
+    expect(getValidNowItinerarySnapshot()).toBeNull();
+  });
+
+  it("handles pending restore flag lifecycle", () => {
+    expect(consumePendingNowRestore()).toBe(false);
+    setPendingNowRestore(true);
+    expect(consumePendingNowRestore()).toBe(true);
+    // Consumed: second read is false
+    expect(consumePendingNowRestore()).toBe(false);
   });
 });
