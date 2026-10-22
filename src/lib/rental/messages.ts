@@ -59,7 +59,11 @@ const ko: Copy = {
   terms:"대여업체 안내: 베트남 시민 신분증(CCCD)이 최소 1개 필요합니다. 서로 다른 2명의 CCCD 2개를 맡기면 현금 보증금이 없으며, 1개를 맡기면 차량 유형별 표시된 보증금이 적용됩니다. 헬멧이 제공됩니다. 서류 및 계약 세부 사항은 전화 hoặc Zalo로 문의하세요. 이 웹사이트로 신분증을 보내지 마세요.",depositCondition:"CCCD 1개 맡길 때의 보증금 (2인 각각의 신분증 2개 맡길 시 보증금 면제)",
 };
 
-export function rentalCopy(locale: SupportedLocale): Copy { return {vi,en,ko}[locale]; }
+export function rentalCopy(locale: SupportedLocale): Copy {
+  if (locale === "vi") return vi;
+  if (locale === "ko") return ko;
+  return en;
+}
 
 export const colorTranslations: Record<"en" | "ko", Record<string, string>> = {
  en: {
@@ -103,6 +107,6 @@ export function formatVehicleColor(color: string, locale: SupportedLocale): stri
  if (locale === "vi") {
   return color;
  }
- return colorTranslations[locale]?.[color] ?? color;
+ return colorTranslations[locale as "en" | "ko"]?.[color] ?? color;
 }
 

@@ -1,5 +1,6 @@
 import { PREFERENCES_BY_INTENT } from "@/data/discovery-ui";
 import type { DiscoveryLocale, DiscoverySection } from "@/lib/data/discovery-contract";
+import { isSupportedLocale } from "@/lib/i18n/locales";
 import type { NowData } from "@/lib/now/contract";
 import { hubPath, slugOf } from "@/lib/seo/browse";
 import { placePath } from "@/lib/seo/site";
@@ -81,15 +82,15 @@ export function isSafeInternalPath(path: unknown): path is string {
   // Disallow protocol-relative URLs (//example.com), backslashes, etc.
   if (path.startsWith("//") || path.includes("\\")) return false;
 
-  // Home route
-  if (path === "/" || path === "/?locale=en" || path === "/?locale=ko") return true;
+  // Home route: / or /?locale=en|ko|ru|zh
+  if (path === "/" || /^\/\?locale=(en|ko|ru|zh)$/.test(path)) return true;
 
-  // Place detail route: /places/123 with optional ?locale=en|ko
-  if (/^\/places\/[1-9]\d*(\?locale=(en|ko))?$/.test(path)) return true;
+  // Place detail route: /places/123 with optional ?locale=en|ko|ru|zh
+  if (/^\/places\/[1-9]\d*(\?locale=(en|ko|ru|zh))?$/.test(path)) return true;
 
   // Browse hub route: /browse/(eat|cafe|go|stay) with optional page and locale params
   if (
-    /^\/browse\/(eat|cafe|go|stay)(\?(locale=(en|ko)|page=[1-9]\d{0,3})(&?(locale=(en|ko)|page=[1-9]\d{0,3}))*)?$/.test(
+    /^\/browse\/(eat|cafe|go|stay)(\?(locale=(en|ko|ru|zh)|page=[1-9]\d{0,3})(&?(locale=(en|ko|ru|zh)|page=[1-9]\d{0,3}))*)?$/.test(
       path
     )
   ) {
@@ -260,7 +261,7 @@ export function getCategoryFallback(
 export function isValidNowData(data: unknown): data is NowData {
   if (!data || typeof data !== "object") return false;
   const d = data as Partial<NowData>;
-  if (!d.locale || !["vi", "en", "ko"].includes(d.locale)) return false;
+  if (!d.locale || !isSupportedLocale(d.locale)) return false;
   if (!d.slot || !["MORNING", "MIDDAY", "AFTERNOON", "EVENING", "NIGHT"].includes(d.slot)) return false;
   if (d.timeZone !== "Asia/Ho_Chi_Minh") return false;
   if (typeof d.evaluatedAt !== "string") return false;

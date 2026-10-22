@@ -6,7 +6,7 @@ import {RentalCatalog} from "./RentalCatalog";
 
 const copy={vi:{loading:"Đang tải danh sách xe…",empty:"Chưa có xe được công khai.",error:"Không tải được danh sách xe.",retry:"Thử lại",back:"Trở lại",source:"Dữ liệu Neon · chỉ xe đã được công khai"},en:{loading:"Loading vehicles…",empty:"No vehicles are published yet.",error:"Unable to load vehicles.",retry:"Retry",back:"Back",source:"Neon data · published vehicles only"},ko:{loading:"차량 목록 불러오는 중…",empty:"아직 공개된 차량이 없습니다.",error:"차량을 불러올 수 없습니다.",retry:"다시 시도",back:"뒤로",source:"Neon 데이터 · 공개된 차량만 표시"}};
 export function RemoteRentalCatalog({onClose}:{onClose:()=>void}){
- const {locale}=useLocale();const t=copy[locale];
+ const {locale}=useLocale();const t=(copy as Record<string, typeof copy.vi>)[locale] ?? copy.en;
  const [state,setState]=useState<{locale:string;data?:RentalData;error?:boolean}>({locale});
  const [attempt,setAttempt]=useState(0);
  useEffect(()=>{

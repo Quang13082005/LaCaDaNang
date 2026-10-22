@@ -88,7 +88,7 @@ describe("LA CÀ ĐÀ NẴNG — First-Party Analytics Suite", () => {
 
     it("defines supported environments, locales, language modes, intents, radius", () => {
       expect(ANALYTICS_ENVIRONMENTS).toEqual(["production", "preview"]);
-      expect(ANALYTICS_LOCALES).toEqual(["vi", "en", "ko"]);
+      expect(ANALYTICS_LOCALES).toEqual(["vi", "en", "ko", "ru", "zh"]);
       expect(ANALYTICS_LANGUAGE_MODES).toEqual(["auto", "manual"]);
       expect(ANALYTICS_INTENTS).toEqual(["NOW", "EAT", "GO", "STAY"]);
       expect(ANALYTICS_RADIUS_VALUES).toEqual([1, 3, 5]);
@@ -100,6 +100,30 @@ describe("LA CÀ ĐÀ NẴNG — First-Party Analytics Suite", () => {
         "network_error",
         "no_results",
       ]);
+    });
+
+    it("validates all 5 supported locales and rejects unsupported locales", () => {
+      for (const loc of ["vi", "en", "ko", "ru", "zh"] as const) {
+        const valid = validateClientAnalyticsPayload({
+          event_name: "session_started",
+          session_id: dummySession,
+          journey_id: dummyJourney,
+          locale: loc,
+          language_mode: "auto",
+        });
+        expect(valid.ok).toBe(true);
+      }
+
+      for (const invalidLoc of ["fr", "de", "ja", "es", "zh-TW", ""]) {
+        const invalid = validateClientAnalyticsPayload({
+          event_name: "session_started",
+          session_id: dummySession,
+          journey_id: dummyJourney,
+          locale: invalidLoc as any,
+          language_mode: "auto",
+        });
+        expect(invalid.ok).toBe(false);
+      }
     });
   });
 

@@ -25,7 +25,7 @@ export type AnalyticsEventName = (typeof ANALYTICS_EVENT_NAMES)[number];
 export const ANALYTICS_ENVIRONMENTS = ["production", "preview"] as const;
 export type AnalyticsEnvironment = (typeof ANALYTICS_ENVIRONMENTS)[number];
 
-export const ANALYTICS_LOCALES = ["vi", "en", "ko"] as const;
+export const ANALYTICS_LOCALES = ["vi", "en", "ko", "ru", "zh"] as const;
 export type AnalyticsLocale = (typeof ANALYTICS_LOCALES)[number];
 
 export const ANALYTICS_LANGUAGE_MODES = ["auto", "manual"] as const;

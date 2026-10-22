@@ -20,6 +20,15 @@ import {
 } from "@/lib/navigation/nav-state";
 import { PlaceDetailBottomNav } from "./PlaceDetailBottomNav";
 import { PlaceLinkList } from "./PlaceLinkList";
+import { SUPPORTED_LOCALES, documentLangForLocale } from "@/lib/i18n/locales";
+
+const DETAIL_LANGUAGES = {
+  vi: "Tiếng Việt",
+  en: "English",
+  ko: "한국어",
+  ru: "Русский",
+  zh: "简体中文",
+} as const;
 
 export function PlaceDetail({
   place,
@@ -72,7 +81,7 @@ export function PlaceDetail({
   return (
     <>
       <main
-        lang={locale}
+        lang={documentLangForLocale(locale)}
         className="max-w-2xl mx-auto p-4 sm:p-6 pb-[calc(5.5rem+env(safe-area-inset-bottom,0px))] md:pb-8 space-y-5 break-words [overflow-wrap:anywhere]"
       >
         {/* Top desktop navigation header (hidden on mobile, uses bottom nav instead) */}
@@ -100,11 +109,11 @@ export function PlaceDetail({
           </div>
 
           <nav aria-label={translate(locale, "language.label")} className="flex flex-wrap gap-2">
-            {(["vi", "en", "ko"] as const).map((l) => (
+            {SUPPORTED_LOCALES.map((l) => (
               <a
                 key={l}
                 href={placePath(place.id, l)}
-                hrefLang={l}
+                hrefLang={documentLangForLocale(l)}
                 onClick={() =>
                   sendGaEvent("language_changed", {
                     locale: l,
@@ -112,15 +121,28 @@ export function PlaceDetail({
                   })
                 }
                 aria-current={l === locale ? "page" : undefined}
-                className="min-h-[40px] inline-flex items-center px-2.5 py-1 text-xs border rounded-lg"
+                className={`min-h-[40px] inline-flex items-center px-2.5 py-1 text-xs border rounded-lg ${
+                  l === locale ? "bg-sky-50 border-sky-300 font-semibold text-sky-900" : "text-slate-700"
+                }`}
               >
-                {{ vi: "Tiếng Việt", en: "English", ko: "한국어" }[l]}
+                {DETAIL_LANGUAGES[l]}
               </a>
             ))}
           </nav>
         </div>
 
         <h1 className="text-2xl sm:text-3xl font-bold">{place.name}</h1>
+        {place.translationFallback && locale !== "vi" && (
+          <p className="text-xs text-amber-700 bg-amber-50/80 border border-amber-200/80 rounded-lg px-3 py-2 leading-relaxed">
+            {locale === "ru"
+              ? "Название и адрес сохранены на вьетнамском языке для удобства ориентирования и заказа транспорта."
+              : locale === "zh"
+              ? "为方便问路与出行乘车，地点名称与地址保持越南语原文显示。"
+              : locale === "ko"
+              ? "길 찾기 및 차량 이용 시 원활한 소통을 위해 상호명과 주소는 베트남어 원문으로 표시됩니다."
+              : "Venue name and address are shown in original Vietnamese to assist with local directions and transport."}
+          </p>
+        )}
         {place.typeLabel && <p>{place.typeLabel}</p>}
         <p>{place.area.name}</p>
         <p>{place.address}</p>

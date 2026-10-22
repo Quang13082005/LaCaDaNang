@@ -7,7 +7,7 @@ export function placeMetadata(place: DiscoveryPlace, locale: DiscoveryLocale): M
  // Real address distinguishes branches/venues sharing a name without inventing SEO copy.
  return { title: `${[place.name, place.address].filter(Boolean).join(" — ")} | La Cà Đà Nẵng`, description,
   alternates: { canonical: url, languages: Object.fromEntries(["vi","en","ko"].map(l=>[l,siteOrigin()+placePath(place.id,l)])) },
-  openGraph: { title: place.name, description, url, type: "website", locale: {vi:"vi_VN",en:"en_US",ko:"ko_KR"}[locale] } };
+  openGraph: { title: place.name, description, url, type: "website", locale: ({ vi: "vi_VN", en: "en_US", ko: "ko_KR", ru: "ru_RU", zh: "zh_CN" } as const)[locale] } };
 }
 export function placeJsonLd(place: DiscoveryPlace) {
  // Place is deliberately conservative; a section alone cannot prove Hotel/Restaurant type.

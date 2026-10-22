@@ -7,10 +7,15 @@ describe("standalone UI locale resolution", () => {
     ["vi-VN", "vi"], ["en-US", "en"], ["en-GB", "en"],
     ["ko-KR", "ko"], [" EN-us ", "en"], ["ko", "ko"],
     ["en-US-u-ca-gregory", "en"],
+    ["ru", "ru"], ["ru-RU", "ru"],
+    ["zh", "zh"], ["zh-CN", "zh"], ["zh-Hans", "zh"], ["zh-SG", "zh"],
   ])("maps %s to %s", (tag, expected) => {
     expect(localeFromLanguageTag(tag)).toBe(expected);
   });
-  it.each(["", "de-DE", "en_US", "en-", "not a locale", null, 42, {}])("ignores malformed/unsupported input %j", tag => {
+  it.each([
+    "", "de-DE", "en_US", "en-", "not a locale", null, 42, {},
+    "zh-TW", "zh-HK", "zh-Hant", "zh-Hant-TW",
+  ])("ignores malformed/unsupported input %j", tag => {
     expect(localeFromLanguageTag(tag)).toBeNull();
   });
   it("uses manual preference before device language", () => {
@@ -36,7 +41,7 @@ describe("typed UI copy", () => {
   it("has complete nonempty dictionaries in all supported locales", () => {
     for (const locale of SUPPORTED_LOCALES) {
       expect(Object.keys(UI_MESSAGES[locale]).sort()).toEqual(Object.keys(UI_MESSAGES.vi).sort());
-      expect(Object.values(UI_MESSAGES[locale]).every(text => text.trim().length > 0)).toBe(true);
+      expect(Object.values(UI_MESSAGES[locale]).every(text => typeof text === "string" && text.trim().length > 0)).toBe(true);
     }
   });
   it("retains sample meaning and truthful zero/one/two states", () => {

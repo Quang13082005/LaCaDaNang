@@ -15,6 +15,8 @@ const OPTIONS: LanguageOption[] = [
   { id: "vi", nativeName: "Tiếng Việt" },
   { id: "en", nativeName: "English" },
   { id: "ko", nativeName: "한국어" },
+  { id: "ru", nativeName: "Русский" },
+  { id: "zh", nativeName: "简体中文" },
   { id: "auto", nativeName: "Theo thiết bị / Auto" },
 ];
 
@@ -40,7 +42,15 @@ export const LanguageSelector: React.FC<{ className?: string }> = ({
   }, [isOpen]);
 
   const currentDisplayName =
-    locale === "vi" ? "Tiếng Việt" : locale === "en" ? "English" : "한국어";
+    locale === "vi"
+      ? "Tiếng Việt"
+      : locale === "en"
+      ? "English"
+      : locale === "ko"
+      ? "한국어"
+      : locale === "ru"
+      ? "Русский"
+      : "简体中文";
 
   const handleSelect = (id: SupportedLocale | "auto") => {
     let nextLocale: SupportedLocale;

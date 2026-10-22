@@ -79,7 +79,19 @@ function runBuild(root, mode) {
     fs.writeFileSync(pkgFile, JSON.stringify(pkg, null, 2) + '\n');
     const env = cleanEnvironment(process.env, publicEnv);
     const cli = mode === 'worker' ? 'node_modules/@opennextjs/cloudflare/dist/cli/index.js' : 'node_modules/next/dist/bin/next';
-    const child = spawnSync(process.execPath, [path.join(workspace, cli), 'build'], { cwd: workspace, env, stdio: 'inherit' });
+    const cliArgs = ['build'];
+    if (mode === 'worker') {
+      const optIn = process.env.ALLOW_UNSUPPORTED_NEXT_15 === '1' || process.argv.includes('--allow-unsupported-next-15');
+      if (optIn) {
+        const nextPkg = JSON.parse(fs.readFileSync(path.join(workspace, 'node_modules/next/package.json'), 'utf8'));
+        if (nextPkg.version !== '15.5.28') throw new Error('UNSUPPORTED_NEXT_BYPASS_REQUIRES_15_5_28');
+        console.warn('WARN: Next.js 15 reached its standard 2-year maintenance cutoff on 2026-10-21.');
+        console.warn('WARN: Explicit opt-in active for verified security backport 15.5.28.');
+        console.warn('WARN: Passing --dangerouslyUseUnsupportedNextVersion to OpenNext build.');
+        cliArgs.push('--dangerouslyUseUnsupportedNextVersion');
+      }
+    }
+    const child = spawnSync(process.execPath, [path.join(workspace, cli), ...cliArgs], { cwd: workspace, env, stdio: 'inherit' });
     if (child.error || child.status !== 0) throw new Error('ISOLATED_BUILD_FAILED');
     const dirs = mode === 'worker' ? ['.next', '.open-next'] : ['.next'];
     const report = scan(workspace, dirs);
@@ -89,10 +101,20 @@ function runBuild(root, mode) {
     // Preserve old generated outputs by rename (never delete/copy credential artifacts).
     // A failed build or scan never replaces existing outputs. Release always scans again.
     const previous = path.join(workspace, 'previous-artifacts'); fs.mkdirSync(previous);
+    const safeRename = (src, dest) => {
+      for (let attempt = 0; attempt < 5; attempt++) {
+        try { fs.renameSync(src, dest); return; }
+        catch (err) {
+          if ((err.code === 'EPERM' || err.code === 'EBUSY') && attempt < 4) {
+            Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 200);
+          } else { throw err; }
+        }
+      }
+    };
     for (const dir of dirs) {
       const target = path.join(root, dir);
-      if (fs.existsSync(target)) fs.renameSync(target, path.join(previous, dir));
-      fs.renameSync(path.join(workspace, dir), target);
+      if (fs.existsSync(target)) safeRename(target, path.join(previous, dir));
+      safeRename(path.join(workspace, dir), target);
     }
     fs.writeFileSync(path.join(workspace, 'verification.json'), JSON.stringify({ mode, report, protectedEnv, inventory }, null, 2));
     console.log('PASS: clean artifacts published; originals unchanged. Runtime DATABASE_URL binding required.');

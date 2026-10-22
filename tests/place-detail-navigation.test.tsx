@@ -47,10 +47,14 @@ describe("Safe Navigation State Manager (nav-state.ts)", () => {
       expect(isSafeInternalPath("/")).toBe(true);
       expect(isSafeInternalPath("/?locale=en")).toBe(true);
       expect(isSafeInternalPath("/?locale=ko")).toBe(true);
+      expect(isSafeInternalPath("/?locale=ru")).toBe(true);
+      expect(isSafeInternalPath("/?locale=zh")).toBe(true);
       expect(isSafeInternalPath("/places/1")).toBe(true);
       expect(isSafeInternalPath("/places/1501")).toBe(true);
       expect(isSafeInternalPath("/places/1501?locale=en")).toBe(true);
       expect(isSafeInternalPath("/places/1501?locale=ko")).toBe(true);
+      expect(isSafeInternalPath("/places/1501?locale=ru")).toBe(true);
+      expect(isSafeInternalPath("/places/1501?locale=zh")).toBe(true);
       expect(isSafeInternalPath("/browse/eat")).toBe(true);
       expect(isSafeInternalPath("/browse/cafe")).toBe(true);
       expect(isSafeInternalPath("/browse/go")).toBe(true);
@@ -58,6 +62,8 @@ describe("Safe Navigation State Manager (nav-state.ts)", () => {
       expect(isSafeInternalPath("/browse/eat?page=2")).toBe(true);
       expect(isSafeInternalPath("/browse/cafe?locale=en")).toBe(true);
       expect(isSafeInternalPath("/browse/go?locale=ko&page=3")).toBe(true);
+      expect(isSafeInternalPath("/browse/eat?locale=ru")).toBe(true);
+      expect(isSafeInternalPath("/browse/stay?locale=zh&page=2")).toBe(true);
     });
 
     it("rejects untrusted, external, or malformed paths", () => {
@@ -204,18 +210,20 @@ describe("PlaceDetail Mobile Bottom Navigation UI", () => {
     sessionStorage.clear();
   });
 
-  for (const locale of ["vi", "en", "ko"] as const) {
+  for (const locale of ["vi", "en", "ko", "ru", "zh"] as const) {
     const labels = {
       vi: { back: "Quay lại", category: "Xem danh mục", home: "Trang chủ" },
       en: { back: "Back", category: "View category", home: "Home" },
       ko: { back: "뒤로 가기", category: "카테고리 보기", home: "홈" },
+      ru: { back: "Назад", category: "Смотреть категорию", home: "Главная" },
+      zh: { back: "返回", category: "查看分类", home: "首页" },
     }[locale];
 
     it(`${locale}: renders mobile fixed bottom nav with 2 distinct actions and minimum 48px touch height (fallback direct visit)`, () => {
       render(<PlaceDetail place={testPlace} locale={locale} />);
 
       // Find bottom navigation bar (fixed bottom on mobile)
-      const bottomNav = screen.getByRole("navigation", { name: /Thao tác khám phá|Discovery actions|탐색 작업/i });
+      const bottomNav = screen.getByRole("navigation", { name: /Thao tác khám phá|Discovery actions|탐색 작업|Действия по поиску|探索操作/i });
       expect(bottomNav).toBeInTheDocument();
       expect(bottomNav.className).toContain("fixed bottom-0");
       expect(bottomNav.className).toContain("md:hidden");
@@ -239,6 +247,49 @@ describe("PlaceDetail Mobile Bottom Navigation UI", () => {
       expect(homeBtn?.textContent).toContain(labels.home);
     });
   }
+
+  it("renders desktop language switcher with all 5 languages preserving place ID", () => {
+    render(<PlaceDetail place={testPlace} locale="vi" />);
+    const langNav = screen.getByRole("navigation", { name: "Ngôn ngữ" });
+    expect(langNav).toBeInTheDocument();
+
+    const expectedLinks = [
+      { text: "Tiếng Việt", href: "/places/33" },
+      { text: "English", href: "/places/33?locale=en" },
+      { text: "한국어", href: "/places/33?locale=ko" },
+      { text: "Русский", href: "/places/33?locale=ru" },
+      { text: "简体中文", href: "/places/33?locale=zh" },
+    ];
+
+    for (const item of expectedLinks) {
+      const link = langNav.querySelector(`a[href="${item.href}"]`);
+      expect(link, `Link to ${item.href} must exist`).toBeInTheDocument();
+      expect(link?.textContent).toContain(item.text);
+    }
+  });
+
+  it("renders transparent translation fallback notice when place.translationFallback is true on non-VI locales", () => {
+    const fallbackPlace: DiscoveryPlace = {
+      ...testPlace,
+      translationFallback: true,
+    };
+
+    // In Russian: shows Russian fallback note
+    const { unmount: unmountRu } = render(<PlaceDetail place={fallbackPlace} locale="ru" />);
+    expect(screen.getByText(/Название и адрес сохранены на вьетнамском языке/i)).toBeInTheDocument();
+    unmountRu();
+
+    // In Chinese: shows Chinese fallback note
+    const { unmount: unmountZh } = render(<PlaceDetail place={fallbackPlace} locale="zh" />);
+    expect(screen.getByText(/为方便问路与出行乘车/i)).toBeInTheDocument();
+    unmountZh();
+
+    // In Vietnamese: fallback note is not needed and not shown
+    const { unmount: unmountVi } = render(<PlaceDetail place={fallbackPlace} locale="vi" />);
+    expect(screen.queryByText(/Название и адрес сохранены/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/为方便问路与出行乘车/i)).not.toBeInTheDocument();
+    unmountVi();
+  });
 
   it("clicking Home on bottom nav clears discovery selection to reset to clean initial state", () => {
     saveDiscoverySelection("EAT", "an_ngon");
@@ -549,5 +600,24 @@ describe("NOW Itinerary Snapshot Manager (nav-state.ts)", () => {
     expect(consumePendingNowRestore()).toBe(true);
     // Consumed: second read is false
     expect(consumePendingNowRestore()).toBe(false);
+  });
+
+  it("saves and retrieves snapshots with ru and zh locales preserving order", () => {
+    for (const testLoc of ["ru", "zh"] as const) {
+      const locData: NowData = {
+        ...validData,
+        locale: testLoc,
+        places: [apiPlace(701, "EAT"), apiPlace(702, "CAFE"), apiPlace(703, "GO")],
+        count: 3,
+      };
+      saveNowItinerarySnapshot(locData);
+      const restored = getValidNowItinerarySnapshot();
+      expect(restored).not.toBeNull();
+      expect(restored?.locale).toBe(testLoc);
+      expect(restored?.count).toBe(3);
+      expect(restored?.places[0].id).toBe(701);
+      expect(restored?.places[1].id).toBe(702);
+      expect(restored?.places[2].id).toBe(703);
+    }
   });
 });

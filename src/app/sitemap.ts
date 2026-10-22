@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { listPlaceIds } from "@/lib/data/place-detail";
 import { siteOrigin, placePath } from "@/lib/seo/site";
 import { BROWSE_SLUGS, hubPath, type BrowseSlug } from "@/lib/seo/browse";
+import { SUPPORTED_LOCALES, documentLangForLocale } from "@/lib/i18n/locales";
 
 export const dynamic = "force-dynamic";
 
@@ -15,7 +16,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: origin + hubPath(slug),
     alternates: {
       languages: Object.fromEntries(
-        (["vi", "en", "ko"] as const).map((l) => [l, origin + hubPath(slug, 1, l)])
+        SUPPORTED_LOCALES.map((l) => [documentLangForLocale(l), origin + hubPath(slug, 1, l)])
       ),
     },
   }));

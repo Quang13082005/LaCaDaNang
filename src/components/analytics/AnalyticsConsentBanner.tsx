@@ -61,7 +61,7 @@ export function AnalyticsConsentBanner() {
 
   if (!mounted) return null;
 
-  const t = {
+  const copies = {
     vi: {
       bannerTitle: "Quyền riêng tư & Phân tích",
       bannerDesc:
@@ -110,7 +110,40 @@ export function AnalyticsConsentBanner() {
       disableAction: "분석 비활성화",
       closeAction: "닫기",
     },
-  }[locale];
+    ru: {
+      bannerTitle: "Конфиденциальность и аналитика",
+      bannerDesc:
+        "La Cà Đà Nẵng использует анонимную аналитику для улучшения рекомендаций. Мы никогда не собираем точную геопозицию или личные данные.",
+      accept: "Принять",
+      decline: "Отклонить",
+      settingsTitle: "Настройки конфиденциальности и аналитики",
+      settingsDesc:
+        "Мы используем только анонимные данные (тип устройства, параметры поиска) для улучшения рекомендаций. Точные GPS-координаты и личные данные полностью исключены.",
+      statusLabel: "Текущий статус:",
+      statusGranted: "Аналитика включена (Принято)",
+      statusDenied: "Аналитика отключена (Отклонено)",
+      enableAction: "Включить аналитику",
+      disableAction: "Отключить аналитику",
+      closeAction: "Закрыть",
+    },
+    zh: {
+      bannerTitle: "隐私与分析",
+      bannerDesc:
+        "La Cà Đà Nẵng 使用匿名分析以优化地点推荐。我们绝不收集精确 GPS 坐标或个人信息。",
+      accept: "同意",
+      decline: "拒绝",
+      settingsTitle: "隐私与分析设置",
+      settingsDesc:
+        "我们仅使用匿名数据（设备类型、探索偏好）来改进推荐质量。精确 GPS 坐标和个人身份信息已被彻底剔除。",
+      statusLabel: "当前状态：",
+      statusGranted: "分析已启用（已同意）",
+      statusDenied: "分析已停用（已拒绝）",
+      enableAction: "启用分析",
+      disableAction: "停用分析",
+      closeAction: "关闭",
+    },
+  };
+  const t = (copies as Record<string, typeof copies.vi>)[locale] ?? copies.en;
 
   return (
     <>

@@ -11,6 +11,7 @@ import React, {
 import {
   DEFAULT_LOCALE,
   LOCALE_STORAGE_KEY,
+  documentLangForLocale,
   isSupportedLocale,
   resolveLocale,
   type SupportedLocale,
@@ -51,13 +52,13 @@ export function LocaleProvider({ children }: { children: React.ReactNode }) {
     const resolved = resolveLocale({ manual: stored, languages, language });
     setLocaleState(resolved);
     setIsManual(isSupportedLocale(stored));
-    document.documentElement.lang = resolved;
+    document.documentElement.lang = documentLangForLocale(resolved);
   }, []);
 
   const handleSetLocale = useCallback((nextLocale: SupportedLocale) => {
     setLocaleState(nextLocale);
     setIsManual(true);
-    document.documentElement.lang = nextLocale;
+    document.documentElement.lang = documentLangForLocale(nextLocale);
     try {
       localStorage.setItem(LOCALE_STORAGE_KEY, nextLocale);
     } catch {
@@ -79,7 +80,7 @@ export function LocaleProvider({ children }: { children: React.ReactNode }) {
     const language = typeof navigator !== "undefined" ? navigator.language : undefined;
     const resolved = resolveLocale({ languages, language });
     setLocaleState(resolved);
-    document.documentElement.lang = resolved;
+    document.documentElement.lang = documentLangForLocale(resolved);
   }, []);
 
   const t = useCallback(

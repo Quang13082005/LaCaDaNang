@@ -262,5 +262,21 @@ describe("Language switch preservation across Catalog, Detail, and Intents", () 
 
     // Verify intent is STILL EAT, now in Korean
     expect(screen.getByText("어떤 곳을 찾으시나요?")).toBeInTheDocument();
+
+    // Switch to Russian
+    const footerLangBtnKo = screen.getByRole("button", { name: /언어/i });
+    fireEvent.click(footerLangBtnKo);
+    fireEvent.click(screen.getByRole("radio", { name: "Русский" }));
+
+    // Verify intent is STILL EAT, now in Russian
+    expect(screen.getByText("Какое место вы ищете?")).toBeInTheDocument();
+
+    // Switch to Simplified Chinese
+    const footerLangBtnRu = screen.getByRole("button", { name: /Язык/i });
+    fireEvent.click(footerLangBtnRu);
+    fireEvent.click(screen.getByRole("radio", { name: "简体中文" }));
+
+    // Verify intent is STILL EAT, now in Chinese
+    expect(screen.getByText("您想找什么样的地方？")).toBeInTheDocument();
   });
 });

@@ -60,6 +60,7 @@ describe("directory hub route", () => {
     [{ page: "0" }, "/browse/eat"], [{ page: "1" }, "/browse/eat"], [{ page: "abc" }, "/browse/eat"],
     [{ locale: "vi" }, "/browse/eat"], [{ locale: "xx" }, "/browse/eat"], [{ utm_source: "x" }, "/browse/eat"],
     [{ locale: "en", page: "1" }, "/browse/eat?locale=en"], [{ locale: "ko", utm: "x", page: "2" }, "/browse/eat?locale=ko&page=2"],
+    [{ locale: "ru", page: "1" }, "/browse/eat?locale=ru"], [{ locale: "zh", utm: "x", page: "2" }, "/browse/eat?locale=zh&page=2"],
   ])("redirects non-canonical query %j to %s", async (search, target) => {
     vi.mocked(getBrowse).mockResolvedValue(data(250));
     await expect(Hub(props("eat", search))).rejects.toThrow("308:" + target);
@@ -72,10 +73,39 @@ describe("directory hub route", () => {
       vi: "https://lacadanang.quangdev.id.vn/browse/eat?page=2",
       en: "https://lacadanang.quangdev.id.vn/browse/eat?locale=en&page=2",
       ko: "https://lacadanang.quangdev.id.vn/browse/eat?locale=ko&page=2",
+      ru: "https://lacadanang.quangdev.id.vn/browse/eat?locale=ru&page=2",
+      "zh-Hans": "https://lacadanang.quangdev.id.vn/browse/eat?locale=zh&page=2",
     });
     expect(String(meta.title)).toContain("page 2");
     expect(String(meta.description)).toContain("250");
     expect(meta.robots).toBeUndefined();
+  });
+  it("handles ru and zh locales on browse hubs with proper indexable metadata and localized content", async () => {
+    vi.mocked(getBrowse).mockResolvedValue(data(250));
+
+    // Metadata for ru: indexable, canonical contains ?locale=ru
+    const metaRu = await generateMetadata(props("eat", { locale: "ru", page: "2" }));
+    expect(metaRu.alternates?.canonical).toBe("https://lacadanang.quangdev.id.vn/browse/eat?locale=ru&page=2");
+    expect(metaRu.robots).toBeUndefined();
+    expect(String(metaRu.title)).toContain("страница 2");
+
+    // Metadata for zh: indexable, canonical contains ?locale=zh
+    const metaZh = await generateMetadata(props("eat", { locale: "zh", page: "2" }));
+    expect(metaZh.alternates?.canonical).toBe("https://lacadanang.quangdev.id.vn/browse/eat?locale=zh&page=2");
+    expect(metaZh.robots).toBeUndefined();
+    expect(String(metaZh.title)).toContain("第 2 页");
+
+    // Hub rendering for ru
+    const htmlRu = renderToStaticMarkup(await Hub(props("eat", { locale: "ru" })));
+    expect(htmlRu).toContain('lang="ru"');
+    expect(htmlRu).toContain("Еда и напитки в Дананге");
+    expect(htmlRu).toContain('href="/places/1?locale=ru"');
+
+    // Hub rendering for zh
+    const htmlZh = renderToStaticMarkup(await Hub(props("cafe", { locale: "zh" })));
+    expect(htmlZh).toContain('lang="zh-Hans"');
+    expect(htmlZh).toContain("岘港特色咖啡");
+    expect(htmlZh).toContain('href="/places/1?locale=zh"');
   });
   it("renders an ItemList JSON-LD schema with listed places", async () => {
     vi.mocked(getBrowse).mockResolvedValue(data(2, [link(1), link(2)]));
@@ -152,6 +182,43 @@ describe("related links on the place detail page", () => {
     expect(html).toContain("API fixture 1501");
     expect(log).toHaveBeenCalledWith("place_related_links_failed", expect.objectContaining({ placeId: 1501 }));
     log.mockRestore();
+  });
+});
+
+describe("Place detail page ru/zh routing and metadata", () => {
+  it("renders place detail in ru and zh with robots noindex and retains place identity", async () => {
+    const { generateMetadata: generatePlaceMeta } = await import("@/app/places/[id]/page");
+    vi.mocked(getPlace).mockResolvedValue(apiPlace(1501, "EAT"));
+
+    // Check metadata for ru
+    const metaRu = await generatePlaceMeta({ params: Promise.resolve({ id: "1501" }), searchParams: Promise.resolve({ locale: "ru" }) });
+    expect(metaRu.robots).toEqual({ index: false, follow: true });
+    expect(metaRu.alternates?.canonical).toBe("https://lacadanang.quangdev.id.vn/places/1501?locale=ru");
+
+    // Check metadata for zh
+    const metaZh = await generatePlaceMeta({ params: Promise.resolve({ id: "1501" }), searchParams: Promise.resolve({ locale: "zh" }) });
+    expect(metaZh.robots).toEqual({ index: false, follow: true });
+    expect(metaZh.alternates?.canonical).toBe("https://lacadanang.quangdev.id.vn/places/1501?locale=zh");
+
+    // Check rendering for ru
+    const htmlRu = renderToStaticMarkup(await Detail({ params: Promise.resolve({ id: "1501" }), searchParams: Promise.resolve({ locale: "ru" }) }));
+    expect(htmlRu).toContain("API fixture 1501");
+    expect(htmlRu).toContain('lang="ru"');
+
+    // Check rendering for zh
+    const htmlZh = renderToStaticMarkup(await Detail({ params: Promise.resolve({ id: "1501" }), searchParams: Promise.resolve({ locale: "zh" }) }));
+    expect(htmlZh).toContain("API fixture 1501");
+    expect(htmlZh).toContain('lang="zh-Hans"');
+  });
+
+  it.each([
+    [{ locale: "vi" }, "/places/1501"],
+    [{ locale: "invalid" }, "/places/1501"],
+    [{ locale: "ru", extra: "1" }, "/places/1501?locale=ru"],
+    [{ locale: "zh", extra: "1" }, "/places/1501?locale=zh"],
+  ])("redirects non-canonical place query %j to %s", async (search, target) => {
+    vi.mocked(getPlace).mockResolvedValue(apiPlace(1501, "EAT"));
+    await expect(Detail({ params: Promise.resolve({ id: "1501" }), searchParams: Promise.resolve(search) })).rejects.toThrow("308:" + target);
   });
 });
 

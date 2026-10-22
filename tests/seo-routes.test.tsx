@@ -24,6 +24,8 @@ describe("SEO App Router contracts",()=>{
      expect(browseEntry?.alternates?.languages?.vi).toBe(`https://lacadanang.quangdev.id.vn/browse/${slug}`);
      expect(browseEntry?.alternates?.languages?.en).toBe(`https://lacadanang.quangdev.id.vn/browse/${slug}?locale=en`);
      expect(browseEntry?.alternates?.languages?.ko).toBe(`https://lacadanang.quangdev.id.vn/browse/${slug}?locale=ko`);
+     expect(browseEntry?.alternates?.languages?.ru).toBe(`https://lacadanang.quangdev.id.vn/browse/${slug}?locale=ru`);
+     expect(browseEntry?.alternates?.languages?.["zh-Hans"]).toBe(`https://lacadanang.quangdev.id.vn/browse/${slug}?locale=zh`);
    }
    expect(entries.find(e=>e.url.includes("/places/1"))?.alternates?.languages?.ko).toContain("?locale=ko");
    expect(robots().sitemap).toContain("/sitemap.xml");

@@ -139,6 +139,8 @@ const vi = {
   "language.vi": "Tiếng Việt",
   "language.en": "English",
   "language.ko": "한국어",
+  "language.ru": "Русский",
+  "language.zh": "简体中文",
   "language.autoDesc": "Tự động theo ngôn ngữ thiết bị",
 
 } as const;
@@ -146,9 +148,7 @@ const vi = {
 export type MessageKey = keyof typeof vi;
 type Dictionary = { readonly [Key in MessageKey]: string };
 
-export const UI_MESSAGES = {
-  vi,
-  en: {
+const en: Dictionary = {
     // Intents
     "intent.eat": "What to eat?",
     "intent.go": "Where to go?",
@@ -286,10 +286,13 @@ export const UI_MESSAGES = {
     "language.vi": "Tiếng Việt",
     "language.en": "English",
     "language.ko": "한국어",
+    "language.ru": "Русский",
+    "language.zh": "简体中文",
     "language.autoDesc": "Match device language automatically",
 
-  },
-  ko: {
+  };
+
+const ko: Dictionary = {
     // Intents
     "intent.eat": "무엇을 먹을까요?",
     "intent.go": "어디로 갈까요?",
@@ -427,9 +430,304 @@ export const UI_MESSAGES = {
     "language.vi": "Tiếng Việt",
     "language.en": "English",
     "language.ko": "한국어",
+    "language.ru": "Русский",
+    "language.zh": "简体中文",
     "language.autoDesc": "기기 언어 설정에 맞추기",
 
-  },
+  };
+
+const ru: Dictionary = {
+  // Intents
+  "intent.eat": "Где поесть?",
+  "intent.go": "Куда сходить?",
+  "intent.now": "Чем заняться сейчас?",
+  "intent.stay": "Где остановиться?",
+  "intent.eat.helper": "Кафе, рестораны и блюда",
+  "intent.go.helper": "Достопримечательности и отдых",
+  "intent.now.helper": "Идеи по времени суток",
+  "intent.stay.helper": "Поиск жилья и отелей",
+  "intent.eat.badge": "Местная кухня",
+  "intent.go.badge": "Места и впечатления",
+  "intent.now.badge": "По времени Дананга",
+  "intent.stay.badge": "Удобное жилье",
+
+  // Home Quick Select
+  "home.quickSelect.title": "Быстрый выбор",
+  "home.quickSelect.subtitle": "Откройте Дананг по вашим предпочтениям",
+
+  // Preferences
+  "preference.sheetTitle": "Выберите предпочтения",
+  "preference.close": "Закрыть",
+  "preference.prompt": "Какое место вы ищете?",
+  "preference.companionPrompt": "С кем вы путешествуете?",
+  "pref.an_ngon": "Вкусная еда",
+  "pref.dac_san": "Фирменные блюда",
+  "pref.hen_ho": "Романтика",
+  "pref.bien_ngam_canh": "Пляж / красивый вид",
+  "pref.chup_anh_dep": "Красивые фото",
+  "pref.thien_nhien": "Природа",
+  "pref.vui_choi": "Развлечения",
+  "pref.cafe": "Пойти в кафе",
+  "pref.gan_bien": "У моря",
+  "pref.gan_trung_tam": "Центр города",
+  "pref.cap_doi": "Для пар",
+  "pref.yen_tinh": "Тихое место",
+  "pref.nguoi_yeu": "С любимым человеком",
+  "pref.ban_be": "С друзьями",
+  "pref.mot_minh": "В одиночку",
+  "pref.chon_giup_toi": "Случайный выбор",
+
+  // Actions
+  "action.maps": "Смотреть на Google Maps",
+  "action.viewDetails": "Подробнее о месте",
+  "action.back": "Назад",
+  "action.viewCategory": "Смотреть категорию",
+  "action.home": "Главная",
+  "action.changeSelection": "Изменить выбор",
+  "action.explore": "Исследовать",
+  "action.selected": "Выбрано",
+  "action.nearby": "Рядом со мной",
+  "action.citywide": "Весь Дананг",
+  "action.retry": "Повторить",
+  "action.viewCitywide": "Посмотреть по всему Данангу",
+  "action.generalNearby": "Все места рядом",
+  "pref.general": "Все места",
+  "action.locating": "Определение геопозиции…",
+  "action.navAria": "Действия по поиску",
+
+  // Hero
+  "hero.description": "Найдите, где поесть, отдохнуть и остановиться в Дананге.",
+  "hero.imageAlt": "Мост Дракона и река Хан на закате в Дананге",
+
+  // Home Intro (SEO & Guide)
+  "home.intro.title": "Исследуйте Дананг вместе с La Cà",
+  "home.intro.description": "La Cà Đà Nẵng поможет вам быстро найти рестораны, достопримечательности, кафе и отели в городе Дананг. Выберите категорию по вашим потребностям, чтобы получить подходящие рекомендации и посмотреть расположение на Google Maps.",
+  "home.intro.guideTitle": "Как быстро найти подходящее место",
+  "home.intro.guideStep1": "1. Выберите цель: Где поесть, Куда сходить, Чем заняться сейчас или Где остановиться.",
+  "home.intro.guideStep2": "2. Укажите ваши предпочтения, чтобы сразу получить точные варианты.",
+  "home.intro.guideStep3": "3. Изучите информацию о месте и при необходимости посмотрите его на Google Maps.",
+
+  // Results & Counts
+  "results.title": "Рекомендованные места",
+  "results.region": "Результаты подбора",
+  "results.zero": "Пока нет рекомендаций для этого выбора.",
+  "results.one": "Найдено 1 подходящее место.",
+  "results.two": "Найдено 2 подходящих места.",
+  "results.count": "Найдено {count} мест по вашему выбору.",
+  "results.nearbyCount": "Найдено {count} мест рядом с вами (в радиусе {radiusKm} км).",
+  "results.nearbyZero": "В радиусе 5 км мест не найдено.",
+  "results.loading": "Поиск мест…",
+  "results.error.title": "Не удалось загрузить места.",
+  "results.error.message": "Попробуйте снова или измените параметры.",
+
+  // Nearby Empty
+  "nearby.empty.title": "В радиусе 5 км нет мест, точно подходящих под эти критерии.",
+  "nearby.empty.message": "Посмотрите по всему Данангу или сбросьте фильтры, чтобы увидеть все места этой категории рядом.",
+
+  // Empty Generic
+  "empty.title": "Пока нет мест по данным критериям.",
+  "empty.message": "Попробуйте выбрать другой вариант для получения рекомендаций.",
+
+  // GPS Warnings
+  "gps.warning.inaccurate": "Точность геопозиции недостаточна для поиска рядом. Показаны рекомендации по всему городу.",
+  "now.gps.inaccurate": "Точность геопозиции недостаточна для поиска рядом. Попробуйте еще раз или выберите рекомендации по всему Данангу.",
+  "gps.warning.denied": "Доступ к геопозиции отклонен. Показаны рекомендации по всему городу.",
+  "now.gps.denied": "Доступ к геопозиции отклонен. Попробуйте еще раз или выберите рекомендации по всему Данангу.",
+  "gps.warning.timeout": "Время ожидания геопозиции истекло. Показаны рекомендации по всему городу.",
+  "now.gps.timeout": "Время ожидания геопозиции истекло. Попробуйте еще раз или выберите рекомендации по всему Данангу.",
+  "gps.warning.unavailable": "Устройство не может определить текущую геопозицию. Показаны рекомендации по всему городу.",
+  "now.gps.unavailable": "Устройство не может определить текущую геопозицию. Попробуйте еще раз или выберите рекомендации по всему Данангу.",
+
+  // Place Card
+  "card.googleRating": "Рейтинг Google",
+  "card.reviews": "отзывов",
+  "card.tagsAria": "Особенности места",
+
+  // Itinerary
+  "itinerary.sample": "Пример маршрута",
+  "now.MORNING": "Идеи на утро",
+  "now.section.EAT": "Еда",
+  "now.section.CAFE": "Кафе",
+  "now.section.GO": "Прогулка",
+  "now.section.STAY": "Жилье",
+
+  "now.MIDDAY": "Идеи на обед",
+  "now.AFTERNOON": "Идеи на день",
+  "now.EVENING": "Идеи на вечер",
+  "now.NIGHT": "Варианты на поздний вечер",
+  "now.basedOn": "Рекомендации сформированы с учетом текущего времени в Дананге.",
+  "now.hours": "Часы работы не верифицированы. Уточняйте перед посещением.",
+  "now.citywide": "Рекомендации по всему городу; порядок мест не оптимизирован по расстоянию.",
+  "now.locationPrompt": "Использовать вашу геопозицию для составления маршрута поблизости?",
+  "now.allowLocation": "Разрешить геолокацию",
+  "now.showCitywide": "Смотреть по всему Данангу",
+  "now.nearbyRadius": "В пределах {radius} км от вас. Расстояние по прямой; порядок остановок не оптимизирован по маршруту.",
+  "now.insufficient": "Недостаточно мест в радиусе 5 км для полного маршрута из 3 точек. Доступные места показаны ниже.",
+
+  "intent.region": "Цель поиска",
+
+  // Language Controls
+  "language.label": "Язык",
+  "language.auto": "Как в устройстве",
+  "language.selectTitle": "Выбор языка",
+  "language.close": "Закрыть",
+  "language.vi": "Tiếng Việt",
+  "language.en": "English",
+  "language.ko": "한국어",
+  "language.ru": "Русский",
+  "language.zh": "简体中文",
+  "language.autoDesc": "Автоматически по языку системы",
+};
+
+const zh: Dictionary = {
+  // Intents
+  "intent.eat": "吃什么？",
+  "intent.go": "去哪里？",
+  "intent.now": "现在做什么？",
+  "intent.stay": "住哪里？",
+  "intent.eat.helper": "餐厅与特色美食",
+  "intent.go.helper": "景点与游玩体验",
+  "intent.now.helper": "根据当前时段推荐",
+  "intent.stay.helper": "寻找住宿",
+  "intent.eat.badge": "地道美食",
+  "intent.go.badge": "目的地与体验",
+  "intent.now.badge": "岘港当地时间",
+  "intent.stay.badge": "精选住宿",
+
+  // Home Quick Select
+  "home.quickSelect.title": "快速选择",
+  "home.quickSelect.subtitle": "根据您的需求探索岘港",
+
+  // Preferences
+  "preference.sheetTitle": "选择偏好",
+  "preference.close": "关闭",
+  "preference.prompt": "您想找什么样的地方？",
+  "preference.companionPrompt": "与谁同行：",
+  "pref.an_ngon": "美味佳肴",
+  "pref.dac_san": "当地特产",
+  "pref.hen_ho": "情侣约会",
+  "pref.bien_ngam_canh": "海滩 / 观景",
+  "pref.chup_anh_dep": "拍照出片",
+  "pref.thien_nhien": "亲近自然",
+  "pref.vui_choi": "娱乐游玩",
+  "pref.cafe": "喝咖啡",
+  "pref.gan_bien": "临近海滩",
+  "pref.gan_trung_tam": "市中心",
+  "pref.cap_doi": "浪漫约会",
+  "pref.yen_tinh": "宁静惬意",
+  "pref.nguoi_yeu": "与伴侣",
+  "pref.ban_be": "与朋友",
+  "pref.mot_minh": "独自一人",
+  "pref.chon_giup_toi": "帮我挑选",
+
+  // Actions
+  "action.maps": "在 Google 地图上查看",
+  "action.viewDetails": "查看地点详情",
+  "action.back": "返回",
+  "action.viewCategory": "查看分类",
+  "action.home": "首页",
+  "action.changeSelection": "更改选择",
+  "action.explore": "探索",
+  "action.selected": "已选择",
+  "action.nearby": "我的附近",
+  "action.citywide": "整个岘港",
+  "action.retry": "重试",
+  "action.viewCitywide": "查看整个岘港",
+  "action.generalNearby": "查看附近所有地点",
+  "pref.general": "所有地点",
+  "action.locating": "正在定位…",
+  "action.navAria": "探索操作",
+
+  // Hero
+  "hero.description": "寻找岘港的美食、游玩好去处与精选住宿。",
+  "hero.imageAlt": "岘港日落时分的龙桥与汉江",
+
+  // Home Intro (SEO & Guide)
+  "home.intro.title": "与 La Cà 一起探索岘港精彩地点",
+  "home.intro.description": "La Cà Đà Nẵng 帮助您快速查找岘港市内的餐饮美食、游玩景点、特色咖啡厅与住宿设施。根据需求选择分类，即可获取贴心建议并在 Google 地图上查看地点位置。",
+  "home.intro.guideTitle": "快速探索指南",
+  "home.intro.guideStep1": "1. 选择需求：吃什么、去哪里、现在做什么或住哪里。",
+  "home.intro.guideStep2": "2. 选择符合的心仪偏好，立即获取精准推荐。",
+  "home.intro.guideStep3": "3. 查看详细信息，需要时可在 Google 地图上查看具体位置。",
+
+  // Results & Counts
+  "results.title": "推荐地点",
+  "results.region": "推荐结果",
+  "results.zero": "当前选择暂无推荐。",
+  "results.one": "找到 1 个符合推荐。",
+  "results.two": "找到 2 个符合推荐。",
+  "results.count": "当前选择共有 {count} 个推荐地点。",
+  "results.nearbyCount": "在您附近找到 {count} 个推荐（半径 {radiusKm} 公里内）。",
+  "results.nearbyZero": "在 5 公里范围内未找到附近推荐。",
+  "results.loading": "正在寻找地点…",
+  "results.error.title": "无法加载地点。",
+  "results.error.message": "请重试或更改选择。",
+
+  // Nearby Empty
+  "nearby.empty.title": "在 5 公里范围内没有完全符合此条件的地点。",
+  "nearby.empty.message": "保留条件查看全岘港推荐，或放宽筛选查看附近的同类地点。",
+
+  // Empty Generic
+  "empty.title": "暂无符合此条件的推荐。",
+  "empty.message": "请尝试选择其他选项以获取合适推荐。",
+
+  // GPS Warnings
+  "gps.warning.inaccurate": "当前位置精度不足以查找附近地点，已为您展示全城推荐。",
+  "now.gps.inaccurate": "位置精度不足以查找附近推荐，请重试或选择全岘港推荐。",
+  "gps.warning.denied": "您已拒绝位置权限，已为您展示全城推荐。",
+  "now.gps.denied": "您已拒绝位置权限，请重试或选择全岘港推荐。",
+  "gps.warning.timeout": "获取位置超时，已为您展示全城推荐。",
+  "now.gps.timeout": "获取位置超时，请重试或选择全岘港推荐。",
+  "gps.warning.unavailable": "设备无法获取当前位置，已为您展示全城推荐。",
+  "now.gps.unavailable": "设备无法获取当前位置，请重试或选择全岘港推荐。",
+
+  // Place Card
+  "card.googleRating": "Google 评分",
+  "card.reviews": "条评价",
+  "card.tagsAria": "地点特色",
+
+  // Itinerary
+  "itinerary.sample": "参考行程",
+  "now.MORNING": "早间推荐",
+  "now.section.EAT": "美食",
+  "now.section.CAFE": "咖啡",
+  "now.section.GO": "游玩",
+  "now.section.STAY": "住宿",
+
+  "now.MIDDAY": "午间推荐",
+  "now.AFTERNOON": "午后推荐",
+  "now.EVENING": "晚间推荐",
+  "now.NIGHT": "深夜出行参考",
+  "now.basedOn": "根据岘港当前时间推荐。",
+  "now.hours": "营业时间未经核实，前往前请向地点确认。",
+  "now.citywide": "全城推荐；地点顺序未针对行车距离优化。",
+  "now.locationPrompt": "使用您的当前位置推荐附近的行程？",
+  "now.allowLocation": "允许获取位置",
+  "now.showCitywide": "查看全岘港推荐",
+  "now.nearbyRadius": "在您周边 {radius} 公里内。为直线距离，行程顺序未针对路线做路径优化。",
+  "now.insufficient": "5 公里内可用地点不足以生成 3 个地点的完整行程，现有可用地点已在下方展示。",
+
+  "intent.region": "探索目的",
+
+  // Language Controls
+  "language.label": "语言",
+  "language.auto": "跟随设备",
+  "language.selectTitle": "选择语言",
+  "language.close": "关闭",
+  "language.vi": "Tiếng Việt",
+  "language.en": "English",
+  "language.ko": "한국어",
+  "language.ru": "Русский",
+  "language.zh": "简体中文",
+  "language.autoDesc": "根据系统语言自动设置",
+};
+
+export const UI_MESSAGES = {
+  vi,
+  en,
+  ko,
+  ru,
+  zh,
 } as const satisfies Record<SupportedLocale, Dictionary>;
 
 export function translate(
