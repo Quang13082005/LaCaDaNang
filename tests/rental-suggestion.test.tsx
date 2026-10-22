@@ -100,6 +100,8 @@ describe("RentalSuggestion display rules and production readiness", () => {
     setCachedRentals("vi", { vehicles: mockActiveVehicles, contact: mockActiveContact });
     setCachedRentals("en", { vehicles: mockActiveVehicles, contact: mockActiveContact });
     setCachedRentals("ko", { vehicles: mockActiveVehicles, contact: mockActiveContact });
+    setCachedRentals("ru", { vehicles: mockActiveVehicles, contact: mockActiveContact });
+    setCachedRentals("zh", { vehicles: mockActiveVehicles, contact: mockActiveContact });
   });
 
   afterEach(() => {
@@ -116,6 +118,8 @@ describe("RentalSuggestion display rules and production readiness", () => {
       setCachedRentals("vi", { vehicles: [], contact: null });
       setCachedRentals("en", { vehicles: [], contact: null });
       setCachedRentals("ko", { vehicles: [], contact: null });
+      setCachedRentals("ru", { vehicles: [], contact: null });
+      setCachedRentals("zh", { vehicles: [], contact: null });
     });
 
     it("GO: returns null when active catalog is empty even if distance >= 2.0 km", () => {
@@ -272,6 +276,31 @@ describe("RentalSuggestion display rules and production readiness", () => {
       expect(screen.getByText("차량 및 요금 보기")).toBeInTheDocument();
       expect(screen.getByText("1일 100,000 VND부터")).toBeInTheDocument();
     });
+
+    it("supports Russian and Simplified Chinese localization for suggestion card on Discovery intents", () => {
+      const places: PlaceCardModel[] = [
+        makePlace({ id: 1, distanceKm: 1.2, distanceRawKm: 1.2 }),
+      ];
+
+      localStorage.setItem(LOCALE_STORAGE_KEY, "ru");
+      const { unmount } = renderWithLocale(
+        <ResultList places={places} intent="EAT" status="success" nearbyStatus="granted" radiusKm={5} onResetPreference={vi.fn()} />
+      );
+      expect(screen.getByText("Нужен мотоцикл для поездок по Данангу?")).toBeInTheDocument();
+      expect(screen.getByText("Посмотрите доступные модели, тарифы и контакты для комфортного передвижения по городу.")).toBeInTheDocument();
+      expect(screen.getByText("Посмотреть мотоциклы и цены")).toBeInTheDocument();
+      expect(screen.getByText(/VND\/день/)).toBeInTheDocument();
+      unmount();
+
+      localStorage.setItem(LOCALE_STORAGE_KEY, "zh");
+      renderWithLocale(
+        <ResultList places={places} intent="GO" status="success" nearbyStatus="granted" radiusKm={5} onResetPreference={vi.fn()} />
+      );
+      expect(screen.getByText("需要摩托车畅游岘港吗？")).toBeInTheDocument();
+      expect(screen.getByText("查看可用车型、租金及联系方式，让您的出行更加自由便捷。")).toBeInTheDocument();
+      expect(screen.getByText("查看车辆与租金")).toBeInTheDocument();
+      expect(screen.getByText(/每天 .* VND起/)).toBeInTheDocument();
+    });
   });
 
   describe("NOW intent suggestion rules", () => {
@@ -382,6 +411,38 @@ describe("RentalSuggestion display rules and production readiness", () => {
       expect(screen.getByText("다낭을 여행할 오토바이가 필요하신가요?")).toBeInTheDocument();
       expect(screen.getByText("차량 및 요금 보기")).toBeInTheDocument();
       expect(screen.getByText("1일 100,000 VND부터")).toBeInTheDocument();
+      unmount();
+
+      localStorage.setItem(LOCALE_STORAGE_KEY, "ru");
+      const itineraryRu: NowData = {
+        locale: "ru",
+        slot: "MORNING",
+        timeZone: "Asia/Ho_Chi_Minh",
+        evaluatedAt: new Date().toISOString(),
+        count: 1,
+        places: [makeDiscoveryPlace({ id: 1, section: "CAFE", name: "Morning Cafe" })],
+        meta: { source: "neon-postgres", policy: "time-slot-v1.1", mode: "citywide", radiusKm: null, openingHoursVerified: false },
+      };
+      const { unmount: unmountRu } = renderWithLocale(<ItineraryTimeline itinerary={itineraryRu} />);
+      expect(screen.getByText("Нужен мотоцикл для поездок по Данангу?")).toBeInTheDocument();
+      expect(screen.getByText("Посмотреть мотоциклы и цены")).toBeInTheDocument();
+      expect(screen.getByText(/VND\/день/)).toBeInTheDocument();
+      unmountRu();
+
+      localStorage.setItem(LOCALE_STORAGE_KEY, "zh");
+      const itineraryZh: NowData = {
+        locale: "zh",
+        slot: "MORNING",
+        timeZone: "Asia/Ho_Chi_Minh",
+        evaluatedAt: new Date().toISOString(),
+        count: 1,
+        places: [makeDiscoveryPlace({ id: 1, section: "CAFE", name: "Morning Cafe" })],
+        meta: { source: "neon-postgres", policy: "time-slot-v1.1", mode: "citywide", radiusKm: null, openingHoursVerified: false },
+      };
+      renderWithLocale(<ItineraryTimeline itinerary={itineraryZh} />);
+      expect(screen.getByText("需要摩托车畅游岘港吗？")).toBeInTheDocument();
+      expect(screen.getByText("查看车辆与租金")).toBeInTheDocument();
+      expect(screen.getByText(/每天 .* VND起/)).toBeInTheDocument();
     });
   });
 

@@ -91,6 +91,10 @@ export function RentalSuggestion({
       ? `Từ ${formatNumber(minPrice)}đ/ngày`
       : locale === "en"
       ? `From ${formatNumber(minPrice)} VND/day`
+      : locale === "ru"
+      ? `От ${formatNumber(minPrice)} VND/день`
+      : locale === "zh"
+      ? `每天 ${formatNumber(minPrice)} VND起`
       : `1일 ${formatNumber(minPrice)} VND부터`;
 
   const handleOpen = () => {

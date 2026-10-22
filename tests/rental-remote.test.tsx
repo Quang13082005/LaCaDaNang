@@ -127,6 +127,17 @@ describe("Public Rental API security and boundaries", () => {
     expect(res.status).toBe(400);
   });
 
+  it("accepts valid ru and zh locales with 200", async () => {
+    vi.spyOn(rentalRepo, "readRentals").mockResolvedValue({ vehicles: [], contact: null });
+    const reqRu = new NextRequest("http://localhost/api/rentals?locale=ru");
+    const resRu = await getRentals(reqRu);
+    expect(resRu.status).toBe(200);
+
+    const reqZh = new NextRequest("http://localhost/api/rentals?locale=zh");
+    const resZh = await getRentals(reqZh);
+    expect(resZh.status).toBe(200);
+  });
+
   it("detail route rejects invalid UUID with 400", async () => {
     const req = new NextRequest("http://localhost/api/rentals/not-a-uuid");
     const res = await getRentalDetail(req, { params: Promise.resolve({ id: "not-a-uuid" }) });

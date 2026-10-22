@@ -1,5 +1,6 @@
 import { getNeonExecutor, type SqlQuery } from "@/lib/db/neon";
 import { z } from "zod";
+import type { SupportedLocale } from "@/lib/i18n/locales";
 
 export const rentalUuid = z.string().uuid();
 export const rentalCategory = z.enum(["scooter", "semi", "manual"]);
@@ -16,11 +17,12 @@ export type RentalContact=z.infer<typeof contactSchema>;
 export interface RentalData {vehicles:PublicRentalVehicle[];contact:RentalContact|null}
 
 /** Public projection only. Strictly active=true records, no inactive bypass and no internal/raw fields. */
-export async function readRentals(locale:"vi"|"en"|"ko",category:string|null=null,id:string|null=null,query:SqlQuery=getNeonExecutor()):Promise<RentalData>{
+export async function readRentals(locale:SupportedLocale,category:string|null=null,id:string|null=null,query:SqlQuery=getNeonExecutor()):Promise<RentalData>{
  const rows=await query(`SELECT v.public_id AS "publicId",m.brand,m.model_name AS model,m.category,
  v.engine_cc AS "engineCc",v.registration_year AS "registrationYear",
- CASE WHEN $1='en' THEN COALESCE(NULLIF(v.color_en,''),v.color_source)
- WHEN $1='ko' THEN COALESCE(NULLIF(v.color_ko,''),v.color_source) ELSE v.color_source END AS color,
+ CASE WHEN $1='ko' THEN COALESCE(NULLIF(v.color_ko,''),v.color_en,v.color_source)
+ WHEN $1 IN ('en','ru','zh') THEN COALESCE(NULLIF(v.color_en,''),v.color_source)
+ ELSE v.color_source END AS color,
  v.color_complete AS "colorComplete",v.daily_price_vnd AS "dailyPriceVnd",v.one_cccd_deposit_vnd AS "depositVnd",
  COALESCE((SELECT json_agg(json_build_object('imageUrl',x.image_url,'altText',x.alt_text,'isPrimary',x.is_primary,'sortOrder',x.sort_order)
  ORDER BY x.is_primary DESC,x.sort_order,x.id) FROM public.rental_vehicle_media x WHERE x.vehicle_id=v.id),'[]'::json) AS media
@@ -30,7 +32,9 @@ export async function readRentals(locale:"vi"|"en"|"ko",category:string|null=nul
  ORDER BY m.brand,m.model_name,v.id`,[locale,category,id]);
  const vehicles=rows.map(r=>vehicleSchema.parse({...r,media:Array.isArray(r.media)?r.media.filter(m=>mediaSchema.safeParse(m).success):[]}));
  const contacts=await query(`SELECT phone_e164 AS phone,zalo_url AS "zaloUrl",helmets_included AS "helmetsIncluded",
- CASE WHEN $1='en' THEN policy_en WHEN $1='ko' THEN policy_ko ELSE policy_vi END AS policy
+ CASE WHEN $1='ko' THEN COALESCE(NULLIF(policy_ko,''),policy_en,policy_vi)
+ WHEN $1 IN ('en','ru','zh') THEN COALESCE(NULLIF(policy_en,''),policy_vi)
+ ELSE policy_vi END AS policy
  FROM public.rental_contact_settings WHERE id=1 AND active=true`,[locale]);
  return {vehicles,contact:contacts.length?contactSchema.parse(contacts[0]):null};
 }

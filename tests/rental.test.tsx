@@ -44,9 +44,15 @@ describe("rental review",()=>{
   expect(formatVehicleColor("Đỏ-Nâu", "vi")).toBe("Đỏ-Nâu");
   expect(formatVehicleColor("Đỏ-Nâu", "en")).toBe("Red-Brown");
   expect(formatVehicleColor("Đỏ-Nâu", "ko")).toBe("빨강-갈색");
+  expect(formatVehicleColor("Đỏ-Nâu", "ru")).toBe("Красно-коричневый");
+  expect(formatVehicleColor("Đỏ-Nâu", "zh")).toBe("红-棕");
+  expect(formatVehicleColor("Red-Brown", "ru")).toBe("Красно-коричневый");
+  expect(formatVehicleColor("Red-Brown", "zh")).toBe("红-棕");
   expect(formatVehicleColor("Xám-…", "vi")).toBe("Màu xe chưa đầy đủ");
   expect(formatVehicleColor("Xám-…", "en")).toBe("Colour details incomplete");
   expect(formatVehicleColor("Xám-…", "ko")).toBe("색상 정보 미완성");
+  expect(formatVehicleColor("Xám-…", "ru")).toBe("Цвет уточняется");
+  expect(formatVehicleColor("Xám-…", "zh")).toBe("颜色信息未完善");
  });
  it("retains reserved dimensions and falls back on failed real media",()=>{
   const media={id:'owner-photo',imageUrl:'https://example.invalid/approved.jpg',isPrimary:true,sortOrder:0,altText:'Owner photo'};

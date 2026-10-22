@@ -29,10 +29,28 @@ describe("Rental public repository",()=>{
   const data=await readRentals("ko",null,null,vi.fn().mockResolvedValueOnce([{...vehicle,media}]).mockResolvedValueOnce([]));
   expect(data.vehicles[0].media).toHaveLength(1);
  });
+ it("supports ru and zh with controlled fallback in SQL query",async()=>{
+  const queryRu=vi.fn().mockResolvedValueOnce([vehicle]).mockResolvedValueOnce([{phone:"+84905123456",zaloUrl:"https://zalo.me/0905123456",helmetsIncluded:true,policy:"Terms"}]);
+  const resultRu=await readRentals("ru",null,null,queryRu);
+  expect(queryRu.mock.calls[0][1]).toEqual(["ru",null,null]);
+  expect(queryRu.mock.calls[0][0]).toContain("WHEN $1 IN ('en','ru','zh') THEN COALESCE(NULLIF(v.color_en,''),v.color_source)");
+  expect(queryRu.mock.calls[1][1]).toEqual(["ru"]);
+  expect(queryRu.mock.calls[1][0]).toContain("WHEN $1 IN ('en','ru','zh') THEN COALESCE(NULLIF(policy_en,''),policy_vi)");
+  expect(resultRu.vehicles).toHaveLength(1);
+
+  const queryZh=vi.fn().mockResolvedValueOnce([vehicle]).mockResolvedValueOnce([]);
+  const resultZh=await readRentals("zh",null,null,queryZh);
+  expect(queryZh.mock.calls[0][1]).toEqual(["zh",null,null]);
+  expect(resultZh.vehicles).toHaveLength(1);
+ });
 });
 describe("Rental input boundaries",()=>{
  it.each(["active=false","includeInactive=true","locale=de","category=car","locale=vi&locale=en"])("rejects %s before database access",async query=>{
   expect((await GET(new NextRequest(`http://localhost/api/rentals?${query}`))).status).toBe(400);
+ });
+ it.each(["locale=ru","locale=zh","locale=vi","locale=en","locale=ko"])("accepts %s without 400 rejection",async query=>{
+  const res=await GET(new NextRequest(`http://localhost/api/rentals?${query}`));
+  expect(res.status).not.toBe(400);
  });
  it("rejects internal IDs instead of treating them as public UUIDs",async()=>{
   const response=await detail(new NextRequest("http://localhost/api/rentals/1"),{params:Promise.resolve({id:"1"})});
