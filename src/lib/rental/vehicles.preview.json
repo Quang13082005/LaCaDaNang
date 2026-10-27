@@ -6,7 +6,6 @@
     "color": "Trắng-Bạc-Đen",
     "engineCc": 108,
     "category": "scooter",
-    "registrationYear": 2012,
     "rawDailyPrice": 130,
     "rawAssetDeposit": "2.000.000"
   },
@@ -17,7 +16,6 @@
     "color": "Đen-Vàng",
     "engineCc": 110,
     "category": "semi",
-    "registrationYear": 2012,
     "rawDailyPrice": 100,
     "rawAssetDeposit": "1.000.000"
   },
@@ -28,7 +26,6 @@
     "color": "Đỏ-Đen",
     "engineCc": 110,
     "category": "semi",
-    "registrationYear": 2021,
     "rawDailyPrice": 120,
     "rawAssetDeposit": "1.000.000"
   },
@@ -39,7 +36,6 @@
     "color": "Xám-Đen",
     "engineCc": 110,
     "category": "semi",
-    "registrationYear": 2023,
     "rawDailyPrice": 110,
     "rawAssetDeposit": "1.000.000"
   },
@@ -50,7 +46,6 @@
     "color": "Xanh-Đen",
     "engineCc": 124.8,
     "category": "scooter",
-    "registrationYear": 2023,
     "rawDailyPrice": 180,
     "rawAssetDeposit": "2.000.000"
   },
@@ -61,7 +56,6 @@
     "color": "Đỏ-Đen-Bạc",
     "engineCc": 109,
     "category": "semi",
-    "registrationYear": 2019,
     "rawDailyPrice": 140,
     "rawAssetDeposit": "1.000.000"
   },
@@ -72,7 +66,6 @@
     "color": "Xám-Đen",
     "engineCc": 125,
     "category": "scooter",
-    "registrationYear": 2021,
     "rawDailyPrice": 110,
     "rawAssetDeposit": "2.000.000"
   },
@@ -83,7 +76,6 @@
     "color": "Đen",
     "engineCc": 125,
     "category": "scooter",
-    "registrationYear": 2018,
     "rawDailyPrice": 150,
     "rawAssetDeposit": "2.000.000"
   },
@@ -94,7 +86,6 @@
     "color": "Đen-Bạc",
     "engineCc": 124,
     "category": "scooter",
-    "registrationYear": 2017,
     "rawDailyPrice": 150,
     "rawAssetDeposit": "2.000.000"
   },
@@ -105,7 +96,6 @@
     "color": "Xanh-Bạc",
     "engineCc": 149,
     "category": "manual",
-    "registrationYear": 2016,
     "rawDailyPrice": 150,
     "rawAssetDeposit": "1.500.000"
   },
@@ -116,7 +106,6 @@
     "color": "Xám-…",
     "engineCc": 110.3,
     "category": "semi",
-    "registrationYear": 2024,
     "rawDailyPrice": 120,
     "rawAssetDeposit": "1.000.000"
   },
@@ -127,7 +116,6 @@
     "color": "Xám-Đen",
     "engineCc": 125,
     "category": "scooter",
-    "registrationYear": 2016,
     "rawDailyPrice": 150,
     "rawAssetDeposit": "2.000.000"
   },
@@ -138,7 +126,6 @@
     "color": "Trắng-Đen",
     "engineCc": 110,
     "category": "semi",
-    "registrationYear": 2017,
     "rawDailyPrice": 110,
     "rawAssetDeposit": "1.000.000"
   },
@@ -149,7 +136,6 @@
     "color": "Đỏ",
     "engineCc": 108,
     "category": "scooter",
-    "registrationYear": 2016,
     "rawDailyPrice": 150,
     "rawAssetDeposit": "2.000.000"
   },
@@ -160,7 +146,6 @@
     "color": "Xám-Đen",
     "engineCc": 125,
     "category": "scooter",
-    "registrationYear": 2018,
     "rawDailyPrice": 150,
     "rawAssetDeposit": "2.000.000"
   },
@@ -171,7 +156,6 @@
     "color": "Đen-Đỏ",
     "engineCc": 110,
     "category": "semi",
-    "registrationYear": 2018,
     "rawDailyPrice": 110,
     "rawAssetDeposit": "1.000.000"
   },
@@ -182,7 +166,6 @@
     "color": "Đen",
     "engineCc": 113,
     "category": "semi",
-    "registrationYear": 2015,
     "rawDailyPrice": 100,
     "rawAssetDeposit": "1.000.000"
   },
@@ -193,7 +176,6 @@
     "color": "Đỏ-Đen",
     "engineCc": 110,
     "category": "semi",
-    "registrationYear": 2019,
     "rawDailyPrice": 110,
     "rawAssetDeposit": "1.000.000"
   },
@@ -204,7 +186,6 @@
     "color": "Đỏ-Nâu",
     "engineCc": 108,
     "category": "scooter",
-    "registrationYear": 2020,
     "rawDailyPrice": 150,
     "rawAssetDeposit": "2.000.000"
   },
@@ -215,7 +196,6 @@
     "color": "Đỏ-Đen",
     "engineCc": 110,
     "category": "semi",
-    "registrationYear": 2018,
     "rawDailyPrice": 110,
     "rawAssetDeposit": "1.000.000"
   },
@@ -226,7 +206,6 @@
     "color": "Đỏ-Đen-Xám",
     "engineCc": 149.3,
     "category": "scooter",
-    "registrationYear": 2021,
     "rawDailyPrice": 170,
     "rawAssetDeposit": "2.000.000"
   }

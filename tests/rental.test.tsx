@@ -35,7 +35,7 @@ describe("rental review",()=>{
   fireEvent.click(screen.getAllByText('Honda Vision')[0]);
   expect(screen.getByRole('heading',{level:1})).toHaveFocus();
   fireEvent.click(screen.getByRole('button',{name:'Quay lại'}));
-  expect(screen.getByRole('button',{name:/Honda Vision.*2012/})).toHaveFocus();
+  expect(screen.getByRole('button',{name:/Honda Vision.*Trắng-Bạc-Đen/})).toHaveFocus();
   expect(scroll.scrollTop).toBe(260);
  });
  it("never guesses truncated source colour and localizes all colors",()=>{

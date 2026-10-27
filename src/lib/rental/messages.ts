@@ -15,10 +15,10 @@ import type { SupportedLocale } from "@/lib/i18n/locales";
   suggestionTitleNow: "Đi nhiều nơi, chủ động hơn! Tham khảo xe máy thuê để khám phá Đà Nẵng theo lịch trình.",
   suggestionBenefitNow: "Chủ động thời gian · Đầy đủ xe ga, xe số, xe côn · Kèm mũ bảo hiểm",
   preview: "Bản xem trước • Giá thuê đã được xác nhận", all: "Tất cả", scooter: "Xe ga", semi: "Xe số", manual: "Xe côn",
-  back: "Quay lại", close: "Quay lại khám phá", color: "Màu xe", incomplete: "Màu xe chưa đầy đủ", capacity: "Dung tích", year: "Năm đăng ký", category: "Loại xe",
+  back: "Quay lại", close: "Quay lại khám phá", color: "Màu xe", incomplete: "Màu xe chưa đầy đủ", capacity: "Dung tích", category: "Loại xe",
   price: "Giá thuê/ngày", pending: "Giá chưa xác nhận", deposit: "Tiền cọc", depositPending: "Điều kiện và mức cọc đang chờ xác nhận",
   noImage: "Hình ảnh xe đang được cập nhật", image: "Ảnh xe", chooseImage: "Xem ảnh", zalo: "Liên hệ Zalo", call: "Gọi điện",
-  contactPending: "Thông tin liên hệ chưa được cấu hình", availability: "Liên hệ để xác nhận giá, điều kiện thuê và tình trạng xe. Năm đăng ký không phải năm sản xuất.", filters: "Lọc loại xe", code: "Mã tham khảo",
+  contactPending: "Thông tin liên hệ chưa được cấu hình", availability: "Liên hệ để xác nhận giá, điều kiện thuê và tình trạng xe.", filters: "Lọc loại xe", code: "Mã tham khảo",
   terms: "Theo thông tin đơn vị cho thuê: cần ít nhất 1 CCCD. Để lại 2 CCCD (của 2 người khác nhau): không cọc tiền. Để lại 1 CCCD: áp dụng mức cọc theo loại xe. Có mũ bảo hiểm. Chi tiết giấy tờ và hợp đồng: liên hệ qua điện thoại hoặc Zalo. Không gửi giấy tờ qua website này.", depositCondition: "Tiền cọc khi để lại 1 CCCD (để lại 2 CCCD của 2 người khác nhau: miễn cọc)",
 } as const;
 type Copy = { [K in keyof typeof vi]: string };
@@ -36,8 +36,8 @@ const en: Copy = {
   suggestionContextNow: "Multi-stop itinerary",
   suggestionTitleNow: "Multiple spots ahead? Move around at your own pace.",
   suggestionBenefitNow: "Save travel time · Scooters, semi-auto & manual bikes · Helmets included",
-  preview:"Preview • Rental prices confirmed",all:"All",scooter:"Scooter",semi:"Semi-auto",manual:"Manual",back:"Back",close:"Back to exploring",color:"Colour",incomplete:"Colour details incomplete",capacity:"Engine capacity",year:"Registration year",category:"Type",
-  price:"Daily rental price",pending:"Price awaiting confirmation",deposit:"Deposit",depositPending:"Deposit amount and terms awaiting confirmation",noImage:"Vehicle photos are being updated",image:"Vehicle photo",chooseImage:"View photo",zalo:"Contact on Zalo",call:"Call",contactPending:"Contact details are not configured",availability:"Contact the provider to confirm prices, rental terms and availability. Registration year is not manufacture year.",filters:"Filter vehicle type",code:"Reference code",
+  preview:"Preview • Rental prices confirmed",all:"All",scooter:"Scooter",semi:"Semi-auto",manual:"Manual",back:"Back",close:"Back to exploring",color:"Colour",incomplete:"Colour details incomplete",capacity:"Engine capacity",category:"Type",
+  price:"Daily rental price",pending:"Price awaiting confirmation",deposit:"Deposit",depositPending:"Deposit amount and terms awaiting confirmation",noImage:"Vehicle photos are being updated",image:"Vehicle photo",chooseImage:"View photo",zalo:"Contact on Zalo",call:"Call",contactPending:"Contact details are not configured",availability:"Contact the provider to confirm prices, rental terms and availability.",filters:"Filter vehicle type",code:"Reference code",
   terms:"Provider information: at least one Vietnamese citizen ID card (CCCD) is required. Leaving two CCCD cards (from two different persons): no cash deposit. Leaving one: the deposit shown for the vehicle type applies. Helmets are included. Contact by phone or Zalo for document and contract details. Do not send identity documents through this website.",depositCondition:"Deposit when leaving 1 CCCD (leaving 2 CCCD cards from 2 different persons: no cash deposit)",
 };
 const ko: Copy = {
@@ -54,8 +54,8 @@ const ko: Copy = {
   suggestionContextNow: "다구간 여행 일정",
   suggestionTitleNow: "여러 곳을 더 편하게! 일정에 맞춰 자유롭게 이동하세요.",
   suggestionBenefitNow: "시간 절약 · 스쿠터, 반자동, 수동 바이크 구비 · 헬멧 포함",
-  preview:"미리보기 • 대여 요금 확인 완료",all:"전체",scooter:"스쿠터",semi:"반자동",manual:"수동",back:"뒤로",close:"장소 탐색으로 돌아가기",color:"색상",incomplete:"색상 정보 미완성",capacity:"배기량",year:"등록 연도",category:"유형",
-  price:"일일 대여료",pending:"요금 확인 대기 중",deposit:"보증금",depositPending:"보증금 금액 및 조건 확인 대기 중",noImage:"차량 사진을 업데이트하고 있습니다",image:"차량 사진",chooseImage:"사진 보기",zalo:"Zalo로 문의",call:"전화하기",contactPending:"연락처가 아직 등록되지 않았습니다",availability:"요금, 대여 조건 및 이용 가능 여부는 업체에 문의하세요. 등록 연도는 제조 연도가 아닙니다.",filters:"차량 유형 필터",code:"참조 코드",
+  preview:"미리보기 • 대여 요금 확인 완료",all:"전체",scooter:"스쿠터",semi:"반자동",manual:"수동",back:"뒤로",close:"장소 탐색으로 돌아가기",color:"색상",incomplete:"색상 정보 미완성",capacity:"배기량",category:"유형",
+  price:"일일 대여료",pending:"요금 확인 대기 중",deposit:"보증금",depositPending:"보증금 금액 및 조건 확인 대기 중",noImage:"차량 사진을 업데이트하고 있습니다",image:"차량 사진",chooseImage:"사진 보기",zalo:"Zalo로 문의",call:"전화하기",contactPending:"연락처가 아직 등록되지 않았습니다",availability:"요금, 대여 조건 및 이용 가능 여부는 업체에 문의하세요.",filters:"차량 유형 필터",code:"참조 코드",
   terms:"대여업체 안내: 베트남 시민 신분증(CCCD)이 최소 1개 필요합니다. 서로 다른 2명의 CCCD 2개를 맡기면 현금 보증금이 없으며, 1개를 맡기면 차량 유형별 표시된 보증금이 적용됩니다. 헬멧이 제공됩니다. 서류 및 계약 세부 사항은 전화 또는 Zalo로 문의하세요. 이 웹사이트로 신분증을 보내지 마세요.",depositCondition:"CCCD 1개 맡길 때의 보증금 (2인 각각의 신분증 2개 맡길 시 보증금 면제)",
 };
 
@@ -88,7 +88,6 @@ const ru: Copy = {
   color: "Цвет",
   incomplete: "Цвет уточняется",
   capacity: "Объем двигателя",
-  year: "Год регистрации",
   category: "Тип",
   price: "Аренда в день",
   pending: "Тариф уточняется",
@@ -100,7 +99,7 @@ const ru: Copy = {
   zalo: "Связаться в Zalo",
   call: "Позвонить",
   contactPending: "Контактные данные не настроены",
-  availability: "Свяжитесь с прокатом для уточнения тарифов, условий и наличия. Год регистрации не является годом выпуска.",
+  availability: "Свяжитесь с прокатом для уточнения тарифов, условий и наличия.",
   filters: "Фильтр по типу",
   code: "Код модели",
   terms: "Информация от проката: освобождение от залога при 2 удостоверениях действует только для граждан Вьетнама (CCCD). Иностранным гостям необходимо связаться с прокатом по телефону hoặc Zalo для подтверждения документов (паспорт/права), суммы залога и условий договора. Шлемы включены в стоимость. Не отправляйте документы через этот сайт.",
@@ -136,7 +135,6 @@ const zh: Copy = {
   color: "车身颜色",
   incomplete: "颜色信息未完善",
   capacity: "排量",
-  year: "登记年份",
   category: "车型",
   price: "日租金",
   pending: "租金待确认",
@@ -148,7 +146,7 @@ const zh: Copy = {
   zalo: "Zalo咨询",
   call: "拨打电话",
   contactPending: "联系方式未配置",
-  availability: "请联系租车方确认实际价格、租赁条件及车辆状态。登记年份不代表出厂年份。",
+  availability: "请联系租车方确认实际价格、租赁条件及车辆状态。",
   filters: "车型筛选",
   code: "参考编号",
   terms: "租车方信息：出示2张身份证免押金仅适用于越南公民（CCCD）。外国游客请通过电话或Zalo联系租车方，确认所需证件（护照/驾照）、押金金额及合同细则。免费提供安全头盔。请勿通过本网站发送个人证件。",

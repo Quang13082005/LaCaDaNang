@@ -120,7 +120,6 @@ export function RentalSuggestion({
     model: v.model,
     category: v.category,
     engineCc: v.engineCc,
-    registrationYear: v.registrationYear,
     color: v.color,
     dailyPriceVnd: v.dailyPriceVnd,
     depositVnd: v.depositVnd,

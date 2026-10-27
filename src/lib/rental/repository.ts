@@ -7,7 +7,7 @@ export const rentalCategory = z.enum(["scooter", "semi", "manual"]);
 const mediaSchema = z.object({imageUrl:z.string().url().refine(s=>s.startsWith("https://")),altText:z.string(),isPrimary:z.boolean(),sortOrder:z.number().int().nonnegative()});
 const vehicleSchema = z.object({
  publicId:rentalUuid,brand:z.string(),model:z.string(),category:rentalCategory,
- engineCc:z.coerce.number().positive(),registrationYear:z.number().int(),
+ engineCc:z.coerce.number().positive(),
  color:z.string(),colorComplete:z.boolean(),dailyPriceVnd:z.number().int().positive(),
  depositVnd:z.number().int().nonnegative(),media:z.array(mediaSchema),
 });
@@ -19,7 +19,7 @@ export interface RentalData {vehicles:PublicRentalVehicle[];contact:RentalContac
 /** Public projection only. Strictly active=true records, no inactive bypass and no internal/raw fields. */
 export async function readRentals(locale:SupportedLocale,category:string|null=null,id:string|null=null,query:SqlQuery=getNeonExecutor()):Promise<RentalData>{
  const rows=await query(`SELECT v.public_id AS "publicId",m.brand,m.model_name AS model,m.category,
- v.engine_cc AS "engineCc",v.registration_year AS "registrationYear",
+ v.engine_cc AS "engineCc",
  CASE WHEN $1='ko' THEN COALESCE(NULLIF(v.color_ko,''),v.color_en,v.color_source)
  WHEN $1 IN ('en','ru','zh') THEN COALESCE(NULLIF(v.color_en,''),v.color_source)
  ELSE v.color_source END AS color,

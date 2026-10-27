@@ -4,7 +4,7 @@ import {readRentals} from "@/lib/rental/repository";
 import {assertReadOnlySql} from "@/lib/db/neon";
 import {GET} from "@/app/api/rentals/route";
 import {GET as detail} from "@/app/api/rentals/[id]/route";
-const vehicle={publicId:"7b668258-ab16-4e3b-aef1-3fdbb6710457",brand:"Honda",model:"Vision",category:"scooter",engineCc:"109.100",registrationYear:2023,color:"Black",colorComplete:true,dailyPriceVnd:130000,depositVnd:2000000,media:[],id:99,vehicle_code:"PRIVATE",raw_daily_price:130};
+const vehicle={publicId:"7b668258-ab16-4e3b-aef1-3fdbb6710457",brand:"Honda",model:"Vision",category:"scooter",engineCc:"109.100",color:"Black",colorComplete:true,dailyPriceVnd:130000,depositVnd:2000000,media:[],id:99,vehicle_code:"PRIVATE",raw_daily_price:130};
 describe("Rental public repository",()=>{
  it("uses only parameterized SELECT, active filters and a public projection",async()=>{
   const query=vi.fn().mockResolvedValueOnce([vehicle]).mockResolvedValueOnce([]);

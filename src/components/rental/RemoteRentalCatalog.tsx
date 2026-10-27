@@ -28,7 +28,7 @@ export function RemoteRentalCatalog({onClose}:{onClose:()=>void}){
   return()=>{current=false;controller.abort();clearTimeout(timeout);};
  },[locale,attempt]);
  const data=state.locale===locale?state.data:undefined;
- if(data?.vehicles.length)return <RentalCatalog onClose={onClose} notice={t.source} contact={data.contact} vehicles={data.vehicles.map(v=>({code:v.publicId,brand:v.brand,model:v.model,category:v.category,engineCc:v.engineCc,registrationYear:v.registrationYear,color:v.color,dailyPriceVnd:v.dailyPriceVnd,depositVnd:v.depositVnd,media:v.media.map(m=>({...m,id:m.imageUrl}))}))}/>;
+ if(data?.vehicles.length)return <RentalCatalog onClose={onClose} notice={t.source} contact={data.contact} vehicles={data.vehicles.map(v=>({code:v.publicId,brand:v.brand,model:v.model,category:v.category,engineCc:v.engineCc,color:v.color,dailyPriceVnd:v.dailyPriceVnd,depositVnd:v.depositVnd,media:v.media.map(m=>({...m,id:m.imageUrl}))}))}/>;
  const error=state.locale===locale&&state.error;
  return <main className="max-w-2xl mx-auto p-5 space-y-4"><button onClick={onClose} className="min-h-11 px-4 border rounded-xl">{t.back}</button><p role={error?"alert":"status"}>{error?t.error:data?t.empty:t.loading}</p>{error&&<button className="min-h-11 px-4 rounded-xl bg-sky-600 text-white" onClick={()=>setAttempt(n=>n+1)}>{t.retry}</button>}</main>;
 }
